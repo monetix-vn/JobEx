@@ -1,0 +1,29 @@
+[
+  {
+    "id": "role.sales.export.specialist",
+    "department": "dept.sales_export",
+    "level": 1,
+    "title_key": "role.sales.export.specialist.title",
+    "reports_to": "role.sales.export.manager",
+    "kpis": [
+      { "id": "kpi.quota_pct", "weight": 0.6 },
+      { "id": "kpi.dso_days", "weight": 0.2 }
+    ],
+    "weekly_demand": [
+      { "task": "task.quote_rfq", "per_week": [3, 6], "effort_h": 2.5 },
+      { "task": "task.chase_order", "per_week": [2, 4], "effort_h": 1.0 }
+    ],
+    "approval_limits": { "discount_pct": 3, "payment_terms_days": 30 },
+    "skills": ["negotiation", "analysis", "read_the_room"],
+    "start_state": { "salary_vnd": 12000000, "stress": 25 },
+    "dark_offers": ["offer.pad_forecast"]
+  },
+  {
+    "id": "role.sales.export.manager",
+    "department": "dept.sales_export",
+    "level": 2,
+    "title_key": "role.sales.export.manager.title",
+    "approval_limits": { "discount_pct": 8, "payment_terms_days": 60 },
+    "start_state": { "salary_vnd": 28000000, "stress": 40 }
+  }
+]

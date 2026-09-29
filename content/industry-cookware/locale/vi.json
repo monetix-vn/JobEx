@@ -1,0 +1,13 @@
+{
+  "role.sales.export.specialist.title": "Chuyên viên Kinh doanh Xuất khẩu",
+  "role.sales.export.manager.title": "Trưởng phòng Kinh doanh Xuất khẩu",
+  "scene.buyer_audit_notice.l1": "Khách hàng vừa gửi thông báo đánh giá. Khoảng một tháng nữa họ sẽ đến kiểm tra nhà máy.",
+  "scene.buyer_audit_notice.l2": "Hồ sơ lô hàng của mình còn thiếu. Phải có người đối chiếu lại trước ngày đánh giá.",
+  "scene.buyer_audit_notice.c1": "Xung phong dựng lại hồ sơ từ chứng từ gốc, làm trung thực.",
+  "scene.buyer_audit_notice.c1.ok": "Mất sáu tiếng vất vả, nhưng hồ sơ khớp và phòng QC ghi nhận.",
+  "scene.buyer_audit_notice.c1.fail": "Bạn phát hiện nhiều chỗ thiếu hơn dự tính và mất cả buổi tối cho việc này.",
+  "scene.buyer_audit_notice.c2": "Im lặng và hy vọng đoàn đánh giá không soi kỹ.",
+  "scene.buyer_audit_notice.c2.only": "Cuộc họp chuyển sang việc khác. Những chỗ thiếu vẫn còn đó.",
+  "scene.audit_day.l1": "Đoàn đánh giá đang ở xưởng. Trả lời ngắn gọn và chính xác.",
+  "offer.pad_forecast.why": "Ai cũng làm tròn dự báo lên một chút. Con số chỉ là câu chuyện mình kể cho hội đồng."
+}

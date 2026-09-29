@@ -1,0 +1,7 @@
+{
+  "id": "core",
+  "version": "0.1.0",
+  "layer": "core",
+  "engine_min_version": "0.1.0",
+  "description": "Engine defaults: shared UI strings. Stats, skills and ladder levels arrive in Phase 1."
+}

@@ -1,0 +1,8 @@
+{
+  "id": "industry-cookware",
+  "version": "0.1.0",
+  "layer": "industry",
+  "engine_min_version": "0.1.0",
+  "depends_on": ["core"],
+  "description": "Phase 0 sample: one role, one offer, and the buyer audit scenes from the design plan (section 9.3)."
+}

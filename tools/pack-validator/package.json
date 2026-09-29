@@ -1,0 +1,16 @@
+{
+  "name": "@je/pack-validator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "bin": {
+    "pack-validator": "./src/cli.ts"
+  },
+  "dependencies": {
+    "@je/contracts": "workspace:*",
+    "@je/mod-content": "workspace:*"
+  }
+}

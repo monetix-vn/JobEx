@@ -1,0 +1,41 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      # 1. Lint, format and typecheck
+      - run: pnpm format:check
+      - run: pnpm lint
+      - run: pnpm typecheck
+
+      # 2. Dependency-boundary check: a forbidden import fails the build
+      - run: pnpm check:boundaries
+
+      # 3. Unit, property and contract-fixture tests
+      - run: pnpm test
+
+      # 4. Pack validation: schemas, references, missing VI/EN strings, unreachable events
+      - run: pnpm validate:packs
+
+      # 5. Determinism gate: same seed twice plus replay from the log must match exactly
+      - run: pnpm sim:determinism
+
+      # 6. Smoke playthrough: a scripted 1-year run completes
+      - run: pnpm sim:smoke
+
+      # 7. Build the web client shell
+      - run: pnpm build:web

@@ -1,0 +1,10 @@
+{
+  "id": "offer.pad_forecast",
+  "from": "archetype.boss",
+  "payoff": { "money_vnd": 3000000, "rep.boss": 8 },
+  "pressure": { "deadline_weeks": 2, "threat": "kpi_review" },
+  "justification_key": "offer.pad_forecast.why",
+  "traces": [{ "type": "document", "visibility": 0.4, "detectors": ["internal_audit"] }],
+  "ratchet": { "leverage_delta": 10, "exit_cost": 15 },
+  "educational_note": "kb.forecast_integrity"
+}

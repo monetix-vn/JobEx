@@ -1,0 +1,12 @@
+{
+  "name": "@je/client-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@je/contracts": "workspace:*"
+  }
+}

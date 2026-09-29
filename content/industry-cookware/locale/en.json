@@ -1,0 +1,13 @@
+{
+  "role.sales.export.specialist.title": "Export Sales Specialist",
+  "role.sales.export.manager.title": "Export Sales Manager",
+  "scene.buyer_audit_notice.l1": "The buyer just sent an audit notice. They will inspect the plant in about a month.",
+  "scene.buyer_audit_notice.l2": "Our batch records have gaps. Someone has to reconcile them before the audit.",
+  "scene.buyer_audit_notice.c1": "Volunteer to rebuild the records from the source documents, honestly.",
+  "scene.buyer_audit_notice.c1.ok": "It takes six long hours, but the records hold together and QC notices.",
+  "scene.buyer_audit_notice.c1.fail": "You find more gaps than expected and lose the evening to them.",
+  "scene.buyer_audit_notice.c2": "Say nothing and hope the auditors do not look closely.",
+  "scene.buyer_audit_notice.c2.only": "The meeting moves on. The gaps are still there.",
+  "scene.audit_day.l1": "The auditors are on the floor. Keep your answers short and accurate.",
+  "offer.pad_forecast.why": "Everyone rounds the forecast up a little. Numbers are just a story we tell the board."
+}

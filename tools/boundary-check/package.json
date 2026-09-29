@@ -1,0 +1,12 @@
+{
+  "name": "@je/boundary-check",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "bin": {
+    "boundary-check": "./src/cli.ts"
+  }
+}

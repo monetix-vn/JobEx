@@ -1,0 +1,15 @@
+{
+  "name": "@je/mod-content",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@je/contracts": "workspace:*",
+    "@je/kernel": "workspace:*",
+    "@je/rules": "workspace:*",
+    "ajv": "^8.17.1"
+  }
+}
