@@ -12,7 +12,11 @@ packages/
   kernel/        event bus, seeded RNG streams, world clock, module host, replay log
   rules/         safe expression evaluator for content conditions and effects
   mod-content/   pack loader, validator, registry
-  mod-stubs/     stand-ins for Phase 1 modules (economy, director, choice)
+  mod-sim-core/  player and company state; the only module that mutates it (sim.applyDelta)
+  mod-workload/  weekly demand, capacity, backlog, stress and health
+  mod-choice/    outcome tables, requirements, costs; applies deltas through sim-core
+  mod-narrative/ scene queue and runtime, locale text resolution
+  mod-stubs/     Phase 0 stand-ins (economy, director, choice), kept for the kernel tests
   mod-toy/       tiny module that proves a new module needs no edits elsewhere
   client-web/    status strip, tile map, dialogue box; runs from bus messages only
 content/         data packs (core, industry-cookware): roles, events, scenes, offers, locale
@@ -38,7 +42,8 @@ pnpm test              # unit, property and fixture tests
 pnpm check:boundaries  # dependency rules
 pnpm validate:packs    # validate ./content
 pnpm sim:determinism   # headless 1-year run, twice, plus replay
-pnpm dev:web           # client shell at http://localhost:5173
+pnpm sim:sales         # a year of the Sales Specialist on the real modules, checked for determinism
+pnpm dev:web           # play the Sales Specialist's week: http://localhost:5173 (add ?lang=vi, ?seed=x)
 ```
 
 ## Rules the build enforces
@@ -61,3 +66,13 @@ pnpm dev:web           # client shell at http://localhost:5173
 | A forbidden import fails CI                                         | `tools/boundary-check/test/boundary.test.ts`, `pnpm check:boundaries` |
 | Headless 1-year run completes and replays identically from a seed   | `tools/sim-runner/test/gate.test.ts`, `pnpm sim:determinism` |
 | A toy module is added with no change to existing modules            | `tools/sim-runner/test/gate.test.ts` (second describe)   |
+
+## Phase 1, block A: one Sales Specialist week, text only
+
+`mod-sim-core`, `mod-workload`, `mod-choice` and `mod-narrative` run on the `industry-cookware` pack:
+a shipment pulled forward by the buyer, an RFQ that asks for more discount than your limit, and a
+quarter-end forecast your boss wants rounded up. Honest, risky and dark options are all on the
+table, each with costs, requirements and outcome tables. Effects other modules will own (facts,
+scheduled events) are reported in `choice.resolved` and not yet consumed. Run it headless with
+`pnpm exec tsx tools/sim-runner/src/cli.ts run --scenario sales-week --seed 7`, or play it in the
+browser with `pnpm dev:web`.

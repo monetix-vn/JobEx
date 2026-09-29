@@ -35,6 +35,20 @@ seed.
   only contracts. `tools/demo-host` is the composition root; a Worker or server host replaces only
   that file.
 
+## Phase 1 block A additions
+
+- **State ownership:** `mod-sim-core` is the only writer of player and company state. Others send
+  `sim.applyDelta` and keep a read-only mirror (`VarStore` in `@je/rules`) fed by `sim.stateChanged`.
+- **`ContentView` lives in contracts,** so modules read content without importing `mod-content`.
+- **Choice is the authority** on requirements and costs; narrative only marks choices `disabled` as
+  a UI hint.
+- **Facts and schedule effects** are passed through `choice.resolved.effects` for `mod-knowledge`
+  and `mod-director` (block B); nothing consumes them yet.
+- **Workload includes `overheadHours`** (default 22) for meetings and admin the role's task list does
+  not cover; without it a role never overloads. Balance numbers are first-cut.
+- The browser build bundles Ajv, which compiles schemas with `new Function`; it would need
+  `unsafe-eval` under a strict CSP. Pack validation could move to build time if that matters.
+
 ## Consequences
 
 - Adding a module means adding a package that passes the boundary check and listing it in a

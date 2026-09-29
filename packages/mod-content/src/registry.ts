@@ -1,11 +1,6 @@
-import type { GameEvent, Locale, Offer, PackKind, PackManifest, Role, Scene } from '@je/contracts';
+import type { ContentTypes, ContentView, Locale, PackKind, PackManifest } from '@je/contracts';
 
-export interface ContentTypes {
-  role: Role;
-  event: GameEvent;
-  scene: Scene;
-  offer: Offer;
-}
+export type { ContentTypes };
 
 export interface RegistryData {
   /** Packs in resolved layer order (core first). */
@@ -15,7 +10,7 @@ export interface RegistryData {
 }
 
 /** Read-only view of merged, validated content. Later layers already override earlier ones. */
-export class ContentRegistry {
+export class ContentRegistry implements ContentView {
   constructor(private readonly data: RegistryData) {}
 
   get packs(): readonly PackManifest[] {

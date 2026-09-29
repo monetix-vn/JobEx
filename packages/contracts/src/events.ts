@@ -1,3 +1,5 @@
+import type { Effect } from './packs';
+
 /** Shared message vocabulary. Types and constants only: no logic (plan section 3). */
 
 export const CONTRACTS_VERSION = 1;
@@ -45,7 +47,11 @@ export interface ClockSnapshot {
 export interface SceneChoice {
   id: string;
   label: string;
+  /** True when the player cannot pick it now (requirement or cost not met). */
+  disabled?: boolean;
 }
+
+export type StateValue = number | string | boolean;
 
 export interface SceneLine {
   speaker: string;
@@ -69,7 +75,45 @@ export interface CoreEventPayloads {
   };
   /** Command from the player (client). */
   'choice.made': { sceneId: string; choiceId: string };
-  'choice.resolved': { sceneId: string; choiceId: string; outcome: 'ok' | 'fail' | 'ignored' };
+  'choice.resolved': {
+    sceneId: string;
+    choiceId: string;
+    outcome: 'ok' | 'fail' | 'ignored';
+    narrationKey?: string;
+    cost?: Record<string, number>;
+    /** Effects the resolver did not apply itself (schedule, fact); other modules consume these. */
+    effects?: Effect[];
+  };
+  'choice.rejected': {
+    sceneId: string;
+    choiceId: string;
+    reason: 'not_open' | 'unknown_choice' | 'requirement' | 'cost';
+  };
+  'scene.expired': { sceneId: string };
+  'scene.ended': { sceneId: string; narration?: string };
+  /** Command to the state owner (sim-core). Add by default, or set. */
+  'sim.applyDelta': { path: string; value: number; mode?: 'add' | 'set'; reason?: string };
+  'sim.deltaApplied': { path: string; from: number; to: number; reason?: string };
+  'sim.deltaRejected': { path: string; reason: 'unknown_path' };
+  /** Full state on init, then only the variables that changed. */
+  'sim.stateChanged': { full: boolean; vars: Record<string, StateValue> };
+  'workload.weekPlanned': {
+    turn: number;
+    demandHours: number;
+    backlogHours: number;
+    capacityHours: number;
+    tasks: { task: string; count: number; hours: number }[];
+  };
+  'workload.weekClosed': {
+    turn: number;
+    demandHours: number;
+    extraHours: number;
+    capacityHours: number;
+    doneHours: number;
+    backlogHours: number;
+    overloadHours: number;
+    stressDelta: number;
+  };
 }
 
 export type CoreEventType = keyof CoreEventPayloads;
@@ -86,6 +130,15 @@ export const EVENT_VERSIONS: Record<CoreEventType, number> = {
   'scene.started': 1,
   'choice.made': 1,
   'choice.resolved': 1,
+  'choice.rejected': 1,
+  'scene.expired': 1,
+  'scene.ended': 1,
+  'sim.applyDelta': 1,
+  'sim.deltaApplied': 1,
+  'sim.deltaRejected': 1,
+  'sim.stateChanged': 1,
+  'workload.weekPlanned': 1,
+  'workload.weekClosed': 1,
 };
 
 export type EnvelopeOf<K extends CoreEventType> = Envelope<CoreEventPayloads[K]>;

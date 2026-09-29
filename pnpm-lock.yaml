@@ -56,6 +56,18 @@ importers:
         specifier: workspace:*
         version: link:../contracts
 
+  packages/mod-choice:
+    dependencies:
+      '@je/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@je/kernel':
+        specifier: workspace:*
+        version: link:../kernel
+      '@je/rules':
+        specifier: workspace:*
+        version: link:../rules
+
   packages/mod-content:
     dependencies:
       '@je/contracts':
@@ -70,6 +82,27 @@ importers:
       ajv:
         specifier: ^8.17.1
         version: 8.20.0
+
+  packages/mod-narrative:
+    dependencies:
+      '@je/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@je/kernel':
+        specifier: workspace:*
+        version: link:../kernel
+      '@je/rules':
+        specifier: workspace:*
+        version: link:../rules
+
+  packages/mod-sim-core:
+    dependencies:
+      '@je/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@je/kernel':
+        specifier: workspace:*
+        version: link:../kernel
 
   packages/mod-stubs:
     dependencies:
@@ -88,6 +121,18 @@ importers:
       '@je/kernel':
         specifier: workspace:*
         version: link:../kernel
+
+  packages/mod-workload:
+    dependencies:
+      '@je/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@je/kernel':
+        specifier: workspace:*
+        version: link:../kernel
+      '@je/rules':
+        specifier: workspace:*
+        version: link:../rules
 
   packages/rules:
     dependencies:
@@ -108,9 +153,24 @@ importers:
       '@je/kernel':
         specifier: workspace:*
         version: link:../../packages/kernel
+      '@je/mod-choice':
+        specifier: workspace:*
+        version: link:../../packages/mod-choice
+      '@je/mod-content':
+        specifier: workspace:*
+        version: link:../../packages/mod-content
+      '@je/mod-narrative':
+        specifier: workspace:*
+        version: link:../../packages/mod-narrative
+      '@je/mod-sim-core':
+        specifier: workspace:*
+        version: link:../../packages/mod-sim-core
       '@je/mod-stubs':
         specifier: workspace:*
         version: link:../../packages/mod-stubs
+      '@je/mod-workload':
+        specifier: workspace:*
+        version: link:../../packages/mod-workload
 
   tools/pack-validator:
     dependencies:
@@ -129,12 +189,30 @@ importers:
       '@je/kernel':
         specifier: workspace:*
         version: link:../../packages/kernel
+      '@je/mod-choice':
+        specifier: workspace:*
+        version: link:../../packages/mod-choice
+      '@je/mod-content':
+        specifier: workspace:*
+        version: link:../../packages/mod-content
+      '@je/mod-narrative':
+        specifier: workspace:*
+        version: link:../../packages/mod-narrative
+      '@je/mod-sim-core':
+        specifier: workspace:*
+        version: link:../../packages/mod-sim-core
       '@je/mod-stubs':
         specifier: workspace:*
         version: link:../../packages/mod-stubs
       '@je/mod-toy':
         specifier: workspace:*
         version: link:../../packages/mod-toy
+      '@je/mod-workload':
+        specifier: workspace:*
+        version: link:../../packages/mod-workload
+      '@je/pack-validator':
+        specifier: workspace:*
+        version: link:../pack-validator
 
 packages:
 

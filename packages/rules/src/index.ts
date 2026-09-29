@@ -10,3 +10,4 @@ export {
   type Limits,
   type Scope,
 } from './expr';
+export { VarStore } from './store';

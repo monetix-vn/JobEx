@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "demo-host",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["-y", "pnpm@9.15.9", "dev:web", "--", "--port", "5173", "--strictPort"],
+      "port": 5173
+    }
+  ]
+}

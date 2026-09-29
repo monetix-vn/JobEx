@@ -113,6 +113,76 @@ describe('mount', () => {
     expect(root.textContent).toContain('<img src=x');
   });
 
+  it('shows disabled choices as disabled, and the resolved narration once the scene ends', () => {
+    const { root, push, sent } = setup();
+    push(
+      env('scene.started', {
+        sceneId: 's2',
+        location: 'l',
+        lines: [{ speaker: 'Boss', text: 'Well?' }],
+        choices: [
+          { id: 'a', label: 'Open' },
+          { id: 'b', label: 'Locked', disabled: true },
+        ],
+      }),
+    );
+    const locked = root.querySelector('[data-choice="b"]') as HTMLButtonElement;
+    expect(locked.disabled).toBe(true);
+    locked.click();
+    expect(sent).toEqual([]);
+    push(env('choice.resolved', { sceneId: 's2', choiceId: 'a', outcome: 'ok' }));
+    expect(root.textContent).toContain('It worked out.');
+    push(env('scene.ended', { sceneId: 's2', narration: 'Production squeezes the order in.' }));
+    expect(root.querySelector('.je-outcome')?.textContent).toBe(
+      'Production squeezes the order in.',
+    );
+    push(env('scene.ended', { sceneId: 'other', narration: 'ignored' }));
+    expect(root.querySelector('.je-outcome')?.textContent).toBe(
+      'Production squeezes the order in.',
+    );
+    push(
+      env('scene.started', {
+        sceneId: 's3',
+        location: 'l',
+        lines: [{ speaker: 'Boss', text: 'Next.' }],
+        choices: [{ id: 'a', label: 'Go' }],
+      }),
+    );
+    expect(root.querySelector('.je-previous')?.textContent).toBe(
+      'Production squeezes the order in.',
+    );
+    expect(root.querySelector('.je-outcome')).toBeNull();
+    push(env('choice.resolved', { sceneId: 's3', choiceId: 'a', outcome: 'ok' }));
+    push(env('scene.ended', { sceneId: 's3', narration: 'Done.' }));
+    expect(root.querySelector('.je-outcome')?.textContent).toBe('Done.');
+    expect(root.querySelector('.je-previous')).toBeNull();
+  });
+
+  it('shows player stats from sim state, merging changes into the last full snapshot', () => {
+    const { root, push } = setup();
+    expect(root.querySelector('.je-stats')).toBeNull();
+    push(
+      env('sim.stateChanged', {
+        full: true,
+        vars: { 'player.stress': 25, 'player.energy': 100, 'player.health': 100 },
+      }),
+    );
+    expect(root.querySelector('.je-stats')?.textContent).toBe(
+      'Stress 25  |  Energy 100  |  Health 100',
+    );
+    push(
+      env('sim.stateChanged', {
+        full: false,
+        vars: { 'player.stress': 31, 'player.cash_vnd': 3000000 },
+      }),
+    );
+    expect(root.querySelector('.je-stats')?.textContent).toBe(
+      'Stress 31  |  Energy 100  |  Health 100  |  Bonus (VND) 3,000,000',
+    );
+    push(env('sim.stateChanged', { full: true, vars: { 'player.stress': 5 } }));
+    expect(root.querySelector('.je-stats')?.textContent).toBe('Stress 5');
+  });
+
   it('dispose stops listening and clears the view', () => {
     const { root, handle, listeners, push } = setup();
     handle.dispose();

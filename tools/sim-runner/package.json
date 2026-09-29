@@ -12,7 +12,13 @@
   "dependencies": {
     "@je/contracts": "workspace:*",
     "@je/kernel": "workspace:*",
+    "@je/mod-choice": "workspace:*",
+    "@je/mod-content": "workspace:*",
+    "@je/mod-narrative": "workspace:*",
+    "@je/mod-sim-core": "workspace:*",
     "@je/mod-stubs": "workspace:*",
-    "@je/mod-toy": "workspace:*"
+    "@je/mod-toy": "workspace:*",
+    "@je/mod-workload": "workspace:*",
+    "@je/pack-validator": "workspace:*"
   }
 }

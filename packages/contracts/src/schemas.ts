@@ -167,6 +167,7 @@ export const sceneSchema = {
               additionalProperties: false,
               properties: {
                 p: { type: 'number', minimum: 0, maximum: 1 },
+                result: { enum: ['ok', 'fail'] },
                 narration_key: { type: 'string' },
                 effects: { type: 'array', items: effect },
               },

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "event.sales.shipment_pull_in",
+    "tags": ["buyer", "delivery", "pressure"],
+    "weight": 1,
+    "scene": "scene.sales.shipment_pull_in"
+  },
+  {
+    "id": "event.sales.rfq_discount",
+    "tags": ["buyer", "pricing", "pressure"],
+    "weight": 1,
+    "scene": "scene.sales.rfq_discount"
+  },
+  {
+    "id": "event.sales.forecast_meeting",
+    "tags": ["forecast", "integrity", "pressure"],
+    "weight": 1,
+    "scene": "scene.sales.forecast_meeting"
+  }
+]

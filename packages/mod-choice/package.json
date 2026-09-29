@@ -1,0 +1,14 @@
+{
+  "name": "@je/mod-choice",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@je/contracts": "workspace:*",
+    "@je/kernel": "workspace:*",
+    "@je/rules": "workspace:*"
+  }
+}

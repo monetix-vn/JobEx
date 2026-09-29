@@ -68,6 +68,8 @@ export interface GameEvent {
 
 export interface Outcome {
   p: number;
+  /** How the client and analytics classify this outcome. Defaults to "ok". */
+  result?: 'ok' | 'fail';
   narration_key: string;
   effects?: Effect[];
 }
@@ -100,3 +102,17 @@ export interface Offer {
 }
 
 export type LocaleFile = Record<string, string>;
+
+export interface ContentTypes {
+  role: Role;
+  event: GameEvent;
+  scene: Scene;
+  offer: Offer;
+}
+
+/** Read-only view of validated, merged content. Modules depend on this, never on mod-content. */
+export interface ContentView {
+  get<K extends PackKind>(kind: K, id: string): ContentTypes[K] | undefined;
+  all<K extends PackKind>(kind: K): ContentTypes[K][];
+  text(locale: Locale, key: string): string | undefined;
+}

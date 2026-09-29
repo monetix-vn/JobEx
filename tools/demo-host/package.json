@@ -11,6 +11,11 @@
     "@je/client-web": "workspace:*",
     "@je/contracts": "workspace:*",
     "@je/kernel": "workspace:*",
-    "@je/mod-stubs": "workspace:*"
+    "@je/mod-choice": "workspace:*",
+    "@je/mod-content": "workspace:*",
+    "@je/mod-narrative": "workspace:*",
+    "@je/mod-sim-core": "workspace:*",
+    "@je/mod-stubs": "workspace:*",
+    "@je/mod-workload": "workspace:*"
   }
 }

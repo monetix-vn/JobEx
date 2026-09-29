@@ -37,5 +37,8 @@ jobs:
       # 6. Smoke playthrough: a scripted 1-year run completes
       - run: pnpm sim:smoke
 
+      # 6b. The real block A modules on real content: a year of the Sales Specialist
+      - run: pnpm sim:sales
+
       # 7. Build the web client shell
       - run: pnpm build:web

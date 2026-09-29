@@ -1,0 +1,139 @@
+{
+  "id": "scene.sales.rfq_discount",
+  "location": "loc.sales_office",
+  "cast": ["role:buyer_contact", "role:boss"],
+  "lines": [
+    {
+      "speaker": "role:buyer_contact",
+      "text_key": "scene.sales.rfq_discount.l1"
+    },
+    {
+      "speaker": "role:boss",
+      "text_key": "scene.sales.rfq_discount.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sales.rfq_discount.c1",
+      "cost": {
+        "hours": 2
+      },
+      "requires": {
+        "gte": ["skill.analysis", 30]
+      },
+      "outcomes": [
+        {
+          "p": 0.55,
+          "narration_key": "scene.sales.rfq_discount.c1.ok",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "p": 0.45,
+          "result": "fail",
+          "narration_key": "scene.sales.rfq_discount.c1.fail",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sales.rfq_discount.c2",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.sales.rfq_discount.c2.ok",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.sales.rfq_discount.c2.fail",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sales.rfq_discount.c3",
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.sales.rfq_discount.c3.ok",
+          "effects": [
+            {
+              "delta": "player.rep.buyer",
+              "value": 5
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.discount_above_limit",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.sales.rfq_discount.c3.fail",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.discount_above_limit",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,16 +1,27 @@
 #!/usr/bin/env tsx
 import { readFileSync, writeFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import type { ReplayLog } from '@je/contracts';
 import { fingerprint, canonicalize, replay } from '@je/kernel';
 import { stubModules } from '@je/mod-stubs';
 import { toyModule } from '@je/mod-toy';
-import { checkDeterminism, modulesForLog, runHeadless, WEEKS_PER_RUN } from './runner';
+import {
+  checkDeterminism,
+  modulesForLog,
+  runHeadless,
+  WEEKS_PER_RUN,
+  type HeadlessOptions,
+} from './runner';
+import { loadScenario } from './scenario';
 
 const USAGE = `sim-runner: headless simulation runs
 
-  run    --seed <s> [--weeks 52] [--toy] [--out log.json]   run and summarise
+  run    --seed <s> [--weeks 52] [--toy] [--out log.json]   run and summarise (stub modules)
   replay <log.json>                                         re-run a log, demand identical output
-  check  --seed <s> [--weeks 52] [--toy]                    determinism gate (exit 1 on failure)`;
+  check  --seed <s> [--weeks 52] [--toy]                    determinism gate (exit 1 on failure)
+
+  Add --scenario sales-week|sales-year [--content content] [--locale vi|en] to any command to run
+  the real Phase 1 modules on the content packs instead of the stubs.`;
 
 function parseFlags(args: string[]): { flags: Map<string, string>; rest: string[] } {
   const flags = new Map<string, string>();
@@ -30,31 +41,55 @@ function parseFlags(args: string[]): { flags: Map<string, string>; rest: string[
 
 function summarise(log: ReplayLog): string {
   const count = (type: string): number => log.entries.filter((e) => e.type === type).length;
-  return [
+  const outcomes = (o: string): number =>
+    log.entries.filter(
+      (e) => e.type === 'choice.resolved' && (e.payload as { outcome: string }).outcome === o,
+    ).length;
+  const lines = [
     `seed ${log.seed}, ${log.turns} weeks (${(log.turns / 52).toFixed(1)} years), ${log.entries.length} messages`,
     `modules: ${log.modules.map((m) => m.id).join(', ')}`,
-    `scenes ${count('scene.started')}, player choices ${log.inputs.length}, ignored ${
-      log.entries.filter(
-        (e) =>
-          e.type === 'choice.resolved' && (e.payload as { outcome: string }).outcome === 'ignored',
-      ).length
-    }`,
-    `fingerprint ${fingerprint(canonicalize(log))}`,
-  ].join('\n');
+    `scenes ${count('scene.started')}, player choices ${log.inputs.length}, ok ${outcomes('ok')}, fail ${outcomes('fail')}, ignored ${outcomes('ignored')}`,
+  ];
+  const sim = log.finalState['sim-core'] as Record<string, unknown> | undefined;
+  if (sim) {
+    const keys = [
+      'player.stress',
+      'player.health',
+      'player.cash_vnd',
+      'player.rep.boss',
+      'player.rep.buyer',
+    ];
+    lines.push(`final state: ${keys.map((k) => `${k}=${String(sim[k] ?? 0)}`).join(', ')}`);
+  }
+  lines.push(`fingerprint ${fingerprint(canonicalize(log))}`);
+  return lines.join('\n');
 }
 
-function main(argv: string[]): number {
-  const [command, ...args] = argv;
-  const { flags, rest } = parseFlags(args);
-  const options = () => ({
-    seed: flags.get('seed') ?? 'default',
+async function options(flags: Map<string, string>): Promise<HeadlessOptions> {
+  const seed = flags.get('seed') ?? 'default';
+  const scenario = flags.get('scenario');
+  if (scenario) {
+    const s = await loadScenario(scenario, {
+      contentDir: resolve(flags.get('content') ?? 'content'),
+      locale: flags.get('locale') === 'vi' ? 'vi' : 'en',
+      ...(flags.has('weeks') ? { turns: Number(flags.get('weeks')) } : {}),
+    });
+    return { seed, turns: s.turns, modules: s.modules, configs: s.configs, bot: s.bot };
+  }
+  return {
+    seed,
     turns: Number(flags.get('weeks') ?? WEEKS_PER_RUN),
     modules: flags.has('toy') ? [...stubModules, toyModule] : stubModules,
-  });
+  };
+}
+
+async function main(argv: string[]): Promise<number> {
+  const [command, ...args] = argv;
+  const { flags, rest } = parseFlags(args);
 
   switch (command) {
     case 'run': {
-      const log = runHeadless(options());
+      const log = runHeadless(await options(flags));
       console.log(summarise(log));
       const out = flags.get('out');
       if (out) writeFileSync(out, JSON.stringify(log));
@@ -64,7 +99,12 @@ function main(argv: string[]): number {
       const file = rest[0];
       if (!file) break;
       const log = JSON.parse(readFileSync(file, 'utf8')) as ReplayLog;
-      const result = replay(log, modulesForLog(log));
+      const opts = flags.has('scenario') ? await options(flags) : undefined;
+      const result = replay(
+        log,
+        opts?.modules ?? modulesForLog(log),
+        opts?.configs ? { configs: opts.configs } : {},
+      );
       console.log(
         result.ok
           ? `OK: replay is identical (${log.entries.length} messages)`
@@ -73,9 +113,10 @@ function main(argv: string[]): number {
       return result.ok ? 0 : 1;
     }
     case 'check': {
-      const report = checkDeterminism(options());
+      const opts = await options(flags);
+      const report = checkDeterminism(opts);
       if (report.ok) {
-        console.log(`OK: ${options().turns}-week run is deterministic and replays identically`);
+        console.log(`OK: ${opts.turns}-week run is deterministic and replays identically`);
         console.log(`    ${report.entries} messages, fingerprint ${report.fingerprint}`);
         return 0;
       }
@@ -88,4 +129,4 @@ function main(argv: string[]): number {
   return 2;
 }
 
-process.exitCode = main(process.argv.slice(2));
+process.exitCode = await main(process.argv.slice(2));

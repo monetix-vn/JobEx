@@ -21,15 +21,18 @@ const OUTCOME_TEXT = {
 const STYLE = `
 .je{font-family:ui-monospace,Menlo,Consolas,monospace;background:#1b1b2f;color:#eee;max-width:560px;margin:0 auto;padding:12px;image-rendering:pixelated}
 .je-status{display:flex;justify-content:space-between;border:3px solid #eee;padding:4px 8px;margin-bottom:8px}
+.je-stats{border:3px solid #eee;padding:4px 8px;margin-bottom:8px;font-size:.9em}
 .je-map{display:grid;gap:0;border:3px solid #eee;margin-bottom:8px}
 .je-tile{aspect-ratio:1;background:#3a3a55}
 .je-tile[data-tile="#"]{background:#111}
 .je-tile[data-tile="d"]{background:#8a5a2b}
 .je-tile[data-tile="m"]{background:#4e7d4e}
 .je-dialogue{border:3px solid #eee;background:#0d0d1a;padding:8px;min-height:96px}
+.je-previous{border-left:3px solid #ffd166;padding-left:8px;margin-bottom:8px;color:#bbb;font-style:italic}
 .je-line b{color:#ffd166}
 .je-choice{display:block;width:100%;text-align:left;margin-top:6px;padding:6px;font:inherit;color:#eee;background:#33335a;border:2px solid #eee;cursor:pointer}
 .je-choice:hover,.je-choice:focus{background:#4a4a80}
+.je-choice:disabled{opacity:.45;cursor:not-allowed}
 `;
 
 function el<K extends keyof HTMLElementTagNameMap>(
@@ -41,6 +44,20 @@ function el<K extends keyof HTMLElementTagNameMap>(
   node.className = className;
   if (text !== undefined) node.textContent = text;
   return node;
+}
+
+const STAT_LABELS: [string, string][] = [
+  ['player.stress', 'Stress'],
+  ['player.energy', 'Energy'],
+  ['player.health', 'Health'],
+  ['player.cash_vnd', 'Bonus (VND)'],
+];
+
+function statsLine(vars: ClientState['vars']): string {
+  return STAT_LABELS.flatMap(([path, label]) => {
+    const value = vars[path];
+    return typeof value === 'number' ? [`${label} ${value.toLocaleString('en-US')}`] : [];
+  }).join('  |  ');
 }
 
 /** Draws the state. Text goes in through textContent only, never innerHTML. */
@@ -55,6 +72,9 @@ function render(root: HTMLElement, state: ClientState, send: Transport['send']):
     el('span', '', state.ended ? 'Run ended' : ''),
   );
   view.append(status);
+
+  const stats = statsLine(state.vars);
+  if (stats) view.append(el('div', 'je-stats', stats));
 
   if (state.map) {
     const map = el('div', 'je-map');
@@ -77,18 +97,21 @@ function render(root: HTMLElement, state: ClientState, send: Transport['send']):
   if (!scene) {
     dialogue.append(el('div', 'je-line', 'Nothing needs your attention yet.'));
   } else {
+    if (scene.previousNarration && !scene.outcome)
+      dialogue.append(el('div', 'je-previous', scene.previousNarration));
     for (const line of scene.lines) {
       const row = el('div', 'je-line');
       row.append(el('b', '', `${line.speaker}: `), document.createTextNode(line.text));
       dialogue.append(row);
     }
     if (scene.outcome) {
-      dialogue.append(el('div', 'je-outcome', OUTCOME_TEXT[scene.outcome]));
+      dialogue.append(el('div', 'je-outcome', scene.narration ?? OUTCOME_TEXT[scene.outcome]));
     } else {
       for (const choice of scene.choices) {
         const button = el('button', 'je-choice', choice.label);
         button.type = 'button';
         button.dataset.choice = choice.id;
+        button.disabled = choice.disabled === true;
         button.addEventListener('click', () =>
           send('choice.made', { sceneId: scene.sceneId, choiceId: choice.id }),
         );
