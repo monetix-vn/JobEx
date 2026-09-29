@@ -31,19 +31,23 @@ function pace(run: Run, turns: number, ready: () => boolean): void {
   }, TURN_INTERVAL_MS);
 }
 
-if (params.get('mode') === 'stubs') {
-  const { run, transport } = createInProcessHost(seed);
-  mount(root, transport);
-  pace(run, 52, () => true);
-} else {
-  // Default: the Sales Specialist's weeks, played by you. A week ends when its scenes are done.
-  const locale = params.get('lang') === 'vi' ? 'vi' : 'en';
-  const { run, transport, turns } = await createSalesHost({ files: contentFiles, seed, locale });
-  mount(root, transport);
-  let open = 0;
-  run.observe((e) => {
-    if (e.type === 'scene.started') open += 1;
-    if (e.type === 'scene.ended') open -= 1;
-  });
-  pace(run, turns, () => open === 0);
+async function start(): Promise<void> {
+  if (params.get('mode') === 'stubs') {
+    const { run, transport } = createInProcessHost(seed);
+    mount(root, transport);
+    pace(run, 52, () => true);
+  } else {
+    // Default: the Sales Specialist's weeks, played by you. A week ends when its scenes are done.
+    const locale = params.get('lang') === 'vi' ? 'vi' : 'en';
+    const { run, transport, turns } = await createSalesHost({ files: contentFiles, seed, locale });
+    mount(root, transport);
+    let open = 0;
+    run.observe((e) => {
+      if (e.type === 'scene.started') open += 1;
+      if (e.type === 'scene.ended') open -= 1;
+    });
+    pace(run, turns, () => open === 0);
+  }
 }
+
+void start();

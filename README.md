@@ -46,6 +46,13 @@ pnpm sim:sales         # a year of the Sales Specialist on the real modules, che
 pnpm dev:web           # play the Sales Specialist's week: http://localhost:5173 (add ?lang=vi, ?seed=x)
 ```
 
+## Play it (one click)
+
+Double-click `play.bat` (or `play-vi.bat` for Vietnamese). The first run builds a single
+self-contained `JobEx-play.html` (needs Node 20+); after that it just opens in your browser. That
+file has no server and no dependencies, so you can also copy it anywhere. Rebuild it after code or
+content changes with `pnpm build:play`.
+
 ## Rules the build enforces
 
 - **Dependencies point inward.** `contracts` imports nothing; `kernel` and `rules` import only
