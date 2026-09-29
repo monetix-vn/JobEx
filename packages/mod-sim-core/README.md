@@ -10,7 +10,8 @@ variables only).
   weekly.
 - Stress, energy, health, reputation and audit readiness are clamped to 0..100.
 - Reputation created on demand (`player.rep.<who>`) starts at 50.
-- A delta on an unknown path is rejected unless it is under `player.`, `company.` or `skill.`.
+- A delta on an unknown path is rejected unless it is under `player.`, `company.`, `skill.` or `fact.` (the knowledge ledger publishes each fact's
+  visibility rank under its own id, e.g. `fact.accepted_kickback`).
 
 Config: `{ content: ContentView, roleId, company? }`.
 Consumes `run.started`, `clock.ticked`, `sim.applyDelta`; emits `sim.stateChanged`,

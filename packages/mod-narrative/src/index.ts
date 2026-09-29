@@ -21,6 +21,8 @@ export const manifest: ModuleManifest = {
     'clock.ticked',
     'turn.phaseStarted',
     'director.eventFired',
+    'fact.learned',
+    'fact.escalated',
     'choice.resolved',
   ],
   emits: ['scene.started', 'scene.ended', 'scene.expired'],
@@ -42,6 +44,8 @@ const CONTINUE_CHOICE = '__continue';
  * Plays scenes: one at a time, the rest queue. Scenes start from a turn script or when the director
  * fires an event that names one. Text is resolved here (locale lookup), so the client only draws.
  * The scene ends when its choice resolves; the resolved narration is shown with `scene.ended`.
+ * When word about something the player did starts going round (a fact becomes a rumor or public),
+ * it also plays a short notice scene, so the player sees the consequence arrive.
  */
 export function createModule(host: ModuleHost): ModuleInstance {
   const config = host.config as Partial<NarrativeConfig> | undefined;
@@ -56,6 +60,8 @@ export function createModule(host: ModuleHost): ModuleInstance {
     queue: [] as string[],
     active: null as { sceneId: string; startedTurn: number } | null,
   };
+  /** Text of notice scenes waiting in the queue, by their synthetic scene id. */
+  const notices = new Map<string, string>();
 
   const text = (key: string): string => content.text(locale, key) ?? `[${key}]`;
   const speakerName = (speaker: string): string => {
@@ -74,10 +80,36 @@ export function createModule(host: ModuleHost): ModuleInstance {
     }
   };
 
+  const notice = (factId: string, visibility: 'rumor' | 'public'): EventDraft[] => {
+    const fact = content.get('fact', factId);
+    if (!fact) return [];
+    const template = text(`ui.notice.${visibility}`);
+    const sceneId = `notice.${factId}.${visibility}`;
+    notices.set(sceneId, template.replace('{fact}', text(fact.text_key)));
+    state.queue.push(sceneId);
+    return startNext();
+  };
+
   const startNext = (): EventDraft[] => {
     if (state.active) return [];
     const sceneId = state.queue.shift();
     if (sceneId === undefined) return [];
+    const noticeText = notices.get(sceneId);
+    if (noticeText !== undefined) {
+      notices.delete(sceneId);
+      state.active = { sceneId, startedTurn: host.clock.now().turn };
+      return [
+        {
+          type: 'scene.started',
+          payload: {
+            sceneId,
+            location: 'loc.notice',
+            lines: [{ speaker: '', text: noticeText }],
+            choices: [{ id: CONTINUE_CHOICE, label: text('ui.continue') }],
+          },
+        },
+      ];
+    }
     const scene = content.get('scene', sceneId);
     if (!scene) throw new Error(`mod-narrative: unknown scene "${sceneId}"`);
     state.active = { sceneId, startedTurn: host.clock.now().turn };
@@ -132,6 +164,16 @@ export function createModule(host: ModuleHost): ModuleInstance {
         if (!event) return;
         state.queue.push(event.scene);
         return startNext();
+      },
+
+      'fact.learned': (env) => {
+        const p = env.payload as CoreEventPayloads['fact.learned'];
+        return p.visibility === 'public' ? notice(p.factId, 'public') : undefined;
+      },
+
+      'fact.escalated': (env) => {
+        const p = env.payload as CoreEventPayloads['fact.escalated'];
+        return p.to === 'rumor' || p.to === 'public' ? notice(p.factId, p.to) : undefined;
       },
 
       'choice.resolved': (env) => {

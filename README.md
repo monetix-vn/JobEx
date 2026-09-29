@@ -16,6 +16,8 @@ packages/
   mod-workload/  weekly demand, capacity, backlog, stress and health
   mod-choice/    outcome tables, requirements, costs; applies deltas through sim-core
   mod-director/  event pool and scheduler: what happens this week (season, stress, cooldown, weight)
+  mod-knowledge/ ledger of facts: what you did and who knows (private, witnessed, rumor, public)
+  mod-social/    gossip and reputation consequences when facts get around
   mod-narrative/ scene queue and runtime, locale text resolution
   mod-stubs/     Phase 0 stand-ins (economy, director, choice), kept for the kernel tests
   mod-toy/       tiny module that proves a new module needs no edits elsewhere
@@ -82,14 +84,22 @@ remembered for next time.
 
 ## Phase 1 so far: one Sales Specialist, text only
 
-`mod-sim-core`, `mod-workload`, `mod-choice`, `mod-narrative` and `mod-director` run on the
-`industry-cookware` pack. Each week the director draws one or two of 16 pressure events (shipments
-pulled forward, discount requests, overdue payments, quality complaints, Tet rush, kickback offers,
-backdated invoices, and more) by season, stress, cooldown and weight, and plays scheduled
-consequences when they come due (an audit notice brings the audit day four to six weeks later).
-Honest, risky and dark options are all on the table, each with costs, requirements and outcome
-tables. Effects other modules will own (facts, reputation-driven consequences) are reported in
-`choice.resolved` and not yet consumed.
+Seven modules run on the `industry-cookware` pack: `mod-sim-core`, `mod-workload`, `mod-choice`,
+`mod-narrative`, `mod-director`, `mod-knowledge` and `mod-social`.
+
+- **Decisions:** each week the director draws one or two of 20 pressure events (shipments pulled
+  forward, discount requests, overdue payments, quality complaints, Tet rush, kickback offers,
+  backdated invoices, and more) by season, stress, cooldown and weight, and plays scheduled
+  consequences when they come due (an audit notice brings the audit day four to six weeks later).
+  Honest, risky and dark options are all on the table, each with costs, requirements and outcome
+  tables.
+- **Consequences:** what you do becomes a *fact* (21 are defined in content) with a visibility:
+  private, witnessed, rumor or public. Witnessed facts cost reputation with the people who saw.
+  Word spreads week by week, faster the more serious the fact; something you got away with can also
+  leak. When it becomes a rumor or public you see a notice, reputation drops for everyone who now
+  knows, and new events react to what is known: Finance asks about a discount you gave above your
+  limit, a buyer confronts you about a broken promise, Compliance interviews you about a fee.
+  Owning up early stops the follow-ups; lying to them makes it worse.
 
 Run it headless with `pnpm exec tsx tools/sim-runner/src/cli.ts run --scenario sales-year --seed 7`
 (`sales-week` scripts just the first three scenes), or play it in the browser.

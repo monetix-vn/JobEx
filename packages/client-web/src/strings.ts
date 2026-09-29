@@ -10,6 +10,8 @@ export interface UiStrings {
   language: string;
   outcome: { ok: string; fail: string; ignored: string };
   stats: [path: string, label: string][];
+  reputation: string;
+  reps: [path: string, label: string][];
 }
 
 export const UI_LOCALES: readonly UiLocale[] = ['en', 'vi'];
@@ -29,6 +31,15 @@ export const UI_STRINGS: Record<UiLocale, UiStrings> = {
       ['player.health', 'Health'],
       ['player.cash_vnd', 'Bonus (VND)'],
     ],
+    reputation: 'Standing',
+    reps: [
+      ['player.rep.boss', 'Boss'],
+      ['player.rep.buyer', 'Buyers'],
+      ['player.rep.finance', 'Finance'],
+      ['player.rep.production', 'Production'],
+      ['player.rep.qc', 'QC'],
+      ['player.rep.cs', 'Service'],
+    ],
   },
   vi: {
     year: 'Năm',
@@ -47,6 +58,15 @@ export const UI_STRINGS: Record<UiLocale, UiStrings> = {
       ['player.energy', 'Năng lượng'],
       ['player.health', 'Sức khỏe'],
       ['player.cash_vnd', 'Thưởng (VND)'],
+    ],
+    reputation: 'Uy tín',
+    reps: [
+      ['player.rep.boss', 'Sếp'],
+      ['player.rep.buyer', 'Khách'],
+      ['player.rep.finance', 'Tài chính'],
+      ['player.rep.production', 'Sản xuất'],
+      ['player.rep.qc', 'QC'],
+      ['player.rep.cs', 'CSKH'],
     ],
   },
 };

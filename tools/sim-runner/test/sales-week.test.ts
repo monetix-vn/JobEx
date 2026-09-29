@@ -44,17 +44,18 @@ describe('Phase 1 block A: one Sales Specialist week, played end to end', () => 
     expect(openScenes).toBe(0);
   });
 
-  it('every message in a scene is causally linked back to the player choice', async () => {
+  it('every state change traces back through causedBy to a player choice or the calendar', async () => {
     const { log } = await play('sales-week', 'week-1');
     const byId = new Map(log.entries.map((e) => [e.id, e]));
+    const rootOf = (e: Envelope): Envelope => (e.causedBy ? rootOf(byId.get(e.causedBy)!) : e);
     const applied = of(log, 'sim.deltaApplied');
     expect(applied.length).toBeGreaterThan(3);
     for (const e of applied) {
       const cmd = byId.get(e.causedBy!)!;
       expect(cmd.type).toBe('sim.applyDelta');
-      const cause = byId.get(cmd.causedBy!)!;
-      if (cmd.source === 'choice') expect(cause.type).toBe('choice.made');
-      else expect(cause.type).toBe('turn.phaseStarted');
+      const root = rootOf(e);
+      expect(['client', 'kernel']).toContain(root.source);
+      if (cmd.source === 'choice') expect(root.type).toBe('choice.made');
     }
   });
 
@@ -305,6 +306,89 @@ describe('Phase 1: a year of it, driven by the director', () => {
     expect(onlyWhenStressed).toBe(true);
   });
 
+  it('what the player does comes back: facts leak, gossip spreads, reputation moves, notices appear', async () => {
+    let learned = 0;
+    let escalated = 0;
+    let repFromFacts = 0;
+    let notices = 0;
+    for (let i = 0; i < 12; i++) {
+      const { log } = await play('sales-year', `facts-${i}`);
+      learned += of(log, 'fact.learned').length;
+      escalated += of(log, 'fact.escalated').length;
+      repFromFacts += of(log, 'sim.deltaApplied').filter((e) =>
+        String((e.payload as { reason?: string }).reason).startsWith('fact:'),
+      ).length;
+      const noticeScenes = of(log, 'scene.started').filter((e) =>
+        (e.payload as { sceneId: string }).sceneId.startsWith('notice.'),
+      );
+      notices += noticeScenes.length;
+      // Every notice was acknowledged, and none was rejected.
+      const resolved = new Set(
+        of(log, 'choice.resolved').map((e) => (e.payload as { sceneId: string }).sceneId),
+      );
+      for (const n of noticeScenes)
+        expect(resolved.has((n.payload as { sceneId: string }).sceneId)).toBe(true);
+      expect(of(log, 'choice.rejected')).toHaveLength(0);
+      // Facts are published as state variables, one per fact, ranked 1 to 4.
+      const state = log.finalState['sim-core'] as Record<string, unknown>;
+      for (const [key, value] of Object.entries(state)) {
+        if (key.startsWith('fact.')) expect([1, 2, 3, 4]).toContain(value);
+      }
+    }
+    expect(learned).toBeGreaterThan(30);
+    expect(escalated).toBeGreaterThan(5);
+    expect(repFromFacts).toBeGreaterThan(20);
+    expect(notices).toBeGreaterThan(0);
+  });
+
+  it('consequence events only fire once the relevant facts are known', async () => {
+    const needs: Record<string, { facts: string[]; rank: number }> = {
+      'event.sales.finance_inquiry': {
+        facts: [
+          'fact.discount_above_limit',
+          'fact.credit_above_limit',
+          'fact.backdated_documents',
+          'fact.forecast_padded',
+        ],
+        rank: 2,
+      },
+      'event.sales.buyer_confronts': {
+        facts: [
+          'fact.promised_unrealistic_date',
+          'fact.blamed_forwarder',
+          'fact.silent_spec_change',
+        ],
+        rank: 2,
+      },
+      'event.sales.compliance_interview': {
+        facts: ['fact.accepted_kickback', 'fact.paid_for_document'],
+        rank: 3,
+      },
+    };
+    const seen = new Set<string>();
+    for (let i = 0; i < 40; i++) {
+      const { log } = await play('sales-year', `cons-${i}`);
+      const rank: Record<string, number> = {};
+      for (const e of log.entries) {
+        if (e.type === 'sim.deltaApplied') {
+          const p = e.payload as { path: string; to: number };
+          if (p.path.startsWith('fact.')) rank[p.path] = p.to;
+        }
+        if (e.type === 'director.eventFired') {
+          const id = (e.payload as { eventId: string }).eventId;
+          const need = needs[id];
+          if (!need) continue;
+          seen.add(id);
+          expect(
+            need.facts.some((f) => (rank[f] ?? 0) >= need.rank),
+            `${id} in run ${i} without a known fact`,
+          ).toBe(true);
+        }
+      }
+    }
+    expect(seen.size).toBeGreaterThanOrEqual(2);
+  });
+
   it('the buyer audit notice schedules the audit day four to six weeks later', async () => {
     let checked = 0;
     for (let i = 0; i < 30 && checked < 3; i++) {
@@ -347,7 +431,7 @@ describe('Phase 1: a year of it, driven by the director', () => {
       configs: scenario.configs,
       bot: scenario.bot,
     });
-    expect(report.fingerprint).toBe('1960eaa590db33');
+    expect(report.fingerprint).toBe('13634a31e2fbbd');
   });
 
   it('refuses to run without the role content, and on an unknown scenario', async () => {

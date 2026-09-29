@@ -3,8 +3,10 @@ import { Run, SeededRandom, canonicalize, fingerprint, replay, type PhaseHook } 
 import { choiceModule } from '@je/mod-choice';
 import { contentModule } from '@je/mod-content';
 import { directorModule } from '@je/mod-director';
+import { knowledgeModule } from '@je/mod-knowledge';
 import { narrativeModule } from '@je/mod-narrative';
 import { simCoreModule } from '@je/mod-sim-core';
+import { socialModule } from '@je/mod-social';
 import { stubModules } from '@je/mod-stubs';
 import { toyModule } from '@je/mod-toy';
 import { workloadModule } from '@je/mod-workload';
@@ -19,6 +21,8 @@ const KNOWN: readonly Module[] = [
   workloadModule,
   choiceModule,
   directorModule,
+  knowledgeModule,
+  socialModule,
   narrativeModule,
 ];
 

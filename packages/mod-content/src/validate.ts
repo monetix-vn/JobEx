@@ -25,7 +25,7 @@ export interface BuildResult {
 }
 
 const VAR_PATH = /^[a-z][a-z0-9_]*(\.[a-z0-9_]+)*$/;
-const KINDS: PackKind[] = ['role', 'event', 'scene', 'offer'];
+const KINDS: PackKind[] = ['role', 'event', 'scene', 'offer', 'fact'];
 
 interface Origin {
   pack: string;
@@ -161,6 +161,7 @@ export function buildRegistry(raw: RawContent, engineVersion = ENGINE_VERSION): 
     event: new Map(),
     scene: new Map(),
     offer: new Map(),
+    fact: new Map(),
   } as RegistryData['items'];
   const origins = new Map<string, Origin>();
   const owner = new Map<string, { pack: string; rank: number }>();
@@ -341,10 +342,17 @@ function crossCheck(
   ): void => {
     for (const target of scheduleTargets(effects))
       requireRef(kind, id, 'event', target, `${field} schedule`);
+    for (const effect of effects ?? []) {
+      if ('fact' in effect) {
+        requireRef(kind, id, 'fact', effect.fact, `${field} fact`);
+        producedFacts.add(effect.fact);
+      }
+    }
   };
 
   const scheduled = new Set<string>();
   const usedScenes = new Set<string>();
+  const producedFacts = new Set<string>();
 
   for (const role of items.role.values()) {
     useKey(role.title_key, role.id, 'role');
@@ -395,6 +403,7 @@ function crossCheck(
   }
 
   for (const offer of items.offer.values()) useKey(offer.justification_key, offer.id, 'offer');
+  for (const fact of items.fact.values()) useKey(fact.text_key, fact.id, 'fact');
 
   for (const { key, by, kind } of textKeys) {
     for (const locale of LOCALES) {
@@ -421,6 +430,16 @@ function crossCheck(
       });
     }
   }
+  for (const fact of items.fact.values()) {
+    if (!producedFacts.has(fact.id)) {
+      push({
+        severity: 'warning',
+        code: 'fact.unused',
+        message: `fact "${fact.id}" is never produced by any effect`,
+        ...at('fact', fact.id),
+      });
+    }
+  }
   for (const scene of items.scene.values()) {
     if (!usedScenes.has(scene.id)) {
       push({
@@ -436,6 +455,8 @@ function crossCheck(
 /** True only when the expression is constant and evaluates to false. */
 function alwaysFalse(expr: unknown): boolean {
   if (expr === undefined) return false;
+  // An expression that reads any variable is not constant, even with a default.
+  if (collectVars(expr).length > 0) return false;
   try {
     return evaluate(expr as never, {}) === false;
   } catch (error) {

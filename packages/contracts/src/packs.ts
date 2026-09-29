@@ -13,6 +13,7 @@ export const PACK_FOLDERS = {
   events: 'event',
   scenes: 'scene',
   offers: 'offer',
+  facts: 'fact',
 } as const;
 export type PackKind = (typeof PACK_FOLDERS)[keyof typeof PACK_FOLDERS];
 export const LOCALES = ['vi', 'en'] as const;
@@ -103,11 +104,37 @@ export interface Offer {
 
 export type LocaleFile = Record<string, string>;
 
+/** How well known a fact is, from only the player to everyone. Order matters. */
+export const FACT_VISIBILITIES = ['private', 'witnessed', 'rumor', 'public'] as const;
+export type FactVisibility = (typeof FACT_VISIBILITIES)[number];
+
+/** Groups whose opinion of the player the simulation tracks: `player.rep.<group>`. */
+export const REPUTATION_GROUPS = ['boss', 'buyer', 'finance', 'production', 'qc', 'cs'] as const;
+export type ReputationGroup = (typeof REPUTATION_GROUPS)[number];
+
+/**
+ * Something the player did that others may come to know. A fact carries its own consequences:
+ * reputation changes applied when it becomes known to witnesses, and again when it becomes public.
+ */
+export interface Fact {
+  id: string;
+  category: 'integrity' | 'favor' | 'conflict' | 'performance' | 'other';
+  /** 1 to 10. Also sets how quickly word gets around. */
+  severity: number;
+  /** Short noun phrase for notices and the debrief, e.g. "the fee you accepted from a buyer". */
+  text_key: string;
+  consequences?: {
+    witnessed?: Partial<Record<ReputationGroup, number>>;
+    public?: Partial<Record<ReputationGroup, number>>;
+  };
+}
+
 export interface ContentTypes {
   role: Role;
   event: GameEvent;
   scene: Scene;
   offer: Offer;
+  fact: Fact;
 }
 
 /** Read-only view of validated, merged content. Modules depend on this, never on mod-content. */

@@ -60,6 +60,15 @@ function statsLine(vars: ClientState['vars'], t: UiStrings): string {
     .join('  |  ');
 }
 
+/** Standing with each group, shown once the simulation has reported it. */
+function repsLine(vars: ClientState['vars'], t: UiStrings): string {
+  const parts = t.reps.flatMap(([path, label]) => {
+    const value = vars[path];
+    return typeof value === 'number' ? [`${label} ${Math.round(value)}`] : [];
+  });
+  return parts.length > 0 ? `${t.reputation}: ${parts.join('  |  ')}` : '';
+}
+
 /** Draws the state. Text goes in through textContent only, never innerHTML. */
 function render(
   root: HTMLElement,
@@ -98,6 +107,8 @@ function render(
 
   const stats = statsLine(state.vars, t);
   if (stats) view.append(el('div', 'je-stats', stats));
+  const reps = repsLine(state.vars, t);
+  if (reps) view.append(el('div', 'je-stats je-reps', reps));
 
   if (state.map) {
     const map = el('div', 'je-map');
@@ -124,7 +135,8 @@ function render(
       dialogue.append(el('div', 'je-previous', scene.previousNarration));
     for (const line of scene.lines) {
       const row = el('div', 'je-line');
-      row.append(el('b', '', `${line.speaker}: `), document.createTextNode(line.text));
+      if (line.speaker) row.append(el('b', '', `${line.speaker}: `));
+      row.append(document.createTextNode(line.text));
       dialogue.append(row);
     }
     if (scene.outcome) {

@@ -131,5 +131,154 @@
     "when": {
       "in": ["world.month_of_year", 1, 2, 8]
     }
+  },
+  {
+    "id": "event.sales.finance_inquiry",
+    "tags": ["consequence", "finance", "integrity"],
+    "weight": 4,
+    "cooldown_weeks": 30,
+    "scene": "scene.sales.finance_inquiry",
+    "when": {
+      "all": [
+        {
+          "any": [
+            {
+              "gte": [
+                {
+                  "var": ["fact.discount_above_limit", 0]
+                },
+                2
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.credit_above_limit", 0]
+                },
+                2
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.backdated_documents", 0]
+                },
+                2
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.forecast_padded", 0]
+                },
+                2
+              ]
+            }
+          ]
+        },
+        {
+          "lt": [
+            {
+              "var": ["fact.came_clean", 0]
+            },
+            2
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "event.sales.buyer_confronts",
+    "tags": ["consequence", "buyer"],
+    "weight": 4,
+    "cooldown_weeks": 30,
+    "scene": "scene.sales.buyer_confronts",
+    "when": {
+      "all": [
+        {
+          "any": [
+            {
+              "gte": [
+                {
+                  "var": ["fact.promised_unrealistic_date", 0]
+                },
+                2
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.blamed_forwarder", 0]
+                },
+                2
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.silent_spec_change", 0]
+                },
+                2
+              ]
+            }
+          ]
+        },
+        {
+          "lt": [
+            {
+              "var": ["fact.came_clean", 0]
+            },
+            2
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "event.sales.compliance_interview",
+    "tags": ["consequence", "integrity", "compliance"],
+    "weight": 8,
+    "cooldown_weeks": 40,
+    "scene": "scene.sales.compliance_interview",
+    "when": {
+      "all": [
+        {
+          "any": [
+            {
+              "gte": [
+                {
+                  "var": ["fact.accepted_kickback", 0]
+                },
+                3
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.paid_for_document", 0]
+                },
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "lt": [
+            {
+              "var": ["fact.confessed", 0]
+            },
+            2
+          ]
+        },
+        {
+          "lt": [
+            {
+              "var": ["fact.lied_to_compliance", 0]
+            },
+            2
+          ]
+        }
+      ]
+    }
   }
 ]

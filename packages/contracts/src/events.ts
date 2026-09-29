@@ -1,4 +1,4 @@
-import type { Effect } from './packs';
+import type { Effect, FactVisibility } from './packs';
 
 /** Shared message vocabulary. Types and constants only: no logic (plan section 3). */
 
@@ -97,6 +97,16 @@ export interface CoreEventPayloads {
   'sim.deltaRejected': { path: string; reason: 'unknown_path' };
   /** Full state on init, then only the variables that changed. */
   'sim.stateChanged': { full: boolean; vars: Record<string, StateValue> };
+  /** Command to the knowledge ledger: make a fact better known. It never goes backwards. */
+  'knowledge.escalate': { factId: string; to: FactVisibility; reason?: string };
+  'fact.learned': {
+    factId: string;
+    visibility: FactVisibility;
+    /** "player", the roles who were in the scene, and "everyone" once public. */
+    knownBy: string[];
+    sceneId?: string;
+  };
+  'fact.escalated': { factId: string; from: FactVisibility; to: FactVisibility; knownBy: string[] };
   'workload.weekPlanned': {
     turn: number;
     demandHours: number;
@@ -137,6 +147,9 @@ export const EVENT_VERSIONS: Record<CoreEventType, number> = {
   'sim.deltaApplied': 1,
   'sim.deltaRejected': 1,
   'sim.stateChanged': 1,
+  'knowledge.escalate': 1,
+  'fact.learned': 1,
+  'fact.escalated': 1,
   'workload.weekPlanned': 1,
   'workload.weekClosed': 1,
 };

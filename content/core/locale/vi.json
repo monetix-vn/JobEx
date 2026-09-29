@@ -1,5 +1,7 @@
 {
   "ui.week": "Tuần",
   "ui.year": "Năm",
-  "ui.continue": "Tiếp tục"
+  "ui.continue": "Tiếp tục",
+  "ui.notice.rumor": "Mọi người đang bàn tán về {fact}.",
+  "ui.notice.public": "Ai cũng biết rồi: {fact}."
 }

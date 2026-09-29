@@ -9,10 +9,12 @@ about balance or outcomes.
   turned into display names (`speaker.<name>` keys).
 - A choice is marked `disabled` when its `requires` expression is false against the state mirror;
   mod-choice remains the authority. A scene with no choices offers a single `__continue` choice.
+- When a fact becomes a rumor or public (`fact.escalated`, or `fact.learned` at public), it plays a
+  one-line notice scene (`ui.notice.rumor` / `ui.notice.public` with the fact's text) that the
+  player acknowledges with the continue choice.
 - A scene unanswered for `patienceTurns` (default 1) turns emits `scene.expired`.
 - When `choice.resolved` arrives, it emits `scene.ended` with the resolved narration and starts
   the next queued scene.
 
 Config: `{ content: ContentView, locale?, script?, patienceTurns? }`.
-Consumes `sim.stateChanged`, `clock.ticked`, `turn.phaseStarted`, `director.eventFired`,
-`choice.resolved`; emits `scene.started`, `scene.ended`, `scene.expired`.
+Consumes `sim.stateChanged`, `clock.ticked`, `turn.phaseStarted`, `director.eventFired`, `fact.learned`, `fact.escalated`, `choice.resolved`; emits `scene.started`, `scene.ended`, `scene.expired`.

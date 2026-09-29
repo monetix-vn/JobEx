@@ -54,7 +54,7 @@ describe('valid packs', () => {
     expect(hasErrors(diagnostics)).toBe(false);
     expect(registry?.get('scene', 'scene.a')?.location).toBe('loc.room');
     expect(registry?.text('vi', 'k.line')).toBe('hi');
-    expect(registry?.counts()).toEqual({ role: 0, event: 1, scene: 1, offer: 0 });
+    expect(registry?.counts()).toEqual({ role: 0, event: 1, scene: 1, offer: 0, fact: 0 });
   });
 
   it('the real content directory validates with zero errors and zero warnings', async () => {
@@ -273,6 +273,78 @@ describe('warnings', () => {
   });
 });
 
+describe('facts', () => {
+  const fact = (extra: object = {}) => ({
+    id: 'fact.took_fee',
+    category: 'integrity',
+    severity: 7,
+    text_key: 'k.fact',
+    consequences: { witnessed: { boss: -4 }, public: { boss: -9, buyer: -5 } },
+    ...extra,
+  });
+  const choiceWith = (effects: object[]) => ({
+    choices: [
+      { id: 'c1', text_key: 'k.line', outcomes: [{ p: 1, narration_key: 'k.line', effects }] },
+    ],
+  });
+  const withFact = (extra: Record<string, string | null> = {}) =>
+    pack({
+      'core/facts/f.json': j(fact()),
+      'core/locale/en.json': j({ ...locale, 'k.fact': 'the fee you took' }),
+      'core/locale/vi.json': j({ ...locale, 'k.fact': 'khoản phí bạn đã nhận' }),
+      'core/scenes/a.json': j(
+        scene(choiceWith([{ fact: 'fact.took_fee', visibility: 'private' }])),
+      ),
+      ...extra,
+    });
+
+  it('loads a fact, its consequences and its text', async () => {
+    const { registry, diagnostics } = await load(withFact());
+    expect(diagnostics.filter((d) => d.severity !== 'info')).toEqual([]);
+    expect(registry?.get('fact', 'fact.took_fee')?.consequences?.public).toEqual({
+      boss: -9,
+      buyer: -5,
+    });
+    expect(registry?.text('vi', 'k.fact')).toBe('khoản phí bạn đã nhận');
+  });
+
+  it('rejects an effect that produces a fact nobody defined', async () => {
+    const files = withFact({
+      'core/scenes/a.json': j(scene(choiceWith([{ fact: 'fact.ghost', visibility: 'private' }]))),
+    });
+    const { diagnostics } = await load(files);
+    const d = diagnostics.find((x) => x.code === 'ref.missing');
+    expect(d?.message).toContain('fact "fact.ghost"');
+  });
+
+  it('warns about a fact that no effect ever produces', async () => {
+    const { diagnostics } = await load(withFact({ 'core/scenes/a.json': j(scene()) }));
+    expect(diagnostics.find((d) => d.code === 'fact.unused')?.message).toContain('fact.took_fee');
+  });
+
+  it('requires the fact text in both languages', async () => {
+    const { diagnostics } = await load(withFact({ 'core/locale/vi.json': j(locale) }));
+    expect(diagnostics.find((d) => d.code === 'locale.missing')?.message).toContain('"k.fact"');
+  });
+
+  it('rejects an unknown reputation group, a bad severity and stray fields', async () => {
+    const bad = (extra: object) => load(withFact({ 'core/facts/f.json': j(fact(extra)) }));
+    expect(
+      codes((await bad({ consequences: { public: { mayor: -5 } } })).diagnostics, 'error'),
+    ).toContain('schema.invalid');
+    expect(codes((await bad({ severity: 11 })).diagnostics, 'error')).toContain('schema.invalid');
+    expect(codes((await bad({ colour: 'red' })).diagnostics, 'error')).toContain('schema.invalid');
+  });
+
+  it('an event condition that reads a fact with a default is not called unreachable', async () => {
+    const files = withFact({
+      'core/events/a.json': j(event({ when: { gte: [{ var: ['fact.took_fee', 0] }, 2] } })),
+    });
+    const { diagnostics } = await load(files);
+    expect(codes(diagnostics, 'warning')).not.toContain('event.unreachable');
+  });
+});
+
 describe('module and helpers', () => {
   it('mod-content announces loaded content when a run starts', async () => {
     const { registry } = await load(pack());
@@ -285,7 +357,7 @@ describe('module and helpers', () => {
     const loaded = run.entries.find((e) => e.type === 'content.loaded');
     expect(loaded?.payload).toEqual({
       packs: [{ id: 'core', version: '1.0.0' }],
-      counts: { role: 0, event: 1, scene: 1, offer: 0 },
+      counts: { role: 0, event: 1, scene: 1, offer: 0, fact: 0 },
     });
   });
 

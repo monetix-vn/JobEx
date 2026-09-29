@@ -123,7 +123,7 @@ describe('switching language mid-game keeps the game', () => {
     fastForward(vi.run, en.run.inputs, en.run.turn);
 
     expect(vi.run.turn).toBe(en.run.turn);
-    for (const id of ['sim-core', 'director', 'workload', 'choice']) {
+    for (const id of ['sim-core', 'director', 'workload', 'choice', 'knowledge', 'social']) {
       expect(vi.run.snapshot()[id], id).toEqual(en.run.snapshot()[id]);
     }
     expect(vi.run.inputs).toEqual(en.run.inputs);

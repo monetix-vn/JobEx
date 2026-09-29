@@ -1,0 +1,121 @@
+{
+  "id": "scene.sales.buyer_confronts",
+  "location": "loc.sales_office",
+  "cast": ["role:buyer_contact"],
+  "lines": [
+    {
+      "speaker": "role:buyer_contact",
+      "text_key": "scene.sales.buyer_confronts.l1"
+    },
+    {
+      "speaker": "role:buyer_contact",
+      "text_key": "scene.sales.buyer_confronts.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sales.buyer_confronts.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.sales.buyer_confronts.c1.ok",
+          "effects": [
+            {
+              "delta": "player.rep.buyer",
+              "value": 4
+            },
+            {
+              "fact": "fact.came_clean",
+              "visibility": "witnessed"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.sales.buyer_confronts.c1.fail",
+          "effects": [
+            {
+              "delta": "player.rep.buyer",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sales.buyer_confronts.c2",
+      "outcomes": [
+        {
+          "p": 0.3,
+          "narration_key": "scene.sales.buyer_confronts.c2.ok",
+          "effects": [
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "p": 0.7,
+          "result": "fail",
+          "narration_key": "scene.sales.buyer_confronts.c2.fail",
+          "effects": [
+            {
+              "delta": "player.rep.buyer",
+              "value": -10
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sales.buyer_confronts.c3",
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.sales.buyer_confronts.c3.ok",
+          "effects": [
+            {
+              "delta": "player.rep.buyer",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -2
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.sales.buyer_confronts.c3.fail",
+          "effects": [
+            {
+              "delta": "player.rep.buyer",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

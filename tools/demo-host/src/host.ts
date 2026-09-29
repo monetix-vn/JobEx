@@ -10,8 +10,10 @@ import {
   memorySource,
 } from '@je/mod-content';
 import { directorModule } from '@je/mod-director';
+import { knowledgeModule } from '@je/mod-knowledge';
 import { narrativeModule } from '@je/mod-narrative';
 import { simCoreModule } from '@je/mod-sim-core';
+import { socialModule } from '@je/mod-social';
 import { stubModules } from '@je/mod-stubs';
 import { workloadModule } from '@je/mod-workload';
 
@@ -70,6 +72,8 @@ export async function createSalesHost(options: SalesHostOptions): Promise<SalesH
     workloadModule,
     choiceModule,
     directorModule,
+    knowledgeModule,
+    socialModule,
     narrativeModule,
   ];
   const configs = {
@@ -78,6 +82,8 @@ export async function createSalesHost(options: SalesHostOptions): Promise<SalesH
     workload: { content: registry, roleId: SALES_ROLE },
     choice: { content: registry },
     director: { content: registry },
+    knowledge: { content: registry },
+    social: { content: registry },
     narrative: {
       content: registry,
       locale: options.locale ?? 'en',

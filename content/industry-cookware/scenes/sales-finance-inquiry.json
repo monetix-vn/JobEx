@@ -1,0 +1,141 @@
+{
+  "id": "scene.sales.finance_inquiry",
+  "location": "loc.finance_office",
+  "cast": ["role:finance_lead"],
+  "lines": [
+    {
+      "speaker": "role:finance_lead",
+      "text_key": "scene.sales.finance_inquiry.l1"
+    },
+    {
+      "speaker": "role:finance_lead",
+      "text_key": "scene.sales.finance_inquiry.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sales.finance_inquiry.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.sales.finance_inquiry.c1.ok",
+          "effects": [
+            {
+              "delta": "player.rep.finance",
+              "value": 4
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.came_clean",
+              "visibility": "witnessed"
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.sales.finance_inquiry.c1.fail",
+          "effects": [
+            {
+              "delta": "player.rep.finance",
+              "value": -2
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -2
+            },
+            {
+              "fact": "fact.came_clean",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sales.finance_inquiry.c2",
+      "outcomes": [
+        {
+          "p": 0.45,
+          "narration_key": "scene.sales.finance_inquiry.c2.ok",
+          "effects": [
+            {
+              "delta": "player.stress",
+              "value": -1
+            }
+          ]
+        },
+        {
+          "p": 0.55,
+          "result": "fail",
+          "narration_key": "scene.sales.finance_inquiry.c2.fail",
+          "effects": [
+            {
+              "delta": "player.rep.finance",
+              "value": -8
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.lied_to_finance",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sales.finance_inquiry.c3",
+      "outcomes": [
+        {
+          "p": 0.3,
+          "narration_key": "scene.sales.finance_inquiry.c3.ok",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "p": 0.7,
+          "result": "fail",
+          "narration_key": "scene.sales.finance_inquiry.c3.fail",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -10
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 8
+            },
+            {
+              "fact": "fact.lied_to_finance",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

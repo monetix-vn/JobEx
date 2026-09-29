@@ -2,8 +2,10 @@ import type { Locale, Module } from '@je/contracts';
 import { choiceModule } from '@je/mod-choice';
 import { contentModule, formatDiagnostics, hasErrors, loadContent } from '@je/mod-content';
 import { directorModule } from '@je/mod-director';
+import { knowledgeModule } from '@je/mod-knowledge';
 import { narrativeModule } from '@je/mod-narrative';
 import { simCoreModule } from '@je/mod-sim-core';
+import { socialModule } from '@je/mod-social';
 import { workloadModule } from '@je/mod-workload';
 import { directorySource } from '@je/pack-validator';
 import type { BotOptions } from './runner';
@@ -40,6 +42,7 @@ function salesScript(): Record<string, string[]> {
  * Real Phase 1 modules on real content, for one Sales Specialist.
  *   sales-week: the three pressure scenes scripted into week 0, then quiet weeks (4 weeks).
  *   sales-year: the director draws one or two events a week from the whole pool for a year.
+ * Both track what the player did as facts, and let word get around (knowledge and social).
  */
 export async function loadScenario(name: string, options: ScenarioOptions): Promise<Scenario> {
   const shape =
@@ -66,6 +69,8 @@ ${formatDiagnostics(diagnostics)}`);
       workloadModule,
       choiceModule,
       ...(shape.directed ? [directorModule] : []),
+      knowledgeModule,
+      socialModule,
       narrativeModule,
     ],
     configs: {
@@ -74,6 +79,8 @@ ${formatDiagnostics(diagnostics)}`);
       workload: { content: registry, roleId: SALES_ROLE },
       choice: { content: registry },
       ...(shape.directed ? { director: { content: registry } } : {}),
+      knowledge: { content: registry },
+      social: { content: registry },
       narrative: {
         content: registry,
         locale: options.locale ?? 'en',

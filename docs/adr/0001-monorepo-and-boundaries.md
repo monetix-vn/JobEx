@@ -59,6 +59,19 @@ seed.
 - **Scenes, effects and reputation are first-cut content** written by an AI assistant for review; a
   practitioner sign-off is still required before any of it is treated as realistic.
 
+- **Facts are content.** A `fact` is a pack kind with a severity and reputation consequences for
+  when it becomes known to witnesses and when it goes public. The validator checks every `fact`
+  effect points at a defined fact, that each fact has text in both languages, and warns on a fact
+  nothing produces. `mod-knowledge` owns the ledger (visibility only ever rises) and publishes each
+  fact as a state variable named by its id, so `when` conditions can react to what is known.
+- **`mod-social` applies consequences and runs gossip.** It never touches reputation directly: it
+  sends `sim.applyDelta` and asks the ledger to escalate with `knowledge.escalate`. It also leaks
+  private facts at a small weekly chance, as a stand-in until `mod-risk` adds real detectors.
+- **Notices are scenes.** Narrative turns a fact becoming a rumor or public into a one-line scene
+  with a continue choice, so the same queue, resolver and client handle it.
+- The per-person relationship graph (trust, loyalty, favours owed) is deferred; reputation is
+  tracked per group for now.
+
 ## Consequences
 
 - Adding a module means adding a package that passes the boundary check and listing it in a

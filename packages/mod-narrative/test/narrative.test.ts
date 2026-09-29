@@ -26,6 +26,12 @@ const B: Scene = {
   lines: [{ speaker: 'role:boss', text_key: 'b.l1' }],
 };
 const event: GameEvent = { id: 'event.pick_b', scene: 'scene.b' };
+const kickback = {
+  id: 'fact.fee',
+  category: 'integrity',
+  severity: 8,
+  text_key: 'fact.fee',
+} as const;
 const scenes = new Map([A, B].map((s) => [s.id, s]));
 const strings: Record<Locale, Record<string, string>> = {
   en: {
@@ -37,6 +43,9 @@ const strings: Record<Locale, Record<string, string>> = {
     'speaker.boss': 'Boss',
     'ui.continue': 'Continue',
     'n.done': 'It is done.',
+    'fact.fee': 'the fee you took',
+    'ui.notice.rumor': 'People are talking about {fact}.',
+    'ui.notice.public': 'Everyone knows now: {fact}.',
   },
   vi: { 'a.l1': 'Xin chào', 'speaker.boss': 'Sếp', 'ui.continue': 'Tiếp tục' },
 };
@@ -46,7 +55,9 @@ const content: ContentView = {
       ? scenes.get(id)
       : kind === 'event' && id === event.id
         ? event
-        : undefined) as never,
+        : kind === 'fact' && id === kickback.id
+          ? kickback
+          : undefined) as never,
   all: (() => []) as never,
   text: (locale, key) => strings[locale][key],
 };
@@ -174,6 +185,73 @@ describe('narrative: patience and events', () => {
       'scene.b',
     ]);
     expect(play([fired('event.stub_1')], { script: {} })).toEqual([]);
+  });
+});
+
+describe('narrative: notices when word gets around', () => {
+  const escalated = (to: string) => ({
+    type: 'fact.escalated',
+    payload: { factId: 'fact.fee', from: 'witnessed', to, knownBy: ['player'] },
+  });
+  const notice = (out: EventDraft[]) =>
+    out.find((e) => e.type === 'scene.started')!.payload as {
+      sceneId: string;
+      lines: { speaker: string; text: string }[];
+      choices: { id: string; label: string }[];
+    };
+
+  it('plays a one-line notice when a fact becomes a rumor or public', () => {
+    const rumor = notice(play([escalated('rumor')], { script: {} }));
+    expect(rumor.sceneId).toBe('notice.fact.fee.rumor');
+    expect(rumor.lines).toEqual([
+      { speaker: '', text: 'People are talking about the fee you took.' },
+    ]);
+    expect(rumor.choices).toEqual([{ id: '__continue', label: 'Continue' }]);
+    expect(notice(play([escalated('public')], { script: {} })).lines[0]!.text).toBe(
+      'Everyone knows now: the fee you took.',
+    );
+  });
+
+  it('a fact learned in public gets a notice; a private or witnessed one does not', () => {
+    const learned = (visibility: string) => ({
+      type: 'fact.learned',
+      payload: { factId: 'fact.fee', visibility, knownBy: ['player'] },
+    });
+    expect(play([learned('public')], { script: {} }).map((e) => e.type)).toEqual(['scene.started']);
+    expect(play([learned('private')], { script: {} })).toEqual([]);
+    expect(play([learned('witnessed')], { script: {} })).toEqual([]);
+    expect(play([escalated('witnessed')], { script: {} })).toEqual([]);
+  });
+
+  it('a notice queues behind scenes already waiting, then ends like any scene', () => {
+    // Queue at plan time: scene.a (on screen), scene.b (waiting). The notice joins behind them.
+    const beforeNotice = play([plan, escalated('rumor'), resolved('scene.a')]);
+    expect(started(beforeNotice).map((s) => s.sceneId)).toEqual(['scene.a', 'scene.b']);
+    const all = play([plan, escalated('rumor'), resolved('scene.a'), resolved('scene.b')]);
+    expect(started(all).map((s) => s.sceneId)).toEqual([
+      'scene.a',
+      'scene.b',
+      'notice.fact.fee.rumor',
+    ]);
+    const closed = play([
+      plan,
+      escalated('rumor'),
+      resolved('scene.a'),
+      resolved('scene.b'),
+      resolved('notice.fact.fee.rumor'),
+    ]);
+    const ended = closed
+      .filter((e) => e.type === 'scene.ended')
+      .map((e) => (e.payload as { sceneId: string }).sceneId);
+    expect(ended).toEqual(['scene.a', 'scene.b', 'notice.fact.fee.rumor']);
+  });
+
+  it('ignores a fact that content does not define', () => {
+    const ghost = {
+      type: 'fact.escalated',
+      payload: { factId: 'fact.ghost', from: 'private', to: 'public', knownBy: [] },
+    };
+    expect(play([ghost], { script: {} })).toEqual([]);
   });
 });
 

@@ -218,6 +218,35 @@ export const offerSchema = {
   },
 };
 
+const repDeltas = {
+  type: 'object',
+  additionalProperties: false,
+  properties: Object.fromEntries(
+    ['boss', 'buyer', 'finance', 'production', 'qc', 'cs'].map((g) => [
+      g,
+      { type: 'number', minimum: -100, maximum: 100 },
+    ]),
+  ),
+};
+
+export const factSchema = {
+  $id: `${BASE}fact.json`,
+  type: 'object',
+  required: ['id', 'category', 'severity', 'text_key'],
+  additionalProperties: false,
+  properties: {
+    id: idString,
+    category: { enum: ['integrity', 'favor', 'conflict', 'performance', 'other'] },
+    severity: { type: 'integer', minimum: 1, maximum: 10 },
+    text_key: { type: 'string' },
+    consequences: {
+      type: 'object',
+      additionalProperties: false,
+      properties: { witnessed: repDeltas, public: repDeltas },
+    },
+  },
+};
+
 export const localeSchema = {
   $id: `${BASE}locale.json`,
   type: 'object',
@@ -229,6 +258,7 @@ export const PACK_SCHEMAS: Record<PackKind, object> = {
   event: eventSchema,
   scene: sceneSchema,
   offer: offerSchema,
+  fact: factSchema,
 };
 
 export const ALL_SCHEMAS: object[] = [
@@ -239,6 +269,7 @@ export const ALL_SCHEMAS: object[] = [
   eventSchema,
   sceneSchema,
   offerSchema,
+  factSchema,
 ];
 
 export const SCHEMA_IDS = {
@@ -248,4 +279,5 @@ export const SCHEMA_IDS = {
   event: eventSchema.$id,
   scene: sceneSchema.$id,
   offer: offerSchema.$id,
+  fact: factSchema.$id,
 } as const;

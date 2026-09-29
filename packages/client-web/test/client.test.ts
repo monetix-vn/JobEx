@@ -183,6 +183,43 @@ describe('mount', () => {
     expect(root.querySelector('.je-stats')?.textContent).toBe('Stress 5');
   });
 
+  it('shows standing with each group once it is known, and updates as it changes', () => {
+    const { root, push } = setup();
+    expect(root.querySelector('.je-reps')).toBeNull();
+    push(
+      env('sim.stateChanged', {
+        full: true,
+        vars: { 'player.rep.boss': 50, 'player.rep.buyer': 50 },
+      }),
+    );
+    expect(root.querySelector('.je-reps')?.textContent).toBe('Standing: Boss 50  |  Buyers 50');
+    push(
+      env('sim.stateChanged', {
+        full: false,
+        vars: { 'player.rep.boss': 41.6, 'player.rep.qc': 62 },
+      }),
+    );
+    expect(root.querySelector('.je-reps')?.textContent).toBe(
+      'Standing: Boss 42  |  Buyers 50  |  QC 62',
+    );
+  });
+
+  it('a line without a speaker shows just its text, with no stray colon', () => {
+    const { root, push } = setup();
+    push(
+      env('scene.started', {
+        sceneId: 'notice.x',
+        location: 'loc.notice',
+        lines: [{ speaker: '', text: 'People are talking about the fee you took.' }],
+        choices: [{ id: '__continue', label: 'Continue' }],
+      }),
+    );
+    expect(root.querySelector('.je-line')?.textContent).toBe(
+      'People are talking about the fee you took.',
+    );
+    expect(root.querySelector('.je-line b')).toBeNull();
+  });
+
   it('dispose stops listening and clears the view', () => {
     const { root, handle, listeners, push } = setup();
     handle.dispose();

@@ -27,7 +27,7 @@ export interface SimCoreConfig {
 }
 
 /** Only these namespaces may be created on demand by a delta; anything else is rejected. */
-const OPEN_NAMESPACES = ['player.', 'company.', 'skill.'];
+const OPEN_NAMESPACES = ['player.', 'company.', 'skill.', 'fact.'];
 const PERCENT_LIMITS = [
   /^player\.(stress|energy|health)$/,
   /^player\.rep\./,
