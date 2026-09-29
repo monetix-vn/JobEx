@@ -48,6 +48,9 @@ const DEFAULTS: Record<string, StateValue> = {
   'player.rep.qc': 50,
 };
 
+/** Reputation created on demand starts neutral, like the seeded ones. */
+const initialFor = (path: string): number => (path.startsWith('player.rep.') ? 50 : 0);
+
 const clamp = (path: string, value: number): number =>
   PERCENT_LIMITS.some((re) => re.test(path)) ? Math.min(100, Math.max(0, value)) : value;
 
@@ -120,7 +123,7 @@ export function createModule(host: ModuleHost): ModuleInstance {
         ) {
           return [{ type: 'sim.deltaRejected', payload: { path, reason: 'unknown_path' } }];
         }
-        const from = typeof current === 'number' ? current : 0;
+        const from = typeof current === 'number' ? current : initialFor(path);
         const to = clamp(path, mode === 'set' ? value : from + value);
         vars.set(path, to);
         return [

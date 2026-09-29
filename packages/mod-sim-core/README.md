@@ -9,6 +9,7 @@ variables only).
 - World variables (`world.turn`, `world.month_of_year`, ...) follow `clock.ticked`; energy refills
   weekly.
 - Stress, energy, health, reputation and audit readiness are clamped to 0..100.
+- Reputation created on demand (`player.rep.<who>`) starts at 50.
 - A delta on an unknown path is rejected unless it is under `player.`, `company.` or `skill.`.
 
 Config: `{ content: ContentView, roleId, company? }`.

@@ -1,0 +1,125 @@
+{
+  "id": "scene.sales.sample_request",
+  "location": "loc.sales_office",
+  "cast": ["role:buyer_contact", "role:qc_lead"],
+  "lines": [
+    {
+      "speaker": "role:buyer_contact",
+      "text_key": "scene.sales.sample_request.l1"
+    },
+    {
+      "speaker": "role:qc_lead",
+      "text_key": "scene.sales.sample_request.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sales.sample_request.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.sales.sample_request.c1.ok",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.sales.sample_request.c1.fail",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sales.sample_request.c2",
+      "cost": {
+        "energy": 5
+      },
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.sales.sample_request.c2.ok",
+          "effects": [
+            {
+              "delta": "player.rep.buyer",
+              "value": 4
+            },
+            {
+              "delta": "player.stress",
+              "value": -2
+            },
+            {
+              "fact": "fact.reserve_stock_taken",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.sales.sample_request.c2.fail",
+          "effects": [
+            {
+              "delta": "player.rep.qc",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "fact": "fact.reserve_stock_taken",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sales.sample_request.c3",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.sales.sample_request.c3.ok",
+          "effects": [
+            {
+              "delta": "player.cash_vnd",
+              "value": -800000
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

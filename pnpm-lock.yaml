@@ -83,6 +83,18 @@ importers:
         specifier: ^8.17.1
         version: 8.20.0
 
+  packages/mod-director:
+    dependencies:
+      '@je/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@je/kernel':
+        specifier: workspace:*
+        version: link:../kernel
+      '@je/rules':
+        specifier: workspace:*
+        version: link:../rules
+
   packages/mod-narrative:
     dependencies:
       '@je/contracts':
@@ -159,6 +171,9 @@ importers:
       '@je/mod-content':
         specifier: workspace:*
         version: link:../../packages/mod-content
+      '@je/mod-director':
+        specifier: workspace:*
+        version: link:../../packages/mod-director
       '@je/mod-narrative':
         specifier: workspace:*
         version: link:../../packages/mod-narrative
@@ -195,6 +210,9 @@ importers:
       '@je/mod-content':
         specifier: workspace:*
         version: link:../../packages/mod-content
+      '@je/mod-director':
+        specifier: workspace:*
+        version: link:../../packages/mod-director
       '@je/mod-narrative':
         specifier: workspace:*
         version: link:../../packages/mod-narrative

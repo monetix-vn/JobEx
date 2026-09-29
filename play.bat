@@ -1,18 +1,18 @@
 @echo off
-rem One-click play: double-click this file. English by default; play-vi.bat opens Vietnamese.
+rem One-click play: double-click this file. Opens in your last language (or your browser's).
 rem First run builds JobEx-play.html (needs Node 20+ from nodejs.org); after that it just opens.
 cd /d "%~dp0"
-set "LANGQ="
-if /i "%~1"=="vi" set "LANGQ=?lang=vi"
+set "PAGE=JobEx-play.html"
+if /i "%~1"=="vi" set "PAGE=JobEx-play-vi.html"
 
-if not exist "JobEx-play.html" (
+if not exist "%PAGE%" (
   echo Building the game once, please wait...
   if not exist "node_modules" call npx -y pnpm@9.15.9 install
   if errorlevel 1 goto :fail
   call npx -y pnpm@9.15.9 build:play
   if errorlevel 1 goto :fail
 )
-start "" "file:///%CD:\=/%/JobEx-play.html%LANGQ%"
+start "" "%CD%\%PAGE%"
 exit /b 0
 
 :fail

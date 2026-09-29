@@ -1,0 +1,148 @@
+{
+  "id": "scene.sales.backdate_invoice",
+  "location": "loc.meeting_room",
+  "cast": ["role:boss"],
+  "lines": [
+    {
+      "speaker": "role:boss",
+      "text_key": "scene.sales.backdate_invoice.l1"
+    },
+    {
+      "speaker": "role:boss",
+      "text_key": "scene.sales.backdate_invoice.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sales.backdate_invoice.c1",
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.sales.backdate_invoice.c1.ok",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.refused_backdating",
+              "visibility": "witnessed"
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.sales.backdate_invoice.c1.fail",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -7
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.refused_backdating",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sales.backdate_invoice.c2",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.sales.backdate_invoice.c2.ok",
+          "effects": [
+            {
+              "delta": "player.cash_vnd",
+              "value": 2000000
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 8
+            },
+            {
+              "fact": "fact.backdated_documents",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.sales.backdate_invoice.c2.fail",
+          "effects": [
+            {
+              "delta": "player.rep.finance",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 9
+            },
+            {
+              "fact": "fact.backdated_documents",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sales.backdate_invoice.c3",
+      "cost": {
+        "hours": 3
+      },
+      "requires": {
+        "gte": ["skill.negotiation", 35]
+      },
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.sales.backdate_invoice.c3.ok",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.sales.backdate_invoice.c3.fail",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

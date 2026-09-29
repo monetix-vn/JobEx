@@ -1,7 +1,7 @@
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import type { CoreEventPayloads, Envelope, ReplayLog } from '@je/contracts';
-import { canonicalize, replay } from '@je/kernel';
+import { canonicalize, replay, snapshotForTurn } from '@je/kernel';
 import {
   SALES_WEEK_SCENES,
   checkDeterminism,
@@ -192,11 +192,22 @@ describe('Phase 1 block A: one Sales Specialist week, played end to end', () => 
   });
 });
 
-describe('Phase 1 block A: a year of it', () => {
-  it('holds up over 52 weeks: bounded state, no rejected choices, no ignored scenes', async () => {
+describe('Phase 1: a year of it, driven by the director', () => {
+  const fired = (log: ReplayLog) =>
+    of(log, 'director.eventFired').map((e) => ({
+      id: (e.payload as { eventId: string }).eventId,
+      turn: e.turn,
+    }));
+
+  it('holds up over 52 weeks: plenty of decisions, bounded state, nothing rejected', async () => {
     const { log } = await play('sales-year', 'year');
     expect(log.turns).toBe(52);
-    expect(of(log, 'scene.started')).toHaveLength(39);
+    const scenes = of(log, 'scene.started');
+    expect(scenes.length).toBeGreaterThan(40);
+    expect(scenes.length).toBeLessThan(120);
+    expect(
+      new Set(scenes.map((e) => (e.payload as { sceneId: string }).sceneId)).size,
+    ).toBeGreaterThanOrEqual(10);
     expect(of(log, 'choice.rejected')).toHaveLength(0);
     expect(of(log, 'sim.deltaRejected')).toHaveLength(0);
     for (const e of of(log, 'sim.stateChanged')) {
@@ -209,6 +220,108 @@ describe('Phase 1 block A: a year of it', () => {
       }
     }
     expect(of(log, 'workload.weekClosed')).toHaveLength(52);
+  });
+
+  it('draws one or two events a week and respects each event cooldown', async () => {
+    for (const seed of ['cd1', 'cd2', 'cd3']) {
+      const { log, scenario } = await play('sales-year', seed);
+      const events = fired(log);
+      const perWeek = new Map<number, number>();
+      for (const e of events) perWeek.set(e.turn, (perWeek.get(e.turn) ?? 0) + 1);
+      for (const n of perWeek.values()) expect(n).toBeLessThanOrEqual(2);
+      const registry = (
+        scenario.configs.director as {
+          content: { get: (k: 'event', id: string) => { cooldown_weeks?: number } };
+        }
+      ).content;
+      const last = new Map<string, number>();
+      for (const e of events) {
+        const before = last.get(e.id);
+        if (before !== undefined) {
+          const cooldown = registry.get('event', e.id)?.cooldown_weeks ?? 8;
+          expect(e.turn - before, `${seed} ${e.id}`).toBeGreaterThanOrEqual(cooldown);
+        }
+        last.set(e.id, e.turn);
+      }
+    }
+  });
+
+  it('seasonal events only happen in their season', async () => {
+    const quarterEnd = new Set([3, 6, 9, 12]);
+    const seen = new Set<string>();
+    for (const seed of ['s1', 's2', 's3', 's4', 's5', 's6']) {
+      const { log } = await play('sales-year', seed);
+      for (const { id, turn } of fired(log)) {
+        const month = snapshotForTurn(turn).month_of_year;
+        if (id === 'event.sales.tet_rush') {
+          seen.add(id);
+          expect([12, 1]).toContain(month);
+        }
+        if (id === 'event.sales.forecast_meeting' || id === 'event.sales.backdate_invoice') {
+          seen.add(id);
+          expect(quarterEnd.has(month), `${id} in month ${month}`).toBe(true);
+        }
+      }
+    }
+    expect(seen.size).toBeGreaterThanOrEqual(2);
+  });
+
+  it('a bot-played year has real pressure without being hopeless (first-cut balance guard)', async () => {
+    const finals: number[] = [];
+    for (let i = 0; i < 12; i++) {
+      const { log } = await play('sales-year', `balance-${i}`);
+      finals.push(state(log)['player.stress'] as number);
+    }
+    const mean = finals.reduce((a, b) => a + b, 0) / finals.length;
+    expect(mean).toBeGreaterThan(40);
+    expect(mean).toBeLessThan(85);
+    expect(finals.filter((f) => f >= 100)).toHaveLength(0);
+    expect(finals.filter((f) => f < 10)).toHaveLength(0);
+  });
+
+  it('a stressed player gets stress-driven events, a calm one does not', async () => {
+    let onlyWhenStressed = true;
+    let sawIt = false;
+    for (const seed of ['t1', 't2', 't3', 't4', 't5', 't6', 't7', 't8']) {
+      const { log } = await play('sales-year', seed);
+      const stressAt = new Map<number, number>();
+      let stress = 25;
+      for (const e of log.entries) {
+        if (e.type === 'sim.stateChanged') {
+          const v = (e.payload as CoreEventPayloads['sim.stateChanged']).vars['player.stress'];
+          if (typeof v === 'number') stress = v;
+        }
+        if (
+          e.type === 'director.eventFired' &&
+          (e.payload as { eventId: string }).eventId === 'event.sales.overtime_request'
+        ) {
+          sawIt = true;
+          stressAt.set(e.turn, stress);
+          if (stress < 40) onlyWhenStressed = false;
+        }
+      }
+    }
+    expect(sawIt).toBe(true);
+    expect(onlyWhenStressed).toBe(true);
+  });
+
+  it('the buyer audit notice schedules the audit day four to six weeks later', async () => {
+    let checked = 0;
+    for (let i = 0; i < 30 && checked < 3; i++) {
+      const { log } = await play('sales-year', `audit-${i}`);
+      const events = fired(log);
+      const notice = events.find((e) => e.id === 'event.buyer_audit_notice');
+      if (!notice) continue;
+      const day = events
+        .filter((e) => e.id === 'event.audit_day')
+        .filter((e) => e.turn > notice.turn);
+      expect(day.length, `audit-${i}`).toBeGreaterThanOrEqual(1);
+      const gap = day[0]!.turn - notice.turn;
+      expect(gap).toBeGreaterThanOrEqual(4);
+      expect(gap).toBeLessThanOrEqual(6);
+      checked += 1;
+    }
+    expect(checked).toBeGreaterThan(0);
   });
 
   it('passes the determinism gate on real modules: twice, replay, and a different seed', async () => {
@@ -234,7 +347,7 @@ describe('Phase 1 block A: a year of it', () => {
       configs: scenario.configs,
       bot: scenario.bot,
     });
-    expect(report.fingerprint).toBe('00167ab3342288');
+    expect(report.fingerprint).toBe('1960eaa590db33');
   });
 
   it('refuses to run without the role content, and on an unknown scenario', async () => {

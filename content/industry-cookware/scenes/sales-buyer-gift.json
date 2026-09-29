@@ -1,0 +1,142 @@
+{
+  "id": "scene.sales.buyer_gift",
+  "location": "loc.sales_office",
+  "cast": ["role:buyer_contact"],
+  "lines": [
+    {
+      "speaker": "role:buyer_contact",
+      "text_key": "scene.sales.buyer_gift.l1"
+    },
+    {
+      "speaker": "role:buyer_contact",
+      "text_key": "scene.sales.buyer_gift.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sales.buyer_gift.c1",
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.sales.buyer_gift.c1.ok",
+          "effects": [
+            {
+              "delta": "player.rep.buyer",
+              "value": -2
+            },
+            {
+              "fact": "fact.declined_kickback",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.sales.buyer_gift.c1.fail",
+          "effects": [
+            {
+              "delta": "player.rep.buyer",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sales.buyer_gift.c2",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.sales.buyer_gift.c2.ok",
+          "effects": [
+            {
+              "delta": "player.cash_vnd",
+              "value": 5000000
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 4
+            },
+            {
+              "fact": "fact.accepted_kickback",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.sales.buyer_gift.c2.fail",
+          "effects": [
+            {
+              "delta": "player.rep.finance",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 8
+            },
+            {
+              "fact": "fact.accepted_kickback",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sales.buyer_gift.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.sales.buyer_gift.c3.ok",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": 6
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -4
+            },
+            {
+              "fact": "fact.reported_kickback",
+              "visibility": "witnessed"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.sales.buyer_gift.c3.fail",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.reported_kickback",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

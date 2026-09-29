@@ -1,0 +1,118 @@
+{
+  "id": "scene.sales.new_hire_mentor",
+  "location": "loc.sales_office",
+  "cast": ["role:new_hire"],
+  "lines": [
+    {
+      "speaker": "role:new_hire",
+      "text_key": "scene.sales.new_hire_mentor.l1"
+    },
+    {
+      "speaker": "role:new_hire",
+      "text_key": "scene.sales.new_hire_mentor.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sales.new_hire_mentor.c1",
+      "cost": {
+        "hours": 4
+      },
+      "outcomes": [
+        {
+          "p": 0.9,
+          "narration_key": "scene.sales.new_hire_mentor.c1.ok",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.cs",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "p": 0.1,
+          "result": "fail",
+          "narration_key": "scene.sales.new_hire_mentor.c1.fail",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sales.new_hire_mentor.c2",
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.sales.new_hire_mentor.c2.ok",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": 1
+            },
+            {
+              "fact": "fact.taught_shortcuts",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.sales.new_hire_mentor.c2.fail",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.taught_shortcuts",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sales.new_hire_mentor.c3",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.sales.new_hire_mentor.c3.ok",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": -1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

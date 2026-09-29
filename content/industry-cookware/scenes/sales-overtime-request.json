@@ -1,0 +1,111 @@
+{
+  "id": "scene.sales.overtime_request",
+  "location": "loc.sales_office",
+  "cast": ["role:cs_colleague"],
+  "lines": [
+    {
+      "speaker": "role:cs_colleague",
+      "text_key": "scene.sales.overtime_request.l1"
+    },
+    {
+      "speaker": "role:cs_colleague",
+      "text_key": "scene.sales.overtime_request.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sales.overtime_request.c1",
+      "cost": {
+        "hours": 5,
+        "energy": 8
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.sales.overtime_request.c1.ok",
+          "effects": [
+            {
+              "delta": "player.rep.cs",
+              "value": 8
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sales.overtime_request.c2",
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.sales.overtime_request.c2.ok",
+          "effects": [
+            {
+              "delta": "player.rep.cs",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": -1
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.sales.overtime_request.c2.fail",
+          "effects": [
+            {
+              "delta": "player.rep.cs",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sales.overtime_request.c3",
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.sales.overtime_request.c3.ok",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": 1
+            },
+            {
+              "delta": "player.rep.cs",
+              "value": -2
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.sales.overtime_request.c3.fail",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

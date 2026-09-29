@@ -15,6 +15,7 @@ packages/
   mod-sim-core/  player and company state; the only module that mutates it (sim.applyDelta)
   mod-workload/  weekly demand, capacity, backlog, stress and health
   mod-choice/    outcome tables, requirements, costs; applies deltas through sim-core
+  mod-director/  event pool and scheduler: what happens this week (season, stress, cooldown, weight)
   mod-narrative/ scene queue and runtime, locale text resolution
   mod-stubs/     Phase 0 stand-ins (economy, director, choice), kept for the kernel tests
   mod-toy/       tiny module that proves a new module needs no edits elsewhere
@@ -48,10 +49,15 @@ pnpm dev:web           # play the Sales Specialist's week: http://localhost:5173
 
 ## Play it (one click)
 
-Double-click `play.bat` (or `play-vi.bat` for Vietnamese). The first run builds a single
-self-contained `JobEx-play.html` (needs Node 20+); after that it just opens in your browser. That
-file has no server and no dependencies, so you can also copy it anywhere. Rebuild it after code or
-content changes with `pnpm build:play`.
+Double-click `play.bat` (or `play-vi.bat` to start in Vietnamese). The first run builds two
+self-contained files, `JobEx-play.html` and `JobEx-play-vi.html` (needs Node 20+); after that it
+just opens in your browser. They have no server and no dependencies, so you can copy them anywhere.
+Rebuild after code or content changes with `pnpm build:play`.
+
+Use the **EN | VI** buttons at the top to switch language at any time. The game keeps your week,
+stats and choices: it replays your recorded choices into a new run in the other language, which
+reaches the identical state because the simulation does not depend on language. Your choice is
+remembered for next time.
 
 ## Rules the build enforces
 
@@ -74,12 +80,16 @@ content changes with `pnpm build:play`.
 | Headless 1-year run completes and replays identically from a seed   | `tools/sim-runner/test/gate.test.ts`, `pnpm sim:determinism` |
 | A toy module is added with no change to existing modules            | `tools/sim-runner/test/gate.test.ts` (second describe)   |
 
-## Phase 1, block A: one Sales Specialist week, text only
+## Phase 1 so far: one Sales Specialist, text only
 
-`mod-sim-core`, `mod-workload`, `mod-choice` and `mod-narrative` run on the `industry-cookware` pack:
-a shipment pulled forward by the buyer, an RFQ that asks for more discount than your limit, and a
-quarter-end forecast your boss wants rounded up. Honest, risky and dark options are all on the
-table, each with costs, requirements and outcome tables. Effects other modules will own (facts,
-scheduled events) are reported in `choice.resolved` and not yet consumed. Run it headless with
-`pnpm exec tsx tools/sim-runner/src/cli.ts run --scenario sales-week --seed 7`, or play it in the
-browser with `pnpm dev:web`.
+`mod-sim-core`, `mod-workload`, `mod-choice`, `mod-narrative` and `mod-director` run on the
+`industry-cookware` pack. Each week the director draws one or two of 16 pressure events (shipments
+pulled forward, discount requests, overdue payments, quality complaints, Tet rush, kickback offers,
+backdated invoices, and more) by season, stress, cooldown and weight, and plays scheduled
+consequences when they come due (an audit notice brings the audit day four to six weeks later).
+Honest, risky and dark options are all on the table, each with costs, requirements and outcome
+tables. Effects other modules will own (facts, reputation-driven consequences) are reported in
+`choice.resolved` and not yet consumed.
+
+Run it headless with `pnpm exec tsx tools/sim-runner/src/cli.ts run --scenario sales-year --seed 7`
+(`sales-week` scripts just the first three scenes), or play it in the browser.

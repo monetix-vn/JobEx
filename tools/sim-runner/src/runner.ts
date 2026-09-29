@@ -2,6 +2,7 @@ import type { CoreEventPayloads, Envelope, Module, ReplayLog, TurnPhase } from '
 import { Run, SeededRandom, canonicalize, fingerprint, replay, type PhaseHook } from '@je/kernel';
 import { choiceModule } from '@je/mod-choice';
 import { contentModule } from '@je/mod-content';
+import { directorModule } from '@je/mod-director';
 import { narrativeModule } from '@je/mod-narrative';
 import { simCoreModule } from '@je/mod-sim-core';
 import { stubModules } from '@je/mod-stubs';
@@ -17,6 +18,7 @@ const KNOWN: readonly Module[] = [
   simCoreModule,
   workloadModule,
   choiceModule,
+  directorModule,
   narrativeModule,
 ];
 

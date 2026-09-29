@@ -1,12 +1,13 @@
 /* global process, console */
-// Folds the single-mode build (index.html + one JS file) into one self-contained HTML file.
+// Folds the single-mode build (index.html + one JS file) into self-contained HTML files:
+//   JobEx-play.html     opens in the player's last language, else the browser's
+//   JobEx-play-vi.html  opens in Vietnamese
+// Both work straight from disk (file:// blocks module scripts, so the script is inlined).
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
 const dist = resolve(import.meta.dirname, '..', 'dist-single');
-const out = resolve(
-  process.argv[2] ?? join(import.meta.dirname, '..', '..', '..', 'JobEx-play.html'),
-);
+const outDir = resolve(process.argv[2] ?? join(import.meta.dirname, '..', '..', '..'));
 
 const assets = join(dist, 'assets');
 const jsFiles = readdirSync(assets).filter((f) => f.endsWith('.js'));
@@ -23,8 +24,15 @@ const html = readFileSync(join(dist, 'index.html'), 'utf8');
 const tag = new RegExp('<script\\b[^>]*\\bsrc="[^"]*"[^>]*>' + '<\\/script>' + '\\s*');
 if (!tag.test(html)) throw new Error('no external script tag found in index.html');
 const stripped = html.replace(tag, '');
-writeFileSync(
-  out,
-  stripped.replace('</body>', () => `<script>${js}${CLOSE}>\n</body>`),
-);
-console.log(`wrote ${out}`);
+
+function write(name, prelude) {
+  const out = join(outDir, name);
+  writeFileSync(
+    out,
+    stripped.replace('</body>', () => `<script>${prelude}${js}${CLOSE}>\n</body>`),
+  );
+  console.log(`wrote ${out}`);
+}
+
+write('JobEx-play.html', '');
+write('JobEx-play-vi.html', 'window.JOBEX_FORCE_LANG="vi";');

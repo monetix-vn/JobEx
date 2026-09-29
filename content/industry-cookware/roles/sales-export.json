@@ -39,7 +39,7 @@
       "skill.analysis": 35,
       "skill.read_the_room": 30
     },
-    "dark_offers": ["offer.pad_forecast"]
+    "dark_offers": ["offer.pad_forecast", "offer.buyer_kickback"]
   },
   {
     "id": "role.sales.export.manager",

@@ -14,6 +14,7 @@
     "@je/kernel": "workspace:*",
     "@je/mod-choice": "workspace:*",
     "@je/mod-content": "workspace:*",
+    "@je/mod-director": "workspace:*",
     "@je/mod-narrative": "workspace:*",
     "@je/mod-sim-core": "workspace:*",
     "@je/mod-stubs": "workspace:*",

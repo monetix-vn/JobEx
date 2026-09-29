@@ -1,0 +1,146 @@
+{
+  "id": "scene.sales.quality_complaint",
+  "location": "loc.qc_lab",
+  "cast": ["role:buyer_contact", "role:qc_lead"],
+  "lines": [
+    {
+      "speaker": "role:buyer_contact",
+      "text_key": "scene.sales.quality_complaint.l1"
+    },
+    {
+      "speaker": "role:qc_lead",
+      "text_key": "scene.sales.quality_complaint.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sales.quality_complaint.c1",
+      "cost": {
+        "hours": 4,
+        "energy": 5
+      },
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.sales.quality_complaint.c1.ok",
+          "effects": [
+            {
+              "delta": "player.rep.qc",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 5
+            },
+            {
+              "delta": "company.audit_readiness",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.sales.quality_complaint.c1.fail",
+          "effects": [
+            {
+              "delta": "player.rep.buyer",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sales.quality_complaint.c2",
+      "outcomes": [
+        {
+          "p": 0.55,
+          "narration_key": "scene.sales.quality_complaint.c2.ok",
+          "effects": [
+            {
+              "delta": "player.rep.buyer",
+              "value": 4
+            },
+            {
+              "delta": "player.stress",
+              "value": -2
+            },
+            {
+              "fact": "fact.credit_above_limit",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.45,
+          "result": "fail",
+          "narration_key": "scene.sales.quality_complaint.c2.fail",
+          "effects": [
+            {
+              "delta": "player.rep.finance",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "fact": "fact.credit_above_limit",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sales.quality_complaint.c3",
+      "outcomes": [
+        {
+          "p": 0.5,
+          "narration_key": "scene.sales.quality_complaint.c3.ok",
+          "effects": [
+            {
+              "delta": "player.rep.buyer",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.blamed_forwarder",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.5,
+          "result": "fail",
+          "narration_key": "scene.sales.quality_complaint.c3.fail",
+          "effects": [
+            {
+              "delta": "player.rep.buyer",
+              "value": -7
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "fact": "fact.blamed_forwarder",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

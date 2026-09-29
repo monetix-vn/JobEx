@@ -2,19 +2,134 @@
   {
     "id": "event.sales.shipment_pull_in",
     "tags": ["buyer", "delivery", "pressure"],
-    "weight": 1,
-    "scene": "scene.sales.shipment_pull_in"
+    "weight": 1.2,
+    "scene": "scene.sales.shipment_pull_in",
+    "cooldown_weeks": 10
   },
   {
     "id": "event.sales.rfq_discount",
     "tags": ["buyer", "pricing", "pressure"],
     "weight": 1,
-    "scene": "scene.sales.rfq_discount"
+    "scene": "scene.sales.rfq_discount",
+    "cooldown_weeks": 8
   },
   {
     "id": "event.sales.forecast_meeting",
     "tags": ["forecast", "integrity", "pressure"],
+    "weight": 1.5,
+    "scene": "scene.sales.forecast_meeting",
+    "cooldown_weeks": 12,
+    "when": {
+      "in": ["world.month_of_year", 3, 6, 9, 12]
+    }
+  },
+  {
+    "id": "event.sales.payment_overdue",
+    "tags": ["finance", "buyer", "pressure"],
     "weight": 1,
-    "scene": "scene.sales.forecast_meeting"
+    "cooldown_weeks": 10,
+    "scene": "scene.sales.payment_overdue",
+    "when": {
+      "gte": ["world.month_of_year", 2]
+    }
+  },
+  {
+    "id": "event.sales.sample_request",
+    "tags": ["buyer", "samples"],
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.sales.sample_request"
+  },
+  {
+    "id": "event.sales.quality_complaint",
+    "tags": ["quality", "buyer", "pressure"],
+    "weight": 1,
+    "cooldown_weeks": 14,
+    "scene": "scene.sales.quality_complaint"
+  },
+  {
+    "id": "event.sales.tet_rush",
+    "tags": ["seasonal", "delivery", "pressure"],
+    "weight": 2.5,
+    "cooldown_weeks": 30,
+    "scene": "scene.sales.tet_rush",
+    "when": {
+      "in": ["world.month_of_year", 12, 1]
+    }
+  },
+  {
+    "id": "event.sales.buyer_gift",
+    "tags": ["integrity", "buyer", "dark"],
+    "weight": 0.7,
+    "cooldown_weeks": 20,
+    "scene": "scene.sales.buyer_gift",
+    "when": {
+      "gte": ["player.rep.buyer", 45]
+    }
+  },
+  {
+    "id": "event.sales.backdate_invoice",
+    "tags": ["integrity", "quarter_end", "dark"],
+    "weight": 1.2,
+    "cooldown_weeks": 12,
+    "scene": "scene.sales.backdate_invoice",
+    "when": {
+      "in": ["world.month_of_year", 3, 6, 9, 12]
+    }
+  },
+  {
+    "id": "event.sales.competitor_quote",
+    "tags": ["pricing", "competition", "pressure"],
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.sales.competitor_quote"
+  },
+  {
+    "id": "event.sales.overtime_request",
+    "tags": ["workload", "colleagues"],
+    "weight": 1.3,
+    "cooldown_weeks": 10,
+    "scene": "scene.sales.overtime_request",
+    "when": {
+      "gte": ["player.stress", 40]
+    }
+  },
+  {
+    "id": "event.sales.customs_docs",
+    "tags": ["logistics", "compliance", "dark"],
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.sales.customs_docs"
+  },
+  {
+    "id": "event.sales.kpi_review",
+    "tags": ["review", "boss", "pressure"],
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.sales.kpi_review"
+  },
+  {
+    "id": "event.sales.fx_price",
+    "tags": ["finance", "pricing", "dark"],
+    "weight": 0.8,
+    "cooldown_weeks": 20,
+    "scene": "scene.sales.fx_price"
+  },
+  {
+    "id": "event.sales.new_hire_mentor",
+    "tags": ["colleagues"],
+    "weight": 0.8,
+    "cooldown_weeks": 16,
+    "scene": "scene.sales.new_hire_mentor"
+  },
+  {
+    "id": "event.sales.trade_fair",
+    "tags": ["marketing", "buyer"],
+    "weight": 1.2,
+    "cooldown_weeks": 40,
+    "scene": "scene.sales.trade_fair",
+    "when": {
+      "in": ["world.month_of_year", 1, 2, 8]
+    }
   }
 ]

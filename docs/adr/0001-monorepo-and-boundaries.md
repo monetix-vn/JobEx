@@ -44,10 +44,20 @@ seed.
   a UI hint.
 - **Facts and schedule effects** are passed through `choice.resolved.effects` for `mod-knowledge`
   and `mod-director` (block B); nothing consumes them yet.
-- **Workload includes `overheadHours`** (default 22) for meetings and admin the role's task list does
+- **Workload includes `overheadHours`** (default 24) for meetings and admin the role's task list does
   not cover; without it a role never overloads. Balance numbers are first-cut.
 - The browser build bundles Ajv, which compiles schemas with `new Function`; it would need
   `unsafe-eval` under a strict CSP. Pack validation could move to build time if that matters.
+
+- **`mod-director`** owns the event pool and the schedule: due scheduled events first, then a
+  weighted draw without replacement from events whose `when` holds, off cooldown. Conditions that
+  cannot be evaluated count as false. Effects of type `schedule` (on an event or a resolved choice)
+  queue a later event. Tension curve, arcs and pacing by tag are deferred.
+- **Language switching replays inputs.** The simulation never reads the locale, so a new run in the
+  other language, fed the recorded between-turn inputs, reaches the identical state
+  (`fastForward` in the demo host; tested). This is the first user-visible use of determinism.
+- **Scenes, effects and reputation are first-cut content** written by an AI assistant for review; a
+  practitioner sign-off is still required before any of it is treated as realistic.
 
 ## Consequences
 

@@ -1,0 +1,160 @@
+{
+  "id": "scene.sales.tet_rush",
+  "location": "loc.factory_floor",
+  "cast": ["role:production_lead", "role:boss"],
+  "lines": [
+    {
+      "speaker": "role:production_lead",
+      "text_key": "scene.sales.tet_rush.l1"
+    },
+    {
+      "speaker": "role:boss",
+      "text_key": "scene.sales.tet_rush.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sales.tet_rush.c1",
+      "cost": {
+        "hours": 3
+      },
+      "requires": {
+        "gte": ["skill.analysis", 30]
+      },
+      "outcomes": [
+        {
+          "p": 0.75,
+          "narration_key": "scene.sales.tet_rush.c1.ok",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -1
+            },
+            {
+              "delta": "player.rep.production",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "p": 0.25,
+          "result": "fail",
+          "narration_key": "scene.sales.tet_rush.c1.fail",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sales.tet_rush.c2",
+      "cost": {
+        "energy": 10,
+        "hours": 8
+      },
+      "outcomes": [
+        {
+          "p": 0.5,
+          "narration_key": "scene.sales.tet_rush.c2.ok",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": 5
+            },
+            {
+              "delta": "player.rep.production",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "p": 0.5,
+          "result": "fail",
+          "narration_key": "scene.sales.tet_rush.c2.fail",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "delta": "player.rep.production",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sales.tet_rush.c3",
+      "outcomes": [
+        {
+          "p": 0.4,
+          "narration_key": "scene.sales.tet_rush.c3.ok",
+          "effects": [
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 2
+            },
+            {
+              "fact": "fact.promised_unrealistic_date",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.6,
+          "result": "fail",
+          "narration_key": "scene.sales.tet_rush.c3.fail",
+          "effects": [
+            {
+              "delta": "player.rep.buyer",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.promised_unrealistic_date",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

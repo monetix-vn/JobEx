@@ -1,0 +1,133 @@
+{
+  "id": "scene.sales.fx_price",
+  "location": "loc.finance_office",
+  "cast": ["role:finance_lead"],
+  "lines": [
+    {
+      "speaker": "role:finance_lead",
+      "text_key": "scene.sales.fx_price.l1"
+    },
+    {
+      "speaker": "role:finance_lead",
+      "text_key": "scene.sales.fx_price.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sales.fx_price.c1",
+      "cost": {
+        "hours": 3
+      },
+      "requires": {
+        "gte": ["skill.negotiation", 35]
+      },
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.sales.fx_price.c1.ok",
+          "effects": [
+            {
+              "delta": "player.rep.finance",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -1
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.sales.fx_price.c1.fail",
+          "effects": [
+            {
+              "delta": "player.rep.finance",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sales.fx_price.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.sales.fx_price.c2.ok",
+          "effects": [
+            {
+              "delta": "player.rep.buyer",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": -2
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sales.fx_price.c3",
+      "outcomes": [
+        {
+          "p": 0.5,
+          "narration_key": "scene.sales.fx_price.c3.ok",
+          "effects": [
+            {
+              "delta": "player.rep.finance",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": -4
+            },
+            {
+              "fact": "fact.silent_spec_change",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.5,
+          "result": "fail",
+          "narration_key": "scene.sales.fx_price.c3.fail",
+          "effects": [
+            {
+              "delta": "player.rep.buyer",
+              "value": -10
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 8
+            },
+            {
+              "fact": "fact.silent_spec_change",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

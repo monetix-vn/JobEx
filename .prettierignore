@@ -2,5 +2,6 @@ node_modules
 dist
 dist-single
 JobEx-play.html
+JobEx-play-vi.html
 pnpm-lock.yaml
 *.md

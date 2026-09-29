@@ -23,7 +23,14 @@ const bannedGlobals = [
 
 export default tseslint.config(
   {
-    ignores: ['**/dist/**', '**/dist-single/**', '**/node_modules/**', 'out/**', 'JobEx-play.html'],
+    ignores: [
+      '**/dist/**',
+      '**/dist-single/**',
+      '**/node_modules/**',
+      'out/**',
+      'JobEx-play.html',
+      'JobEx-play-vi.html',
+    ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,

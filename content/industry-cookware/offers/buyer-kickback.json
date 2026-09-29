@@ -1,0 +1,25 @@
+{
+  "id": "offer.buyer_kickback",
+  "from": "archetype.buyer_purchasing",
+  "payoff": {
+    "money_vnd": 5000000,
+    "rep.buyer": 4
+  },
+  "pressure": {
+    "deadline_weeks": 1,
+    "threat": "lost_account"
+  },
+  "justification_key": "offer.buyer_kickback.why",
+  "traces": [
+    {
+      "type": "invoice",
+      "visibility": 0.5,
+      "detectors": ["finance", "internal_audit"]
+    }
+  ],
+  "ratchet": {
+    "leverage_delta": 15,
+    "exit_cost": 20
+  },
+  "educational_note": "kb.split_invoices"
+}
