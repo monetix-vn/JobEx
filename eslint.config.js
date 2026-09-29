@@ -22,7 +22,9 @@ const bannedGlobals = [
 ].map((name) => ({ name, message: 'Modules never touch the browser or network; use a port.' }));
 
 export default tseslint.config(
-  { ignores: ['**/dist/**', '**/node_modules/**', 'out/**'] },
+  {
+    ignores: ['**/dist/**', '**/dist-single/**', '**/node_modules/**', 'out/**', 'JobEx-play.html'],
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
