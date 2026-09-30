@@ -1,0 +1,130 @@
+{
+  "id": "scene.qc.sample_size_cut",
+  "location": "loc.qc_lab",
+  "cast": ["role:production_lead"],
+  "lines": [
+    {
+      "speaker": "role:production_lead",
+      "text_key": "scene.qc.sample_size_cut.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.qc.sample_size_cut.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.85,
+          "narration_key": "scene.qc.sample_size_cut.c1.ok",
+          "effects": [
+            {
+              "delta": "player.rep.qc",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.production",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "p": 0.15,
+          "result": "fail",
+          "narration_key": "scene.qc.sample_size_cut.c1.fail",
+          "effects": [
+            {
+              "delta": "player.rep.production",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.qc.sample_size_cut.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.qc.sample_size_cut.c2.ok",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.production",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.qc.sample_size_cut.c3",
+      "outcomes": [
+        {
+          "p": 0.85,
+          "narration_key": "scene.qc.sample_size_cut.c3.ok",
+          "effects": [
+            {
+              "delta": "player.rep.production",
+              "value": 4
+            },
+            {
+              "fact": "fact.cut_sample_size",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.15,
+          "result": "fail",
+          "narration_key": "scene.qc.sample_size_cut.c3.fail",
+          "effects": [
+            {
+              "delta": "player.rep.buyer",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.cut_sample_size",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": ["term.aql"]
+}

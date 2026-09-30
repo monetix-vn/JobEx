@@ -1,0 +1,104 @@
+[
+  {
+    "id": "fact.cut_sample_size",
+    "category": "integrity",
+    "severity": 3,
+    "text_key": "fact.cut_sample_size",
+    "lesson_key": "lesson.cut_sample_size",
+    "consequences": {
+      "witnessed": {
+        "boss": -4,
+        "production": -2
+      },
+      "public": {
+        "boss": -8,
+        "buyer": -8
+      }
+    }
+  },
+  {
+    "id": "fact.released_reworked_lot",
+    "category": "integrity",
+    "severity": 3,
+    "text_key": "fact.released_reworked_lot",
+    "lesson_key": "lesson.released_reworked_lot",
+    "consequences": {
+      "witnessed": {
+        "boss": -4,
+        "buyer": -3
+      },
+      "public": {
+        "boss": -8,
+        "buyer": -8
+      }
+    }
+  },
+  {
+    "id": "fact.guessed_failed_lot",
+    "category": "integrity",
+    "severity": 3,
+    "text_key": "fact.guessed_failed_lot",
+    "lesson_key": "lesson.guessed_failed_lot",
+    "consequences": {
+      "witnessed": {
+        "boss": -4,
+        "qc": -3
+      },
+      "public": {
+        "boss": -8,
+        "buyer": -6
+      }
+    }
+  },
+  {
+    "id": "fact.loosened_spec_to_pass",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.loosened_spec_to_pass",
+    "lesson_key": "lesson.loosened_spec_to_pass",
+    "consequences": {
+      "witnessed": {
+        "boss": -5,
+        "buyer": -5
+      },
+      "public": {
+        "boss": -10,
+        "buyer": -10
+      }
+    }
+  },
+  {
+    "id": "fact.altered_inspection_records",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.altered_inspection_records",
+    "lesson_key": "lesson.altered_inspection_records",
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "qc": -4
+      },
+      "public": {
+        "boss": -10,
+        "qc": -8
+      }
+    }
+  },
+  {
+    "id": "fact.fast_tracked_supplier",
+    "category": "integrity",
+    "severity": 3,
+    "text_key": "fact.fast_tracked_supplier",
+    "lesson_key": "lesson.fast_tracked_supplier",
+    "consequences": {
+      "witnessed": {
+        "boss": -4,
+        "production": -3
+      },
+      "public": {
+        "boss": -8,
+        "buyer": -6
+      }
+    }
+  }
+]

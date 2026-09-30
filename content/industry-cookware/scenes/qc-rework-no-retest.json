@@ -1,0 +1,129 @@
+{
+  "id": "scene.qc.rework_no_retest",
+  "location": "loc.factory_floor",
+  "cast": ["role:production_lead"],
+  "lines": [
+    {
+      "speaker": "role:production_lead",
+      "text_key": "scene.qc.rework_no_retest.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.qc.rework_no_retest.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.qc.rework_no_retest.c1.ok",
+          "effects": [
+            {
+              "delta": "player.rep.qc",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.production",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.qc.rework_no_retest.c1.fail",
+          "effects": [
+            {
+              "delta": "player.rep.production",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.qc.rework_no_retest.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.qc.rework_no_retest.c2.ok",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.production",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.qc.rework_no_retest.c3",
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.qc.rework_no_retest.c3.ok",
+          "effects": [
+            {
+              "delta": "player.rep.production",
+              "value": 4
+            },
+            {
+              "fact": "fact.released_reworked_lot",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.qc.rework_no_retest.c3.fail",
+          "effects": [
+            {
+              "delta": "player.rep.buyer",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.released_reworked_lot",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

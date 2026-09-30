@@ -1,0 +1,133 @@
+{
+  "id": "scene.qc.mislabeled_sample",
+  "location": "loc.qc_lab",
+  "cast": ["role:lab_tech"],
+  "lines": [
+    {
+      "speaker": "role:lab_tech",
+      "text_key": "scene.qc.mislabeled_sample.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.qc.mislabeled_sample.c1",
+      "cost": {
+        "hours": 4
+      },
+      "outcomes": [
+        {
+          "p": 0.9,
+          "narration_key": "scene.qc.mislabeled_sample.c1.ok",
+          "effects": [
+            {
+              "delta": "player.rep.qc",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.production",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "p": 0.1,
+          "result": "fail",
+          "narration_key": "scene.qc.mislabeled_sample.c1.fail",
+          "effects": [
+            {
+              "delta": "player.rep.qc",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.production",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.qc.mislabeled_sample.c2",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.qc.mislabeled_sample.c2.ok",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.qc.mislabeled_sample.c3",
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.qc.mislabeled_sample.c3.ok",
+          "effects": [
+            {
+              "delta": "player.rep.production",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.guessed_failed_lot",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.qc.mislabeled_sample.c3.fail",
+          "effects": [
+            {
+              "delta": "player.rep.buyer",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.guessed_failed_lot",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

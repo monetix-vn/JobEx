@@ -9,11 +9,11 @@ Last updated after the authoring toolchain. Repo: github.com/monetix-vn/JobEx.
 - Phase 1 block A: sim-core, workload, choice, narrative; first Sales Specialist scenes.
 - Phase 1 block B: director, knowledge (facts), social (gossip, reputation), live VI/EN switch.
 - Phase 1 block C: risk (detectors, audits, scapegoating, endings), education (debrief, glossary).
-- Second job: QC Specialist (10 pressure events, 2 consequence events, 21 facts, 11 terms), a job picker,
+- Second job: QC Specialist (16 pressure events, 2 consequence events, 27 facts, 12 terms; six added via `pnpm author`, source in content-src/qc-batch2.yml), a job picker,
   per-job events (`role`) and busyness (`overhead_hours`).
 - Authoring: write scenes/facts/terms in YAML (EN+VI together), `pnpm author` imports + validates,
   `pnpm content:list` is the event library (docs/AUTHORING.md, example in `content-src/examples/`).
-- Playable in the browser: `play.bat` / `play-vi.bat` (pick a job; sales 18 events, QC 12).
+- Playable in the browser: `play.bat` / `play-vi.bat` (pick a job; sales 18 events, QC 18).
 
 ## Branches
 
@@ -23,7 +23,7 @@ Last updated after the authoring toolchain. Repo: github.com/monetix-vn/JobEx.
 ## Next (in order)
 
 1. Finance & Accounting role pack (workload and dark temptation), the third job for the Phase 1 gate.
-   QC has 10 pressure events (about 35 to 45 decisions a year); it needs more to match sales (about 65).
+   QC now has 16 pressure events; keep adding with `pnpm author` to match sales (about 65 decisions a year).
 2. Per-person relationship graph (trust, loyalty, favours owed) in mod-social.
 3. Planner and walkable map in the client (block D), persistence (saves), time-scale setting.
 4. `mod-i18n` as a real module (live language switching is currently in `tools/demo-host`).

@@ -1,0 +1,365 @@
+# QC batch 2: six more pressure events. First drafts, need review by someone who has worked in QC.
+scene: qc.sample_size_cut
+place: qc_lab
+tags: [quality, lab, pressure]
+cooldown: 12
+when: [turn >= 4]
+terms: [aql]
+lines:
+  - who: production_lead
+    en: 'Inspecting 50 pieces out of this lot takes half a day. Check 10 and call it done, we have a truck waiting.'
+    vi: 'Kiểm 50 cái trong lô này mất nửa ngày. Kiểm 10 cái thôi rồi chốt, xe đang chờ.'
+choices:
+  - en: 'Hold to the sampling plan and inspect the full sample.'
+    vi: 'Giữ đúng kế hoạch lấy mẫu và kiểm đủ số mẫu.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.85
+        en: 'The truck leaves two hours late. The lot is clean and nobody can argue with the records.'
+        vi: 'Xe rời đi trễ hai tiếng. Lô hàng đạt và hồ sơ không ai bắt bẻ được.'
+        effects: [rep.qc +2, rep.production -2, stress +1]
+      - p: 0.15
+        ok: false
+        en: 'Sample 38 turns up a cracked handle. The lot is held and production is furious.'
+        vi: 'Mẫu thứ 38 bị nứt tay cầm. Lô hàng bị giữ và bên sản xuất rất bực.'
+        effects: [rep.production -5, rep.boss +1, stress +3]
+  - en: 'Inspect 25 pieces and record the reduced sample openly.'
+    vi: 'Kiểm 25 cái và ghi rõ việc giảm cỡ mẫu trong hồ sơ.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'Your lead accepts the note. It is a risk, but it is written down and approved.'
+        vi: 'Trưởng nhóm chấp nhận ghi chú. Có rủi ro, nhưng đã được ghi lại và duyệt.'
+        effects: [rep.boss +2, rep.production -1, stress +1]
+  - en: 'Check 10 and record a full-sample result.'
+    vi: 'Kiểm 10 cái và ghi kết quả như đã kiểm đủ mẫu.'
+    outcomes:
+      - p: 0.85
+        en: 'The truck leaves on time. The record says 50 pieces.'
+        vi: 'Xe đi đúng giờ. Hồ sơ ghi 50 cái.'
+        effects: [rep.production +4, fact cut_sample_size private]
+      - p: 0.15
+        ok: false
+        en: 'A buyer finds a defect in the uninspected part of the lot. The short sample is the first thing they ask about.'
+        vi: 'Khách hàng phát hiện lỗi ở phần chưa kiểm của lô. Việc giảm mẫu là điều đầu tiên họ hỏi.'
+        effects: [rep.buyer -6, rep.boss -4, stress +3, fact cut_sample_size witnessed]
+---
+scene: qc.rework_no_retest
+place: factory_floor
+tags: [quality, release, pressure]
+cooldown: 14
+when: [turn >= 6]
+lines:
+  - who: production_lead
+    en: 'We reworked the failed lot over the weekend. It is fine now. Can you just release it without another full test?'
+    vi: 'Cuối tuần bọn em đã làm lại lô lỗi rồi. Giờ ổn rồi. Anh cho xuất luôn mà không cần kiểm lại toàn bộ được không?'
+choices:
+  - en: 'Retest the whole lot before release.'
+    vi: 'Kiểm lại toàn bộ lô trước khi xuất.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.8
+        en: 'It passes. Release is a day late and production mutters about trust.'
+        vi: 'Đạt. Xuất hàng trễ một ngày và bên sản xuất than phiền về sự tin tưởng.'
+        effects: [rep.qc +2, rep.production -2, stress +1]
+      - p: 0.2
+        ok: false
+        en: 'The retest finds the rework missed one defect type. The lot goes back.'
+        vi: 'Kiểm lại cho thấy việc làm lại bỏ sót một dạng lỗi. Lô hàng bị trả về.'
+        effects: [rep.production -4, rep.boss +2, stress +2]
+  - en: 'Retest a risk-based sample and release if it is clean.'
+    vi: 'Kiểm lại một mẫu theo rủi ro và xuất nếu đạt.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'The sample is clean, the release is documented, and everyone moves on.'
+        vi: 'Mẫu đạt, việc xuất hàng có hồ sơ đầy đủ và mọi người tiếp tục công việc.'
+        effects: [rep.boss +2, rep.production +1, stress +1]
+  - en: "Release it on production's word."
+    vi: 'Cho xuất theo lời bên sản xuất.'
+    outcomes:
+      - p: 0.8
+        en: 'It ships. Nobody writes down that it was never retested.'
+        vi: 'Hàng đi. Không ai ghi lại rằng lô này chưa từng được kiểm lại.'
+        effects: [rep.production +4, fact released_reworked_lot private]
+      - p: 0.2
+        ok: false
+        en: 'A customer complaint names that lot. The record shows no retest.'
+        vi: 'Một khiếu nại của khách nêu đúng lô đó. Hồ sơ không có lần kiểm lại nào.'
+        effects: [rep.buyer -5, rep.boss -5, stress +3, fact released_reworked_lot witnessed]
+---
+scene: qc.mislabeled_sample
+place: qc_lab
+tags: [lab, integrity]
+cooldown: 16
+lines:
+  - who: lab_tech
+    en: 'I think I mixed up two sample labels this morning. One of them failed. I am not sure which lot it belongs to.'
+    vi: 'Em nghĩ sáng nay em nhầm nhãn của hai mẫu. Một mẫu không đạt. Em không chắc nó thuộc lô nào.'
+choices:
+  - en: 'Hold both lots and retest both from fresh samples.'
+    vi: 'Giữ cả hai lô và lấy mẫu mới kiểm lại cả hai.'
+    cost: { hours: 4 }
+    outcomes:
+      - p: 0.9
+        en: 'Both lots are retested and clear. You add a labelling check to the lab routine.'
+        vi: 'Cả hai lô được kiểm lại và đạt. Anh bổ sung bước kiểm tra nhãn vào quy trình phòng lab.'
+        effects: [rep.qc +3, rep.production -2, stress +2]
+      - p: 0.1
+        ok: false
+        en: 'One lot really is bad. Holding both was the right call, but production pays for it.'
+        vi: 'Một lô thật sự lỗi. Giữ cả hai là đúng, nhưng bên sản xuất phải chịu thiệt.'
+        effects: [rep.qc +2, rep.production -5, stress +3]
+  - en: 'Retest the lot more likely to have failed and log the mix-up.'
+    vi: 'Kiểm lại lô có khả năng lỗi cao hơn và ghi nhận việc nhầm nhãn.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: 'The logged mix-up is uncomfortable for the lab, but it is honest and traceable.'
+        vi: 'Việc ghi nhận nhầm nhãn làm phòng lab hơi ngại, nhưng trung thực và truy vết được.'
+        effects: [rep.boss +2, rep.qc +1, stress +1]
+  - en: 'Assign the failing result to the lot that was already late and move on.'
+    vi: 'Gán kết quả không đạt cho lô đã trễ sẵn rồi bỏ qua.'
+    outcomes:
+      - p: 0.8
+        en: 'One lot is quietly scrapped and the other released. Nobody is sure it was the right one.'
+        vi: 'Một lô bị âm thầm loại bỏ, lô kia được xuất. Không ai chắc đó là lô đúng.'
+        effects: [rep.production +1, stress +1, fact guessed_failed_lot private]
+      - p: 0.2
+        ok: false
+        en: 'The released lot fails in the field. You cannot show which result belonged to it.'
+        vi: 'Lô được xuất bị lỗi ngoài thị trường. Anh không thể chứng minh kết quả nào thuộc về lô đó.'
+        effects: [rep.buyer -6, rep.boss -5, stress +4, fact guessed_failed_lot witnessed]
+---
+scene: qc.spec_change_pressure
+place: meeting_room
+tags: [quality, pressure, politics]
+cooldown: 20
+when: [turn >= 10]
+lines:
+  - who: boss
+    en: 'The buyer keeps failing on wall thickness. Sales suggests we widen the tolerance in our own spec so it passes.'
+    vi: 'Khách cứ không đạt ở độ dày thành. Bên kinh doanh đề nghị nới dung sai trong tiêu chuẩn của mình cho đạt.'
+  - who: qc_lead
+    en: 'It is your signature on the spec review. Think about it.'
+    vi: 'Chữ ký của anh nằm trên bản rà soát tiêu chuẩn. Anh cân nhắc đi.'
+choices:
+  - en: 'Keep the spec and show the data on why the tolerance exists.'
+    vi: 'Giữ tiêu chuẩn và trình bày số liệu về lý do dung sai như vậy.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.7
+        en: 'The data holds up. Sales is annoyed, but the boss backs the spec.'
+        vi: 'Số liệu thuyết phục. Bên kinh doanh khó chịu nhưng sếp ủng hộ tiêu chuẩn.'
+        effects: [rep.qc +3, rep.boss +2, stress +1]
+      - p: 0.3
+        ok: false
+        en: 'You are told you are being inflexible. The issue stays open and so does the tension.'
+        vi: 'Anh bị cho là cứng nhắc. Vấn đề vẫn treo và căng thẳng cũng vậy.'
+        effects: [rep.boss -3, stress +3]
+  - en: 'Propose a formal deviation with the buyer for this order only.'
+    vi: 'Đề xuất với khách một biên bản chấp thuận sai lệch chỉ cho đơn này.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'The buyer signs the deviation. It costs a week of emails and it is clean.'
+        vi: 'Khách ký chấp thuận sai lệch. Mất một tuần trao đổi email nhưng rất rõ ràng.'
+        effects: [rep.buyer +1, rep.boss +3, stress +1]
+  - en: 'Quietly widen the tolerance in the spec and re-issue it.'
+    vi: 'Âm thầm nới dung sai trong tiêu chuẩn và ban hành lại.'
+    outcomes:
+      - p: 0.75
+        en: 'The orders pass. The buyer does not know the spec changed under them.'
+        vi: 'Các đơn hàng đều đạt. Khách không biết tiêu chuẩn đã bị đổi.'
+        effects: [rep.boss +4, rep.buyer +2, fact loosened_spec_to_pass private]
+      - p: 0.25
+        ok: false
+        en: "The buyer's auditor compares the spec revision dates against their order dates."
+        vi: 'Kiểm toán viên của khách so ngày sửa tiêu chuẩn với ngày đặt hàng.'
+        effects: [rep.buyer -8, rep.boss -5, stress +4, fact loosened_spec_to_pass public]
+---
+scene: qc.overtime_blame
+place: qc_lab
+tags: [people, pressure]
+cooldown: 14
+when: [stress >= 30]
+lines:
+  - who: qc_lead
+    en: 'Line 2 defects are up again. Production says QC is letting too many through and is asking for your records to prove it.'
+    vi: 'Lỗi ở chuyền 2 lại tăng. Bên sản xuất nói QC để lọt quá nhiều và đòi xem hồ sơ của anh để chứng minh.'
+choices:
+  - en: 'Open the records, show the trend, and ask for a joint review.'
+    vi: 'Mở hồ sơ, cho xem xu hướng và đề nghị cùng rà soát.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.75
+        en: 'The records show the defects started upstream. The blame moves, and so does the pressure.'
+        vi: 'Hồ sơ cho thấy lỗi bắt đầu từ công đoạn trước. Trách nhiệm được chuyển, áp lực cũng vậy.'
+        effects: [rep.qc +3, rep.production -1, stress +1]
+      - p: 0.25
+        ok: false
+        en: 'The review finds two items you should have flagged. You own them in front of everyone.'
+        vi: 'Buổi rà soát tìm ra hai mục lẽ ra anh phải báo. Anh nhận lỗi trước mọi người.'
+        effects: [rep.qc -2, rep.boss +2, stress +3]
+  - en: 'Hand over a summary and keep the raw records for the lead.'
+    vi: 'Đưa bản tóm tắt và giữ hồ sơ gốc cho trưởng nhóm.'
+    outcomes:
+      - p: 1
+        en: "It calms the room for now, but production feels kept at arm's length."
+        vi: 'Tạm làm dịu không khí, nhưng bên sản xuất cảm thấy bị giữ khoảng cách.'
+        effects: [rep.boss +1, rep.production -2, stress +1]
+  - en: 'Adjust a few entries so your inspections look stricter than they were.'
+    vi: 'Sửa vài dòng để việc kiểm của anh trông chặt chẽ hơn thực tế.'
+    outcomes:
+      - p: 0.7
+        en: 'The records look solid and the argument ends.'
+        vi: 'Hồ sơ trông rất chắc và cuộc tranh cãi kết thúc.'
+        effects: [rep.qc +2, rep.production -1, stress -1, fact altered_inspection_records private]
+      - p: 0.3
+        ok: false
+        en: 'A timestamp does not match the lab log. Someone notices.'
+        vi: 'Một mốc thời gian không khớp với nhật ký phòng lab. Có người nhận ra.'
+        effects: [rep.qc -6, rep.boss -6, stress +4, fact altered_inspection_records witnessed]
+---
+scene: qc.new_supplier_trial
+place: qc_lab
+tags: [supplier, materials]
+cooldown: 18
+when: [turn >= 8]
+terms: [coa]
+lines:
+  - who: purchasing
+    en: 'We have a cheaper steel supplier. First delivery is here. Their paperwork is thin but the price saves us a lot. Can we fast-track it?'
+    vi: 'Mình có nhà cung cấp thép rẻ hơn. Lô đầu đã về. Giấy tờ của họ khá sơ sài nhưng giá tiết kiệm được nhiều. Duyệt nhanh được không?'
+choices:
+  - en: 'Run the full qualification checks before accepting.'
+    vi: 'Chạy đầy đủ các kiểm tra đánh giá nhà cung cấp trước khi nhận.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.75
+        en: 'The steel passes. Purchasing grumbles about the delay but has a documented supplier.'
+        vi: 'Thép đạt. Bộ phận mua hàng than chậm nhưng có một nhà cung cấp được đánh giá đàng hoàng.'
+        effects: [rep.qc +2, rep.boss +1, stress +1]
+      - p: 0.25
+        ok: false
+        en: 'Hardness is off-spec. The supplier is rejected and the savings vanish.'
+        vi: 'Độ cứng không đạt. Nhà cung cấp bị loại và khoản tiết kiệm biến mất.'
+        effects: [rep.qc +3, rep.boss -2, stress +2]
+  - en: 'Accept on a limited first lot, with extra testing on each delivery.'
+    vi: 'Nhận thử một lô đầu giới hạn, kiểm thêm ở mỗi lần giao.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'A controlled trial. The risk is small and written down.'
+        vi: 'Một đợt chạy thử có kiểm soát. Rủi ro nhỏ và được ghi lại.'
+        effects: [rep.boss +3, rep.qc +1, stress +1]
+  - en: "Fast-track it on the supplier's own certificate."
+    vi: 'Duyệt nhanh dựa trên chứng nhận của chính nhà cung cấp.'
+    outcomes:
+      - p: 0.75
+        en: 'Purchasing is delighted. The material goes straight to the line.'
+        vi: 'Bộ phận mua hàng rất vui. Vật liệu lên thẳng chuyền.'
+        effects: [rep.boss +3, stress -1, fact fast_tracked_supplier private]
+      - p: 0.25
+        ok: false
+        en: "Two weeks later a batch cracks in the field. The supplier's file has no independent test."
+        vi: 'Hai tuần sau một lô bị nứt ngoài thị trường. Hồ sơ nhà cung cấp không có kiểm nghiệm độc lập nào.'
+        effects: [rep.qc -5, rep.boss -5, stress +4, fact fast_tracked_supplier public]
+---
+term: aql
+en:
+  term: AQL
+  definition: 'Acceptable Quality Limit: the worst average defect rate that still counts as acceptable when sampling a lot.'
+vi:
+  term: AQL
+  definition: 'Mức chất lượng chấp nhận được: tỷ lệ lỗi trung bình tệ nhất vẫn được xem là đạt khi lấy mẫu một lô.'
+---
+fact: cut_sample_size
+severity: 3
+category: integrity
+en: 'you recorded a full sample when you only inspected part of it'
+vi: 'bạn ghi đã kiểm đủ mẫu trong khi thực tế chỉ kiểm một phần'
+lesson:
+  en: 'A sampling plan is what makes a result mean something. Recording more than you inspected makes the result worthless and the record false.'
+  vi: 'Kế hoạch lấy mẫu là thứ khiến một kết quả có ý nghĩa. Ghi nhiều hơn số đã kiểm làm kết quả vô giá trị và hồ sơ sai sự thật.'
+witnessed:
+  boss: -4
+  production: -2
+public:
+  boss: -8
+  buyer: -8
+---
+fact: released_reworked_lot
+severity: 3
+category: integrity
+en: 'you released a reworked lot without retesting it'
+vi: 'bạn cho xuất một lô làm lại mà không kiểm lại'
+lesson:
+  en: 'Rework changes the product, so the old test no longer applies. A reworked lot must be verified again.'
+  vi: 'Làm lại thay đổi sản phẩm nên kết quả kiểm cũ không còn áp dụng. Lô làm lại phải được xác nhận lại.'
+witnessed:
+  boss: -4
+  buyer: -3
+public:
+  boss: -8
+  buyer: -8
+---
+fact: guessed_failed_lot
+severity: 3
+category: integrity
+en: 'you guessed which lot a failed result belonged to'
+vi: 'bạn đoán kết quả không đạt thuộc lô nào'
+lesson:
+  en: 'When traceability breaks, the honest answer is to hold everything affected. A guess puts the risk on someone else.'
+  vi: 'Khi truy vết bị đứt, cách trung thực là giữ mọi thứ bị ảnh hưởng. Đoán là đẩy rủi ro sang người khác.'
+witnessed:
+  boss: -4
+  qc: -3
+public:
+  boss: -8
+  buyer: -6
+---
+fact: loosened_spec_to_pass
+severity: 4
+category: integrity
+en: 'you loosened the spec so the orders would pass'
+vi: 'bạn nới tiêu chuẩn để các đơn hàng đạt'
+lesson:
+  en: "Changing the spec to fit the product is not quality control. A spec change needs a review, a record and usually the customer's agreement."
+  vi: 'Đổi tiêu chuẩn cho vừa sản phẩm không phải là kiểm soát chất lượng. Đổi tiêu chuẩn cần rà soát, hồ sơ và thường cả sự đồng ý của khách.'
+witnessed:
+  boss: -5
+  buyer: -5
+public:
+  boss: -10
+  buyer: -10
+---
+fact: altered_inspection_records
+severity: 4
+category: integrity
+en: 'you altered inspection records to look stricter'
+vi: 'bạn sửa hồ sơ kiểm tra để trông chặt chẽ hơn'
+lesson:
+  en: 'Records are the evidence of your work. Editing them after the fact turns a disagreement into falsification.'
+  vi: 'Hồ sơ là bằng chứng công việc của bạn. Sửa sau sự việc biến một tranh luận thành làm giả.'
+witnessed:
+  boss: -6
+  qc: -4
+public:
+  boss: -10
+  qc: -8
+---
+fact: fast_tracked_supplier
+severity: 3
+category: integrity
+en: 'you fast-tracked a new supplier on its own paperwork'
+vi: 'bạn duyệt nhanh nhà cung cấp mới chỉ dựa trên giấy tờ của họ'
+lesson:
+  en: "A supplier's own certificate is a claim, not evidence. A new supplier needs independent verification before the material reaches the line."
+  vi: 'Chứng nhận của chính nhà cung cấp chỉ là lời khẳng định, không phải bằng chứng. Nhà cung cấp mới cần được xác minh độc lập trước khi vật liệu lên chuyền.'
+witnessed:
+  boss: -4
+  production: -3
+public:
+  boss: -8
+  buyer: -6
