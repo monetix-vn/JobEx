@@ -20,14 +20,16 @@ Last updated after the authoring toolchain. Repo: github.com/monetix-vn/JobEx.
 `main` (Phase 0) <- `phase-1-block-a` <- `phase-1-block-c` <- `chore/dev-workflow` <-
 `phase-1-qc-role` <- `feature/authoring` (this). No PRs opened yet. Block B commits are inside `phase-1-block-a`/`c` history.
 
-## Next (in order)
+## Next (in order) - revised 2026-09-30 by the owner: engine first, then a series bible, then scenes
 
-1. Finance & Accounting role pack (workload and dark temptation), the third job for the Phase 1 gate.
-   QC now has 16 pressure events; keep adding with `pnpm author` to match sales (about 65 decisions a year).
-2. Per-person relationship graph (trust, loyalty, favours owed) in mod-social.
-3. Planner and walkable map in the client (block D), persistence (saves), time-scale setting.
-4. `mod-i18n` as a real module (live language switching is currently in `tools/demo-host`).
-5. Balance reporting at scale (nightly bulk runs), practitioner review of all content.
+Plan and design: `docs/adr/0002-story-engine-and-series-bible.md` (proposed, awaiting approval).
+
+1. Engine: characters, per-person relationships, story arcs and a timeline of beats (ADR 0002 step 1).
+2. Series bible per job (`docs/story/TEMPLATE.md`): premise, cast, season timeline, arcs, dark-side
+   ladder, endings; owner approves each one. Then an episode list.
+3. Write scenes against the approved episode lists (`pnpm author`); Finance & Accounting is the third job.
+4. Planner and walkable map in the client, saves, time-scale, `mod-i18n`, balance reports,
+   practitioner review of all content.
 
 ## Known gaps and caveats
 
