@@ -11,9 +11,9 @@ will behave differently.
 
 | Player | Endings | Weeks (min/median/max) | Decisions (min/mean/max) | Final stress | Storylines started |
 | ------ | ------- | ---------------------- | ------------------------ | ------------ | ------------------ |
-| careful | promoted 31, completed 9 | 51 / 51 / 52 | 69 / 76.2 / 84 | 83.6 | discount_spiral 100%, overdue_account 100%, quynh 100%, the_squeeze 100%, trade_fair_lead 100% |
-| random | fired 26, prosecuted 13, completed 1 | 11 / 26 / 52 | 18 / 46.2 / 89 | 52.8 | discount_spiral 100%, overdue_account 100%, quynh 98%, the_squeeze 90%, trade_fair_lead 83% |
-| reckless | fired 40 | 10 / 15 / 29 | 17 / 30.1 / 53 | 45.3 | discount_spiral 98%, overdue_account 88%, quynh 93%, the_squeeze 73%, trade_fair_lead 80% |
+| careful | promoted 34, completed 6 | 51 / 51 / 52 | 60 / 75.5 / 84 | 51.3 | discount_spiral 100%, overdue_account 100%, quynh 100%, the_squeeze 100%, trade_fair_lead 100% |
+| random | fired 27, prosecuted 12, completed 1 | 11 / 26 / 52 | 18 / 44.8 / 80 | 43.9 | discount_spiral 100%, overdue_account 98%, quynh 98%, the_squeeze 93%, trade_fair_lead 85% |
+| reckless | fired 40 | 10 / 15 / 29 | 17 / 30.1 / 53 | 41.7 | discount_spiral 98%, overdue_account 90%, quynh 93%, the_squeeze 73%, trade_fair_lead 80% |
 
 ### qc-year
 
