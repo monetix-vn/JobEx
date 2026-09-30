@@ -132,6 +132,15 @@ export const eventSchema = {
     weight: { type: 'number', minimum: 0 },
     cooldown_weeks: { type: 'integer', minimum: 0 },
     arc: idString,
+    beat: {
+      type: 'object',
+      required: ['from_week', 'to_week'],
+      additionalProperties: false,
+      properties: {
+        from_week: { type: 'integer', minimum: 1, maximum: 52 },
+        to_week: { type: 'integer', minimum: 1, maximum: 52 },
+      },
+    },
     scene: idString,
     effects: { type: 'array', items: effect },
   },

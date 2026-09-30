@@ -34,8 +34,8 @@ Order matters; each item ships with tests and a docs/AUTHORING.md update.
 - [x] E3 Facts feed relationships (a fact reaching witnessed/public changes trust of characters in the affected reputation group)
 - [x] E4 `arc` content kind and director state machine (stages, delays, branches by choice effects `{arc, stage}`, events `arc.started/advanced/ended`); `arc.the_squeeze` migrated
 - [x] E5 Validator: arcs reference real events/stages, reserved/duplicate stage ids rejected, unreachable stages warned (an arc ends by `end` or its last stage, so there is no separate can-end rule)
-- [ ] E6 Timeline beats: fixed/near-fixed episodes by week or named beat, random incidents between; keep >= 50% random
-- [ ] E7 Debrief: "people who remember you", arcs closed/open
+- [x] E6 Timeline beats: events with a `beat` week window play once, ahead of the random pool, one per week; everything else stays random (named beats such as Tet are not needed yet)
+- [x] E7 Debrief: "people who remember you" (trust, favours) and storylines closed/open, in both languages
 - [ ] E8 Client: cast panel, relationship hints; both languages
 - [x] E9 Authoring: `char:`, `rel`, `favor`, `char:` speakers, `arc:` entries and `arc <name> <stage>` effects
 - [x] E10 Demo arc playable end to end: The Hamper (Hung, Khoa, Minh, Lan, Tam), acceptance test in qc-year.test.ts, pins updated

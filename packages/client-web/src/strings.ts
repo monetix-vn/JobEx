@@ -16,7 +16,22 @@ export interface UiStrings {
   pickJob: string;
   pickHint: string;
   playAgain: string;
-  debrief: { story: string; lessons: string; terms: string; standing: string; week: string };
+  debrief: {
+    story: string;
+    lessons: string;
+    terms: string;
+    standing: string;
+    week: string;
+    people: string;
+    arcs: string;
+    arcClosed: string;
+    arcOpen: string;
+    /** Words for how a person feels, from the lowest to the highest trust. */
+    feelings: { wary: string; neutral: string; trusts: string };
+    trust: string;
+    owesYou: string;
+    youOwe: string;
+  };
 }
 
 export const UI_LOCALES: readonly UiLocale[] = ['en', 'vi'];
@@ -55,6 +70,14 @@ export const UI_STRINGS: Record<UiLocale, UiStrings> = {
       terms: 'Words you met',
       standing: 'Where you ended up',
       week: 'Week',
+      people: 'People who remember you',
+      arcs: 'Stories you were part of',
+      arcClosed: 'closed',
+      arcOpen: 'still unresolved',
+      feelings: { wary: 'wary of you', neutral: 'undecided about you', trusts: 'trusts you' },
+      trust: 'trust',
+      owesYou: 'owes you a favour',
+      youOwe: 'you owe a favour',
     },
   },
   vi: {
@@ -94,6 +117,14 @@ export const UI_STRINGS: Record<UiLocale, UiStrings> = {
       terms: 'Những từ bạn đã gặp',
       standing: 'Bạn đang ở đâu',
       week: 'Tuần',
+      people: 'Những người nhớ đến bạn',
+      arcs: 'Những câu chuyện bạn đã tham gia',
+      arcClosed: 'đã khép lại',
+      arcOpen: 'còn dang dở',
+      feelings: { wary: 'dè chừng bạn', neutral: 'chưa có ý kiến về bạn', trusts: 'tin bạn' },
+      trust: 'tin cậy',
+      owesYou: 'nợ bạn một ân huệ',
+      youOwe: 'bạn nợ một ân huệ',
     },
   },
 };

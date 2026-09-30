@@ -127,6 +127,37 @@ function debriefView(
     for (const term of d.terms) list.append(el('li', '', `${term.term}: ${term.definition}`));
     box.append(list);
   }
+  if (d.people.length > 0) {
+    box.append(el('h3', '', t.debrief.people));
+    const list = el('ul', 'je-people');
+    for (const person of d.people) {
+      const feeling =
+        person.trust >= 20
+          ? t.debrief.feelings.trusts
+          : person.trust <= -20
+            ? t.debrief.feelings.wary
+            : t.debrief.feelings.neutral;
+      const favour =
+        person.owed > 0 ? `, ${t.debrief.owesYou}` : person.owed < 0 ? `, ${t.debrief.youOwe}` : '';
+      list.append(
+        el(
+          'li',
+          '',
+          `${person.name} (${person.title}): ${feeling} (${t.debrief.trust} ${person.trust})${favour}`,
+        ),
+      );
+    }
+    box.append(list);
+  }
+  if (d.arcs.length > 0) {
+    box.append(el('h3', '', t.debrief.arcs));
+    const list = el('ul', 'je-arcs');
+    for (const arc of d.arcs) {
+      const status = arc.status === 'closed' ? t.debrief.arcClosed : t.debrief.arcOpen;
+      list.append(el('li', '', `${arc.title}: ${status}`));
+    }
+    box.append(list);
+  }
   const standing = [...statsLine(d.stats, t).split('  |  '), repsLine(d.stats, t)].filter(Boolean);
   if (standing.length > 0) {
     box.append(el('h3', '', t.debrief.standing));

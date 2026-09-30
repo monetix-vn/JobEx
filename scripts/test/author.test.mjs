@@ -162,6 +162,17 @@ vi: { term: Số lô, definition: "Mã nhận diện một lô sản xuất." }
     expect(json(root, 'locale/vi.json')['term.lot_number.term']).toBe('Số lô');
   });
 
+  it('turns a beat window into a fixed episode, and refuses a bad one', () => {
+    const base = parseEntries(example)[0];
+    expect(compileScene({ ...base, beat: '24-28' }).event.beat).toEqual({
+      from_week: 24,
+      to_week: 28,
+    });
+    expect(compileScene({ ...base, beat: 7 }).event.beat).toEqual({ from_week: 7, to_week: 7 });
+    expect(() => compileScene({ ...base, beat: '50-60' })).toThrow(/beat must be/);
+    expect(() => compileScene({ ...base, beat: '9-4' })).toThrow(/beat must be/);
+  });
+
   it('sets the role from the prefix, or from an explicit role', () => {
     const base = parseEntries(example)[0];
     expect(compileScene(base).event.role).toBe('role.qc.specialist');

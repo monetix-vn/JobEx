@@ -233,6 +233,44 @@ describe('QC Specialist: the same engine, a different job', () => {
     expect(careful).toBeGreaterThan(5);
   });
 
+  it('the season has a spine: each beat plays once, inside its window, in every full year', async () => {
+    const windows: Record<string, [number, number]> = {
+      'event.qc.first_day_walkthrough': [1, 3],
+      'event.qc.midyear_review': [24, 28],
+      'event.qc.year_end_review': [49, 52],
+    };
+    for (let i = 0; i < 6; i++) {
+      const { log } = await play('qc-year', `qc-beat-${i}`, 'en', undefined, { policy: 'first' });
+      expect(endingOf(log)).toBe('completed');
+      const fired = of(log, 'director.eventFired').map((e) => ({
+        id: (e.payload as { eventId: string }).eventId,
+        week: e.turn + 1,
+      }));
+      for (const [id, [from, to]] of Object.entries(windows)) {
+        const plays = fired.filter((f) => f.id === id);
+        expect(plays, `${id} in run ${i}`).toHaveLength(1);
+        expect(plays[0]!.week).toBeGreaterThanOrEqual(from);
+        expect(plays[0]!.week).toBeLessThanOrEqual(to);
+      }
+    }
+  });
+
+  it('the debrief names the people who remember you and the storylines you were in', async () => {
+    let withPeople = 0;
+    for (let i = 0; i < 10; i++) {
+      const { log } = await play('qc-year', `qc-deb-${i}`, 'en', undefined, { policy: 'first' });
+      const d = debriefOf(log)[0]!;
+      for (const p of d.people) {
+        expect(p.name).not.toMatch(/^char\./);
+        expect(p.title.length).toBeGreaterThan(0);
+      }
+      // Khoa is in the premiere and the reviews, so the careful player always moved him.
+      if (d.people.some((p) => p.character === 'char.khoa' && p.trust > 10)) withPeople += 1;
+      for (const a of d.arcs) expect(['open', 'closed']).toContain(a.status);
+    }
+    expect(withPeople).toBeGreaterThan(6);
+  });
+
   it('is deterministic and replays identically, like every other scenario', async () => {
     const scenario = await loadScenario('qc-year', { contentDir });
     for (const seed of ['q1', 'q2']) {

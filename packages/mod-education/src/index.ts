@@ -27,6 +27,9 @@ export const manifest: ModuleManifest = {
     'fact.escalated',
     'risk.detected',
     'risk.scapegoated',
+    'relationship.changed',
+    'arc.started',
+    'arc.ended',
     'run.endRequested',
     'run.ended',
   ],
@@ -83,6 +86,10 @@ export function createModule(host: ModuleHost): ModuleInstance {
   const terms: string[] = [];
   const vars = new Map<string, StateValue>();
   let requested: Ending | undefined;
+  /** What each person feels now; only people a scene or a fact moved are shown in the debrief. */
+  const feelings = new Map<string, { trust: number; loyalty: number; owed: number }>();
+  const moved = new Set<string>();
+  const arcStatus = new Map<string, 'closed' | 'open'>();
 
   const note = (turn: number, kind: DebriefEntry['kind'], line: string): void => {
     timeline.push({ turn, kind, text: line });
@@ -149,6 +156,25 @@ export function createModule(host: ModuleHost): ModuleInstance {
         );
       },
 
+      'relationship.changed': (env) => {
+        const p = env.payload as CoreEventPayloads['relationship.changed'];
+        const now = feelings.get(p.character) ?? { trust: 0, loyalty: 0, owed: 0 };
+        now[p.dimension] = p.to;
+        feelings.set(p.character, now);
+        // Seeding the start and slow drift do not make someone remember you.
+        if (p.reason !== 'start' && p.reason !== 'drift') moved.add(p.character);
+      },
+
+      'arc.started': (env) => {
+        const p = env.payload as CoreEventPayloads['arc.started'];
+        if (!arcStatus.has(p.arc)) arcStatus.set(p.arc, 'open');
+      },
+
+      'arc.ended': (env) => {
+        const p = env.payload as CoreEventPayloads['arc.ended'];
+        arcStatus.set(p.arc, 'closed');
+      },
+
       'run.endRequested': (env) => {
         requested = (env.payload as CoreEventPayloads['run.endRequested']).ending;
       },
@@ -179,6 +205,28 @@ export function createModule(host: ModuleHost): ModuleInstance {
           if (typeof value === 'number') stats[path] = Math.round(value);
         }
 
+        const people = [...moved].sort().flatMap((id) => {
+          const person = content.get('character', id);
+          if (!person) return [];
+          const now = feelings.get(id) ?? { trust: 0, loyalty: 0, owed: 0 };
+          return [
+            {
+              character: id,
+              name: text(person.name_key),
+              title: text(person.title_key),
+              trust: now.trust,
+              loyalty: now.loyalty,
+              owed: now.owed,
+            },
+          ];
+        });
+        const arcs = [...arcStatus.entries()]
+          .sort(([a], [b]) => (a < b ? -1 : 1))
+          .flatMap(([id, status]) => {
+            const arc = content.get('arc', id);
+            return arc ? [{ arc: id, title: text(arc.title_key), status }] : [];
+          });
+
         const debrief: EventDraft = {
           type: 'debrief.ready',
           payload: {
@@ -190,6 +238,8 @@ export function createModule(host: ModuleHost): ModuleInstance {
             timeline: timeline.map((e) => ({ ...e })),
             lessons,
             terms: glossary,
+            people,
+            arcs,
           },
         };
         return [debrief];

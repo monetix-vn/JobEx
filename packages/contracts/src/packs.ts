@@ -77,6 +77,11 @@ export interface GameEvent {
   weight?: number;
   cooldown_weeks?: number;
   arc?: string;
+  /**
+   * Makes this a fixed episode of the season (premiere, midseason twist, finale). It plays once, in
+   * the first week of the window where its other conditions hold, and never from the random pool.
+   */
+  beat?: { from_week: number; to_week: number };
   scene: string;
   effects?: Effect[];
 }

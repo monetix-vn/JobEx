@@ -27,6 +27,7 @@ weight: 1 # how likely, relative to other events
 cooldown: 12 # weeks before it can come again
 when: [turn >= 6, stress < 90] # all must hold
 when_any: [month in 3 6 9 12] # optional: at least one must hold
+beat: 24-28 # optional: makes it a fixed episode, see "Beats" below
 terms: [coa] # glossary chips shown with the scene
 lines:
   - { who: boss, en: "...", vi: "..." }
@@ -60,6 +61,14 @@ variable name. For something the list cannot say, use `when_raw:` with the JSON 
 
 `rel khoa trust +5` (trust, loyalty or owed) · `favor khoa +1` (favours they owe you) · `rep.boss +5` · `stress +3` · `cash -800000` · `delta company.audit_readiness -5` ·
 `fact accepted_kickback private` (private, witnessed, rumor, public) · `schedule event.qc.x 4-6`.
+
+## Beats (the spine of the season)
+
+A scene with `beat: 24-28` is a fixed episode: it plays once, in the first week of that window (weeks
+count from 1) where its `when` holds, and never from the random pool. A beat whose condition never
+holds inside the window is skipped, so keep beat conditions rare. At most one beat plays per week;
+everything else stays random. Use beats for the premiere (1-3), midseason twist (about 26-30),
+crisis (about 40-44) and finale (49-52). Examples: `content-src/qc-cast.yml`, `content-src/qc-beats.yml`.
 
 ## A fact (something the player did that can come back)
 

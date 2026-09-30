@@ -1,0 +1,93 @@
+# QC season beats (docs/story/qc.md): fixed episodes that give every year a spine.
+scene: qc.midyear_review
+place: meeting_room
+tags: [people, review, beat]
+beat: 24-28
+lines:
+  - who: char:khoa
+    en: 'Half a year in. Let me be straight with you: your records are good where it counts, but I have heard complaints from production that you slow the line. How do you see it?'
+    vi: 'Nửa năm rồi. Anh nói thẳng: hồ sơ của em tốt ở những chỗ quan trọng, nhưng anh nghe bên sản xuất phàn nàn là em làm chậm chuyền. Em thấy thế nào?'
+choices:
+  - en: 'Accept it: say where you have been slow and what you will change.'
+    vi: 'Thừa nhận: nói rõ chỗ mình làm chậm và sẽ thay đổi gì.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "Khoa nods. 'That is what I wanted to hear. Keep the records, lose the wait.' You leave with a plan and a little more of his trust."
+        vi: "Anh Khoa gật đầu. 'Đó là điều anh muốn nghe. Giữ hồ sơ, bớt chờ đợi.' Em rời phòng với một kế hoạch và thêm chút tin tưởng từ anh."
+        effects: [rel khoa trust +4, rep.boss +2, stress -1]
+  - en: 'Defend your work with numbers: the retests that caught real problems.'
+    vi: 'Bảo vệ công việc bằng số liệu: những lần kiểm lại đã bắt được lỗi thật.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.7
+        en: 'The numbers speak for themselves. Khoa will repeat them to production.'
+        vi: 'Số liệu tự nó nói lên tất cả. Anh Khoa sẽ nhắc lại với bên sản xuất.'
+        effects: [rel khoa trust +3, rep.production -1, rep.qc +3]
+      - p: 0.3
+        ok: false
+        en: "Khoa finds two retests that delayed shipments for nothing. 'Numbers cut both ways.'"
+        vi: "Anh Khoa tìm ra hai lần kiểm lại làm trễ hàng mà không có lý do. 'Số liệu có hai mặt.'"
+        effects: [rel khoa trust -1, rep.qc -2, stress +2]
+  - en: 'Say production exaggerates and the delays were never your fault.'
+    vi: 'Nói bên sản xuất phóng đại và việc trễ không bao giờ là lỗi của mình.'
+    outcomes:
+      - p: 0.6
+        en: 'Khoa lets it go, but he writes something down.'
+        vi: 'Anh Khoa bỏ qua, nhưng anh ghi lại một điều gì đó.'
+        effects: [rel khoa trust -2, rep.production -3, stress +1]
+      - p: 0.4
+        ok: false
+        en: 'Khoa has already talked to Lan. The gap between your story and hers is obvious.'
+        vi: 'Anh Khoa đã nói chuyện với chị Lan. Khoảng cách giữa câu chuyện của em và của chị ấy quá rõ.'
+        effects: [rel khoa trust -7, rel lan trust -4, rep.boss -4, stress +3]
+---
+scene: qc.year_end_review
+place: meeting_room
+tags: [people, review, beat]
+beat: 49-52
+lines:
+  - who: char:khoa
+    en: 'Annual review time. Before I tell you what I think, tell me how you would rate your own year, and why.'
+    vi: 'Đến kỳ đánh giá cuối năm. Trước khi anh nói ý kiến của anh, em hãy tự chấm năm vừa rồi của mình và giải thích vì sao.'
+choices:
+  - en: 'Give an honest account, including the calls you got wrong.'
+    vi: 'Kể thật lòng, kể cả những quyết định em đã làm sai.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "It is an uncomfortable half hour and a respected one. Khoa writes: 'Knows the limits of the job.'"
+        vi: "Nửa tiếng không dễ chịu nhưng được tôn trọng. Anh Khoa viết: 'Biết giới hạn của công việc.'"
+        effects: [rel khoa trust +5, rep.boss +4, stress -2]
+  - en: 'Stay modest: list what went well and mention one thing to improve.'
+    vi: 'Khiêm tốn: nêu điều làm tốt và nhắc một điểm cần cải thiện.'
+    outcomes:
+      - p: 1
+        en: 'A safe, forgettable review. Khoa nods and moves to the next item.'
+        vi: 'Một buổi đánh giá an toàn, dễ quên. Anh Khoa gật đầu và chuyển sang mục tiếp theo.'
+        effects: [rel khoa trust +1, rep.boss +1]
+  - en: 'Present the year as a success and leave out the shortcuts.'
+    vi: 'Trình bày cả năm như một thành công và bỏ qua những lần đi đường tắt.'
+    outcomes:
+      - p: 0.65
+        en: 'It lands well. You leave with a good rating and a small weight in your chest.'
+        vi: 'Được đón nhận tốt. Em ra về với điểm cao và một chút nặng nề trong lòng.'
+        effects: [rel khoa trust +2, rep.boss +4, stress +1, fact polished_year_review private]
+      - p: 0.35
+        ok: false
+        en: 'Khoa has the audit file open on his desk. He turns the page towards you without a word.'
+        vi: 'Anh Khoa có sẵn hồ sơ đánh giá trên bàn. Anh lật trang về phía em mà không nói một lời.'
+        effects: [rel khoa trust -8, rep.boss -5, stress +4, fact polished_year_review witnessed]
+---
+fact: polished_year_review
+severity: 2
+category: integrity
+en: 'you presented your year as cleaner than it was'
+vi: 'bạn trình bày năm làm việc sạch sẽ hơn thực tế'
+lesson:
+  en: 'A review is a chance to be believed. Leaving out what you know will surface costs more trust than admitting it.'
+  vi: 'Buổi đánh giá là cơ hội để được tin. Bỏ qua điều bạn biết sẽ lộ ra làm mất nhiều niềm tin hơn việc thừa nhận.'
+witnessed:
+  boss: -3
+public:
+  boss: -5

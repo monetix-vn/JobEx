@@ -45,6 +45,10 @@ interface Scheduled {
  * resolved choice) queue a later event after a random delay. It only decides *what* happens; the
  * narrative module plays it and the choice module resolves it.
  *
+ * Beats: an event with a `beat` window (in weeks, 1 is the first week of the run) is a fixed episode of the season. The first week inside its
+ * window where it is eligible (role, condition) it plays, once, ahead of the random pool, at most
+ * one beat a week; beats never come from the pool. Everything else stays random.
+ *
  * Storylines (content kind `arc`): an event tagged with an arc starts it (`arc.started`); an
  * `{ arc, stage }` effect on an event or a resolved choice moves it to that stage, queueing the
  * stage's event after its delay (`arc.advanced`), or ends it for stage "end". An arc also ends
@@ -60,6 +64,7 @@ export function createModule(host: ModuleHost): ModuleInstance {
   const world = new VarStore();
   const lastFired: Record<string, number> = {};
   let scheduled: Scheduled[] = [];
+  const playedBeats = new Set<string>();
   let fired = 0;
 
   const holds = (event: GameEvent): boolean => {
@@ -158,11 +163,26 @@ export function createModule(host: ModuleHost): ModuleInstance {
           played += 1;
         }
 
-        // 2. Fill the rest of the week from the pool, by weight, without replacement.
+        // 2. The season's fixed episodes: at most one beat a week, earliest window first.
+        const beat = content
+          .all('event')
+          .filter((e) => e.beat && !playedBeats.has(e.id) && !taken.has(e.id))
+          .filter((e) => turn + 1 >= e.beat!.from_week && turn + 1 <= e.beat!.to_week)
+          .filter((e) => e.role === undefined || e.role === world.get('player.role'))
+          .filter(holds)
+          .sort((a, b) => a.beat!.from_week - b.beat!.from_week || (a.id < b.id ? -1 : 1))[0];
+        if (beat) {
+          playedBeats.add(beat.id);
+          taken.add(beat.id);
+          drafts.push(...fire(beat, turn));
+          played += 1;
+        }
+
+        // 3. Fill the rest of the week from the pool, by weight, without replacement.
         const wanted = host.rng.int(minPerWeek, maxPerWeek);
         const pool = content
           .all('event')
-          .filter((e) => !taken.has(e.id) && (e.weight ?? 1) > 0)
+          .filter((e) => !taken.has(e.id) && !e.beat && (e.weight ?? 1) > 0)
           .filter((e) => e.role === undefined || e.role === world.get('player.role'))
           .filter((e) => {
             const last = lastFired[e.id];
@@ -190,6 +210,7 @@ export function createModule(host: ModuleHost): ModuleInstance {
     },
     snapshot: () => ({
       fired,
+      playedBeats: [...playedBeats].sort(),
       lastFired: Object.fromEntries(Object.entries(lastFired).sort()),
       scheduled: scheduled.map((s) => ({ ...s })),
       arcs: Object.fromEntries([...arcs.entries()].sort(([a], [b]) => (a < b ? -1 : 1))),

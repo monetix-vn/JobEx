@@ -253,6 +253,8 @@ describe('mount', () => {
       },
     ],
     terms: [{ id: 'term.kickback', term: 'Kickback', definition: 'A payment to win business.' }],
+    people: [],
+    arcs: [],
   };
 
   it('replaces the game with the debrief when the run is reviewed', () => {
@@ -318,6 +320,64 @@ describe('mount', () => {
     expect(root.textContent).toContain('Bạn đã làm gì, và điều gì quay lại');
     expect(root.querySelector('.je-lessons')).toBeNull();
     expect(root.querySelector('.je-glossary')).toBeNull();
+  });
+
+  it('the debrief names the people who remember you and the storylines, in the shell language', () => {
+    const extra = {
+      ...debrief,
+      people: [
+        {
+          character: 'char.khoa',
+          name: 'Mr Khoa',
+          title: 'QC Manager',
+          trust: 32,
+          loyalty: 0,
+          owed: 0,
+        },
+        {
+          character: 'char.hung',
+          name: 'Mr Hung',
+          title: 'Supplier',
+          trust: -25,
+          loyalty: 0,
+          owed: 2,
+        },
+        {
+          character: 'char.minh',
+          name: 'Minh',
+          title: 'Lab technician',
+          trust: 5,
+          loyalty: 0,
+          owed: -1,
+        },
+      ],
+      arcs: [
+        { arc: 'arc.a', title: 'The hamper', status: 'closed' as const },
+        { arc: 'arc.b', title: 'Cheaper steel', status: 'open' as const },
+      ],
+    };
+    const en = document.createElement('div');
+    document.body.append(en);
+    const t1 = fakeTransport();
+    mount(en, t1.transport);
+    t1.push(env('debrief.ready', extra));
+    expect([...en.querySelectorAll('.je-people li')].map((li) => li.textContent)).toEqual([
+      'Mr Khoa (QC Manager): trusts you (trust 32)',
+      'Mr Hung (Supplier): wary of you (trust -25), owes you a favour',
+      'Minh (Lab technician): undecided about you (trust 5), you owe a favour',
+    ]);
+    expect([...en.querySelectorAll('.je-arcs li')].map((li) => li.textContent)).toEqual([
+      'The hamper: closed',
+      'Cheaper steel: still unresolved',
+    ]);
+    const vi = document.createElement('div');
+    document.body.append(vi);
+    const t2 = fakeTransport();
+    mount(vi, t2.transport, { locale: 'vi' });
+    t2.push(env('debrief.ready', extra));
+    expect(vi.textContent).toContain('Những người nhớ đến bạn');
+    expect(vi.querySelector('.je-people li')?.textContent).toContain('tin bạn');
+    expect(vi.querySelector('.je-arcs li')?.textContent).toContain('đã khép lại');
   });
 
   it('a line without a speaker shows just its text, with no stray colon', () => {

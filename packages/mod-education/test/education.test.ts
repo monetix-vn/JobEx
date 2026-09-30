@@ -1,5 +1,14 @@
 import { describe, expect, it } from 'vitest';
-import type { ContentView, EventDraft, Fact, Locale, Scene, Term } from '@je/contracts';
+import type {
+  Arc,
+  Character,
+  ContentView,
+  EventDraft,
+  Fact,
+  Locale,
+  Scene,
+  Term,
+} from '@je/contracts';
 import { Run, runFixture } from '@je/kernel';
 import { educationModule, manifest, type EducationConfig } from '../src';
 
@@ -36,6 +45,23 @@ const terms: Term[] = ['term.kickback', 'term.po', 'term.unseen'].map((id) => ({
   term_key: `${id}.t`,
   definition_key: `${id}.d`,
 }));
+const khoa: Character = {
+  id: 'char.khoa',
+  name_key: 'khoa.n',
+  title_key: 'khoa.t',
+  department: 'qc',
+};
+const minh: Character = {
+  id: 'char.minh',
+  name_key: 'minh.n',
+  title_key: 'minh.t',
+  department: 'qc',
+};
+const hamper: Arc = {
+  id: 'arc.hamper',
+  title_key: 'arc.hamper.t',
+  stages: [{ id: 'gift', event: 'event.gift' }],
+};
 const strings: Record<Locale, Record<string, string>> = {
   en: {
     'f.fee': 'the fee you took',
@@ -60,6 +86,11 @@ const strings: Record<Locale, Record<string, string>> = {
     'term.kickback.d': 'A payment to win business.',
     'term.po.t': 'PO',
     'term.po.d': 'Purchase order.',
+    'khoa.n': 'Mr Khoa',
+    'khoa.t': 'QC Manager',
+    'minh.n': 'Minh',
+    'minh.t': 'Lab technician',
+    'arc.hamper.t': 'The hamper',
   },
   vi: {
     'f.fee': 'khoản phí bạn nhận',
@@ -76,7 +107,11 @@ const content: ContentView = {
         ? terms.find((t) => t.id === id)
         : kind === 'scene' && id === scene.id
           ? scene
-          : undefined) as never,
+          : kind === 'character'
+            ? [khoa, minh].find((c) => c.id === id)
+            : kind === 'arc'
+              ? [hamper].find((a) => a.id === id)
+              : undefined) as never,
   all: (() => []) as never,
   text: (locale, key) => strings[locale][key],
 };
@@ -113,6 +148,15 @@ function debrief(given: { type: string; payload: unknown }[], cfg: Partial<Educa
     timeline: { turn: number; kind: string; text: string }[];
     lessons: { factId: string; fact: string; lesson: string }[];
     terms: { id: string; term: string; definition: string }[];
+    people: {
+      character: string;
+      name: string;
+      title: string;
+      trust: number;
+      loyalty: number;
+      owed: number;
+    }[];
+    arcs: { arc: string; title: string; status: string }[];
   };
 }
 
@@ -247,6 +291,49 @@ describe('education: in a run', () => {
     expect(made).toHaveLength(1);
     expect((made[0]!.payload as { weeks: number }).weeks).toBe(3);
     expect(made[0]!.source).toBe('education');
+  });
+
+  it('lists the people your choices moved, with how they feel, and ignores seeding and drift', () => {
+    const rel = (character: string, dimension: string, to: number, reason?: string) =>
+      ev('relationship.changed', {
+        character,
+        dimension,
+        from: 0,
+        to,
+        ...(reason ? { reason } : {}),
+      });
+    const d = debrief([
+      rel('char.khoa', 'trust', 10, 'start'),
+      rel('char.minh', 'trust', 15, 'start'),
+      rel('char.minh', 'trust', 30, 'scene.a/c1'),
+      rel('char.minh', 'owed', -1, 'scene.a/c1'),
+      rel('char.khoa', 'trust', 9, 'drift'),
+      rel('char.ghost', 'trust', 5, 'scene.a/c1'),
+      ended(),
+    ]);
+    expect(d.people).toEqual([
+      {
+        character: 'char.minh',
+        name: 'Minh',
+        title: 'Lab technician',
+        trust: 30,
+        loyalty: 0,
+        owed: -1,
+      },
+    ]);
+    expect(debrief([ended()]).people).toEqual([]);
+  });
+
+  it('lists storylines as closed or still open, with their titles', () => {
+    const d = debrief([ev('arc.started', { arc: 'arc.hamper', eventId: 'event.gift' }), ended()]);
+    expect(d.arcs).toEqual([{ arc: 'arc.hamper', title: 'The hamper', status: 'open' }]);
+    const closed = debrief([
+      ev('arc.started', { arc: 'arc.hamper', eventId: 'event.gift' }),
+      ev('arc.ended', { arc: 'arc.hamper', reason: 'end' }),
+      ev('arc.started', { arc: 'arc.unknown', eventId: 'e' }),
+      ended(),
+    ]);
+    expect(closed.arcs).toEqual([{ arc: 'arc.hamper', title: 'The hamper', status: 'closed' }]);
   });
 
   it('declares what it uses and needs content', () => {

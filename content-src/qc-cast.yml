@@ -44,9 +44,7 @@ vi: { name: 'Anh Tâm', title: 'Trưởng phòng mua hàng' }
 scene: qc.first_day_walkthrough
 place: qc_lab
 tags: [onboarding, people]
-weight: 6
-cooldown: 52
-when: [turn < 4]
+beat: 1-3 # the season premiere: plays once, in the first three weeks
 lines:
   - who: char:khoa
     en: 'Welcome to the lab. One rule before anything else: if it is not written down, it did not happen.'

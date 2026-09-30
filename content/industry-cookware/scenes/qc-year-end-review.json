@@ -1,0 +1,111 @@
+{
+  "id": "scene.qc.year_end_review",
+  "location": "loc.meeting_room",
+  "cast": ["char:khoa"],
+  "lines": [
+    {
+      "speaker": "char:khoa",
+      "text_key": "scene.qc.year_end_review.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.qc.year_end_review.c1",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.qc.year_end_review.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 5
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 4
+            },
+            {
+              "delta": "player.stress",
+              "value": -2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.qc.year_end_review.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.qc.year_end_review.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.qc.year_end_review.c3",
+      "outcomes": [
+        {
+          "p": 0.65,
+          "narration_key": "scene.qc.year_end_review.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 4
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.polished_year_review",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.35,
+          "result": "fail",
+          "narration_key": "scene.qc.year_end_review.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.polished_year_review",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -75,6 +75,10 @@ function driver(
     plan(at: number): string[] {
       return ids(this.planAll(at));
     },
+    /** Tells the director what the world looks like now. */
+    state(vars: Record<string, number>): void {
+      instance.handlers['sim.stateChanged']!(envelope('sim.stateChanged', { full: false, vars }));
+    },
     /** Like plan, but returns every draft (arc events included). */
     planAll(at: number): EventDraft[] {
       turn = at;
@@ -224,6 +228,50 @@ describe('director: scheduled consequences', () => {
     });
     d.resolve(0, [{ schedule: 'event.later', delay_weeks: [1, 1] }]);
     expect(d.plan(1)).toEqual(['event.later']);
+  });
+});
+
+describe('director: beats (fixed episodes of the season)', () => {
+  const events = [
+    ev('event.premiere', { beat: { from_week: 1, to_week: 3 } }),
+    ev('event.twist', { beat: { from_week: 5, to_week: 7 }, when: { gte: ['player.stress', 50] } }),
+    ev('event.filler'),
+  ];
+  const feed = (stress: number) => {
+    const d = driver(events, { eventsPerWeek: [1, 1], defaultCooldownWeeks: 1 }, 'beats');
+    d.state({ 'player.stress': stress });
+    return Array.from({ length: 10 }, (_, i) => d.plan(i));
+  };
+
+  it('plays a beat once, in the first week of its window, and never from the random pool', () => {
+    const weeks = feed(80);
+    expect(weeks[0]).toContain('event.premiere');
+    expect(weeks.flat().filter((id) => id === 'event.premiere')).toHaveLength(1);
+    expect(weeks[4]).toContain('event.twist'); // week 5
+    expect(weeks.flat().filter((id) => id === 'event.twist')).toHaveLength(1);
+    expect(feed(0).flat()).not.toContain('event.twist');
+  });
+
+  it('waits inside the window for its condition, and is missed if the window closes first', () => {
+    const d = driver(events, { eventsPerWeek: [1, 1], defaultCooldownWeeks: 1 }, 'late');
+    d.state({ 'player.stress': 10 });
+    expect([3, 4, 5].flatMap((t) => d.plan(t))).not.toContain('event.twist');
+    d.state({ 'player.stress': 90 });
+    expect(d.plan(6)).toContain('event.twist');
+    const missed = driver(events, { eventsPerWeek: [1, 1], defaultCooldownWeeks: 1 }, 'late');
+    missed.state({ 'player.stress': 10 });
+    expect([3, 4, 5, 6, 7, 8].flatMap((t) => missed.plan(t))).not.toContain('event.twist');
+  });
+
+  it('a beat shares the week with the pool and only one beat plays a week', () => {
+    const two = [
+      ev('event.one', { beat: { from_week: 1, to_week: 1 } }),
+      ev('event.two', { beat: { from_week: 1, to_week: 2 } }),
+      ev('event.pool'),
+    ];
+    const d = driver(two, { eventsPerWeek: [2, 2], defaultCooldownWeeks: 1 }, 'two');
+    expect(d.plan(0)).toEqual(['event.one', 'event.pool']);
+    expect(d.plan(1)).toContain('event.two');
   });
 });
 

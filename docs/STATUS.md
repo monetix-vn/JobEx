@@ -23,7 +23,7 @@ Last updated after the authoring toolchain. Repo: github.com/monetix-vn/JobEx.
 ## Next (in order) - revised 2026-09-30 by the owner: engine first, then a series bible, then scenes
 
 Start with `docs/AI-GUIDE.md`; checklists in `docs/checklists/`; bibles in `docs/story/`.
-Progress on `feature/story-engine`: E1 to E5, E9, E10 done (characters, `mod-relationships`, facts feed trust, arcs in the director, validator, authoring, demo arc The Hamper). Remaining engine work: E6 timeline beats, E7 debrief, E8 client cast panel.
+Progress on `feature/story-engine`: E1 to E7, E9, E10 done (characters, `mod-relationships`, facts feed trust, arcs, beats, debrief people/arcs, authoring, demo arc The Hamper). Remaining engine work: E8 client cast panel (optional); then the story blocks per `docs/checklists/STORY.md`.
 Plan and design: `docs/adr/0002-story-engine-and-series-bible.md` (proposed, awaiting approval).
 
 1. Engine: characters, per-person relationships, story arcs and a timeline of beats (ADR 0002 step 1).

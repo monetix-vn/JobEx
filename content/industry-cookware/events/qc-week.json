@@ -294,11 +294,12 @@
     "id": "event.qc.first_day_walkthrough",
     "role": "role.qc.specialist",
     "tags": ["onboarding", "people"],
-    "when": {
-      "lt": ["world.turn", 4]
+    "beat": {
+      "from_week": 1,
+      "to_week": 3
     },
-    "weight": 6,
-    "cooldown_weeks": 52,
+    "weight": 1,
+    "cooldown_weeks": 12,
     "scene": "scene.qc.first_day_walkthrough"
   },
   {
@@ -324,5 +325,29 @@
     "weight": 0,
     "cooldown_weeks": 12,
     "scene": "scene.qc.hung_threat"
+  },
+  {
+    "id": "event.qc.midyear_review",
+    "role": "role.qc.specialist",
+    "tags": ["people", "review", "beat"],
+    "beat": {
+      "from_week": 24,
+      "to_week": 28
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.qc.midyear_review"
+  },
+  {
+    "id": "event.qc.year_end_review",
+    "role": "role.qc.specialist",
+    "tags": ["people", "review", "beat"],
+    "beat": {
+      "from_week": 49,
+      "to_week": 52
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.qc.year_end_review"
   }
 ]

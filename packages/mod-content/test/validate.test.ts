@@ -611,6 +611,27 @@ describe('arcs', () => {
   });
 });
 
+describe('beats', () => {
+  it('accepts a window, and a beat with no random weight is not flagged unreachable', async () => {
+    const { diagnostics } = await load(
+      pack({ 'core/events/a.json': j(event({ weight: 0, beat: { from_week: 3, to_week: 5 } })) }),
+    );
+    expect(hasErrors(diagnostics)).toBe(false);
+    expect(codes(diagnostics, 'warning')).not.toContain('event.unreachable');
+  });
+
+  it('rejects a backwards window and weeks outside the year', async () => {
+    const back = await load(
+      pack({ 'core/events/a.json': j(event({ beat: { from_week: 9, to_week: 4 } })) }),
+    );
+    expect(codes(back.diagnostics, 'error')).toContain('event.bad_beat');
+    const outside = await load(
+      pack({ 'core/events/a.json': j(event({ beat: { from_week: 0, to_week: 60 } })) }),
+    );
+    expect(codes(outside.diagnostics, 'error')).toContain('schema.invalid');
+  });
+});
+
 describe('roles in events and the job picker', () => {
   const role = {
     id: 'role.t.one',

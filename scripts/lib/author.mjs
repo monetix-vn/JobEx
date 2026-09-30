@@ -215,6 +215,20 @@ export function compileScene(entry) {
     };
   });
 
+  let beat;
+  if (entry.beat !== undefined) {
+    const span = /^(\d+)(?:-(\d+))?$/.exec(String(entry.beat));
+    if (
+      !span ||
+      Number(span[1]) < 1 ||
+      Number(span[2] ?? span[1]) > 52 ||
+      Number(span[1]) > Number(span[2] ?? span[1])
+    ) {
+      problems.push(`${here}: beat must be a week or a window of weeks inside 1-52, like 24-28`);
+    } else {
+      beat = { from_week: Number(span[1]), to_week: Number(span[2] ?? span[1]) };
+    }
+  }
   let when;
   try {
     when = entry.when_raw ?? compileConditions(entry.when, entry.when_any);
@@ -247,6 +261,7 @@ export function compileScene(entry) {
         : {}),
       tags: entry.tags ?? ['pressure'],
       ...(when ? { when } : {}),
+      ...(beat ? { beat } : {}),
       weight: entry.weight ?? 1,
       cooldown_weeks: entry.cooldown ?? 12,
       scene: sid,

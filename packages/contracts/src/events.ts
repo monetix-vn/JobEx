@@ -69,6 +69,23 @@ export interface DebriefEntry {
   text: string;
 }
 
+export interface DebriefPerson {
+  character: string;
+  name: string;
+  title: string;
+  trust: number;
+  loyalty: number;
+  /** Favours they owe you; negative if you owe them. */
+  owed: number;
+}
+
+export interface DebriefArc {
+  arc: string;
+  title: string;
+  /** closed: you steered it to an end or it played out; open: it was still going when the run ended. */
+  status: 'closed' | 'open';
+}
+
 export interface SceneLine {
   speaker: string;
   text: string;
@@ -154,6 +171,10 @@ export interface CoreEventPayloads {
     timeline: DebriefEntry[];
     lessons: { factId: string; fact: string; lesson: string }[];
     terms: SceneTerm[];
+    /** Named people the player's choices moved, with how they feel at the end. */
+    people: DebriefPerson[];
+    /** Storylines that were started, and whether they were closed or left open. */
+    arcs: DebriefArc[];
   };
   'workload.weekPlanned': {
     turn: number;

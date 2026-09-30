@@ -149,6 +149,14 @@ export function crossCheck(
   for (const event of items.event.values()) {
     requireRef('event', event.id, 'scene', event.scene, 'scene');
     if (event.arc) requireRef('event', event.id, 'arc', event.arc, 'arc');
+    if (event.beat && event.beat.from_week > event.beat.to_week) {
+      push({
+        severity: 'error',
+        code: 'event.bad_beat',
+        message: `event "${event.id}" beat window is backwards (from_week ${event.beat.from_week} is after to_week ${event.beat.to_week})`,
+        ...at('event', event.id),
+      });
+    }
     if (event.role) requireRef('event', event.id, 'role', event.role, 'role');
     usedScenes.add(event.scene);
     if (event.when !== undefined) checkExpr('event', event.id, 'when', event.when);
@@ -236,7 +244,7 @@ export function crossCheck(
 
   // Reachability: an event nothing schedules whose condition can never hold will never fire.
   for (const event of items.event.values()) {
-    const neverPicked = event.weight === 0 || alwaysFalse(event.when);
+    const neverPicked = !event.beat && (event.weight === 0 || alwaysFalse(event.when));
     if (neverPicked && !scheduled.has(event.id)) {
       push({
         severity: 'warning',

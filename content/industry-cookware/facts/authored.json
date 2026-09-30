@@ -148,5 +148,20 @@
         "boss": 6
       }
     }
+  },
+  {
+    "id": "fact.polished_year_review",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.polished_year_review",
+    "lesson_key": "lesson.polished_year_review",
+    "consequences": {
+      "witnessed": {
+        "boss": -3
+      },
+      "public": {
+        "boss": -5
+      }
+    }
   }
 ]

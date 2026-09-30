@@ -21,7 +21,7 @@ source of truth for what scene comes next; update their Status column as you go.
 ## Job 1: QC Specialist (`docs/story/qc.md`)
 
 - [x] Bible draft v1 (AI) (owner approval pending) (needs owner)
-- [x] 22 scenes imported (10 original + 2 consequence + 6 batch 2 + first_day_walkthrough + 3 Hamper)
+- [x] 24 scenes imported (10 original + 2 consequence + 6 batch 2 + 3 Hamper + premiere, midyear_review, year_end_review as beats)
 - [ ] Owner approves bible and episode list (needs owner)
 - [x] Cast created as `char.*` (6 characters, `content-src/qc-cast.yml`; names still need owner approval)
 - [~] Onboarding block (1 of 4 imported: first_day_walkthrough; remaining: first_signature, training_gap, lab_housekeeping)
@@ -29,10 +29,10 @@ source of truth for what scene comes next; update their Status column as you go.
 - [ ] The Squeeze block (2 + extend audit_day)
 - [ ] Cheaper Steel arc (2)
 - [x] The Hamper arc (3: hung_favour, hung_money, hung_threat; wired into supplier_gift)
-- [ ] Mid-year block (2)
+- [~] Mid-year block (midyear_review imported as a beat; kpi_first_pass_yield remaining)
 - [ ] Field Complaint arc (4, incl. minh_mistake)
 - [ ] Autumn audit and crisis block (4)
-- [ ] Finale block (2) and the promotion ending
+- [~] Finale block (year_end_review imported as a beat; manager_offer and the promotion ending remaining)
 - [ ] Balance check: careful completes, reckless caught, 55 to 65 decisions a year; pins updated
 - [ ] VI text read by a native speaker; practitioner review
 
