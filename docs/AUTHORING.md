@@ -1,5 +1,7 @@
 # Authoring dialogue and events
 
+For the rules and tone a new event must follow, read `content/industry-cookware/events/README.md` first.
+
 You do not edit the JSON content by hand. Write a scene in a YAML file (English and Vietnamese side
 by side), import it, and the tool writes the scene, its event and all the text, then validates the
 whole pack. A mistake changes nothing.

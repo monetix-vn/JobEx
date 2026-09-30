@@ -29,6 +29,8 @@ export async function loadRawPacks(source: ContentSourcePort): Promise<RawConten
   const paths = (await source.list()).map((p) => p.replace(/\\/g, '/')).sort();
 
   for (const file of paths) {
+    // Notes for authors (README.md, guides) may sit next to the content; they are not content.
+    if (file.endsWith('.md')) continue;
     const parts = file.split('/');
     const dir = parts[0] as string;
     if (parts.length < 2) {

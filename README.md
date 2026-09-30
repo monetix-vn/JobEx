@@ -50,6 +50,7 @@ pnpm pin:update        # re-pin golden fingerprints after an intended behaviour 
 pnpm new:scene <key>   # scaffold a scene, its event and EN/VI text keys
 pnpm author <file.yml>   # add scenes/facts/terms written in YAML (docs/AUTHORING.md)
 pnpm content:list       # list every event, its job and trigger
+Writing events: content/industry-cookware/events/README.md (rules and vibe) + docs/AUTHORING.md (file format).
 pnpm test              # unit, property and fixture tests
 pnpm check:boundaries  # dependency rules
 pnpm validate:packs    # validate ./content

@@ -57,6 +57,11 @@ describe('valid packs', () => {
     expect(registry?.counts()).toEqual({ role: 0, event: 1, scene: 1, offer: 0, fact: 0, term: 0 });
   });
 
+  it('ignores markdown notes placed next to the content, without a warning', async () => {
+    const { diagnostics } = await load({ ...pack(), 'p/events/README.md': '# notes' });
+    expect(diagnostics.filter((d) => d.code === 'file.ignored')).toEqual([]);
+  });
+
   it('the real content directory validates with zero errors and zero warnings', async () => {
     const root = join(import.meta.dirname, '..', '..', '..', 'content');
     const files: Record<string, string> = {};
