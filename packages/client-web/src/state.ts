@@ -31,9 +31,18 @@ export interface ClientState {
   /** The end-of-run review, once the run has ended. */
   debrief?: CoreEventPayloads['debrief.ready'];
   ended: boolean;
+  /** People met so far (in the order met), and how they feel about the player. */
+  cast: CastMember[];
+  feelings: Record<string, { trust: number; loyalty: number; owed: number }>;
 }
 
-export const initialState: ClientState = { ended: false, vars: {} };
+export interface CastMember {
+  character: string;
+  name: string;
+  title: string;
+}
+
+export const initialState: ClientState = { ended: false, vars: {}, cast: [], feelings: {} };
 
 /** Pure reducer: the client's view is derived entirely from bus messages. */
 export function reduce(state: ClientState, envelope: Envelope): ClientState {
@@ -44,8 +53,12 @@ export function reduce(state: ClientState, envelope: Envelope): ClientState {
       return { ...state, map: envelope.payload as CoreEventPayloads['map.loaded'] };
     case 'scene.started': {
       const p = envelope.payload as CoreEventPayloads['scene.started'];
+      const known = new Map(state.cast.map((m) => [m.character, m]));
+      // Names come in the player's language each time, so a later scene refreshes them.
+      for (const person of p.people ?? []) known.set(person.character, person);
       return {
         ...state,
+        cast: [...known.values()],
         scene: {
           sceneId: p.sceneId,
           location: p.location,
@@ -69,6 +82,14 @@ export function reduce(state: ClientState, envelope: Envelope): ClientState {
       const p = envelope.payload as CoreEventPayloads['scene.ended'];
       if (state.scene?.sceneId !== p.sceneId || p.narration === undefined) return state;
       return { ...state, scene: { ...state.scene, narration: p.narration } };
+    }
+    case 'relationship.changed': {
+      const p = envelope.payload as CoreEventPayloads['relationship.changed'];
+      const now = state.feelings[p.character] ?? { trust: 0, loyalty: 0, owed: 0 };
+      return {
+        ...state,
+        feelings: { ...state.feelings, [p.character]: { ...now, [p.dimension]: p.to } },
+      };
     }
     case 'debrief.ready':
       return { ...state, debrief: envelope.payload as CoreEventPayloads['debrief.ready'] };

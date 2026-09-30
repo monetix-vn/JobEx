@@ -142,6 +142,16 @@ export function createModule(host: ModuleHost): ModuleInstance {
       const term = content.get('term', id);
       return term ? [{ id, term: text(term.term_key), definition: text(term.definition_key) }] : [];
     });
+    const people = [
+      ...new Set([...(scene.cast ?? []), ...scene.lines.map((l) => l.speaker)]),
+    ].flatMap((who) => {
+      if (!who.startsWith('char:')) return [];
+      const id = `char.${who.slice('char:'.length)}`;
+      const person = content.get('character', id);
+      return person
+        ? [{ character: id, name: text(person.name_key), title: text(person.title_key) }]
+        : [];
+    });
     const choices =
       scene.choices && scene.choices.length > 0
         ? scene.choices.map((c, i) => ({
@@ -162,6 +172,7 @@ export function createModule(host: ModuleHost): ModuleInstance {
           })),
           choices,
           ...(glossary.length > 0 ? { terms: glossary } : {}),
+          ...(people.length > 0 ? { people } : {}),
         },
       },
     ];

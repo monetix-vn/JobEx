@@ -29,6 +29,8 @@ export const STYLE = `
 .je-lang{font:inherit;color:#eee;background:#33335a;border:2px solid #eee;padding:0 6px;cursor:pointer}
 .je-lang[aria-pressed="true"]{background:#ffd166;color:#111}
 .je-stats{border:3px solid #eee;padding:4px 8px;margin-bottom:8px;font-size:.9em}
+.je-cast{border:3px solid #eee;padding:4px 8px;margin-bottom:8px;font-size:.85em}
+.je-cast ul{margin:2px 0 0;padding-left:18px}
 .je-map{display:grid;gap:0;border:3px solid #eee;margin-bottom:8px}
 .je-tile{aspect-ratio:1;background:#3a3a55}
 .je-tile[data-tile="#"]{background:#111}
@@ -93,6 +95,30 @@ interface Ui {
   toggleTerm(key: string): void;
 }
 
+/** How a person feels, in words, from their trust (-100 to 100). */
+function feelingOf(trust: number, t: UiStrings): string {
+  return trust >= 20
+    ? t.debrief.feelings.trusts
+    : trust <= -20
+      ? t.debrief.feelings.wary
+      : t.debrief.feelings.neutral;
+}
+
+/** The people met so far and how they feel about the player. */
+function castView(state: ClientState, t: UiStrings): HTMLElement {
+  const box = el('div', 'je-cast');
+  box.append(el('b', '', `${t.cast}: `));
+  const list = el('ul', 'je-cast-list');
+  for (const person of state.cast) {
+    const trust = state.feelings[person.character]?.trust ?? 0;
+    const item = el('li', 'je-person', `${person.name} (${person.title}) - ${feelingOf(trust, t)}`);
+    item.dataset.character = person.character;
+    list.append(item);
+  }
+  box.append(list);
+  return box;
+}
+
 /** The end-of-run review, replacing the map and dialogue. */
 function debriefView(
   d: NonNullable<ClientState['debrief']>,
@@ -131,12 +157,7 @@ function debriefView(
     box.append(el('h3', '', t.debrief.people));
     const list = el('ul', 'je-people');
     for (const person of d.people) {
-      const feeling =
-        person.trust >= 20
-          ? t.debrief.feelings.trusts
-          : person.trust <= -20
-            ? t.debrief.feelings.wary
-            : t.debrief.feelings.neutral;
+      const feeling = feelingOf(person.trust, t);
       const favour =
         person.owed > 0 ? `, ${t.debrief.owesYou}` : person.owed < 0 ? `, ${t.debrief.youOwe}` : '';
       list.append(
@@ -220,6 +241,7 @@ function render(
     root.replaceChildren(view);
     return;
   }
+  if (state.cast.length > 0) view.append(castView(state, t));
 
   if (state.map) {
     const map = el('div', 'je-map');

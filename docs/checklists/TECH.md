@@ -36,7 +36,7 @@ Order matters; each item ships with tests and a docs/AUTHORING.md update.
 - [x] E5 Validator: arcs reference real events/stages, reserved/duplicate stage ids rejected, unreachable stages warned (an arc ends by `end` or its last stage, so there is no separate can-end rule)
 - [x] E6 Timeline beats: events with a `beat` week window play once, ahead of the random pool, one per week; everything else stays random (named beats such as Tet are not needed yet)
 - [x] E7 Debrief: "people who remember you" (trust, favours) and storylines closed/open, in both languages
-- [ ] E8 Client: cast panel, relationship hints; both languages
+- [x] E8 Client: cast panel (people met, how they feel about you), both languages; `scene.started` carries the named people
 - [x] E9 Authoring: `char:`, `rel`, `favor`, `char:` speakers, `arc:` entries and `arc <name> <stage>` effects
 - [x] E10 Demo arc playable end to end: The Hamper (Hung, Khoa, Minh, Lan, Tam), acceptance test in qc-year.test.ts, pins updated
 

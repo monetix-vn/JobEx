@@ -122,6 +122,27 @@ describe('playing the QC job through the client', () => {
     expect(root.querySelector('.je-stats')?.textContent).toMatch(/Stress \d+/);
   });
 
+  it('the cast panel shows the people met in the QC premiere, in the chosen language', async () => {
+    for (const [locale, khoa] of [
+      ['en', 'Mr Khoa (QC Manager)'],
+      ['vi', 'Anh Khoa (Trưởng phòng QC)'],
+    ] as const) {
+      const { run, transport } = await createGameHost({
+        files: readFiles(),
+        seed: 'qc-cast',
+        roleId: QC_ROLE,
+        locale,
+      });
+      const root = document.createElement('div');
+      document.body.append(root);
+      mount(root, transport, { locale });
+      run.advanceTurn();
+      const people = [...root.querySelectorAll('.je-person')].map((li) => li.textContent ?? '');
+      expect(people.some((p) => p.startsWith(khoa))).toBe(true);
+      root.remove();
+    }
+  });
+
   it('the job is part of the recorded run, so language switching keeps it', async () => {
     const host = await createGameHost({ files: readFiles(), seed: 'qc-keep', roleId: QC_ROLE });
     host.run.advanceTurn();

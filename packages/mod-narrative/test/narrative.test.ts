@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { ContentView, EventDraft, GameEvent, Locale, Scene } from '@je/contracts';
+import type { Character, ContentView, EventDraft, GameEvent, Locale, Scene } from '@je/contracts';
 import { runFixture } from '@je/kernel';
 import { manifest, narrativeModule, type NarrativeConfig } from '../src';
 
@@ -31,6 +31,22 @@ const B: Scene = {
   location: 'loc.hall',
   lines: [{ speaker: 'role:boss', text_key: 'b.l1' }],
 };
+const khoa: Character = {
+  id: 'char.khoa',
+  name_key: 'khoa.n',
+  title_key: 'khoa.t',
+  department: 'qc',
+};
+const C: Scene = {
+  id: 'scene.c',
+  location: 'loc.lab',
+  cast: ['char:khoa', 'char:ghost'],
+  lines: [
+    { speaker: 'char:khoa', text_key: 'b.l1' },
+    { speaker: 'role:boss', text_key: 'b.l1' },
+    { speaker: 'char:khoa', text_key: 'b.l1' },
+  ],
+};
 const event: GameEvent = { id: 'event.pick_b', scene: 'scene.b' };
 const kickback = {
   id: 'fact.fee',
@@ -38,7 +54,7 @@ const kickback = {
   severity: 8,
   text_key: 'fact.fee',
 } as const;
-const scenes = new Map([A, B, T].map((s) => [s.id, s]));
+const scenes = new Map([A, B, T, C].map((s) => [s.id, s]));
 const po = { id: 'term.po', term_key: 'po.t', definition_key: 'po.d' };
 const strings: Record<Locale, Record<string, string>> = {
   en: {
@@ -48,6 +64,8 @@ const strings: Record<Locale, Record<string, string>> = {
     'a.c2': 'Analyse',
     'b.l1': 'Bye',
     'speaker.boss': 'Boss',
+    'khoa.n': 'Mr Khoa',
+    'khoa.t': 'QC Manager',
     'ui.continue': 'Continue',
     'n.done': 'It is done.',
     'fact.fee': 'the fee you took',
@@ -60,19 +78,27 @@ const strings: Record<Locale, Record<string, string>> = {
     'ui.notice.rumor': 'People are talking about {fact}.',
     'ui.notice.public': 'Everyone knows now: {fact}.',
   },
-  vi: { 'a.l1': 'Xin chào', 'speaker.boss': 'Sếp', 'ui.continue': 'Tiếp tục' },
+  vi: {
+    'a.l1': 'Xin chào',
+    'speaker.boss': 'Sếp',
+    'khoa.n': 'Anh Khoa',
+    'khoa.t': 'Trưởng phòng QC',
+    'ui.continue': 'Tiếp tục',
+  },
 };
 const content: ContentView = {
   get: ((kind: string, id: string) =>
     kind === 'scene'
       ? scenes.get(id)
-      : kind === 'event' && id === event.id
-        ? event
-        : kind === 'fact' && id === kickback.id
-          ? kickback
-          : kind === 'term' && id === po.id
-            ? po
-            : undefined) as never,
+      : kind === 'character' && id === khoa.id
+        ? khoa
+        : kind === 'event' && id === event.id
+          ? event
+          : kind === 'fact' && id === kickback.id
+            ? kickback
+            : kind === 'term' && id === po.id
+              ? po
+              : undefined) as never,
   all: (() => []) as never,
   text: (locale, key) => strings[locale][key],
 };
@@ -355,5 +381,29 @@ describe('narrative: contract', () => {
   it('declares what it uses and needs content', () => {
     expect(manifest.emits).toEqual(['scene.started', 'scene.ended', 'scene.expired']);
     expect(() => narrativeModule.createModule({ config: undefined } as never)).toThrow(/config/);
+  });
+});
+
+describe('narrative: named people in a scene', () => {
+  const people = (locale: Locale) =>
+    play([plan], { script: { '0': ['scene.c'] }, locale })[0]!.payload as {
+      lines: { speaker: string }[];
+      people?: { character: string; name: string; title: string }[];
+    };
+
+  it('shows them by name in each language and lists them once, without unknown characters', () => {
+    const en = people('en');
+    expect(en.lines.map((l) => l.speaker)).toEqual(['Mr Khoa', 'Boss', 'Mr Khoa']);
+    expect(en.people).toEqual([{ character: 'char.khoa', name: 'Mr Khoa', title: 'QC Manager' }]);
+    expect(people('vi').people).toEqual([
+      { character: 'char.khoa', name: 'Anh Khoa', title: 'Trưởng phòng QC' },
+    ]);
+  });
+
+  it('a scene with no named people has no people list', () => {
+    const scene = play([plan], { script: { '0': ['scene.b'] } })[0]!.payload as {
+      people?: unknown;
+    };
+    expect(scene.people).toBeUndefined();
   });
 });

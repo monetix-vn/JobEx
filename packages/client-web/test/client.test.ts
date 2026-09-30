@@ -380,6 +380,66 @@ describe('mount', () => {
     expect(vi.querySelector('.je-arcs li')?.textContent).toContain('đã khép lại');
   });
 
+  it('the cast panel lists the people met, updates how they feel, and follows the language', () => {
+    const { root, push } = setup();
+    expect(root.querySelector('.je-cast')).toBeNull();
+    push(
+      env('scene.started', {
+        sceneId: 's1',
+        location: 'l',
+        lines: [{ speaker: 'Mr Khoa', text: 'Welcome.' }],
+        choices: [{ id: 'a', label: 'Go' }],
+        people: [{ character: 'char.khoa', name: 'Mr Khoa', title: 'QC Manager' }],
+      }),
+    );
+    const row = () => [...root.querySelectorAll('.je-person')].map((li) => li.textContent);
+    expect(row()).toEqual(['Mr Khoa (QC Manager) - undecided about you']);
+    push(
+      env('relationship.changed', { character: 'char.khoa', dimension: 'trust', from: 0, to: 25 }),
+    );
+    expect(row()).toEqual(['Mr Khoa (QC Manager) - trusts you']);
+    push(
+      env('relationship.changed', {
+        character: 'char.khoa',
+        dimension: 'trust',
+        from: 25,
+        to: -30,
+      }),
+    );
+    expect(row()).toEqual(['Mr Khoa (QC Manager) - wary of you']);
+    push(
+      env('scene.started', {
+        sceneId: 's2',
+        location: 'l',
+        lines: [{ speaker: 'Minh', text: 'Hi.' }],
+        choices: [{ id: 'a', label: 'Go' }],
+        people: [
+          { character: 'char.minh', name: 'Minh', title: 'Lab technician' },
+          { character: 'char.khoa', name: 'Mr Khoa', title: 'QC Manager' },
+        ],
+      }),
+    );
+    expect(row()).toHaveLength(2);
+    expect(root.querySelector('.je-cast')?.textContent).toContain('People you know');
+    const vi = document.createElement('div');
+    document.body.append(vi);
+    const t = fakeTransport();
+    mount(vi, t.transport, { locale: 'vi' });
+    t.push(
+      env('scene.started', {
+        sceneId: 's1',
+        location: 'l',
+        lines: [{ speaker: 'Anh Khoa', text: 'Chào.' }],
+        choices: [{ id: 'a', label: 'Đi' }],
+        people: [{ character: 'char.khoa', name: 'Anh Khoa', title: 'Trưởng phòng QC' }],
+      }),
+    );
+    expect(vi.querySelector('.je-cast')?.textContent).toContain('Những người bạn quen');
+    expect(vi.querySelector('.je-person')?.textContent).toBe(
+      'Anh Khoa (Trưởng phòng QC) - chưa có ý kiến về bạn',
+    );
+  });
+
   it('a line without a speaker shows just its text, with no stray colon', () => {
     const { root, push } = setup();
     push(

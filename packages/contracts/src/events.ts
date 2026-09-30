@@ -86,6 +86,12 @@ export interface DebriefArc {
   status: 'closed' | 'open';
 }
 
+export interface ScenePerson {
+  character: string;
+  name: string;
+  title: string;
+}
+
 export interface SceneLine {
   speaker: string;
   text: string;
@@ -109,6 +115,8 @@ export interface CoreEventPayloads {
     choices: SceneChoice[];
     /** Glossary terms the player can tap, with their definitions already in the player's language. */
     terms?: SceneTerm[];
+    /** Named characters in this scene, with name and title in the player's language. */
+    people?: ScenePerson[];
   };
   /** Command from the player (client). */
   'choice.made': { sceneId: string; choiceId: string };
