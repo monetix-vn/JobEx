@@ -1,0 +1,157 @@
+{
+  "id": "scene.fin.buyer_disputes_invoice",
+  "location": "loc.meeting_room",
+  "cast": ["char:petra", "char:bao"],
+  "lines": [
+    {
+      "speaker": "char:petra",
+      "text_key": "scene.fin.buyer_disputes_invoice.l1"
+    },
+    {
+      "speaker": "char:bao",
+      "text_key": "scene.fin.buyer_disputes_invoice.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.fin.buyer_disputes_invoice.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.fin.buyer_disputes_invoice.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.petra.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.fin.buyer_disputes_invoice.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.petra.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.fin.buyer_disputes_invoice.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.fin.buyer_disputes_invoice.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.petra.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.fin.buyer_disputes_invoice.c3",
+      "outcomes": [
+        {
+          "p": 0.55,
+          "narration_key": "scene.fin.buyer_disputes_invoice.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 6
+            },
+            {
+              "delta": "rel.bao.owed",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": -1
+            },
+            {
+              "fact": "fact.backdated_invoice_entry",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.45,
+          "result": "fail",
+          "narration_key": "scene.fin.buyer_disputes_invoice.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.petra.trust",
+              "value": -10
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.backdated_invoice_entry",
+              "visibility": "public"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -43,7 +43,7 @@ Order matters; each item ships with tests and a docs/AUTHORING.md update.
 ## Phase 3: Roles and endings engine support
 
 - [x] R1 Endings "promoted" and "walked_away": a scene effect `end promoted|walked_away` (YAML `end promoted`) ends the run with that ending; conditions come from the scene (facts, relationships, rep)
-- [~] R2 Finance role: pack role file done (`role.fin.accountant`, not playable: no blurb); remaining: blurb, cast, tune overhead hours with balance runs, `sim-runner` scenario `fin-year`, pins (after the bible is approved)
+- [x] R2 Finance role: `role.fin.accountant` playable (blurb, overhead 20 hours), `fin-year` scenario in sim-runner, CI step `sim:fin`, balance guards in `fin-year.test.ts`
 - [x] R3 Month-end close mechanic (`mod-close`, role field `close_steps`, visible checklist in the client); owner said yes on 2026-09-30
 - [ ] R4 Shared events across jobs (audit day, compliance) checked for each role
 

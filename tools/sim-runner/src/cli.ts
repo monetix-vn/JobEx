@@ -23,7 +23,7 @@ const USAGE = `sim-runner: headless simulation runs
 
   --policy random|first|last   how the test player chooses: random, careful, or reckless
 
-  Add --scenario sales-week|sales-year|qc-year [--content content] [--locale vi|en] to any command to run
+  Add --scenario sales-week|sales-year|qc-year|fin-year [--content content] [--locale vi|en] to any command to run
   the real Phase 1 modules on the content packs instead of the stubs.`;
 
 function parseFlags(args: string[]): { flags: Map<string, string>; rest: string[] } {

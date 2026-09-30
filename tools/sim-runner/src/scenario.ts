@@ -16,6 +16,7 @@ import type { BotOptions } from './runner';
 
 export const SALES_ROLE = 'role.sales.export.specialist';
 export const QC_ROLE = 'role.qc.specialist';
+export const FIN_ROLE = 'role.fin.accountant';
 
 /** The three pressure scenes of the Sales Specialist's week (Monday, Wednesday, Friday). */
 export const SALES_WEEK_SCENES = [
@@ -48,6 +49,7 @@ const SCENARIOS: Record<string, { roleId: string; turns: number; directed: boole
   'sales-week': { roleId: SALES_ROLE, turns: 4, directed: false },
   'sales-year': { roleId: SALES_ROLE, turns: 52, directed: true },
   'qc-year': { roleId: QC_ROLE, turns: 52, directed: true },
+  'fin-year': { roleId: FIN_ROLE, turns: 52, directed: true },
 };
 
 /**

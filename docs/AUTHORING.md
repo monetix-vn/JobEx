@@ -65,7 +65,7 @@ variable name. For something the list cannot say, use `when_raw:` with the JSON 
 ## The month-end close (finance)
 
 A role with `close_steps` (for example `bank_rec`, `ar_aging`, `accruals`, `cutoff`) gets a visible
-checklist in the game. In the last two weeks of each month the variable `close.open` is 1, so write
+checklist in the game. In the last three weeks of each month the variable `close.open` is 1, so write
 step scenes with `when: [close.open = 1, close.bank_rec = 0]` and effects `close bank_rec +2`
 (proper), `close bank_rec +1` (rushed) or none (skipped). When the month rolls over the close is
 scored: 75% or more of the points gives the boss +2, under 40% costs -3, each open step adds 1 stress,
@@ -83,7 +83,7 @@ crisis (about 40-44) and finale (49-52). Examples: `content-src/qc-cast.yml`, `c
 
 ```yaml
 fact: signed_untested_coa
-severity: 4 # 1 minor .. 5 career-ending
+severity: 6 # 1 to 10. 1-3 minor, 4-5 real breach, 6 scandal if it gets out, 7+ serious (two public ones can end the run), 9+ grave
 category: integrity
 en: "You signed a certificate for a lot that was not fully tested."
 vi: "..."

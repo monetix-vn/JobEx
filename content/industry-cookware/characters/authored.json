@@ -51,5 +51,61 @@
     "title_key": "char.tam.title",
     "department": "purchasing",
     "traits": ["pragmatic", "cost_focused"]
+  },
+  {
+    "id": "char.hanh",
+    "name_key": "char.hanh.name",
+    "title_key": "char.hanh.title",
+    "department": "finance",
+    "home_group": "boss",
+    "traits": ["meticulous", "protective", "tired"],
+    "start": {
+      "trust": 10
+    }
+  },
+  {
+    "id": "char.duc",
+    "name_key": "char.duc.name",
+    "title_key": "char.duc.title",
+    "department": "finance",
+    "home_group": "boss",
+    "traits": ["big_picture", "target_driven"],
+    "start": {
+      "trust": 5
+    }
+  },
+  {
+    "id": "char.thu",
+    "name_key": "char.thu.name",
+    "title_key": "char.thu.title",
+    "department": "finance",
+    "home_group": "finance",
+    "traits": ["earnest", "careful_notebook"],
+    "start": {
+      "trust": 15,
+      "loyalty": 10
+    }
+  },
+  {
+    "id": "char.bao",
+    "name_key": "char.bao.name",
+    "title_key": "char.bao.title",
+    "department": "sales",
+    "traits": ["charming", "deadline_driven"]
+  },
+  {
+    "id": "char.long",
+    "name_key": "char.long.name",
+    "title_key": "char.long.title",
+    "department": "admin",
+    "traits": ["entitled", "family_money"]
+  },
+  {
+    "id": "char.petra",
+    "name_key": "char.petra.name",
+    "title_key": "char.petra.title",
+    "department": "buyer",
+    "home_group": "buyer",
+    "traits": ["polite", "exact"]
   }
 ]

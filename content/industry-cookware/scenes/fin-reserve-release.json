@@ -1,0 +1,147 @@
+{
+  "id": "scene.fin.reserve_release",
+  "location": "loc.meeting_room",
+  "cast": ["char:duc"],
+  "lines": [
+    {
+      "speaker": "char:duc",
+      "text_key": "scene.fin.reserve_release.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.fin.reserve_release.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.fin.reserve_release.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": 5
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.the_cookie_jar",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.fin.reserve_release.c2",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.fin.reserve_release.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.the_cookie_jar",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.fin.reserve_release.c3",
+      "outcomes": [
+        {
+          "p": 0.75,
+          "narration_key": "scene.fin.reserve_release.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": 7
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": -2
+            },
+            {
+              "fact": "fact.released_reserve_to_hit_target",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_cookie_jar",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.25,
+          "result": "fail",
+          "narration_key": "scene.fin.reserve_release.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.vy.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.released_reserve_to_hit_target",
+              "visibility": "public"
+            },
+            {
+              "arc": "arc.the_cookie_jar",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": ["term.accrual"]
+}

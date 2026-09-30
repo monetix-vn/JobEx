@@ -1,0 +1,79 @@
+{
+  "id": "scene.qc.manager_offer",
+  "location": "loc.meeting_room",
+  "cast": ["char:khoa"],
+  "lines": [
+    {
+      "speaker": "char:khoa",
+      "text_key": "scene.qc.manager_offer.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.qc.manager_offer.c1",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.qc.manager_offer.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 5
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 5
+            },
+            {
+              "ending": "promoted"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.qc.manager_offer.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.qc.manager_offer.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": -3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.qc.manager_offer.c3",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.qc.manager_offer.c3.ok",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": 4
+            },
+            {
+              "fact": "fact.accepted_smoothing_condition",
+              "visibility": "private"
+            },
+            {
+              "ending": "promoted"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

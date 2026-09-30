@@ -1,0 +1,103 @@
+{
+  "id": "scene.fin.first_adjustment",
+  "location": "loc.finance_office",
+  "cast": ["char:hanh"],
+  "lines": [
+    {
+      "speaker": "char:hanh",
+      "text_key": "scene.fin.first_adjustment.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.fin.first_adjustment.c1",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.fin.first_adjustment.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.hanh.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.fin.first_adjustment.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.hanh.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.fin.first_adjustment.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.fin.first_adjustment.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": 2
+            },
+            {
+              "fact": "fact.guessed_adjustment_reason",
+              "visibility": "private"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.fin.first_adjustment.c3",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.fin.first_adjustment.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": -1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

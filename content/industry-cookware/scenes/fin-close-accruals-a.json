@@ -1,0 +1,134 @@
+{
+  "id": "scene.fin.close_accruals_a",
+  "location": "loc.finance_office",
+  "cast": ["char:duc"],
+  "lines": [
+    {
+      "speaker": "char:duc",
+      "text_key": "scene.fin.close_accruals_a.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.fin.close_accruals_a.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.85,
+          "narration_key": "scene.fin.close_accruals_a.c1.ok",
+          "effects": [
+            {
+              "delta": "close.accruals",
+              "value": 2
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": -1
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "p": 0.15,
+          "result": "fail",
+          "narration_key": "scene.fin.close_accruals_a.c1.fail",
+          "effects": [
+            {
+              "delta": "close.accruals",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.fin.close_accruals_a.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.fin.close_accruals_a.c2.ok",
+          "effects": [
+            {
+              "delta": "close.accruals",
+              "value": 1
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.fin.close_accruals_a.c3",
+      "outcomes": [
+        {
+          "p": 0.85,
+          "narration_key": "scene.fin.close_accruals_a.c3.ok",
+          "effects": [
+            {
+              "delta": "close.accruals",
+              "value": 1
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.stress",
+              "value": -1
+            },
+            {
+              "fact": "fact.rounded_accrual",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.15,
+          "result": "fail",
+          "narration_key": "scene.fin.close_accruals_a.c3.fail",
+          "effects": [
+            {
+              "delta": "close.accruals",
+              "value": 1
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": -5
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": -2
+            },
+            {
+              "fact": "fact.rounded_accrual",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": ["term.accrual"]
+}

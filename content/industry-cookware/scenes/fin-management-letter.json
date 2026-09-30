@@ -1,0 +1,138 @@
+{
+  "id": "scene.fin.management_letter",
+  "location": "loc.meeting_room",
+  "cast": ["char:hanh"],
+  "lines": [
+    {
+      "speaker": "char:hanh",
+      "text_key": "scene.fin.management_letter.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.fin.management_letter.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.fin.management_letter.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.hanh.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.came_clean_to_auditor",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.fin.management_letter.c2",
+      "outcomes": [
+        {
+          "p": 0.4,
+          "narration_key": "scene.fin.management_letter.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.hanh.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        },
+        {
+          "p": 0.6,
+          "result": "fail",
+          "narration_key": "scene.fin.management_letter.c2.fail",
+          "effects": [
+            {
+              "delta": "rel.hanh.trust",
+              "value": -12
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -8
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.fin.management_letter.c3",
+      "outcomes": [
+        {
+          "p": 0.35,
+          "narration_key": "scene.fin.management_letter.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.hanh.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -14
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "fact": "fact.blamed_salesperson",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.65,
+          "result": "fail",
+          "narration_key": "scene.fin.management_letter.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.hanh.trust",
+              "value": -10
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -10
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -8
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.blamed_salesperson",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

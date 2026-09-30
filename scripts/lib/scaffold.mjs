@@ -6,7 +6,11 @@ import { join } from 'node:path';
 const KEY = /^[a-z][a-z0-9_]*$/;
 
 /** A new scene with one of these prefixes is for that job only, unless `role` says otherwise. */
-const ROLE_BY_PREFIX = { sales: 'role.sales.export.specialist', qc: 'role.qc.specialist' };
+const ROLE_BY_PREFIX = {
+  sales: 'role.sales.export.specialist',
+  qc: 'role.qc.specialist',
+  fin: 'role.fin.accountant',
+};
 
 const readJson = (path, fallback) =>
   existsSync(path) ? JSON.parse(readFileSync(path, 'utf8')) : fallback;

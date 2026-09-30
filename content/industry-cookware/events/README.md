@@ -61,7 +61,7 @@ understands it. We do not teach how to do wrong things well, and we do not preac
 | `rep.<who>`        | 1..3  | 4..6   | 8..10                     |
 | `cash` (VND)       | 100k  | 1M     | 5M+                       |
 | `cost: { hours }`  | 1..2  | 3..4   | 6+                        |
-| fact `severity` 1-5 | 1-2 minor rule bending | 3 real breach | 4-5 serious or career-ending |
+| fact `severity` 1-10 | 1-3 minor rule bending | 4-5 real breach, 6 a scandal if it comes out | 7+ serious (two public ones can end a run), 9+ grave (prosecution) |
 
 Reputation groups: boss, buyer, production, qc, finance, cs. Pick the ones the scene actually
 involves. A typical outcome changes 2 to 4 numbers, not all of them.

@@ -3,5 +3,15 @@
     "id": "term.aql",
     "term_key": "term.aql.term",
     "definition_key": "term.aql.def"
+  },
+  {
+    "id": "term.accrual",
+    "term_key": "term.accrual.term",
+    "definition_key": "term.accrual.def"
+  },
+  {
+    "id": "term.cutoff",
+    "term_key": "term.cutoff.term",
+    "definition_key": "term.cutoff.def"
   }
 ]

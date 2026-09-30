@@ -91,3 +91,35 @@ witnessed:
   boss: -3
 public:
   boss: -5
+---
+scene: qc.manager_offer
+place: meeting_room
+tags: [people, promotion, beat]
+beat: 51-52
+when: [rel.khoa.trust >= 25, rep.boss >= 58]
+lines:
+  - who: char:khoa
+    en: 'I am leaving the company at the end of the year. The directors have asked me who should run QC, and I gave them your name. One condition: you will be asked, often, to sign things that are nearly right. I need to know you will say no.'
+    vi: 'Cuối năm anh rời công ty. Ban giám đốc hỏi anh ai nên phụ trách QC và anh đã nêu tên em. Một điều kiện: em sẽ thường xuyên được nhờ ký những thứ gần như đúng. Anh cần biết em sẽ nói không.'
+choices:
+  - en: 'Accept, and say plainly what you will and will not sign, so the directors hear it from you first.'
+    vi: 'Nhận lời và nói rõ những gì anh/chị sẽ ký và sẽ không ký, để ban giám đốc nghe điều đó từ anh/chị trước.'
+    outcomes:
+      - p: 1
+        en: "Khoa nods: 'Then it is yours. Write it down.' You take over the lab with your terms on paper."
+        vi: "Anh Khoa gật đầu: 'Vậy là của em. Ghi lại đi.' Anh/chị tiếp quản phòng lab với điều kiện của mình đã viết ra giấy."
+        effects: [rel khoa trust +5, rep.boss +5, end promoted]
+  - en: 'Thank him, but decline: you would rather keep inspecting than manage the pressure.'
+    vi: 'Cảm ơn anh nhưng từ chối: anh/chị muốn tiếp tục kiểm hàng hơn là quản lý áp lực.'
+    outcomes:
+      - p: 1
+        en: "Khoa looks disappointed, then understanding. 'Stay sharp. The next manager may not be as careful as you.'"
+        vi: "Anh Khoa có vẻ thất vọng rồi thông cảm. 'Giữ cho mình sắc bén. Người quản lý tiếp theo có thể không cẩn thận như em.'"
+        effects: [rel khoa trust +2, stress -3]
+  - en: 'Accept without asking what the condition means when the directors push.'
+    vi: 'Nhận lời mà không hỏi điều kiện đó nghĩa là gì khi ban giám đốc gây áp lực.'
+    outcomes:
+      - p: 1
+        en: 'Khoa nods slowly and shakes your hand. You realise you agreed to something you did not ask about.'
+        vi: 'Anh Khoa gật đầu chậm và bắt tay anh/chị. Anh/chị nhận ra mình đã đồng ý với điều mình không hỏi.'
+        effects: [rep.boss +4, fact accepted_smoothing_condition private, end promoted]

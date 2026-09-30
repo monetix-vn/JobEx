@@ -32,7 +32,7 @@ only the file you are editing. Long logs: pipe through `tail`/`grep`, or use the
 - A run = seed + player inputs. Same seed, same log, byte for byte; replay is checked in CI.
 - Modules: sim-core (state, only writer), workload, choice (requirements, costs, outcomes), narrative
   (scenes, text, notices), director (what happens this week), knowledge (facts ledger), social (gossip,
-  reputation), relationships (per-person trust/loyalty/favours, `rel.<char>.*`), risk (detection, audits, blame, endings), education (debrief). Stubs: mod-stubs, mod-toy.
+  reputation), relationships (per-person trust/loyalty/favours, `rel.<char>.*`), close (finance month-end checklist, `close.<step>`), risk (detection, audits, blame, endings), education (debrief). Stubs: mod-stubs, mod-toy.
 - Jobs are roles with a `blurb_key` (playable); an event with `role` is only for that job. Convention in
   every scene: c1 by the book, c2 a legitimate compromise, c3 the shortcut (test policies `--policy
   first|last` rely on it). Per-job busyness is `overhead_hours` on the role.

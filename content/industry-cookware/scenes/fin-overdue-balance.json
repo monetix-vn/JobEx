@@ -1,0 +1,153 @@
+{
+  "id": "scene.fin.overdue_balance",
+  "location": "loc.finance_office",
+  "cast": ["char:bao", "char:petra"],
+  "lines": [
+    {
+      "speaker": "char:bao",
+      "text_key": "scene.fin.overdue_balance.l1"
+    },
+    {
+      "speaker": "char:petra",
+      "text_key": "scene.fin.overdue_balance.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.fin.overdue_balance.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.85,
+          "narration_key": "scene.fin.overdue_balance.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": -5
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "p": 0.15,
+          "result": "fail",
+          "narration_key": "scene.fin.overdue_balance.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.fin.overdue_balance.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.fin.overdue_balance.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": -1
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.fin.overdue_balance.c3",
+      "outcomes": [
+        {
+          "p": 0.75,
+          "narration_key": "scene.fin.overdue_balance.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 8
+            },
+            {
+              "delta": "rel.bao.owed",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.hid_overdue_balance",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.25,
+          "result": "fail",
+          "narration_key": "scene.fin.overdue_balance.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 6
+            },
+            {
+              "delta": "rel.thu.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "fact": "fact.hid_overdue_balance",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

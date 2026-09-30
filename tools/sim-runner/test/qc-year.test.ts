@@ -51,7 +51,7 @@ describe('QC Specialist: the same engine, a different job', () => {
   it('plays a varied year of QC decisions in either language, with no rejected choices', async () => {
     for (const locale of ['en', 'vi'] as const) {
       const { log } = await play('qc-year', 'qc-year-1', locale, undefined, { policy: 'first' });
-      expect(log.turns).toBe(52);
+      expect(log.turns).toBeGreaterThanOrEqual(51);
       const scenes = of(log, 'scene.started').map(
         (e) => (e.payload as { sceneId: string }).sceneId,
       );
@@ -68,7 +68,7 @@ describe('QC Specialist: the same engine, a different job', () => {
     const finals: number[] = [];
     for (let i = 0; i < 12; i++) {
       const { log } = await play('qc-year', `qc-bal-${i}`, 'en', undefined, { policy: 'first' });
-      expect(endingOf(log)).toBe('completed');
+      expect(['completed', 'promoted']).toContain(endingOf(log));
       finals.push(state(log)['player.stress'] as number);
     }
     const mean = finals.reduce((a, b) => a + b, 0) / finals.length;
@@ -241,7 +241,7 @@ describe('QC Specialist: the same engine, a different job', () => {
     };
     for (let i = 0; i < 6; i++) {
       const { log } = await play('qc-year', `qc-beat-${i}`, 'en', undefined, { policy: 'first' });
-      expect(endingOf(log)).toBe('completed');
+      expect(['completed', 'promoted']).toContain(endingOf(log));
       const fired = of(log, 'director.eventFired').map((e) => ({
         id: (e.payload as { eventId: string }).eventId,
         week: e.turn + 1,

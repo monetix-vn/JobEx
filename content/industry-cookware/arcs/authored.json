@@ -23,5 +23,85 @@
         "delay_weeks": [3, 5]
       }
     ]
+  },
+  {
+    "id": "arc.the_cutoff",
+    "title_key": "arc.the_cutoff.title",
+    "stages": [
+      {
+        "id": "request",
+        "event": "event.fin.quarter_close_push"
+      },
+      {
+        "id": "followup",
+        "event": "event.fin.cutoff_followup",
+        "delay_weeks": [2, 3]
+      },
+      {
+        "id": "test",
+        "event": "event.fin.cutoff_test_prep",
+        "delay_weeks": [5, 9]
+      }
+    ]
+  },
+  {
+    "id": "arc.the_receipt_problem",
+    "title_key": "arc.the_receipt_problem.title",
+    "stages": [
+      {
+        "id": "receipts",
+        "event": "event.fin.long_receipts"
+      },
+      {
+        "id": "personal",
+        "event": "event.fin.long_personal",
+        "delay_weeks": [3, 5]
+      },
+      {
+        "id": "event",
+        "event": "event.fin.long_event",
+        "delay_weeks": [4, 8]
+      },
+      {
+        "id": "support",
+        "event": "event.fin.receipt_support",
+        "delay_weeks": [2, 4]
+      }
+    ]
+  },
+  {
+    "id": "arc.the_cookie_jar",
+    "title_key": "arc.the_cookie_jar.title",
+    "stages": [
+      {
+        "id": "smoothing",
+        "event": "event.fin.profit_smoothing"
+      },
+      {
+        "id": "release",
+        "event": "event.fin.reserve_release",
+        "delay_weeks": [12, 20]
+      }
+    ]
+  },
+  {
+    "id": "arc.thu",
+    "title_key": "arc.thu.title",
+    "stages": [
+      {
+        "id": "training",
+        "event": "event.fin.thu_training"
+      },
+      {
+        "id": "mistake",
+        "event": "event.fin.thu_mistake",
+        "delay_weeks": [18, 26]
+      },
+      {
+        "id": "audit",
+        "event": "event.fin.thu_at_audit",
+        "delay_weeks": [4, 7]
+      }
+    ]
   }
 ]

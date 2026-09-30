@@ -1,0 +1,43 @@
+# Finance cast (docs/story/finance.md). Ms Vy (char.vy) is shared with QC and is defined in qc-cast.yml.
+char: hanh
+department: finance
+group: boss
+traits: [meticulous, protective, tired]
+start: { trust: 10 }
+en: { name: 'Ms Hanh', title: 'Chief Accountant' }
+vi: { name: 'Chị Hạnh', title: 'Kế toán trưởng' }
+---
+char: duc
+department: finance
+group: boss
+traits: [big_picture, target_driven]
+start: { trust: 5 }
+en: { name: 'Mr Duc', title: 'Finance Director' }
+vi: { name: 'Anh Đức', title: 'Giám đốc tài chính' }
+---
+char: thu
+department: finance
+group: finance
+traits: [earnest, careful_notebook]
+start: { trust: 15, loyalty: 10 }
+en: { name: 'Thu', title: 'Accounts payable clerk' }
+vi: { name: 'Thu', title: 'Nhân viên kế toán phải trả' }
+---
+char: bao
+department: sales
+traits: [charming, deadline_driven]
+en: { name: 'Mr Bao', title: 'Sales Manager' }
+vi: { name: 'Anh Bảo', title: 'Trưởng phòng kinh doanh' }
+---
+char: long
+department: admin
+traits: [entitled, family_money]
+en: { name: 'Mr Long', title: "Administration, the owner's nephew" }
+vi: { name: 'Anh Long', title: 'Hành chính, cháu của chủ doanh nghiệp' }
+---
+char: petra
+department: buyer
+group: buyer
+traits: [polite, exact]
+en: { name: 'Ms Petra', title: "Buyer's accounts payable contact" }
+vi: { name: 'Chị Petra', title: 'Đầu mối kế toán phải trả của khách hàng' }

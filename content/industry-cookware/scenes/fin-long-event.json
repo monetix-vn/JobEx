@@ -1,0 +1,170 @@
+{
+  "id": "scene.fin.long_event",
+  "location": "loc.finance_office",
+  "cast": ["char:long"],
+  "lines": [
+    {
+      "speaker": "char:long",
+      "text_key": "scene.fin.long_event.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.fin.long_event.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.85,
+          "narration_key": "scene.fin.long_event.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.long.trust",
+              "value": -10
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.the_receipt_problem",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.15,
+          "result": "fail",
+          "narration_key": "scene.fin.long_event.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.long.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "arc": "arc.the_receipt_problem",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.fin.long_event.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.fin.long_event.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.long.trust",
+              "value": -12
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.the_receipt_problem",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.fin.long_event.c3",
+      "outcomes": [
+        {
+          "p": 0.85,
+          "narration_key": "scene.fin.long_event.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.long.trust",
+              "value": 10
+            },
+            {
+              "delta": "rel.long.owed",
+              "value": 3
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.booked_personal_expense",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_receipt_problem",
+              "stage": "support"
+            }
+          ]
+        },
+        {
+          "p": 0.15,
+          "result": "fail",
+          "narration_key": "scene.fin.long_event.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.long.trust",
+              "value": 8
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "fact": "fact.booked_personal_expense",
+              "visibility": "rumor"
+            },
+            {
+              "arc": "arc.the_receipt_problem",
+              "stage": "support"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -21,7 +21,7 @@
     "sim:smoke": "tsx tools/sim-runner/src/cli.ts run --seed 7 --weeks 52",
     "build:web": "pnpm --filter @je/demo-host build",
     "dev:web": "pnpm --filter @je/demo-host dev",
-    "ci": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm check:boundaries && pnpm test && pnpm validate:packs && pnpm sim:determinism && pnpm sim:smoke && pnpm sim:sales && pnpm sim:qc && pnpm build:web",
+    "ci": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm check:boundaries && pnpm test && pnpm validate:packs && pnpm sim:determinism && pnpm sim:smoke && pnpm sim:sales && pnpm sim:qc && pnpm sim:fin && pnpm build:web",
     "sim:sales": "tsx tools/sim-runner/src/cli.ts check --seed 2026 --scenario sales-year --content content",
     "build:play": "pnpm --filter @je/demo-host build:single",
     "format:all": "prettier --write .",
@@ -30,7 +30,8 @@
     "pin:update": "node scripts/pin-update.mjs",
     "new:scene": "node scripts/new-scene.mjs",
     "prepare": "node scripts/install-hooks.mjs",
-    "sim:qc": "tsx tools/sim-runner/src/cli.ts check --seed 2026 --scenario qc-year --content content"
+    "sim:qc": "tsx tools/sim-runner/src/cli.ts check --seed 2026 --scenario qc-year --content content",
+    "sim:fin": "tsx tools/sim-runner/src/cli.ts check --seed 2026 --scenario fin-year --content content"
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",

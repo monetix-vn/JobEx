@@ -1,0 +1,375 @@
+# Finance season beats (docs/story/finance.md): fixed episodes that give the year a spine.
+scene: fin.first_close
+place: finance_office
+tags: [onboarding, people, beat]
+beat: 1-3
+lines:
+  - who: char:hanh
+    en: 'Welcome. The first thing you will learn here is the close: four steps every month, each one signed by you. Nobody will check you in week one. Remember that nobody checking is not the same as nobody caring.'
+    vi: 'Chào mừng em. Điều đầu tiên em học ở đây là khóa sổ: bốn bước mỗi tháng, mỗi bước đều có chữ ký của em. Tuần đầu sẽ không ai kiểm tra em. Nhưng không ai kiểm tra không có nghĩa là không ai quan tâm.'
+  - who: char:thu
+    en: 'I kept a checklist from last year. I can share it if you like. It is a bit messy.'
+    vi: 'Em có giữ một bảng việc cần làm từ năm ngoái. Em chia sẻ cho anh/chị nếu anh/chị muốn. Hơi lộn xộn một chút.'
+choices:
+  - en: "Ask Hanh to walk you through one full close, then take Thu's checklist."
+    vi: 'Nhờ chị Hạnh dẫn qua một kỳ khóa sổ đầy đủ, rồi nhận bảng việc của Thu.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: 'Hanh gives you a full morning and Thu smiles with relief. You leave knowing why each step exists, not just what it is.'
+        vi: 'Chị Hạnh dành cả buổi sáng và Thu cười nhẹ nhõm. Anh/chị rời đi hiểu vì sao từng bước tồn tại, chứ không chỉ biết nó là gì.'
+        effects: [rel hanh trust +4, rel thu trust +3, stress +1]
+  - en: "Take Thu's checklist and learn by doing the first close yourself."
+    vi: 'Nhận bảng việc của Thu và học bằng cách tự làm kỳ khóa sổ đầu tiên.'
+    outcomes:
+      - p: 1
+        en: 'It is slower than it should be, but you learn where the traps are. Thu helps twice without being asked.'
+        vi: 'Chậm hơn mức cần thiết, nhưng anh/chị học được chỗ nào có bẫy. Thu giúp hai lần mà không cần nhờ.'
+        effects: [rel thu trust +4, rel hanh trust +1]
+  - en: 'Say you have done closes before and do not need a walkthrough.'
+    vi: 'Nói rằng mình đã làm khóa sổ trước đây và không cần hướng dẫn.'
+    outcomes:
+      - p: 0.7
+        en: 'Hanh raises an eyebrow and lets you get on with it. The first close is fine, mostly.'
+        vi: 'Chị Hạnh nhướng mày và để anh/chị tự làm. Kỳ khóa sổ đầu ổn, đại khái vậy.'
+        effects: [rel hanh trust -1, stress +1]
+      - p: 0.3
+        ok: false
+        en: "You skip a reconciling step that looked optional. Hanh finds it on the review and says only: 'Nothing is optional here.'"
+        vi: "Anh/chị bỏ một bước đối chiếu trông có vẻ tùy chọn. Chị Hạnh phát hiện khi soát lại và chỉ nói: 'Ở đây không có gì là tùy chọn.'"
+        effects: [rel hanh trust -5, rep.boss -2, stress +2]
+---
+scene: fin.vy_interim
+place: meeting_room
+tags: [audit, people, beat]
+beat: 14-17
+lines:
+  - who: char:vy
+    en: 'I am here for the interim visit. I would like a sample of twenty invoices, the bank reconciliations for the last three months, and your working papers. Take your time; I am not in a hurry. But I do read the dates.'
+    vi: 'Tôi đến cho đợt kiểm toán giữa kỳ. Tôi muốn một mẫu hai mươi hóa đơn, bảng đối chiếu ngân hàng ba tháng gần nhất và giấy tờ làm việc của anh/chị. Cứ thong thả, tôi không vội. Nhưng tôi có đọc ngày tháng.'
+  - who: char:hanh
+    en: 'Give her whatever she asks for. Do not explain what she does not ask about.'
+    vi: 'Đưa cho cô ấy những gì cô ấy xin. Đừng giải thích những gì cô ấy không hỏi.'
+choices:
+  - en: 'Give her everything she asks for, organised, including the items that took corrections.'
+    vi: 'Đưa mọi thứ cô ấy yêu cầu, sắp xếp gọn gàng, kể cả những mục đã phải sửa.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Vy works through the pile without comment. At the end she says: 'Clear files. That is unusual.' Hanh says nothing, but she is pleased."
+        vi: "Chị Vy xem hết chồng hồ sơ không bình luận gì. Cuối cùng chị nói: 'Hồ sơ rõ ràng. Hiếm đấy.' Chị Hạnh không nói gì, nhưng chị hài lòng."
+        effects: [rel vy trust +5, rel hanh trust +3, rep.boss +2, stress +1]
+  - en: 'Give her the sample and the reconciliations, and answer what she asks.'
+    vi: 'Đưa mẫu và các bảng đối chiếu, trả lời những gì chị ấy hỏi.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'A routine visit. Vy makes two notes and leaves with what she came for.'
+        vi: 'Một buổi kiểm toán thường lệ. Chị Vy ghi hai điều và rời đi với thứ chị cần.'
+        effects: [rel vy trust +1]
+  - en: 'Offer to pick the sample for her and steer her to the clean months.'
+    vi: 'Đề nghị tự chọn mẫu cho chị ấy và dẫn chị ấy tới những tháng sạch.'
+    outcomes:
+      - p: 0.6
+        en: 'Vy accepts the sample without comment. You feel the small relief of a shortcut that worked.'
+        vi: 'Chị Vy nhận mẫu không bình luận gì. Anh/chị thấy nhẹ nhõm nhỏ của một lối tắt đã thành công.'
+        effects: [rel vy trust -2, stress -1, fact steered_auditor_sample private]
+      - p: 0.4
+        ok: false
+        en: 'Vy picks three invoices of her own, from the months you did not offer. She looks at you for a moment, then at her list.'
+        vi: 'Chị Vy tự chọn ba hóa đơn từ những tháng anh/chị không đưa. Chị nhìn anh/chị một lúc rồi nhìn xuống danh sách.'
+        effects:
+          [rel vy trust -9, rel hanh trust -4, stress +3, fact steered_auditor_sample witnessed]
+---
+scene: fin.midyear_review
+place: meeting_room
+tags: [people, review, beat]
+beat: 24-28
+lines:
+  - who: char:hanh
+    en: 'Half a year. Your closes are getting on time, and the records are cleaner than I expected. I hear that Bao thinks you are rigid. Do you want to talk about that?'
+    vi: 'Nửa năm rồi. Các kỳ khóa sổ của em đang đúng hạn và hồ sơ gọn hơn chị mong đợi. Chị nghe nói anh Bảo thấy em cứng nhắc. Em có muốn nói chuyện đó không?'
+choices:
+  - en: 'Yes: admit where you could have been more helpful and ask her how to do that without bending rules.'
+    vi: 'Có: thừa nhận chỗ mình có thể giúp nhiều hơn và hỏi chị cách làm mà không bẻ quy tắc.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "Hanh nods slowly. 'That is exactly the question. Bring Bao the rule and the alternative at the same time.' You leave with something usable."
+        vi: "Chị Hạnh gật đầu chậm rãi. 'Đó chính là câu hỏi. Mang cho Bảo cả quy tắc lẫn giải pháp thay thế cùng lúc.' Anh/chị ra về với điều dùng được."
+        effects: [rel hanh trust +4, rep.boss +2, stress -1]
+  - en: 'Defend your work with the close scores and the audit comments.'
+    vi: 'Bảo vệ công việc bằng điểm khóa sổ và nhận xét của kiểm toán.'
+    outcomes:
+      - p: 0.7
+        en: 'The record speaks for itself. Hanh makes a note to tell Bao the same.'
+        vi: 'Hồ sơ tự nói lên tất cả. Chị Hạnh ghi chú sẽ nói điều đó với anh Bảo.'
+        effects: [rel hanh trust +3, rel bao trust -2, rep.boss +1]
+      - p: 0.3
+        ok: false
+        en: "Hanh points out two closes that ran late because you would not delegate to Thu. 'Rigid about rules is good. Rigid about everything is not.'"
+        vi: "Chị Hạnh chỉ ra hai kỳ khóa sổ trễ vì em không chịu giao việc cho Thu. 'Cứng về quy tắc thì tốt. Cứng về mọi thứ thì không.'"
+        effects: [rel hanh trust -1, stress +2]
+  - en: 'Say Bao is the problem: he wants numbers that are not true.'
+    vi: 'Nói anh Bảo mới là vấn đề: anh ấy muốn những con số không đúng sự thật.'
+    outcomes:
+      - p: 0.5
+        en: 'Hanh agrees quietly, but she also hears that you are keeping score.'
+        vi: 'Chị Hạnh lặng lẽ đồng ý, nhưng chị cũng nghe ra rằng anh/chị đang ghi sổ.'
+        effects: [rel hanh trust +1, rel bao trust -5]
+      - p: 0.5
+        ok: false
+        en: "Hanh has heard Bao's version first and it is better told than yours. The conversation goes badly."
+        vi: 'Chị Hạnh đã nghe phiên bản của anh Bảo trước và nó được kể tốt hơn. Cuộc trò chuyện diễn ra không tốt.'
+        effects: [rel hanh trust -5, rel bao trust -6, rep.boss -3, stress +3]
+---
+scene: fin.buyer_disputes_invoice
+place: meeting_room
+tags: [buyer, receivables, beat]
+beat: 29-32
+lines:
+  - who: char:petra
+    en: 'We are disputing invoice 4471. The delivery date on it does not match our goods received record, and the amount differs from the contract by two percent. Can you explain?'
+    vi: 'Bên tôi đang tranh chấp hóa đơn 4471. Ngày giao trên đó không khớp với biên bản nhận hàng của chúng tôi, và số tiền lệch hợp đồng hai phần trăm. Anh/chị giải thích được không?'
+  - who: char:bao
+    en: 'It is a small thing, just a slip. Please tell her it is a clerical error and issue a credit note. I do not want this growing.'
+    vi: 'Chuyện nhỏ thôi, chỉ là nhầm lẫn. Anh/chị nói với cô ấy là lỗi văn phòng rồi xuất giấy báo có. Em không muốn chuyện này lớn lên.'
+choices:
+  - en: 'Tell her you will check the invoice against the contract and delivery record and come back with facts.'
+    vi: 'Nói với chị ấy rằng anh/chị sẽ đối chiếu hóa đơn với hợp đồng và biên bản giao hàng rồi trả lời bằng sự thật.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.8
+        en: 'The two percent was a price change that was never approved. You correct the invoice and tell Petra how it happened. She thanks you for the clear answer.'
+        vi: 'Hai phần trăm đó là một thay đổi giá chưa được duyệt. Anh/chị sửa hóa đơn và nói với chị Petra chuyện đã xảy ra thế nào. Chị cảm ơn vì câu trả lời rõ ràng.'
+        effects: [rel petra trust +5, rel bao trust -4, rel hanh trust +3, rep.buyer +3, stress +2]
+      - p: 0.2
+        ok: false
+        en: 'Checking takes a week and Petra loses patience. The dispute is fair, but the relationship is a little colder.'
+        vi: 'Kiểm tra mất một tuần và chị Petra mất kiên nhẫn. Tranh chấp có lý, nhưng quan hệ nguội đi một chút.'
+        effects: [rel petra trust -2, rep.buyer -2, stress +3]
+  - en: 'Agree a credit note for the two percent and explain the date mismatch openly.'
+    vi: 'Đồng ý giấy báo có cho hai phần trăm và giải thích rõ sự lệch ngày.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'Petra accepts. Bao is not happy about the credit, but the matter is closed.'
+        vi: 'Chị Petra chấp nhận. Anh Bảo không vui về khoản giảm, nhưng chuyện đã khép lại.'
+        effects: [rel petra trust +2, rel bao trust -2, rep.buyer +1]
+  - en: 'Call it a clerical error and adjust the dates on the invoice so they match.'
+    vi: 'Gọi đó là lỗi văn phòng và chỉnh ngày trên hóa đơn cho khớp.'
+    outcomes:
+      - p: 0.55
+        en: 'The dates now match. Bao thanks you with real warmth. You do not tell Hanh.'
+        vi: 'Các ngày giờ khớp nhau. Anh Bảo cảm ơn rất nồng nhiệt. Anh/chị không nói với chị Hạnh.'
+        effects:
+          [rel bao trust +6, rel bao owed +2, stress -1, fact backdated_invoice_entry private]
+      - p: 0.45
+        ok: false
+        en: 'Petra sends back her own delivery evidence, stamped. The altered date and the stamp do not agree.'
+        vi: 'Chị Petra gửi lại bằng chứng giao hàng của mình, có dấu. Ngày đã sửa và con dấu không khớp nhau.'
+        effects:
+          [
+            rel petra trust -10,
+            rel hanh trust -8,
+            rep.buyer -8,
+            rep.boss -5,
+            stress +5,
+            fact backdated_invoice_entry public,
+          ]
+---
+scene: fin.vy_fieldwork
+place: meeting_room
+tags: [audit, people, beat]
+beat: 41-44
+lines:
+  - who: char:vy
+    en: 'Good to see you again. In April I looked at a sample. This time I will test the whole year: cut-off, receivables, accruals and expenses. I compare spring to now.'
+    vi: 'Rất vui gặp lại. Hồi tháng Tư tôi xem một mẫu. Lần này tôi kiểm tra cả năm: cắt kỳ, phải thu, trích trước và chi phí. Tôi so mùa xuân với bây giờ.'
+choices:
+  - en: 'Open everything, and point out the adjustments you made and why.'
+    vi: 'Mở mọi thứ và chỉ ra các điều chỉnh anh/chị đã làm cùng lý do.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Vy takes notes for two days. Her draft comment reads: 'Management and staff were forthcoming.' Hanh reads it twice."
+        vi: "Chị Vy ghi chép hai ngày. Nhận xét nháp của chị: 'Ban quản lý và nhân viên cởi mở.' Chị Hạnh đọc hai lần."
+        effects: [rel vy trust +6, rel hanh trust +4, rep.boss +3, stress +2]
+  - en: 'Answer her questions fully and give her the files she asks for.'
+    vi: 'Trả lời đầy đủ câu hỏi và đưa các hồ sơ chị ấy yêu cầu.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "The fieldwork is uneventful. Vy's questions are sharper than in spring, and your answers hold."
+        vi: 'Đợt kiểm toán diễn ra bình thường. Câu hỏi của chị Vy sắc hơn hồi mùa xuân và câu trả lời của anh/chị đứng vững.'
+        effects: [rel vy trust +2]
+  - en: 'Give her the files she asks for, but keep your answers short and do not mention the judgement calls.'
+    vi: 'Đưa các hồ sơ chị ấy yêu cầu nhưng trả lời ngắn và không nhắc các quyết định mang tính đánh giá.'
+    outcomes:
+      - p: 0.6
+        en: 'Vy makes no comment. The fieldwork ends on time, and you are tired from the effort of not volunteering anything.'
+        vi: 'Chị Vy không bình luận. Đợt kiểm toán kết thúc đúng hạn, và anh/chị mệt vì cố không nói thêm điều gì.'
+        effects: [rel vy trust -2, stress +2]
+      - p: 0.4
+        ok: false
+        en: 'Vy finds a pattern across three months. She asks you to explain each entry, in writing, and copies Hanh.'
+        vi: 'Chị Vy thấy một quy luật xuyên ba tháng. Chị yêu cầu anh/chị giải thích từng bút toán bằng văn bản và gửi cho cả chị Hạnh.'
+        effects: [rel vy trust -8, rel hanh trust -6, rep.boss -4, stress +5]
+---
+scene: fin.year_end_review
+place: meeting_room
+tags: [people, review, beat]
+beat: 49-50
+lines:
+  - who: char:hanh
+    en: 'Annual review time. Before I tell you what I think, tell me how you would rate your own year, and why.'
+    vi: 'Đến kỳ đánh giá cuối năm. Trước khi chị nói ý kiến của chị, em hãy tự chấm năm vừa rồi của mình và giải thích vì sao.'
+choices:
+  - en: 'Give an honest account, including the closes you rushed and the calls you would make differently.'
+    vi: 'Kể thật lòng, kể cả những kỳ khóa sổ làm vội và những quyết định anh/chị sẽ làm khác đi.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "It is an uncomfortable half hour and a respected one. Hanh writes: 'Knows what the books are for.'"
+        vi: "Nửa tiếng không dễ chịu nhưng được tôn trọng. Chị Hạnh viết: 'Hiểu sổ sách để làm gì.'"
+        effects: [rel hanh trust +5, rep.boss +4, stress -2]
+  - en: 'Stay modest: list what went well and mention one thing to improve.'
+    vi: 'Khiêm tốn: nêu điều làm tốt và nhắc một điểm cần cải thiện.'
+    outcomes:
+      - p: 1
+        en: 'A safe, forgettable review. Hanh nods and moves to the next item.'
+        vi: 'Một buổi đánh giá an toàn, dễ quên. Chị Hạnh gật đầu và chuyển sang mục tiếp theo.'
+        effects: [rel hanh trust +1, rep.boss +1]
+  - en: 'Present the year as clean and leave out the adjustments you would rather not discuss.'
+    vi: 'Trình bày cả năm như sạch sẽ và bỏ qua những điều chỉnh anh/chị không muốn nói đến.'
+    outcomes:
+      - p: 0.65
+        en: 'It lands well. You leave with a good rating and a small weight in your chest.'
+        vi: 'Được đón nhận tốt. Anh/chị ra về với điểm cao và một chút nặng nề trong lòng.'
+        effects: [rel hanh trust +2, rep.boss +4, stress +1, fact polished_year_review private]
+      - p: 0.35
+        ok: false
+        en: 'Hanh has the audit comments open on her desk. She turns the page towards you without a word.'
+        vi: 'Chị Hạnh có sẵn nhận xét kiểm toán trên bàn. Chị lật trang về phía anh/chị mà không nói một lời.'
+        effects: [rel hanh trust -8, rep.boss -5, stress +4, fact polished_year_review witnessed]
+---
+scene: fin.manager_offer
+place: meeting_room
+tags: [people, promotion, beat]
+beat: 51-52
+when: [rel.hanh.trust >= 25, rep.boss >= 58]
+lines:
+  - who: char:hanh
+    en: 'I am moving on at the end of the year. Duc and I talked: we would like you to take over as chief accountant. One thing first. You will be asked, often, to make the numbers easier for people. I need to know where you stand.'
+    vi: 'Cuối năm chị chuyển công tác. Chị và anh Đức đã bàn: bọn chị muốn em nhận vị trí kế toán trưởng. Nhưng trước hết một điều. Em sẽ thường xuyên được nhờ làm số liệu dễ nghe hơn cho người khác. Chị cần biết em đứng ở đâu.'
+choices:
+  - en: 'Accept, and say plainly what you will not do, and that Duc needs to know it too.'
+    vi: 'Nhận lời và nói rõ những điều anh/chị sẽ không làm, và anh Đức cũng cần biết.'
+    outcomes:
+      - p: 1
+        en: "Hanh smiles for the first time in weeks. 'Then it is yours.' You step into the chief accountant's seat with your terms written down."
+        vi: "Chị Hạnh mỉm cười lần đầu sau nhiều tuần. 'Vậy là của em.' Anh/chị bước vào ghế kế toán trưởng với điều kiện của mình đã viết ra."
+        effects: [rel hanh trust +5, rep.boss +5, end promoted]
+  - en: 'Thank her, but decline: you would rather keep doing the work than manage the pressure.'
+    vi: 'Cảm ơn chị nhưng từ chối: anh/chị muốn tiếp tục làm công việc hơn là quản lý áp lực.'
+    outcomes:
+      - p: 1
+        en: "Hanh looks disappointed, then understanding. 'Stay sharp. The next person may not be as careful as you.'"
+        vi: "Chị Hạnh có vẻ thất vọng rồi thông cảm. 'Giữ cho mình sắc bén. Người tiếp theo có thể không cẩn thận như em.'"
+        effects: [rel hanh trust +2, stress -3]
+  - en: 'Accept without asking what the condition means in practice.'
+    vi: 'Nhận lời mà không hỏi điều kiện đó thực tế có nghĩa gì.'
+    outcomes:
+      - p: 1
+        en: 'Hanh nods slowly. Duc shakes your hand a little too warmly. You realise you agreed to something you did not ask about.'
+        vi: 'Chị Hạnh gật đầu chậm. Anh Đức bắt tay anh/chị hơi quá nồng nhiệt. Anh/chị nhận ra mình đã đồng ý với điều mình không hỏi.'
+        effects:
+          [rel duc trust +6, rep.boss +4, fact accepted_smoothing_condition private, end promoted]
+---
+scene: fin.resignation_thought
+place: finance_office
+tags: [people, pressure]
+weight: 2
+cooldown: 26
+when: [stress >= 75, turn >= 12]
+lines:
+  - who: char:thu
+    en: 'You look exhausted. Forgive me for saying it. Are you all right? I have seen people leave here over less.'
+    vi: 'Anh/chị trông kiệt sức. Em xin lỗi vì nói ra. Anh/chị ổn không ạ? Em từng thấy người nghỉ việc ở đây vì chuyện còn nhỏ hơn.'
+choices:
+  - en: 'Talk to Hanh about the workload and ask her to take something off your plate.'
+    vi: 'Nói với chị Hạnh về khối lượng công việc và xin chị bớt cho một phần.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 0.8
+        en: 'Hanh listens, reassigns the freight accruals to Thu for two months, and says she should have noticed sooner.'
+        vi: 'Chị Hạnh lắng nghe, giao phần trích trước vận chuyển cho Thu hai tháng, và nói lẽ ra chị phải để ý sớm hơn.'
+        effects: [rel hanh trust +4, rel thu trust +2, stress -6, rep.boss +1]
+      - p: 0.2
+        ok: false
+        en: 'Hanh nods and says everyone is stretched this quarter. You leave with sympathy and the same workload.'
+        vi: 'Chị Hạnh gật đầu và nói quý này ai cũng căng. Anh/chị ra về với sự cảm thông và khối lượng công việc cũ.'
+        effects: [rel hanh trust +1, stress -1]
+  - en: "Hand in your resignation, politely, with a month's notice."
+    vi: 'Nộp đơn xin nghỉ, lịch sự, báo trước một tháng.'
+    outcomes:
+      - p: 1
+        en: 'Hanh reads it twice and does not argue. You walk out of the building lighter than you walked in.'
+        vi: 'Chị Hạnh đọc hai lần và không phản đối. Anh/chị bước ra khỏi tòa nhà nhẹ nhõm hơn lúc bước vào.'
+        effects: [rel hanh trust +2, end walked_away]
+  - en: 'Tell Thu you are fine and keep going.'
+    vi: 'Nói với Thu là anh/chị ổn và tiếp tục.'
+    outcomes:
+      - p: 1
+        en: 'Thu nods and does not push. You feel slightly worse afterwards for having said it.'
+        vi: 'Thu gật đầu và không gặng hỏi. Sau đó anh/chị thấy hơi tệ hơn vì đã nói vậy.'
+        effects: [rel thu trust -1, stress +2]
+---
+fact: steered_auditor_sample
+severity: 5
+category: integrity
+en: 'you tried to steer the auditor towards the clean months'
+vi: 'bạn cố dẫn kiểm toán viên tới những tháng sạch'
+lesson:
+  en: 'Choosing what the auditor sees is not cooperating with the audit. Even when it works, you have made yourself the thing being tested.'
+  vi: 'Chọn điều kiểm toán viên được thấy không phải là hợp tác với kiểm toán. Kể cả khi thành công, bạn đã biến mình thành đối tượng bị kiểm tra.'
+traces:
+  - { type: witness, visibility: 0.5, detectors: [internal_audit, boss] }
+witnessed:
+  boss: -5
+  finance: -4
+public:
+  boss: -9
+---
+fact: backdated_invoice_entry
+severity: 8
+category: integrity
+en: 'you changed the dates on an invoice to make it match'
+vi: 'bạn sửa ngày trên hóa đơn cho khớp'
+lesson:
+  en: 'An invoice date is evidence, not a setting. Changing it after the fact is falsifying a document, however small the difference looks.'
+  vi: 'Ngày trên hóa đơn là bằng chứng, không phải một thiết lập. Sửa sau sự việc là làm giả tài liệu, dù chênh lệch trông nhỏ đến đâu.'
+traces:
+  - { type: document, visibility: 0.8, detectors: [internal_audit, buyer, finance] }
+witnessed:
+  boss: -10
+  finance: -8
+  buyer: -8
+public:
+  boss: -15
+  buyer: -12
+---
+fact: accepted_smoothing_condition
+severity: 3
+category: integrity
+en: 'you accepted a promotion without asking what it would cost you'
+vi: 'bạn nhận thăng chức mà không hỏi nó sẽ khiến bạn phải đánh đổi gì'
+lesson:
+  en: 'A promotion with an unspoken condition is a promise made in the dark. The first time it comes up, you will be deciding with less room than you have today.'
+  vi: 'Một lần thăng chức với điều kiện không nói ra là lời hứa trong bóng tối. Lần đầu nó xuất hiện, bạn sẽ phải quyết định với ít chỗ xoay xở hơn hôm nay.'
+traces:
+  - { type: message, visibility: 0.3, detectors: [boss] }
+witnessed:
+  boss: -3
+public:
+  boss: -5

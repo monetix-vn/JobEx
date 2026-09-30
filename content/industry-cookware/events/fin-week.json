@@ -1,0 +1,681 @@
+[
+  {
+    "id": "event.fin.close_bank_rec_a",
+    "role": "role.fin.accountant",
+    "tags": ["close", "bank"],
+    "when": {
+      "all": [
+        {
+          "eq": [
+            {
+              "var": ["close.open", 0]
+            },
+            1
+          ]
+        },
+        {
+          "eq": [
+            {
+              "var": ["close.bank_rec", 0]
+            },
+            0
+          ]
+        },
+        {
+          "in": ["world.month_of_year", 1, 3, 5, 7, 9, 11]
+        }
+      ]
+    },
+    "weight": 10,
+    "cooldown_weeks": 3,
+    "scene": "scene.fin.close_bank_rec_a"
+  },
+  {
+    "id": "event.fin.close_bank_rec_b",
+    "role": "role.fin.accountant",
+    "tags": ["close", "bank"],
+    "when": {
+      "all": [
+        {
+          "eq": [
+            {
+              "var": ["close.open", 0]
+            },
+            1
+          ]
+        },
+        {
+          "eq": [
+            {
+              "var": ["close.bank_rec", 0]
+            },
+            0
+          ]
+        },
+        {
+          "in": ["world.month_of_year", 2, 4, 6, 8, 10, 12]
+        }
+      ]
+    },
+    "weight": 10,
+    "cooldown_weeks": 3,
+    "scene": "scene.fin.close_bank_rec_b"
+  },
+  {
+    "id": "event.fin.close_ar_aging_a",
+    "role": "role.fin.accountant",
+    "tags": ["close", "receivables"],
+    "when": {
+      "all": [
+        {
+          "eq": [
+            {
+              "var": ["close.open", 0]
+            },
+            1
+          ]
+        },
+        {
+          "eq": [
+            {
+              "var": ["close.ar_aging", 0]
+            },
+            0
+          ]
+        },
+        {
+          "in": ["world.month_of_year", 1, 3, 5, 7, 9, 11]
+        }
+      ]
+    },
+    "weight": 10,
+    "cooldown_weeks": 3,
+    "scene": "scene.fin.close_ar_aging_a"
+  },
+  {
+    "id": "event.fin.close_ar_aging_b",
+    "role": "role.fin.accountant",
+    "tags": ["close", "receivables"],
+    "when": {
+      "all": [
+        {
+          "eq": [
+            {
+              "var": ["close.open", 0]
+            },
+            1
+          ]
+        },
+        {
+          "eq": [
+            {
+              "var": ["close.ar_aging", 0]
+            },
+            0
+          ]
+        },
+        {
+          "in": ["world.month_of_year", 2, 4, 6, 8, 10, 12]
+        }
+      ]
+    },
+    "weight": 10,
+    "cooldown_weeks": 3,
+    "scene": "scene.fin.close_ar_aging_b"
+  },
+  {
+    "id": "event.fin.close_accruals_a",
+    "role": "role.fin.accountant",
+    "tags": ["close", "accruals"],
+    "when": {
+      "all": [
+        {
+          "eq": [
+            {
+              "var": ["close.open", 0]
+            },
+            1
+          ]
+        },
+        {
+          "eq": [
+            {
+              "var": ["close.accruals", 0]
+            },
+            0
+          ]
+        },
+        {
+          "in": ["world.month_of_year", 1, 3, 5, 7, 9, 11]
+        }
+      ]
+    },
+    "weight": 10,
+    "cooldown_weeks": 3,
+    "scene": "scene.fin.close_accruals_a"
+  },
+  {
+    "id": "event.fin.close_accruals_b",
+    "role": "role.fin.accountant",
+    "tags": ["close", "accruals"],
+    "when": {
+      "all": [
+        {
+          "eq": [
+            {
+              "var": ["close.open", 0]
+            },
+            1
+          ]
+        },
+        {
+          "eq": [
+            {
+              "var": ["close.accruals", 0]
+            },
+            0
+          ]
+        },
+        {
+          "in": ["world.month_of_year", 2, 4, 6, 8, 10, 12]
+        }
+      ]
+    },
+    "weight": 10,
+    "cooldown_weeks": 3,
+    "scene": "scene.fin.close_accruals_b"
+  },
+  {
+    "id": "event.fin.close_cutoff_a",
+    "role": "role.fin.accountant",
+    "tags": ["close", "cutoff"],
+    "when": {
+      "all": [
+        {
+          "eq": [
+            {
+              "var": ["close.open", 0]
+            },
+            1
+          ]
+        },
+        {
+          "eq": [
+            {
+              "var": ["close.cutoff", 0]
+            },
+            0
+          ]
+        },
+        {
+          "in": ["world.month_of_year", 1, 3, 5, 7, 9, 11]
+        }
+      ]
+    },
+    "weight": 10,
+    "cooldown_weeks": 3,
+    "scene": "scene.fin.close_cutoff_a"
+  },
+  {
+    "id": "event.fin.close_cutoff_b",
+    "role": "role.fin.accountant",
+    "tags": ["close", "cutoff"],
+    "when": {
+      "all": [
+        {
+          "eq": [
+            {
+              "var": ["close.open", 0]
+            },
+            1
+          ]
+        },
+        {
+          "eq": [
+            {
+              "var": ["close.cutoff", 0]
+            },
+            0
+          ]
+        },
+        {
+          "in": ["world.month_of_year", 2, 4, 6, 8, 10, 12]
+        }
+      ]
+    },
+    "weight": 10,
+    "cooldown_weeks": 3,
+    "scene": "scene.fin.close_cutoff_b"
+  },
+  {
+    "id": "event.fin.first_close",
+    "role": "role.fin.accountant",
+    "tags": ["onboarding", "people", "beat"],
+    "beat": {
+      "from_week": 1,
+      "to_week": 3
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.fin.first_close"
+  },
+  {
+    "id": "event.fin.vy_interim",
+    "role": "role.fin.accountant",
+    "tags": ["audit", "people", "beat"],
+    "beat": {
+      "from_week": 14,
+      "to_week": 17
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.fin.vy_interim"
+  },
+  {
+    "id": "event.fin.midyear_review",
+    "role": "role.fin.accountant",
+    "tags": ["people", "review", "beat"],
+    "beat": {
+      "from_week": 24,
+      "to_week": 28
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.fin.midyear_review"
+  },
+  {
+    "id": "event.fin.buyer_disputes_invoice",
+    "role": "role.fin.accountant",
+    "tags": ["buyer", "receivables", "beat"],
+    "beat": {
+      "from_week": 29,
+      "to_week": 32
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.fin.buyer_disputes_invoice"
+  },
+  {
+    "id": "event.fin.vy_fieldwork",
+    "role": "role.fin.accountant",
+    "tags": ["audit", "people", "beat"],
+    "beat": {
+      "from_week": 41,
+      "to_week": 44
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.fin.vy_fieldwork"
+  },
+  {
+    "id": "event.fin.year_end_review",
+    "role": "role.fin.accountant",
+    "tags": ["people", "review", "beat"],
+    "beat": {
+      "from_week": 49,
+      "to_week": 50
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.fin.year_end_review"
+  },
+  {
+    "id": "event.fin.manager_offer",
+    "role": "role.fin.accountant",
+    "tags": ["people", "promotion", "beat"],
+    "when": {
+      "all": [
+        {
+          "gte": [
+            {
+              "var": ["rel.hanh.trust", 0]
+            },
+            25
+          ]
+        },
+        {
+          "gte": ["player.rep.boss", 58]
+        }
+      ]
+    },
+    "beat": {
+      "from_week": 51,
+      "to_week": 52
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.fin.manager_offer"
+  },
+  {
+    "id": "event.fin.resignation_thought",
+    "role": "role.fin.accountant",
+    "tags": ["people", "pressure"],
+    "when": {
+      "all": [
+        {
+          "gte": ["player.stress", 75]
+        },
+        {
+          "gte": ["world.turn", 12]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 26,
+    "scene": "scene.fin.resignation_thought"
+  },
+  {
+    "id": "event.fin.quarter_close_push",
+    "role": "role.fin.accountant",
+    "arc": "arc.the_cutoff",
+    "tags": ["close", "pressure", "dark"],
+    "when": {
+      "all": [
+        {
+          "eq": [
+            {
+              "var": ["close.open", 0]
+            },
+            1
+          ]
+        },
+        {
+          "in": ["world.month_of_year", 3, 6, 9, 12]
+        },
+        {
+          "gte": ["world.turn", 8]
+        }
+      ]
+    },
+    "weight": 4,
+    "cooldown_weeks": 10,
+    "scene": "scene.fin.quarter_close_push"
+  },
+  {
+    "id": "event.fin.cutoff_followup",
+    "role": "role.fin.accountant",
+    "tags": ["close", "pressure", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.fin.cutoff_followup"
+  },
+  {
+    "id": "event.fin.cutoff_test_prep",
+    "role": "role.fin.accountant",
+    "tags": ["audit", "pressure", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.fin.cutoff_test_prep"
+  },
+  {
+    "id": "event.fin.long_receipts",
+    "role": "role.fin.accountant",
+    "arc": "arc.the_receipt_problem",
+    "tags": ["expenses", "pressure", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 14]
+        },
+        {
+          "lte": ["world.turn", 38]
+        }
+      ]
+    },
+    "weight": 1.5,
+    "cooldown_weeks": 40,
+    "scene": "scene.fin.long_receipts"
+  },
+  {
+    "id": "event.fin.long_personal",
+    "role": "role.fin.accountant",
+    "tags": ["expenses", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.fin.long_personal"
+  },
+  {
+    "id": "event.fin.long_event",
+    "role": "role.fin.accountant",
+    "tags": ["expenses", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.fin.long_event"
+  },
+  {
+    "id": "event.fin.receipt_support",
+    "role": "role.fin.accountant",
+    "tags": ["expenses", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.fin.receipt_support"
+  },
+  {
+    "id": "event.fin.vy_asks_receipts",
+    "role": "role.fin.accountant",
+    "tags": ["audit", "dark", "consequence"],
+    "when": {
+      "all": [
+        {
+          "gte": [
+            {
+              "var": ["fact.booked_personal_expense", 0]
+            },
+            1
+          ]
+        },
+        {
+          "in": ["world.month_of_year", 9, 10, 11]
+        },
+        {
+          "gte": ["world.turn", 36]
+        }
+      ]
+    },
+    "weight": 6,
+    "cooldown_weeks": 30,
+    "scene": "scene.fin.vy_asks_receipts"
+  },
+  {
+    "id": "event.fin.profit_smoothing",
+    "role": "role.fin.accountant",
+    "arc": "arc.the_cookie_jar",
+    "tags": ["accruals", "dark", "pressure"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 18]
+        },
+        {
+          "lte": ["world.turn", 34]
+        },
+        {
+          "eq": [
+            {
+              "var": ["close.open", 0]
+            },
+            1
+          ]
+        }
+      ]
+    },
+    "weight": 1.5,
+    "cooldown_weeks": 40,
+    "scene": "scene.fin.profit_smoothing"
+  },
+  {
+    "id": "event.fin.reserve_release",
+    "role": "role.fin.accountant",
+    "tags": ["accruals", "dark", "pressure", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.fin.reserve_release"
+  },
+  {
+    "id": "event.fin.thu_training",
+    "role": "role.fin.accountant",
+    "arc": "arc.thu",
+    "tags": ["people", "onboarding"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 3]
+        },
+        {
+          "lte": ["world.turn", 14]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 52,
+    "scene": "scene.fin.thu_training"
+  },
+  {
+    "id": "event.fin.thu_mistake",
+    "role": "role.fin.accountant",
+    "tags": ["people", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.fin.thu_mistake"
+  },
+  {
+    "id": "event.fin.thu_at_audit",
+    "role": "role.fin.accountant",
+    "tags": ["audit", "people", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.fin.thu_at_audit"
+  },
+  {
+    "id": "event.fin.first_adjustment",
+    "role": "role.fin.accountant",
+    "tags": ["onboarding", "pressure"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 3]
+        },
+        {
+          "lte": ["world.turn", 12]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 52,
+    "scene": "scene.fin.first_adjustment"
+  },
+  {
+    "id": "event.fin.missing_documents",
+    "role": "role.fin.accountant",
+    "tags": ["documents", "pressure"],
+    "when": {
+      "gte": ["world.turn", 4]
+    },
+    "weight": 1.2,
+    "cooldown_weeks": 14,
+    "scene": "scene.fin.missing_documents"
+  },
+  {
+    "id": "event.fin.duplicate_payment",
+    "role": "role.fin.accountant",
+    "tags": ["payments", "integrity"],
+    "when": {
+      "gte": ["world.turn", 14]
+    },
+    "weight": 1,
+    "cooldown_weeks": 26,
+    "scene": "scene.fin.duplicate_payment"
+  },
+  {
+    "id": "event.fin.fx_difference",
+    "role": "role.fin.accountant",
+    "tags": ["payments", "judgement"],
+    "when": {
+      "gte": ["world.turn", 10]
+    },
+    "weight": 1,
+    "cooldown_weeks": 20,
+    "scene": "scene.fin.fx_difference"
+  },
+  {
+    "id": "event.fin.overdue_balance",
+    "role": "role.fin.accountant",
+    "tags": ["receivables", "pressure", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 26]
+        },
+        {
+          "lte": ["world.turn", 44]
+        }
+      ]
+    },
+    "weight": 1.5,
+    "cooldown_weeks": 16,
+    "scene": "scene.fin.overdue_balance"
+  },
+  {
+    "id": "event.fin.covenant_check",
+    "role": "role.fin.accountant",
+    "tags": ["bank", "pressure", "dark"],
+    "when": {
+      "gte": ["world.turn", 22]
+    },
+    "weight": 1.5,
+    "cooldown_weeks": 30,
+    "scene": "scene.fin.covenant_check"
+  },
+  {
+    "id": "event.fin.management_letter",
+    "role": "role.fin.accountant",
+    "tags": ["audit", "pressure", "consequence"],
+    "when": {
+      "all": [
+        {
+          "in": ["world.month_of_year", 11, 12]
+        },
+        {
+          "gte": ["world.turn", 42]
+        },
+        {
+          "gte": [
+            {
+              "var": ["fact.backdated_invoice_entry", 0]
+            },
+            1
+          ]
+        }
+      ]
+    },
+    "weight": 6,
+    "cooldown_weeks": 52,
+    "scene": "scene.fin.management_letter"
+  },
+  {
+    "id": "event.fin.scapegoat_meeting",
+    "role": "role.fin.accountant",
+    "tags": ["audit", "pressure", "consequence"],
+    "when": {
+      "all": [
+        {
+          "in": ["world.month_of_year", 11, 12]
+        },
+        {
+          "gte": ["world.turn", 44]
+        },
+        {
+          "gte": [
+            {
+              "var": ["fact.released_reserve_to_hit_target", 0]
+            },
+            1
+          ]
+        }
+      ]
+    },
+    "weight": 6,
+    "cooldown_weeks": 52,
+    "scene": "scene.fin.scapegoat_meeting"
+  }
+]

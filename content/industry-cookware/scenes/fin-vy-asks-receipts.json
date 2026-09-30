@@ -1,0 +1,146 @@
+{
+  "id": "scene.fin.vy_asks_receipts",
+  "location": "loc.meeting_room",
+  "cast": ["char:vy"],
+  "lines": [
+    {
+      "speaker": "char:vy",
+      "text_key": "scene.fin.vy_asks_receipts.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.fin.vy_asks_receipts.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.fin.vy_asks_receipts.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.vy.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.long.trust",
+              "value": -10
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.came_clean_to_auditor",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.fin.vy_asks_receipts.c2",
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.fin.vy_asks_receipts.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.vy.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.fin.vy_asks_receipts.c2.fail",
+          "effects": [
+            {
+              "delta": "rel.vy.trust",
+              "value": -7
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.fin.vy_asks_receipts.c3",
+      "outcomes": [
+        {
+          "p": 0.35,
+          "narration_key": "scene.fin.vy_asks_receipts.c3.ok",
+          "effects": [
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "delta": "rel.vy.trust",
+              "value": -3
+            }
+          ]
+        },
+        {
+          "p": 0.65,
+          "result": "fail",
+          "narration_key": "scene.fin.vy_asks_receipts.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.vy.trust",
+              "value": -15
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": -10
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -10
+            },
+            {
+              "delta": "player.stress",
+              "value": 8
+            },
+            {
+              "fact": "fact.created_support_document",
+              "visibility": "public"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

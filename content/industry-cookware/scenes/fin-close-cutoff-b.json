@@ -1,0 +1,130 @@
+{
+  "id": "scene.fin.close_cutoff_b",
+  "location": "loc.finance_office",
+  "cast": ["char:thu"],
+  "lines": [
+    {
+      "speaker": "char:thu",
+      "text_key": "scene.fin.close_cutoff_b.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.fin.close_cutoff_b.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.9,
+          "narration_key": "scene.fin.close_cutoff_b.c1.ok",
+          "effects": [
+            {
+              "delta": "close.cutoff",
+              "value": 2
+            },
+            {
+              "delta": "rel.thu.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "p": 0.1,
+          "result": "fail",
+          "narration_key": "scene.fin.close_cutoff_b.c1.fail",
+          "effects": [
+            {
+              "delta": "close.cutoff",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.fin.close_cutoff_b.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.fin.close_cutoff_b.c2.ok",
+          "effects": [
+            {
+              "delta": "close.cutoff",
+              "value": 1
+            },
+            {
+              "delta": "rel.thu.trust",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.fin.close_cutoff_b.c3",
+      "outcomes": [
+        {
+          "p": 0.85,
+          "narration_key": "scene.fin.close_cutoff_b.c3.ok",
+          "effects": [
+            {
+              "delta": "close.cutoff",
+              "value": 1
+            },
+            {
+              "delta": "rel.thu.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": -1
+            },
+            {
+              "fact": "fact.shifted_expense_period",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.15,
+          "result": "fail",
+          "narration_key": "scene.fin.close_cutoff_b.c3.fail",
+          "effects": [
+            {
+              "delta": "close.cutoff",
+              "value": 1
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": -5
+            },
+            {
+              "delta": "rel.thu.trust",
+              "value": -4
+            },
+            {
+              "fact": "fact.shifted_expense_period",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": ["term.cutoff"]
+}

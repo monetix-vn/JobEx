@@ -8,4 +8,11 @@ export {
   type CheckReport,
   type HeadlessOptions,
 } from './runner';
-export { QC_ROLE, SALES_ROLE, SALES_WEEK_SCENES, loadScenario, type Scenario } from './scenario';
+export {
+  FIN_ROLE,
+  QC_ROLE,
+  SALES_ROLE,
+  SALES_WEEK_SCENES,
+  loadScenario,
+  type Scenario,
+} from './scenario';

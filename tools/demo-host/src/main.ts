@@ -1,6 +1,7 @@
 import { mount, mountRolePicker, type ClientHandle, type UiLocale } from '@je/client-web';
 import type { Run } from '@je/kernel';
 import {
+  FIN_ROLE,
   QC_ROLE,
   SALES_ROLE,
   createGameHost,
@@ -12,7 +13,11 @@ import {
 const TURN_INTERVAL_MS = 1500;
 const STORAGE_KEY = 'jobex.lang';
 /** Short names for ?role= links. */
-const ROLE_SHORTCUTS: Record<string, string> = { sales: SALES_ROLE, qc: QC_ROLE };
+const ROLE_SHORTCUTS: Record<string, string> = {
+  sales: SALES_ROLE,
+  qc: QC_ROLE,
+  fin: FIN_ROLE,
+};
 
 const params = new URLSearchParams(window.location.search);
 const seed = params.get('seed') ?? 'demo';

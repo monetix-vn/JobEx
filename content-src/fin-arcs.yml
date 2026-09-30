@@ -1,0 +1,945 @@
+# Finance storylines (docs/story/finance.md): The Cut-off, The Receipt Problem, The Cookie Jar, Thu.
+arc: the_cutoff
+title:
+  en: 'The cut-off'
+  vi: 'Cắt kỳ'
+stages:
+  - { id: request, event: fin.quarter_close_push }
+  - { id: followup, event: fin.cutoff_followup, delay: 2-3 }
+  - { id: test, event: fin.cutoff_test_prep, delay: 5-9 }
+---
+scene: fin.quarter_close_push
+arc: the_cutoff
+place: finance_office
+tags: [close, pressure, dark]
+weight: 4
+cooldown: 10
+terms: [cutoff]
+when: [close.open = 1, month in 3 6 9 12, turn >= 8]
+lines:
+  - who: char:bao
+    en: 'Quarter end is Friday and I am short by one container. It ships Monday, but the goods are packed and the paperwork is signed. Book it this quarter. Nobody gets hurt.'
+    vi: 'Cuối quý là thứ Sáu và em thiếu một container. Thứ Hai mới xuất, nhưng hàng đã đóng gói và giấy tờ đã ký. Anh/chị ghi vào quý này. Không ai bị thiệt.'
+  - who: char:duc
+    en: 'Bao has a point. The quarter matters to the bank. See what you can do.'
+    vi: 'Bảo nói có lý. Quý này quan trọng với ngân hàng. Anh/chị xem làm được gì.'
+choices:
+  - en: 'Refuse: revenue goes in the period the goods ship, and you tell them why in plain words.'
+    vi: 'Từ chối: doanh thu vào kỳ hàng được giao đi, và anh/chị giải thích lý do bằng lời đơn giản.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.8
+        en: "It is an uncomfortable meeting. Duc, after a pause, says: 'Fine. Then we explain the quarter to the bank.' Hanh quietly approves."
+        vi: "Một cuộc họp khó chịu. Sau một lúc im lặng, anh Đức nói: 'Được rồi. Vậy mình giải thích quý này với ngân hàng.' Chị Hạnh lặng lẽ tán thành."
+        effects:
+          [
+            rel bao trust -6,
+            rel duc trust -2,
+            rel hanh trust +5,
+            rep.boss +2,
+            stress +3,
+            arc the_cutoff end,
+          ]
+      - p: 0.2
+        ok: false
+        en: 'Duc takes it to the CEO and you are asked to explain to a room full of people. You hold the line; it costs you sleep.'
+        vi: 'Anh Đức đưa lên giám đốc và anh/chị phải giải thích trước cả phòng. Anh/chị giữ nguyên lập trường; nó làm anh/chị mất ngủ.'
+        effects:
+          [rel bao trust -8, rel duc trust -5, rel hanh trust +4, stress +5, arc the_cutoff end]
+  - en: 'Book it on the shipping date, and sit with Bao to see what could ship legitimately before Friday.'
+    vi: 'Ghi theo ngày giao hàng, và ngồi với anh Bảo xem có gì xuất hợp lệ được trước thứ Sáu.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: 'Bao finds half a container that can ship on Thursday. It is not everything, but it is honest, and he owes you one.'
+        vi: 'Anh Bảo tìm được nửa container có thể xuất vào thứ Năm. Không phải tất cả, nhưng trung thực, và anh ấy nợ anh/chị một lần.'
+        effects:
+          [rel bao trust +1, rel bao owed +1, rel hanh trust +2, stress +1, arc the_cutoff end]
+  - en: 'Book it this quarter, on the signed paperwork.'
+    vi: 'Ghi vào quý này, dựa trên giấy tờ đã ký.'
+    outcomes:
+      - p: 0.85
+        en: 'The quarter closes on target. Duc is relieved and Bao could hug you. You tell yourself it is only three days.'
+        vi: 'Quý khép lại đúng chỉ tiêu. Anh Đức nhẹ nhõm và anh Bảo suýt ôm anh/chị. Anh/chị tự nhủ chỉ là ba ngày.'
+        effects:
+          [
+            rel bao trust +7,
+            rel bao owed +2,
+            rel duc trust +5,
+            stress -2,
+            fact booked_revenue_early private,
+            arc the_cutoff followup,
+          ]
+      - p: 0.15
+        ok: false
+        en: 'Hanh reviews the quarter-end entries the same afternoon and stops at the container. She asks, very quietly, what is going on.'
+        vi: 'Chị Hạnh soát các bút toán cuối quý ngay chiều hôm đó và dừng lại ở container. Chị hỏi, rất khẽ, chuyện gì đang xảy ra.'
+        effects:
+          [
+            rel bao trust +5,
+            rel hanh trust -6,
+            stress +3,
+            fact booked_revenue_early witnessed,
+            arc the_cutoff followup,
+          ]
+---
+scene: fin.cutoff_followup
+weight: 0
+place: finance_office
+tags: [close, pressure, dark, arc]
+terms: [cutoff]
+lines:
+  - who: char:hanh
+    en: 'I was going through last quarter. One container is booked three days before the dispatch log says it left. Tell me about it.'
+    vi: 'Chị đang xem lại quý trước. Có một container được ghi ba ngày trước khi nhật ký xuất hàng cho thấy nó rời kho. Em nói cho chị nghe.'
+choices:
+  - en: 'Tell her straight: Bao asked, Duc leaned on you, you booked it early, and you should not have. Offer to reverse it.'
+    vi: 'Nói thẳng với chị: anh Bảo nhờ, anh Đức gây áp lực, anh/chị ghi sớm, và lẽ ra không nên. Đề nghị hủy bút toán.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: "Hanh closes her notebook. 'Thank you. We will correct it and I will deal with Bao. Next time, call me before.' You have a reprimand and a reputation for telling the truth."
+        vi: "Chị Hạnh đóng sổ lại. 'Cảm ơn em. Mình sẽ sửa và chị sẽ làm việc với Bảo. Lần sau gọi chị trước.' Anh/chị nhận một lời nhắc nhở và danh tiếng biết nói thật."
+        effects:
+          [
+            rel hanh trust +3,
+            rel bao trust -6,
+            rel duc trust -2,
+            rep.boss -1,
+            stress +3,
+            arc the_cutoff end,
+          ]
+  - en: 'Explain the timing and note that the paperwork was signed on the date you booked it.'
+    vi: 'Giải thích thời điểm và lưu ý rằng giấy tờ đã được ký vào ngày anh/chị ghi.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 0.65
+        en: "Hanh looks at you for a while. 'The paperwork date is not the cut-off date.' She lets it go, this time, and writes something down."
+        vi: "Chị Hạnh nhìn anh/chị một lúc. 'Ngày giấy tờ không phải ngày cắt kỳ.' Chị bỏ qua, lần này, và ghi lại điều gì đó."
+        effects: [rel hanh trust -2, stress +2, arc the_cutoff test]
+      - p: 0.35
+        ok: false
+        en: 'Hanh already has the dispatch log printed. She puts it next to your entry and leaves it there.'
+        vi: 'Chị Hạnh đã in sẵn nhật ký xuất hàng. Chị đặt nó cạnh bút toán của anh/chị rồi để đó.'
+        effects: [rel hanh trust -6, rep.boss -2, stress +4, arc the_cutoff test]
+  - en: 'Say Bao told you it had shipped and you trusted him.'
+    vi: 'Nói anh Bảo bảo hàng đã đi và anh/chị tin anh ấy.'
+    outcomes:
+      - p: 0.5
+        en: 'Hanh accepts it, slowly. Bao will get a talking-to, and he will know you gave his name.'
+        vi: 'Chị Hạnh chấp nhận, chậm rãi. Anh Bảo sẽ bị nhắc nhở, và anh ấy sẽ biết anh/chị đã nhắc tên anh.'
+        effects:
+          [
+            rel hanh trust -1,
+            rel bao trust -9,
+            fact deflected_to_sales private,
+            arc the_cutoff test,
+          ]
+      - p: 0.5
+        ok: false
+        en: 'Bao, called in, says he told you the opposite. Hanh looks at the two of you and draws her own conclusion.'
+        vi: 'Anh Bảo được gọi vào, nói rằng anh đã nói điều ngược lại. Chị Hạnh nhìn hai người và tự rút ra kết luận.'
+        effects:
+          [
+            rel hanh trust -7,
+            rel bao trust -10,
+            rep.boss -4,
+            stress +4,
+            fact deflected_to_sales witnessed,
+            arc the_cutoff test,
+          ]
+---
+scene: fin.cutoff_test_prep
+weight: 0
+place: meeting_room
+tags: [audit, pressure, dark, arc]
+terms: [cutoff]
+lines:
+  - who: char:vy
+    en: 'For the cut-off test I will take the last ten shipments of each quarter and compare invoice dates with dispatch logs. I will send the list next week.'
+    vi: 'Với kiểm tra cắt kỳ, tôi sẽ lấy mười lô hàng cuối mỗi quý và so ngày hóa đơn với nhật ký xuất hàng. Tuần sau tôi gửi danh sách.'
+  - who: char:hanh
+    en: 'If there is anything in those quarters that needs to be corrected, now is when it is cheap.'
+    vi: 'Nếu có gì trong các quý đó cần sửa, bây giờ là lúc chi phí còn rẻ.'
+choices:
+  - en: 'Correct the entries now, in the open, and tell Vy before she asks.'
+    vi: 'Sửa các bút toán ngay, công khai, và nói với chị Vy trước khi chị hỏi.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Vy writes a finding, but rates it 'corrected voluntarily'. Hanh nods: it is the best outcome available."
+        vi: "Chị Vy ghi một phát hiện nhưng xếp loại 'tự nguyện sửa'. Chị Hạnh gật đầu: đó là kết quả tốt nhất có thể."
+        effects: [rel vy trust +5, rel hanh trust +4, rep.boss +1, stress +3]
+  - en: 'Prepare a written explanation of the early booking and the reasoning, and hand it over if asked.'
+    vi: 'Chuẩn bị bản giải trình bằng văn bản về việc ghi sớm và lý do, đưa ra nếu được hỏi.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 0.6
+        en: 'Vy finds the item, reads your explanation, and records it as a cut-off exception with a recommendation.'
+        vi: 'Chị Vy tìm thấy khoản đó, đọc giải trình của anh/chị và ghi nhận nó là ngoại lệ cắt kỳ kèm khuyến nghị.'
+        effects: [rel vy trust +1, rep.boss -1, stress +2]
+      - p: 0.4
+        ok: false
+        en: 'Vy records it as a cut-off error, with your explanation attached. It reads as someone who knew.'
+        vi: 'Chị Vy ghi nhận đó là lỗi cắt kỳ, kèm giải trình của anh/chị. Đọc lên thấy giống một người đã biết.'
+        effects:
+          [
+            rel vy trust -3,
+            rel hanh trust -3,
+            rep.boss -3,
+            stress +3,
+            fact booked_revenue_early witnessed,
+          ]
+  - en: 'Change the invoice dates in the system to match the dispatch log.'
+    vi: 'Sửa ngày hóa đơn trong hệ thống cho khớp nhật ký xuất hàng.'
+    outcomes:
+      - p: 0.4
+        en: 'The dates now agree. You close the window and do not look at the audit trail.'
+        vi: 'Các ngày giờ khớp nhau. Anh/chị đóng cửa sổ lại và không nhìn vào lịch sử thay đổi.'
+        effects: [stress -1, fact backdated_invoice_entry private]
+      - p: 0.6
+        ok: false
+        en: "The system logged every change with a time and a user name. Vy's analyst finds them within an hour."
+        vi: 'Hệ thống ghi lại mọi thay đổi kèm thời gian và tên người dùng. Chuyên viên của chị Vy tìm thấy trong vòng một giờ.'
+        effects:
+          [
+            rel vy trust -12,
+            rel hanh trust -10,
+            rep.boss -8,
+            stress +6,
+            fact backdated_invoice_entry public,
+          ]
+---
+arc: the_receipt_problem
+title:
+  en: 'The receipt problem'
+  vi: 'Chuyện hóa đơn chứng từ'
+stages:
+  - { id: receipts, event: fin.long_receipts }
+  - { id: personal, event: fin.long_personal, delay: 3-5 }
+  - { id: event, event: fin.long_event, delay: 4-8 }
+  - { id: support, event: fin.receipt_support, delay: 2-4 }
+---
+scene: fin.long_receipts
+arc: the_receipt_problem
+place: finance_office
+tags: [expenses, pressure, dark]
+weight: 1.5
+cooldown: 40
+when: [turn >= 14, turn <= 38]
+lines:
+  - who: char:long
+    en: "Here is last month's pile of expenses. No receipts, I am afraid, I lose them. But you know it is all for the business. Please just process it."
+    vi: 'Đây là chồng chi phí tháng trước. Không có hóa đơn, em xin lỗi, em hay làm mất. Nhưng anh/chị biết tất cả đều cho công ty. Anh/chị cứ xử lý giúp.'
+choices:
+  - en: 'Explain that nothing is processed without a receipt, and offer to help him get duplicates from the vendors.'
+    vi: 'Giải thích rằng không có hóa đơn thì không xử lý, và đề nghị giúp anh ấy xin bản sao từ nhà cung cấp.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.75
+        en: 'Long is irritated, but two days later he returns with half the receipts. Hanh nods when she hears about it.'
+        vi: 'Anh Long bực mình, nhưng hai ngày sau anh quay lại với một nửa số hóa đơn. Chị Hạnh gật đầu khi nghe chuyện.'
+        effects: [rel long trust -3, rel hanh trust +4, stress +1, arc the_receipt_problem end]
+      - p: 0.25
+        ok: false
+        en: 'Long complains to his uncle that Finance is being difficult. The uncle says nothing to you, but your name gets mentioned.'
+        vi: 'Anh Long phàn nàn với chú rằng bên Tài chính làm khó. Ông chú không nói gì với anh/chị, nhưng tên anh/chị được nhắc tới.'
+        effects:
+          [
+            rel long trust -8,
+            rel duc trust -3,
+            rel hanh trust +4,
+            stress +3,
+            arc the_receipt_problem end,
+          ]
+  - en: 'Book the smallest items as a staff advance to be settled against receipts within thirty days.'
+    vi: 'Ghi các khoản nhỏ thành tạm ứng nhân viên, thanh toán theo hóa đơn trong ba mươi ngày.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'It is a workable compromise and Long accepts it, for now. The advance sits on your list, and so does he.'
+        vi: 'Một thỏa hiệp khả thi và anh Long chấp nhận, tạm thời. Khoản tạm ứng nằm trong danh sách của anh/chị, anh ấy cũng vậy.'
+        effects: [rel long trust +1, rel hanh trust +1, arc the_receipt_problem personal]
+  - en: 'Process it as business expenses, since he says it is for the business.'
+    vi: 'Xử lý như chi phí kinh doanh vì anh ấy nói là cho công ty.'
+    outcomes:
+      - p: 0.85
+        en: "It goes through and Long is pleasantly surprised. 'You are a practical person.' He remembers."
+        vi: "Mọi thứ thông qua và anh Long vui bất ngờ. 'Anh/chị là người thực tế.' Anh ấy nhớ điều đó."
+        effects:
+          [
+            rel long trust +6,
+            rel long owed +1,
+            stress -1,
+            fact accepted_missing_receipt private,
+            arc the_receipt_problem personal,
+          ]
+      - p: 0.15
+        ok: false
+        en: 'Thu, doing the payment run, asks why thirty-four entries have no attachments. You find an answer that is shorter than the truth.'
+        vi: 'Thu, khi làm đợt chi, hỏi vì sao ba mươi bốn bút toán không có chứng từ đính kèm. Anh/chị đưa ra một câu trả lời ngắn hơn sự thật.'
+        effects:
+          [
+            rel long trust +4,
+            rel thu trust -5,
+            fact accepted_missing_receipt witnessed,
+            arc the_receipt_problem personal,
+          ]
+---
+scene: fin.long_personal
+weight: 0
+place: finance_office
+tags: [expenses, dark, arc]
+lines:
+  - who: char:long
+    en: 'I have one more. It is a dinner for ten at a nice place. Put it under client entertainment. It was a family dinner, but really, our clients are family, in a way.'
+    vi: 'Còn một khoản nữa. Bữa tối mười người ở một nơi sang trọng. Anh/chị ghi vào tiếp khách. Thực ra là bữa ăn gia đình, nhưng thật ra khách hàng của mình cũng như người nhà.'
+choices:
+  - en: 'Refuse to book it as business, and suggest he reimburses it personally.'
+    vi: 'Từ chối ghi là chi phí kinh doanh và gợi ý anh ấy tự thanh toán.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "He stares at you for a moment, then laughs, not kindly. 'You have spine. I will remember that.' The receipt goes into the personal pile."
+        vi: "Anh ấy nhìn anh/chị một lúc rồi cười, không thiện cảm. 'Anh/chị có bản lĩnh. Tôi sẽ nhớ.' Hóa đơn chuyển sang chồng cá nhân."
+        effects: [rel long trust -8, rel hanh trust +3, stress +2, arc the_receipt_problem end]
+  - en: 'Take it to Hanh and let her decide.'
+    vi: 'Mang lên chị Hạnh để chị quyết định.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'Hanh says no, and handles Long herself, with a very short call. You are out of the middle, and Long knows who sent it up.'
+        vi: 'Chị Hạnh nói không và tự xử lý anh Long bằng một cuộc gọi rất ngắn. Anh/chị thoát khỏi vị trí kẹt giữa, và anh Long biết ai đã báo lên.'
+        effects: [rel hanh trust +4, rel long trust -6, stress +1, arc the_receipt_problem end]
+  - en: 'Book it as client entertainment.'
+    vi: 'Ghi là chi phí tiếp khách.'
+    outcomes:
+      - p: 0.8
+        en: "Done. Long thanks you warmly. The entry is labelled 'client event'. It is not quite a lie, and it is not quite true."
+        vi: "Xong. Anh Long cảm ơn nồng nhiệt. Bút toán được gắn nhãn 'sự kiện khách hàng'. Không hẳn là nói dối, và cũng không hẳn là đúng."
+        effects:
+          [
+            rel long trust +8,
+            rel long owed +2,
+            stress +1,
+            fact booked_personal_expense private,
+            arc the_receipt_problem event,
+          ]
+      - p: 0.2
+        ok: false
+        en: "Thu sees a restaurant name she recognises, from a family photo in Long's office. She says nothing, but she looks."
+        vi: 'Thu thấy tên một nhà hàng mà em nhận ra, từ tấm ảnh gia đình trong phòng anh Long. Em không nói gì, nhưng em nhìn.'
+        effects:
+          [
+            rel long trust +6,
+            rel thu trust -6,
+            fact booked_personal_expense witnessed,
+            arc the_receipt_problem event,
+          ]
+---
+scene: fin.long_event
+weight: 0
+place: finance_office
+tags: [expenses, dark, arc]
+lines:
+  - who: char:long
+    en: "My cousin's engagement party. Thirty-eight million dong. Book it to marketing. Duc has already said it is fine, more or less."
+    vi: 'Tiệc đính hôn của em họ tôi. Ba mươi tám triệu đồng. Anh/chị ghi vào marketing. Anh Đức đã nói được rồi, đại khái vậy.'
+choices:
+  - en: 'Take the invoice to Hanh and Duc together and ask for a written decision.'
+    vi: 'Mang hóa đơn đến chị Hạnh và anh Đức cùng lúc và xin quyết định bằng văn bản.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.85
+        en: "Duc's 'more or less' turns out to have been 'not at all'. Nobody wants to put it in writing. It is reclassified as personal."
+        vi: "'Đại khái' của anh Đức hóa ra là 'hoàn toàn không'. Không ai muốn ghi ra giấy. Khoản này được chuyển thành cá nhân."
+        effects:
+          [
+            rel long trust -10,
+            rel hanh trust +5,
+            rel duc trust -2,
+            rep.boss +3,
+            stress +4,
+            arc the_receipt_problem end,
+          ]
+      - p: 0.15
+        ok: false
+        en: "Duc says, in front of Hanh, that it is the owner's family and to keep it simple. Hanh's face does not change. Your hands shake a little."
+        vi: 'Anh Đức nói, trước mặt chị Hạnh, rằng đó là gia đình chủ và nên làm cho đơn giản. Gương mặt chị Hạnh không đổi. Tay anh/chị run nhẹ.'
+        effects:
+          [
+            rel long trust -4,
+            rel hanh trust +3,
+            rel duc trust +2,
+            stress +5,
+            arc the_receipt_problem end,
+          ]
+  - en: 'Refuse and say you will not book it without a business purpose, and leave it there.'
+    vi: 'Từ chối và nói anh/chị không ghi nếu không có mục đích kinh doanh, rồi để đó.'
+    outcomes:
+      - p: 1
+        en: 'Long goes red, then white. He does not raise his voice. He says he will speak to someone else. Nothing is booked.'
+        vi: 'Anh Long đỏ mặt rồi tái đi. Anh không to tiếng. Anh nói sẽ nói chuyện với người khác. Không có gì được ghi.'
+        effects: [rel long trust -12, rel hanh trust +2, stress +3, arc the_receipt_problem end]
+  - en: 'Book it to marketing.'
+    vi: 'Ghi vào marketing.'
+    outcomes:
+      - p: 0.85
+        en: "Thirty-eight million leaves the marketing budget without a word of resistance. Long says, 'I will not forget this.' He does not say what he means by it."
+        vi: "Ba mươi tám triệu rời ngân sách marketing mà không một lời phản đối. Anh Long nói: 'Tôi sẽ không quên.' Anh không nói rõ ý."
+        effects:
+          [
+            rel long trust +10,
+            rel long owed +3,
+            rel hanh trust -2,
+            stress +2,
+            fact booked_personal_expense private,
+            arc the_receipt_problem support,
+          ]
+      - p: 0.15
+        ok: false
+        en: 'The marketing manager sees the charge and asks what campaign it was. Nobody has an answer, and word gets around fast.'
+        vi: 'Quản lý marketing thấy khoản chi và hỏi đó là chiến dịch nào. Không ai có câu trả lời, và tin đồn lan nhanh.'
+        effects:
+          [
+            rel long trust +8,
+            rel hanh trust -5,
+            rep.boss -4,
+            fact booked_personal_expense rumor,
+            arc the_receipt_problem support,
+          ]
+---
+scene: fin.receipt_support
+weight: 0
+place: finance_office
+tags: [expenses, dark, arc]
+lines:
+  - who: char:long
+    en: 'The auditor will want paperwork for the party. Can you get a letter from a supplier, saying it was a marketing event? Someone who owes us. Just a letter.'
+    vi: 'Kiểm toán sẽ đòi giấy tờ cho bữa tiệc. Anh/chị xin một lá thư từ một nhà cung cấp, nói đó là sự kiện marketing được không? Người nào đó nợ mình. Chỉ một lá thư.'
+choices:
+  - en: 'Refuse, and tell him the only safe route now is to reclassify the expense as personal.'
+    vi: 'Từ chối và nói với anh ấy rằng con đường an toàn duy nhất bây giờ là chuyển khoản này thành cá nhân.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: "Long is silent, then says, 'You are making this difficult.' You are not, but you feel the cost of saying so."
+        vi: "Anh Long im lặng rồi nói: 'Anh/chị đang làm khó tôi.' Anh/chị không làm khó, nhưng anh/chị cảm thấy cái giá của việc nói điều đó."
+        effects:
+          [
+            rel long trust -6,
+            rel hanh trust +3,
+            rep.boss +1,
+            stress +3,
+            arc the_receipt_problem end,
+          ]
+  - en: 'Ask him for the real documents: a vendor quote, a booking, anything honest.'
+    vi: 'Xin anh ấy các giấy tờ thật: báo giá, đặt chỗ, bất cứ thứ gì trung thực.'
+    outcomes:
+      - p: 0.5
+        en: 'He finds an actual booking confirmation. It does not make the party a business event, but it is true and you file it.'
+        vi: 'Anh ấy tìm được một xác nhận đặt chỗ thật. Nó không biến bữa tiệc thành sự kiện kinh doanh, nhưng là sự thật và anh/chị lưu lại.'
+        effects: [rel long trust +1, stress +1, arc the_receipt_problem end]
+      - p: 0.5
+        ok: false
+        en: 'He comes back empty-handed and annoyed. The question of what to book remains open.'
+        vi: 'Anh ấy quay lại tay trắng và bực bội. Câu hỏi nên ghi gì vẫn còn đó.'
+        effects: [rel long trust -4, stress +2, arc the_receipt_problem end]
+  - en: 'Draft the letter yourself for a supplier to sign.'
+    vi: 'Tự soạn lá thư để một nhà cung cấp ký.'
+    outcomes:
+      - p: 0.55
+        en: 'The supplier signs without reading. Long pats your arm. You file a document that says something that did not happen.'
+        vi: 'Nhà cung cấp ký mà không đọc. Anh Long vỗ vai anh/chị. Anh/chị lưu một tài liệu nói về điều chưa từng xảy ra.'
+        effects:
+          [
+            rel long trust +8,
+            rel long owed +3,
+            stress +4,
+            fact created_support_document private,
+            arc the_receipt_problem end,
+          ]
+      - p: 0.45
+        ok: false
+        en: "The supplier's accountant reads it and calls Hanh to check. You can hear her voice through the glass."
+        vi: 'Kế toán của nhà cung cấp đọc nó và gọi chị Hạnh để kiểm tra. Anh/chị nghe thấy giọng chị qua lớp kính.'
+        effects:
+          [
+            rel long trust +2,
+            rel hanh trust -12,
+            rep.boss -8,
+            stress +6,
+            fact created_support_document public,
+            arc the_receipt_problem end,
+          ]
+---
+scene: fin.vy_asks_receipts
+place: meeting_room
+tags: [audit, dark, consequence]
+weight: 6
+cooldown: 30
+when: [fact.booked_personal_expense >= 1, month in 9 10 11, turn >= 36]
+lines:
+  - who: char:vy
+    en: 'I have a list of expenses where the business purpose is thin. Two of them have no receipt, and one is for a restaurant that I think I have seen in a wedding photograph. Can we go through them?'
+    vi: 'Tôi có danh sách các khoản chi có mục đích kinh doanh mỏng. Hai khoản không có hóa đơn và một khoản ở nhà hàng mà tôi nghĩ tôi từng thấy trong ảnh cưới. Mình xem qua chúng nhé?'
+choices:
+  - en: 'Show her exactly what you have, say which entries you think were wrong, and name who asked for them.'
+    vi: 'Cho chị ấy xem chính xác những gì anh/chị có, nói các bút toán nào anh/chị cho là sai và nêu ai đã yêu cầu.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "It is the hardest conversation of your year. Vy writes it down and asks that the expenses be reclassified. Hanh, told afterwards, says: 'You should have come to me first. But thank you.'"
+        vi: "Đây là cuộc trò chuyện khó nhất trong năm của anh/chị. Chị Vy ghi lại và đề nghị phân loại lại các khoản chi. Chị Hạnh, được báo sau đó, nói: 'Lẽ ra em phải đến gặp chị trước. Nhưng cảm ơn em.'"
+        effects:
+          [
+            rel vy trust +3,
+            rel hanh trust +1,
+            rel long trust -10,
+            rep.boss -2,
+            stress +5,
+            fact came_clean_to_auditor witnessed,
+          ]
+  - en: 'Explain the circumstances and say you followed instructions, without naming anyone.'
+    vi: 'Giải thích hoàn cảnh và nói anh/chị làm theo chỉ dẫn, không nêu tên ai.'
+    outcomes:
+      - p: 0.6
+        en: "Vy nods slowly: 'Instructions from whom?' She writes down your non-answer."
+        vi: "Chị Vy gật đầu chậm: 'Chỉ dẫn từ ai?' Chị ghi lại việc anh/chị không trả lời."
+        effects: [rel vy trust -4, rel hanh trust -2, stress +3]
+      - p: 0.4
+        ok: false
+        en: "Vy's analyst has the approval log. The name comes up anyway, and it is next to your user id."
+        vi: 'Chuyên viên của chị Vy có nhật ký phê duyệt. Cái tên vẫn hiện ra, ngay cạnh mã người dùng của anh/chị.'
+        effects: [rel vy trust -7, rel hanh trust -6, rep.boss -5, stress +5]
+  - en: 'Produce the supplier letter and the booking confirmation as support.'
+    vi: 'Đưa thư của nhà cung cấp và xác nhận đặt chỗ làm chứng từ.'
+    outcomes:
+      - p: 0.35
+        en: 'Vy reads the letter. She does not challenge it. She files it, and you leave the room sweating.'
+        vi: 'Chị Vy đọc lá thư. Chị không chất vấn. Chị lưu lại, và anh/chị rời phòng trong mồ hôi.'
+        effects: [stress +4, rel vy trust -3]
+      - p: 0.65
+        ok: false
+        en: "Vy holds the letter up to the light, then puts it next to the supplier's own stationery from last year. The fonts do not match."
+        vi: 'Chị Vy giơ lá thư lên ánh sáng, rồi đặt cạnh giấy tiêu đề của chính nhà cung cấp hồi năm ngoái. Phông chữ không khớp.'
+        effects:
+          [
+            rel vy trust -15,
+            rel hanh trust -10,
+            rep.boss -10,
+            stress +8,
+            fact created_support_document public,
+          ]
+---
+arc: the_cookie_jar
+title:
+  en: 'The cookie jar'
+  vi: 'Hũ tiết kiệm'
+stages:
+  - { id: smoothing, event: fin.profit_smoothing }
+  - { id: release, event: fin.reserve_release, delay: 12-20 }
+---
+scene: fin.profit_smoothing
+arc: the_cookie_jar
+place: finance_office
+tags: [accruals, dark, pressure]
+weight: 1.5
+cooldown: 40
+terms: [accrual]
+when: [turn >= 18, turn <= 34, close.open = 1]
+lines:
+  - who: char:duc
+    en: 'This month is unusually strong. It would be a pity to show a spike and then a dip. Why not put a healthy provision against future warranty claims? It will smooth the year.'
+    vi: 'Tháng này mạnh bất thường. Sẽ tiếc nếu đồ thị lên cao rồi tụt xuống. Sao mình không trích một khoản dự phòng dồi dào cho bảo hành tương lai? Nó sẽ làm cả năm đều hơn.'
+choices:
+  - en: 'Decline: you will provide what the claims history supports, and show him the numbers.'
+    vi: 'Từ chối: anh/chị sẽ trích theo những gì lịch sử bảo hành hỗ trợ và cho anh ấy xem số liệu.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: 'Duc grumbles that accountants are not supposed to be this literal. But the provision you book is defensible, and he cannot find fault with the working.'
+        vi: 'Anh Đức càu nhàu rằng kế toán không nên quá nguyên tắc như thế. Nhưng khoản dự phòng anh/chị ghi bảo vệ được và anh ấy không bắt lỗi được bảng tính.'
+        effects:
+          [rel duc trust -3, rel hanh trust +4, rep.boss +1, stress +2, arc the_cookie_jar end]
+  - en: 'Book a modest, evidence-based increase and note it as prudence.'
+    vi: 'Ghi một khoản tăng vừa phải dựa trên bằng chứng và ghi chú là thận trọng.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'It is not what Duc wanted but it is something. Hanh says nothing, which from her is a yes.'
+        vi: 'Không phải điều anh Đức muốn nhưng có còn hơn không. Chị Hạnh không nói gì, mà từ chị thì đó là đồng ý.'
+        effects: [rel duc trust +1, rel hanh trust +2, stress +1, arc the_cookie_jar end]
+  - en: 'Book the generous provision he is asking for.'
+    vi: 'Ghi khoản dự phòng dồi dào như anh ấy yêu cầu.'
+    outcomes:
+      - p: 0.85
+        en: "The month's profit drops to a comfortable level. The extra sits in a balance sheet account called 'warranty provision'."
+        vi: "Lợi nhuận tháng giảm về mức dễ chịu. Khoản dư nằm trong một tài khoản bảng cân đối mang tên 'dự phòng bảo hành'."
+        effects:
+          [rel duc trust +5, stress -1, fact padded_reserve private, arc the_cookie_jar release]
+      - p: 0.15
+        ok: false
+        en: "Hanh asks what claims history justifies the provision. You show her last year's claims. They do not add up to half of it."
+        vi: 'Chị Hạnh hỏi lịch sử bảo hành nào biện minh cho khoản dự phòng. Anh/chị cho chị xem các yêu cầu năm ngoái. Chúng không bằng một nửa.'
+        effects:
+          [
+            rel duc trust +3,
+            rel hanh trust -6,
+            stress +3,
+            fact padded_reserve witnessed,
+            arc the_cookie_jar release,
+          ]
+---
+scene: fin.reserve_release
+weight: 0
+place: meeting_room
+tags: [accruals, dark, pressure, arc]
+terms: [accrual]
+lines:
+  - who: char:duc
+    en: 'The quarter is weak, and the bank wants to see that we have hit our profit target. We have a healthy provision sitting unused. It would be natural to release some of it, would it not?'
+    vi: 'Quý này yếu, và ngân hàng muốn thấy mình đạt chỉ tiêu lợi nhuận. Mình có một khoản dự phòng dồi dào đang để không. Giải phóng một phần là tự nhiên, đúng không?'
+choices:
+  - en: 'Refuse to release it without a change in the underlying claims risk, and say why.'
+    vi: 'Từ chối giải phóng khi rủi ro bảo hành không thay đổi và nói rõ lý do.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: 'Duc is cold but does not argue. The profit target is missed, honestly. Hanh looks at you, then at the window.'
+        vi: 'Anh Đức lạnh lùng nhưng không tranh cãi. Chỉ tiêu lợi nhuận không đạt, một cách trung thực. Chị Hạnh nhìn anh/chị rồi nhìn ra cửa sổ.'
+        effects:
+          [rel duc trust -6, rel hanh trust +5, rep.boss -1, stress +4, arc the_cookie_jar end]
+  - en: 'Release only the part that the claims data no longer supports, and document why.'
+    vi: 'Chỉ giải phóng phần mà dữ liệu bảo hành không còn hỗ trợ và ghi rõ lý do.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: 'It is a fair adjustment, with working papers. Duc accepts it as better than nothing. Hanh reviews it and signs.'
+        vi: 'Một điều chỉnh công bằng, có bảng tính. Anh Đức chấp nhận vì còn hơn không. Chị Hạnh soát và ký.'
+        effects: [rel duc trust +1, rel hanh trust +2, stress +2, arc the_cookie_jar end]
+  - en: 'Release whatever is needed to hit the target.'
+    vi: 'Giải phóng bao nhiêu cũng được để đạt chỉ tiêu.'
+    outcomes:
+      - p: 0.75
+        en: "The target is hit, to the dong. Duc shakes your hand. The bank's analyst sends a congratulatory email."
+        vi: 'Đạt chỉ tiêu, chính xác đến từng đồng. Anh Đức bắt tay anh/chị. Chuyên viên ngân hàng gửi email chúc mừng.'
+        effects:
+          [
+            rel duc trust +7,
+            rel hanh trust -3,
+            stress -2,
+            fact released_reserve_to_hit_target private,
+            arc the_cookie_jar end,
+          ]
+      - p: 0.25
+        ok: false
+        en: 'The auditor notices the pattern: a provision built in a good month and released in a bad one. She asks for the claims data.'
+        vi: 'Kiểm toán viên nhận ra quy luật: dự phòng được lập trong tháng tốt và giải phóng trong tháng xấu. Chị yêu cầu dữ liệu bảo hành.'
+        effects:
+          [
+            rel duc trust +4,
+            rel hanh trust -8,
+            rel vy trust -8,
+            rep.boss -6,
+            stress +5,
+            fact released_reserve_to_hit_target public,
+            arc the_cookie_jar end,
+          ]
+---
+arc: thu
+title:
+  en: 'Thu'
+  vi: 'Thu'
+stages:
+  - { id: training, event: fin.thu_training }
+  - { id: mistake, event: fin.thu_mistake, delay: 18-26 }
+  - { id: audit, event: fin.thu_at_audit, delay: 4-7 }
+---
+scene: fin.thu_training
+arc: thu
+place: finance_office
+tags: [people, onboarding]
+weight: 2
+cooldown: 52
+when: [turn >= 3, turn <= 14]
+lines:
+  - who: char:thu
+    en: 'I am not sure I understand the approval limits for vendor payments. Nobody ever showed me. I do not want to post something I should not.'
+    vi: 'Em không chắc mình hiểu hạn mức phê duyệt cho thanh toán nhà cung cấp. Chưa ai chỉ cho em. Em không muốn ghi nhận thứ không nên ghi.'
+choices:
+  - en: 'Sit with her for an hour and walk through the rules, with examples.'
+    vi: 'Ngồi với em một giờ và giải thích các quy định kèm ví dụ.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: 'Thu takes notes in her little book and thanks you twice. The next week she catches an error that would have slipped past you.'
+        vi: 'Thu ghi chú vào cuốn sổ nhỏ và cảm ơn anh/chị hai lần. Tuần sau em bắt được một lỗi lẽ ra đã lọt qua anh/chị.'
+        effects:
+          [rel thu trust +6, rel thu loyalty +4, rel hanh trust +1, stress +1, arc thu mistake]
+  - en: 'Give her the policy and offer to check her first ten payments.'
+    vi: 'Đưa em chính sách và nhận kiểm tra mười khoản thanh toán đầu tiên.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'It works well enough. Thu is careful, and careful takes a while.'
+        vi: 'Cũng khá ổn. Thu cẩn thận, và cẩn thận thì mất thời gian.'
+        effects: [rel thu trust +3, arc thu mistake]
+  - en: "Tell her to do it like last year's files and ask if she gets stuck."
+    vi: 'Bảo em làm theo hồ sơ năm ngoái và hỏi nếu bị kẹt.'
+    outcomes:
+      - p: 1
+        en: 'Thu nods, a little too quickly. You can see she will not ask.'
+        vi: 'Thu gật đầu, hơi quá nhanh. Anh/chị thấy em sẽ không hỏi.'
+        effects: [rel thu trust -2, arc thu mistake]
+---
+scene: fin.thu_mistake
+weight: 0
+place: finance_office
+tags: [people, dark, arc]
+lines:
+  - who: char:thu
+    en: 'I posted a vendor payment twice. One point two million. I found out this morning. Please, I do not know what to do. If Hanh finds out... I have a small child.'
+    vi: 'Em ghi nhận một khoản thanh toán nhà cung cấp hai lần. Một triệu hai. Sáng nay em mới phát hiện. Anh/chị ơi, em không biết làm sao. Nếu chị Hạnh biết... em có một đứa con nhỏ.'
+choices:
+  - en: 'Reverse it properly, log it, and go through how it happened together so it does not repeat.'
+    vi: 'Hủy đúng quy trình, ghi nhận và cùng xem nó xảy ra thế nào để không lặp lại.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.85
+        en: "You fix it in an hour. Thu cries a little with relief. 'I will never do it again.' You tell Hanh yourself, calmly, as a process gap. She nods."
+        vi: "Anh/chị sửa trong một giờ. Thu khóc nhẹ vì nhẹ nhõm. 'Em sẽ không bao giờ làm lại.' Anh/chị tự nói với chị Hạnh, bình tĩnh, như một lỗ hổng quy trình. Chị gật đầu."
+        effects: [rel thu trust +7, rel thu loyalty +5, rel hanh trust +3, stress +2, arc thu audit]
+      - p: 0.15
+        ok: false
+        en: 'Hanh is unhappy about the mistake, and more unhappy to have heard it from you second. But the record is clean.'
+        vi: 'Chị Hạnh không vui về sai sót, và không vui hơn vì nghe chuyện từ anh/chị đến thứ hai. Nhưng hồ sơ sạch.'
+        effects: [rel thu trust +5, rel hanh trust -1, stress +3, arc thu audit]
+  - en: "Reverse it and log it, but keep Thu's name out of the note."
+    vi: 'Hủy và ghi nhận, nhưng không ghi tên Thu trong ghi chú.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "The note says 'duplicate posting, corrected'. It is true. It is also a little short. Thu holds your eye for a moment and looks away."
+        vi: "Ghi chú nói 'ghi trùng, đã sửa'. Đúng sự thật. Nhưng cũng hơi ngắn. Thu nhìn thẳng vào mắt anh/chị một lúc rồi quay đi."
+        effects: [rel thu trust +4, rel thu loyalty +2, arc thu audit]
+  - en: 'Quietly reverse it and do not log it at all.'
+    vi: 'Lặng lẽ hủy và không ghi nhận gì cả.'
+    outcomes:
+      - p: 0.7
+        en: 'It is gone and nobody knows. Thu would walk through fire for you. She keeps a note of it in her book.'
+        vi: 'Khoản đó biến mất và không ai biết. Thu sẽ vào lửa cho anh/chị. Em ghi nó vào cuốn sổ.'
+        effects:
+          [
+            rel thu trust +9,
+            rel thu loyalty +8,
+            rel thu owed +2,
+            stress +2,
+            fact covered_up_error private,
+            arc thu audit,
+          ]
+      - p: 0.3
+        ok: false
+        en: "The vendor's statement shows the duplicate payment and the reversal with no journal note. Hanh sees it."
+        vi: 'Sao kê của nhà cung cấp cho thấy thanh toán trùng và khoản hủy mà không có ghi chú bút toán. Chị Hạnh thấy.'
+        effects:
+          [
+            rel thu trust +5,
+            rel hanh trust -6,
+            rep.boss -3,
+            stress +4,
+            fact covered_up_error witnessed,
+            arc thu audit,
+          ]
+---
+scene: fin.thu_at_audit
+weight: 0
+place: meeting_room
+tags: [audit, people, dark, arc]
+lines:
+  - who: char:vy
+    en: 'I see a duplicate payment reversed in the spring. I would like to hear, from the person who posted it, how it happened and who reviewed the correction.'
+    vi: 'Tôi thấy một khoản thanh toán trùng được hủy hồi mùa xuân. Tôi muốn nghe từ chính người đã ghi nhận nó về việc nó xảy ra thế nào và ai đã soát lại bút toán sửa.'
+  - who: char:thu
+    en: 'Um. I... it was me. I am not sure what to say.'
+    vi: 'Dạ. Em... là em. Em không biết nói gì.'
+choices:
+  - en: 'Tell Thu to say exactly what happened, and sit beside her while she does.'
+    vi: 'Bảo Thu nói đúng sự việc và ngồi cạnh em khi em nói.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "Thu tells it plainly and Vy listens. The finding is recorded as a process improvement. Afterwards Thu says, quietly, 'Thank you for being there.'"
+        vi: "Thu kể rõ ràng và chị Vy lắng nghe. Phát hiện được ghi nhận là cải tiến quy trình. Sau đó Thu khẽ nói: 'Cảm ơn anh/chị đã ở đó.'"
+        effects: [rel thu trust +6, rel vy trust +3, rel hanh trust +2, stress +1]
+  - en: 'Let Thu answer on her own, she made the entry.'
+    vi: 'Để Thu tự trả lời, em là người ghi bút toán.'
+    outcomes:
+      - p: 1
+        en: 'Thu struggles through it. Vy is patient, but it is obvious nobody prepared her. She avoids your eyes for a week.'
+        vi: 'Thu vật lộn trả lời. Chị Vy kiên nhẫn, nhưng rõ ràng không ai chuẩn bị cho em. Em tránh ánh mắt anh/chị cả tuần.'
+        effects: [rel thu trust -6, rel thu loyalty -4, stress +2]
+  - en: 'Tell Thu what to say, and what not to mention.'
+    vi: 'Bảo Thu nên nói gì và không nên nhắc gì.'
+    outcomes:
+      - p: 0.5
+        en: 'Thu recites the script. Vy makes a note that the answers sound rehearsed, and moves on.'
+        vi: 'Thu đọc kịch bản. Chị Vy ghi chú rằng câu trả lời nghe như được tập trước, rồi chuyển tiếp.'
+        effects: [rel thu trust -3, rel vy trust -4, stress +3, fact scripted_witness private]
+      - p: 0.5
+        ok: false
+        en: "Thu's voice cracks in the middle of the script. She looks at you, then at Vy, then says what actually happened. The room goes very quiet."
+        vi: 'Giọng Thu nghẹn giữa chừng kịch bản. Em nhìn anh/chị, nhìn chị Vy, rồi nói điều thực sự đã xảy ra. Căn phòng rất yên lặng.'
+        effects:
+          [
+            rel thu trust -5,
+            rel vy trust -10,
+            rel hanh trust -6,
+            rep.boss -5,
+            stress +6,
+            fact scripted_witness witnessed,
+          ]
+---
+fact: deflected_to_sales
+severity: 4
+category: integrity
+en: 'you put the blame for an early booking on the salesperson'
+vi: 'bạn đổ lỗi cho nhân viên kinh doanh về việc ghi nhận sớm'
+lesson:
+  en: 'The one who books the entry owns the entry. Blaming the person who asked turns one mistake into two: the booking and the dishonesty about it.'
+  vi: 'Người ghi bút toán sở hữu bút toán. Đổ lỗi cho người nhờ biến một sai sót thành hai: việc ghi nhận và sự không trung thực về nó.'
+traces:
+  - { type: witness, visibility: 0.5, detectors: [boss, internal_audit] }
+witnessed:
+  boss: -4
+  finance: -3
+public:
+  boss: -7
+---
+fact: accepted_missing_receipt
+severity: 2
+category: integrity
+en: 'you accepted expenses without receipts'
+vi: 'bạn chấp nhận các chi phí không có hóa đơn chứng từ'
+lesson:
+  en: 'A receipt is what turns a claim into evidence. Accepting an expense without one is how every bigger expense problem starts.'
+  vi: 'Hóa đơn biến lời nói thành bằng chứng. Chấp nhận chi phí không có hóa đơn là cách mọi vấn đề chi phí lớn hơn bắt đầu.'
+traces:
+  - { type: record, visibility: 0.5, detectors: [internal_audit, finance] }
+witnessed:
+  boss: -3
+  finance: -3
+public:
+  boss: -6
+---
+fact: booked_personal_expense
+severity: 6
+category: integrity
+en: 'you booked a personal expense as a business one'
+vi: 'bạn ghi một khoản chi tiêu cá nhân thành chi phí kinh doanh'
+lesson:
+  en: 'When a family member or a powerful person asks, the rule still applies. Personal costs booked as business costs are a misstatement, and possibly a tax issue.'
+  vi: 'Khi người nhà hay người có quyền lực nhờ, quy tắc vẫn áp dụng. Chi phí cá nhân ghi thành chi phí kinh doanh là sai lệch báo cáo, và có thể là vấn đề thuế.'
+traces:
+  - { type: document, visibility: 0.7, detectors: [internal_audit, finance, boss] }
+witnessed:
+  boss: -7
+  finance: -5
+public:
+  boss: -12
+  buyer: -4
+---
+fact: created_support_document
+severity: 9
+category: integrity
+en: 'you had a supporting document created to cover an entry'
+vi: 'bạn cho làm một chứng từ để che một bút toán'
+lesson:
+  en: 'A document created after the event to support an entry is fabricated evidence. At this point the issue is no longer the expense, it is the document.'
+  vi: 'Chứng từ được tạo sau sự việc để hỗ trợ một bút toán là bằng chứng bịa đặt. Đến lúc đó, vấn đề không còn là khoản chi, mà là tài liệu.'
+traces:
+  - { type: document, visibility: 0.85, detectors: [internal_audit, finance, boss] }
+witnessed:
+  boss: -12
+  finance: -10
+public:
+  boss: -18
+  buyer: -8
+---
+fact: padded_reserve
+severity: 6
+category: integrity
+en: 'you built a reserve larger than the evidence supported'
+vi: 'bạn lập một khoản dự phòng lớn hơn so với bằng chứng'
+lesson:
+  en: 'A reserve bigger than the evidence is hidden profit, stored for later. It exists to be released when the numbers are needed, which is exactly why it is wrong.'
+  vi: 'Khoản dự phòng lớn hơn bằng chứng là lợi nhuận bị giấu để dành cho sau. Nó tồn tại để được giải phóng khi cần số đẹp, và đó chính là lý do nó sai.'
+traces:
+  - { type: document, visibility: 0.5, detectors: [internal_audit, finance] }
+witnessed:
+  boss: -5
+  finance: -5
+public:
+  boss: -9
+---
+fact: released_reserve_to_hit_target
+severity: 8
+category: integrity
+en: 'you released a reserve to reach a profit target'
+vi: 'bạn giải phóng khoản dự phòng để đạt chỉ tiêu lợi nhuận'
+lesson:
+  en: 'Earnings management: moving profit between periods to meet a number. The bank, the owner and the auditor all rely on those numbers being an honest picture.'
+  vi: 'Điều chỉnh lợi nhuận: chuyển lợi nhuận giữa các kỳ để đạt một con số. Ngân hàng, chủ sở hữu và kiểm toán đều dựa vào việc những con số đó là bức tranh trung thực.'
+traces:
+  - { type: document, visibility: 0.75, detectors: [internal_audit, finance, boss] }
+witnessed:
+  boss: -10
+  finance: -8
+public:
+  boss: -16
+  buyer: -6
+---
+fact: covered_up_error
+severity: 4
+category: integrity
+en: "you reversed a colleague's error without recording it"
+vi: 'bạn sửa sai sót của đồng nghiệp mà không ghi nhận'
+lesson:
+  en: 'Kindness that hides a control failure protects one person and exposes the process. A logged, coached correction protects both.'
+  vi: 'Lòng tốt che giấu lỗi kiểm soát bảo vệ một người và phơi bày quy trình. Một sửa sai có ghi nhận và hướng dẫn bảo vệ cả hai.'
+traces:
+  - { type: record, visibility: 0.5, detectors: [internal_audit, finance] }
+witnessed:
+  boss: -4
+  finance: -3
+public:
+  boss: -7
+---
+fact: scripted_witness
+severity: 7
+category: integrity
+en: 'you told a colleague what to say to the auditor'
+vi: 'bạn bảo đồng nghiệp nên nói gì với kiểm toán viên'
+lesson:
+  en: 'Coaching someone to tell the truth is support. Scripting their answers is interfering with an audit, and it puts them at risk for your benefit.'
+  vi: 'Hướng dẫn ai đó nói thật là hỗ trợ. Viết sẵn câu trả lời là can thiệp vào kiểm toán và khiến họ gặp rủi ro vì lợi ích của bạn.'
+traces:
+  - { type: witness, visibility: 0.6, detectors: [internal_audit, boss] }
+witnessed:
+  boss: -8
+  finance: -6
+public:
+  boss: -13
+---
+fact: came_clean_to_auditor
+severity: 2
+category: integrity
+en: 'you told the auditor the truth about entries you knew were wrong'
+vi: 'bạn nói sự thật với kiểm toán viên về các bút toán bạn biết là sai'
+lesson:
+  en: 'Telling an auditor the truth does not erase the mistake, but it separates an error from a cover-up, and that difference is what a fair review weighs most.'
+  vi: 'Nói thật với kiểm toán viên không xóa được sai sót, nhưng nó tách lỗi khỏi việc che giấu, và sự khác biệt đó là điều một buổi xem xét công bằng cân nhắc nhiều nhất.'
+witnessed:
+  boss: 2
+public:
+  boss: 4

@@ -5,7 +5,11 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import YAML from 'yaml';
 
-const ROLE_BY_PREFIX = { sales: 'role.sales.export.specialist', qc: 'role.qc.specialist' };
+const ROLE_BY_PREFIX = {
+  sales: 'role.sales.export.specialist',
+  qc: 'role.qc.specialist',
+  fin: 'role.fin.accountant',
+};
 const ROLE_SHORTCUTS = { ...ROLE_BY_PREFIX };
 const VARIABLE_ALIASES = {
   stress: 'player.stress',

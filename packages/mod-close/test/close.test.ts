@@ -80,7 +80,7 @@ describe('close: the month-end close', () => {
     ]);
   });
 
-  it('opens the window two weeks before a month ends and shuts it when the month changes', () => {
+  it('opens the window three weeks before a month ends and shuts it when the month changes', () => {
     const d = driver();
     const opens: number[] = [];
     const shuts: number[] = [];
@@ -90,7 +90,7 @@ describe('close: the month-end close', () => {
       }
     }
     const february = firstWeekOfMonth(2);
-    expect(opens[0]).toBe(february - 2);
+    expect(opens[0]).toBe(february - 3);
     expect(shuts[0]).toBe(february);
   });
 

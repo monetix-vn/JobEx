@@ -1,0 +1,87 @@
+{
+  "id": "scene.fin.fx_difference",
+  "location": "loc.finance_office",
+  "cast": ["char:hanh"],
+  "lines": [
+    {
+      "speaker": "char:hanh",
+      "text_key": "scene.fin.fx_difference.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.fin.fx_difference.c1",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.fin.fx_difference.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.hanh.trust",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.fin.fx_difference.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.fin.fx_difference.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.fin.fx_difference.c3",
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.fin.fx_difference.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": 2
+            },
+            {
+              "fact": "fact.timed_fx_gain",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.fin.fx_difference.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.hanh.trust",
+              "value": -5
+            },
+            {
+              "fact": "fact.timed_fx_gain",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

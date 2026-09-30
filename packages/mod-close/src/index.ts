@@ -22,7 +22,7 @@ export const manifest: ModuleManifest = {
 export interface CloseConfig {
   content: ContentView;
   roleId: string;
-  /** The close is open for this many weeks before a month ends. Default 2. */
+  /** The close is open for this many weeks before a month ends. Default 3. */
   windowWeeks?: number;
 }
 
@@ -43,7 +43,7 @@ export function createModule(host: ModuleHost): ModuleInstance {
   const role = config.content.get('role', config.roleId);
   if (!role) throw new Error(`mod-close: unknown role "${config.roleId}"`);
   const steps = role.close_steps ?? [];
-  const windowWeeks = config.windowWeeks ?? 2;
+  const windowWeeks = config.windowWeeks ?? 3;
 
   const values = new Map<string, number>(steps.map((s) => [s, 0]));
   let open = 0;

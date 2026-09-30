@@ -1,0 +1,133 @@
+{
+  "id": "scene.fin.missing_documents",
+  "location": "loc.finance_office",
+  "cast": ["char:thu"],
+  "lines": [
+    {
+      "speaker": "char:thu",
+      "text_key": "scene.fin.missing_documents.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.fin.missing_documents.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.85,
+          "narration_key": "scene.fin.missing_documents.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.thu.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "p": 0.15,
+          "result": "fail",
+          "narration_key": "scene.fin.missing_documents.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.fin.missing_documents.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.fin.missing_documents.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.thu.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.fin.missing_documents.c3",
+      "outcomes": [
+        {
+          "p": 0.85,
+          "narration_key": "scene.fin.missing_documents.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.stress",
+              "value": -1
+            },
+            {
+              "fact": "fact.accepted_missing_receipt",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.15,
+          "result": "fail",
+          "narration_key": "scene.fin.missing_documents.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "fact": "fact.accepted_missing_receipt",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

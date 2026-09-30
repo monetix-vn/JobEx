@@ -13,6 +13,7 @@ Last updated after the authoring toolchain. Repo: github.com/monetix-vn/JobEx.
   per-job events (`role`) and busyness (`overhead_hours`).
 - Authoring: write scenes/facts/terms in YAML (EN+VI together), `pnpm author` imports + validates,
   `pnpm content:list` is the event library (docs/AUTHORING.md, example in `content-src/examples/`).
+- Third job: Finance and Accounting (37 scenes, visible month-end close, arcs The Cut-off, The Receipt Problem, The Cookie Jar, Thu), promoted/walked-away endings.
 - Playable in the browser: `play.bat` / `play-vi.bat` (pick a job; sales 18 events, QC 18).
 
 ## Branches
@@ -23,7 +24,7 @@ Last updated after the authoring toolchain. Repo: github.com/monetix-vn/JobEx.
 ## Next (in order) - revised 2026-09-30 by the owner: engine first, then a series bible, then scenes
 
 Start with `docs/AI-GUIDE.md`; checklists in `docs/checklists/`; bibles in `docs/story/`.
-Progress on `feature/story-engine`: E1 to E10 done (characters, `mod-relationships`, facts feed trust, arcs, beats, debrief people/arcs, authoring, demo arc The Hamper). Phase 2 (story engine) is complete, including the client cast panel. Finance: bible in `docs/story/finance.md` (owner decided: same company, visible month-end close, promoted ending), role file and month-end engine (`mod-close`) are in; next: Finance cast, step scenes and story scenes, then make the job playable. Also pending: the remaining QC story blocks.
+Progress on `feature/story-engine`: E1 to E10 done (characters, `mod-relationships`, facts feed trust, arcs, beats, debrief people/arcs, authoring, demo arc The Hamper). Phase 2 (story engine) is complete, including the client cast panel. Finance is playable (third job): 37 scenes, month-end close, four storylines, promoted/walked-away endings (`docs/story/finance.md`). QC also has a promotion ending (`qc.manager_offer`). Next: remaining Finance and QC scenes, Sales bible expansion, practitioner review.
 Plan and design: `docs/adr/0002-story-engine-and-series-bible.md` (proposed, awaiting approval).
 
 1. Engine: characters, per-person relationships, story arcs and a timeline of beats (ADR 0002 step 1).

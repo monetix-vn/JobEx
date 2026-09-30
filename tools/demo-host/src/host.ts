@@ -43,6 +43,7 @@ export function createInProcessHost(seed: string): { run: Run; transport: Transp
 
 export const SALES_ROLE = 'role.sales.export.specialist';
 export const QC_ROLE = 'role.qc.specialist';
+export const FIN_ROLE = 'role.fin.accountant';
 
 export interface GameHostOptions {
   /** Content pack files by path relative to the content root, e.g. "core/manifest.json". */

@@ -1,0 +1,492 @@
+# Finance random incidents and the crisis consequences (docs/story/finance.md).
+scene: fin.first_adjustment
+place: finance_office
+tags: [onboarding, pressure]
+weight: 2
+cooldown: 52
+when: [turn >= 3, turn <= 12]
+lines:
+  - who: char:hanh
+    en: 'This small adjusting entry needs a reason on file before it can post. Duc wants it in today. The reason is not obvious to me either, to be honest.'
+    vi: 'Bút toán điều chỉnh nhỏ này cần có lý do trong hồ sơ mới ghi được. Anh Đức muốn ghi ngay hôm nay. Nói thật, chị cũng chưa thấy lý do rõ ràng.'
+choices:
+  - en: 'Ask Duc for the reason in writing before posting it.'
+    vi: 'Xin anh Đức lý do bằng văn bản trước khi ghi.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 0.8
+        en: 'Duc sends two lines. They are reasonable. Hanh posts it and gives you a nod, the first one.'
+        vi: 'Anh Đức gửi hai dòng. Hợp lý. Chị Hạnh ghi và gật đầu với anh/chị, lần đầu tiên.'
+        effects: [rel hanh trust +3, rel duc trust -1, stress +1]
+      - p: 0.2
+        ok: false
+        en: "Duc replies, 'Just post it.' Hanh looks at the reply for a long time, then decides not to post it today."
+        vi: "Anh Đức trả lời: 'Cứ ghi đi.' Chị Hạnh nhìn tin nhắn rất lâu rồi quyết định hôm nay không ghi."
+        effects: [rel hanh trust +4, rel duc trust -4, stress +2]
+  - en: 'Write the reason you think is most likely and post it.'
+    vi: 'Viết lý do anh/chị cho là có khả năng nhất và ghi.'
+    outcomes:
+      - p: 1
+        en: 'It posts. The reason on file is a guess, dressed as a fact. Hanh does not check it.'
+        vi: 'Bút toán được ghi. Lý do trong hồ sơ là một phỏng đoán khoác áo sự thật. Chị Hạnh không kiểm tra.'
+        effects: [rel duc trust +2, fact guessed_adjustment_reason private]
+  - en: 'Post it with the reason left blank and deal with it later.'
+    vi: 'Ghi với lý do để trống và xử lý sau.'
+    outcomes:
+      - p: 1
+        en: 'It posts, with an empty box. The empty box will be noticed by someone, one day.'
+        vi: 'Bút toán được ghi, với một ô trống. Ô trống đó sẽ có ngày bị ai đó chú ý.'
+        effects: [rel duc trust +1, rel hanh trust -2, stress -1]
+---
+scene: fin.missing_documents
+place: finance_office
+tags: [documents, pressure]
+weight: 1.2
+cooldown: 14
+when: [turn >= 4]
+lines:
+  - who: char:thu
+    en: 'These invoices from sales do not have delivery proof attached. Bao says it is fine, the goods definitely went. Do we pay on them or chase?'
+    vi: 'Các hóa đơn này từ bên kinh doanh không có chứng từ giao hàng đính kèm. Anh Bảo nói ổn, hàng chắc chắn đã đi. Mình xử lý luôn hay đi đòi chứng từ?'
+choices:
+  - en: 'Hold the invoices until the delivery proof arrives, and help Thu chase it.'
+    vi: 'Giữ các hóa đơn cho đến khi có chứng từ giao hàng và cùng Thu đi đòi.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.85
+        en: 'Two days later the proof arrives for all but one. The one is genuinely missing, and finding out why is worth the trouble.'
+        vi: 'Hai ngày sau chứng từ về đủ trừ một bộ. Bộ đó thực sự thiếu, và tìm ra lý do xứng đáng với công sức.'
+        effects: [rel thu trust +3, rel bao trust -3, rel hanh trust +2, stress +1]
+      - p: 0.15
+        ok: false
+        en: 'Bao says you are slowing down his customers. The proof arrives eventually, and the invoices were fine.'
+        vi: 'Anh Bảo nói anh/chị đang làm chậm khách hàng của anh. Chứng từ rốt cuộc cũng về và các hóa đơn đều ổn.'
+        effects: [rel bao trust -5, stress +2]
+  - en: 'Process them with a note that proof is outstanding, and set a two-day deadline.'
+    vi: 'Xử lý kèm ghi chú chứng từ còn thiếu và đặt hạn hai ngày.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'Everyone gets most of what they want. The deadline is met on the third day, which you count as a win.'
+        vi: 'Mọi người đều có phần lớn điều họ muốn. Hạn được đáp ứng vào ngày thứ ba, và anh/chị tính đó là một thắng lợi.'
+        effects: [rel thu trust +1, rel hanh trust +1]
+  - en: "Process them on Bao's word."
+    vi: 'Xử lý theo lời anh Bảo.'
+    outcomes:
+      - p: 0.85
+        en: 'Bao is happy. The invoices are paid. The delivery proof never turns up, and nobody mentions it again.'
+        vi: 'Anh Bảo vui. Các hóa đơn được thanh toán. Chứng từ giao hàng không bao giờ xuất hiện, và không ai nhắc lại.'
+        effects: [rel bao trust +4, stress -1, fact accepted_missing_receipt private]
+      - p: 0.15
+        ok: false
+        en: 'One shipment never left the warehouse. The customer was invoiced for goods that did not arrive.'
+        vi: 'Một lô hàng chưa bao giờ rời kho. Khách bị xuất hóa đơn cho hàng chưa đến.'
+        effects:
+          [
+            rel bao trust +2,
+            rel hanh trust -5,
+            rep.buyer -4,
+            rep.boss -3,
+            fact accepted_missing_receipt witnessed,
+          ]
+---
+scene: fin.duplicate_payment
+place: finance_office
+tags: [payments, integrity]
+weight: 1
+cooldown: 26
+when: [turn >= 14]
+lines:
+  - who: char:thu
+    en: 'A supplier refunded us 3.4 million dong by mistake, a duplicate from two months ago. It went to our bank account on Friday. They have not noticed. What do we do?'
+    vi: 'Một nhà cung cấp hoàn nhầm cho mình 3,4 triệu đồng, khoản thanh toán trùng từ hai tháng trước. Tiền đã vào tài khoản hôm thứ Sáu. Họ chưa nhận ra. Mình làm sao đây?'
+choices:
+  - en: 'Tell the supplier and return it, with a note in the ledger.'
+    vi: 'Báo nhà cung cấp và hoàn lại, kèm ghi chú trong sổ.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'The supplier is stunned and grateful. Thu watches how you handle it and writes something in her notebook. It is something good.'
+        vi: 'Nhà cung cấp sững sờ và biết ơn. Thu quan sát cách anh/chị xử lý và ghi gì đó vào sổ. Đó là điều tốt.'
+        effects: [rel thu trust +4, rel hanh trust +2, rep.finance +2]
+  - en: 'Hold it in a separate account and raise it with Hanh before deciding.'
+    vi: 'Giữ trong một tài khoản riêng và nêu với chị Hạnh trước khi quyết định.'
+    outcomes:
+      - p: 1
+        en: 'Hanh says to return it, and thanks you for asking before acting. It costs a day.'
+        vi: 'Chị Hạnh bảo hoàn lại và cảm ơn anh/chị đã hỏi trước khi làm. Mất một ngày.'
+        effects: [rel hanh trust +3, rel thu trust +1]
+  - en: 'Keep it quietly. They did not notice.'
+    vi: 'Lặng lẽ giữ lại. Họ không nhận ra.'
+    outcomes:
+      - p: 0.8
+        en: 'The money lands in other income. Nobody asks. Thu looks at you, and then at her notebook.'
+        vi: 'Tiền vào thu nhập khác. Không ai hỏi. Thu nhìn anh/chị rồi nhìn cuốn sổ.'
+        effects: [rel thu trust -5, stress +1, fact kept_duplicate_payment private]
+      - p: 0.2
+        ok: false
+        en: "The supplier's accountant notices two weeks later and sends a polite, exact email copied to Hanh."
+        vi: 'Kế toán nhà cung cấp phát hiện hai tuần sau và gửi một email lịch sự, chính xác, đồng gửi chị Hạnh.'
+        effects:
+          [rel thu trust -6, rel hanh trust -6, rep.boss -3, fact kept_duplicate_payment public]
+---
+scene: fin.fx_difference
+place: finance_office
+tags: [payments, judgement]
+weight: 1
+cooldown: 20
+when: [turn >= 10]
+lines:
+  - who: char:hanh
+    en: 'The dong moved against the dollar this week. We have a receipt due that would show a nice exchange gain if booked on Monday, and a smaller one if booked today. Policy says the date the money arrives. It arrives Monday.'
+    vi: 'Tuần này tiền đồng biến động so với đô la. Có một khoản thu sẽ cho lãi tỷ giá đẹp nếu ghi vào thứ Hai, và nhỏ hơn nếu ghi hôm nay. Chính sách nói ngày tiền về. Tiền về vào thứ Hai.'
+choices:
+  - en: 'Book it on the date the money arrives, as the policy says.'
+    vi: 'Ghi vào ngày tiền về, đúng chính sách.'
+    outcomes:
+      - p: 1
+        en: 'Hanh nods. The gain is what it is, and the policy worked as intended.'
+        vi: 'Chị Hạnh gật đầu. Khoản lãi là như vậy, và chính sách hoạt động đúng như dự kiến.'
+        effects: [rel hanh trust +2]
+  - en: 'Ask Duc whether the policy allows a choice, and follow his written answer.'
+    vi: 'Hỏi anh Đức chính sách có cho phép lựa chọn không và làm theo câu trả lời bằng văn bản.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'Duc confirms: the arrival date. The gain is booked properly, and he half-jokes that he hoped you would say otherwise.'
+        vi: 'Anh Đức xác nhận: ngày tiền về. Khoản lãi được ghi đúng, và anh nửa đùa rằng anh mong anh/chị nói khác.'
+        effects: [rel duc trust +1, rel hanh trust +1]
+  - en: 'Book it on whichever date gives the better number.'
+    vi: 'Ghi vào ngày nào cho con số đẹp hơn.'
+    outcomes:
+      - p: 0.8
+        en: 'The gain is 1.1 million better than it would have been. It is a small thing, and it is exactly how a habit starts.'
+        vi: 'Khoản lãi nhiều hơn 1,1 triệu. Chuyện nhỏ, và đó chính xác là cách một thói quen bắt đầu.'
+        effects: [rel duc trust +2, fact timed_fx_gain private]
+      - p: 0.2
+        ok: false
+        en: 'Hanh checks the bank advice against the booking date and finds the mismatch. She says nothing, which is worse than a lecture.'
+        vi: 'Chị Hạnh đối chiếu giấy báo ngân hàng với ngày ghi sổ và thấy sự lệch. Chị không nói gì, và như vậy còn tệ hơn bị giảng.'
+        effects: [rel hanh trust -5, fact timed_fx_gain witnessed]
+---
+scene: fin.overdue_balance
+place: finance_office
+tags: [receivables, pressure, dark]
+weight: 1.5
+cooldown: 16
+when: [turn >= 26, turn <= 44]
+lines:
+  - who: char:bao
+    en: "That buyer is ninety days overdue. They say they will pay, honestly they say it every week. If we reserve against it, it hits my region's profit. Can we just leave it be until year end?"
+    vi: 'Khách đó quá hạn chín mươi ngày. Họ nói sẽ trả, tuần nào cũng nói vậy. Nếu trích dự phòng thì ảnh hưởng lợi nhuận khu vực của em. Mình để đó đến cuối năm được không?'
+  - who: char:petra
+    en: 'We have scheduled the payment for next month, but our approval process is slow. I cannot promise a date.'
+    vi: 'Bên chúng tôi đã lên lịch thanh toán tháng sau, nhưng quy trình phê duyệt chậm. Tôi không thể hứa một ngày cụ thể.'
+choices:
+  - en: 'Provide for the balance in line with the ageing policy, and tell Bao what would reverse it.'
+    vi: 'Trích dự phòng cho khoản này theo chính sách tuổi nợ và nói với anh Bảo điều gì sẽ đảo ngược nó.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.85
+        en: "The provision hits Bao's region. He is angry, and then, when the payment arrives a month later, it is released and everyone is calmer."
+        vi: 'Khoản dự phòng ảnh hưởng khu vực của anh Bảo. Anh giận, rồi khi khoản thanh toán về một tháng sau, nó được giải tỏa và ai cũng bình tĩnh hơn.'
+        effects: [rel bao trust -5, rel hanh trust +4, rep.boss +2, stress +2]
+      - p: 0.15
+        ok: false
+        en: "Petra's company never pays. The provision was right, and you are not thanked for having been right."
+        vi: 'Công ty của chị Petra không bao giờ trả. Khoản dự phòng là đúng, và không ai cảm ơn anh/chị vì đã đúng.'
+        effects: [rel bao trust -4, rel hanh trust +4, rep.boss +2, stress +3]
+  - en: 'Provide for half and set a review date with Petra for a firm payment date.'
+    vi: 'Trích dự phòng một nửa và đặt lịch với chị Petra để chốt một ngày thanh toán chắc chắn.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'It is a judgement call, written down with the reasoning. Hanh approves it without enthusiasm. Bao is a little relieved.'
+        vi: 'Một quyết định mang tính đánh giá, được ghi lại cùng lý do. Chị Hạnh chấp thuận không mấy hào hứng. Anh Bảo nhẹ nhõm đôi chút.'
+        effects: [rel bao trust -1, rel hanh trust +1, stress +1]
+  - en: 'Move the balance into a separate account so it drops out of the overdue report.'
+    vi: 'Chuyển khoản này sang một tài khoản riêng để nó rơi khỏi báo cáo quá hạn.'
+    outcomes:
+      - p: 0.75
+        en: 'The overdue report looks clean. Bao tells you that you are a lifesaver. You do not feel like one.'
+        vi: 'Báo cáo quá hạn trông sạch. Anh Bảo nói anh/chị là cứu tinh. Anh/chị không cảm thấy mình như vậy.'
+        effects: [rel bao trust +8, rel bao owed +2, stress +1, fact hid_overdue_balance private]
+      - p: 0.25
+        ok: false
+        en: "Thu, reconciling the separate account, asks why a ninety-day buyer balance is being carried as 'other receivables'."
+        vi: "Thu, khi đối chiếu tài khoản riêng, hỏi vì sao khoản nợ của khách chín mươi ngày lại được giữ dưới mục 'phải thu khác'."
+        effects:
+          [
+            rel bao trust +6,
+            rel thu trust -6,
+            rel hanh trust -6,
+            rep.boss -3,
+            fact hid_overdue_balance witnessed,
+          ]
+---
+scene: fin.covenant_check
+place: meeting_room
+tags: [bank, pressure, dark]
+weight: 1.5
+cooldown: 30
+when: [turn >= 22]
+lines:
+  - who: char:duc
+    en: 'The bank covenant is tested at the end of this quarter. We are at 1.18 against a limit of 1.20. I need you to see if anything can be adjusted before we send them the numbers.'
+    vi: 'Điều khoản cam kết với ngân hàng được kiểm tra vào cuối quý này. Mình đang ở mức 1,18 so với giới hạn 1,20. Anh cần em xem có gì điều chỉnh được trước khi gửi số cho họ.'
+choices:
+  - en: 'Report the real ratio, and draft a short letter to the bank explaining the cause and the plan.'
+    vi: 'Báo cáo tỷ lệ thật và soạn một thư ngắn gửi ngân hàng giải thích nguyên nhân và kế hoạch.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.7
+        en: 'Duc is pale, but the bank responds well to a candid letter and grants a waiver with conditions.'
+        vi: 'Anh Đức tái mặt, nhưng ngân hàng phản hồi tốt với một lá thư thẳng thắn và chấp thuận miễn trừ có điều kiện.'
+        effects: [rel duc trust +1, rel hanh trust +4, rep.boss +4, stress +4]
+      - p: 0.3
+        ok: false
+        en: 'The bank tightens the terms, and Duc says, quietly, that it could have gone differently. It could have, but not honestly.'
+        vi: 'Ngân hàng thắt chặt điều kiện, và anh Đức khẽ nói rằng có thể đã khác. Có thể, nhưng không trung thực.'
+        effects: [rel duc trust -4, rel hanh trust +3, rep.boss -1, stress +5]
+  - en: 'Show him two honest ways to bring the ratio up next quarter, and report the real number for now.'
+    vi: 'Chỉ cho anh ấy hai cách trung thực để đẩy tỷ lệ lên quý sau và báo cáo số thật cho lần này.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: 'Duc takes the options and the number, and does not argue. It is not a good day, but it is a clean one.'
+        vi: 'Anh Đức nhận các phương án và con số, không tranh cãi. Không phải một ngày tốt, nhưng là một ngày sạch.'
+        effects: [rel duc trust +2, rel hanh trust +2, stress +3]
+  - en: 'Adjust a few accruals and classifications until the ratio clears 1.20.'
+    vi: 'Điều chỉnh vài khoản trích trước và phân loại cho đến khi tỷ lệ vượt 1,20.'
+    outcomes:
+      - p: 0.7
+        en: 'The ratio is 1.21. Duc looks at you with open gratitude. The numbers go to the bank, and you feel a chill that has nothing to do with the office air.'
+        vi: 'Tỷ lệ là 1,21. Anh Đức nhìn anh/chị đầy biết ơn. Số liệu gửi cho ngân hàng, và anh/chị thấy ớn lạnh chẳng liên quan gì tới điều hòa văn phòng.'
+        effects: [rel duc trust +8, rel duc owed +3, stress +2, fact adjusted_for_covenant private]
+      - p: 0.3
+        ok: false
+        en: "The bank's analyst recomputes the ratio from the detail and gets 1.17. The discrepancy is explained in a two-line email that goes to the owner."
+        vi: 'Chuyên viên ngân hàng tính lại tỷ lệ từ chi tiết và ra 1,17. Sự chênh lệch được nêu trong email hai dòng gửi tới chủ sở hữu.'
+        effects:
+          [
+            rel duc trust +4,
+            rel hanh trust -10,
+            rep.boss -8,
+            stress +7,
+            fact adjusted_for_covenant public,
+          ]
+---
+scene: fin.management_letter
+place: meeting_room
+tags: [audit, pressure, consequence]
+weight: 6
+cooldown: 52
+when: [month in 11 12, turn >= 42, fact.backdated_invoice_entry >= 1]
+lines:
+  - who: char:hanh
+    en: 'The draft management letter names an invoice date that was changed. I want to hear it from you before I hear it from Duc. What happened?'
+    vi: 'Bản nháp thư quản lý nêu một ngày hóa đơn đã bị sửa. Chị muốn nghe từ em trước khi nghe từ anh Đức. Chuyện gì đã xảy ra?'
+choices:
+  - en: 'Tell her everything: who asked, what you did, and what you should have done.'
+    vi: 'Kể hết: ai nhờ, anh/chị đã làm gì và lẽ ra nên làm gì.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: "Hanh is silent for a long moment. 'I will take it to Duc. You will get a formal warning, and you will keep your job.' It is the best available outcome."
+        vi: "Chị Hạnh im lặng rất lâu. 'Chị sẽ đưa lên anh Đức. Em sẽ nhận cảnh cáo chính thức và em giữ được việc.' Đó là kết quả tốt nhất có thể."
+        effects: [rel hanh trust +1, rep.boss -4, stress +5, fact came_clean_to_auditor witnessed]
+  - en: 'Explain that it was a clerical correction and offer the supporting emails.'
+    vi: 'Giải thích rằng đó là sửa lỗi văn phòng và đưa các email hỗ trợ.'
+    outcomes:
+      - p: 0.4
+        en: 'Hanh reads the emails, reads them again, and lets it stand for now. She does not look convinced.'
+        vi: 'Chị Hạnh đọc các email, đọc lại và tạm để vậy. Chị không có vẻ bị thuyết phục.'
+        effects: [rel hanh trust -4, stress +4]
+      - p: 0.6
+        ok: false
+        en: 'The emails show a change requested after the audit sample was announced. Hanh closes the laptop.'
+        vi: 'Các email cho thấy một yêu cầu thay đổi sau khi mẫu kiểm toán được thông báo. Chị Hạnh đóng máy tính.'
+        effects: [rel hanh trust -12, rep.boss -8, stress +6]
+  - en: 'Say Bao asked you to do it, and you only followed instructions.'
+    vi: 'Nói anh Bảo nhờ anh/chị làm và anh/chị chỉ làm theo chỉ dẫn.'
+    outcomes:
+      - p: 0.35
+        en: 'Hanh hears it, and it is what she expected. Bao gets a formal warning instead of you. You have made an enemy.'
+        vi: 'Chị Hạnh nghe và đó là điều chị đã đoán. Anh Bảo nhận cảnh cáo thay cho anh/chị. Anh/chị đã có thêm một kẻ thù.'
+        effects:
+          [rel hanh trust -3, rel bao trust -14, rep.boss -3, fact blamed_salesperson private]
+      - p: 0.65
+        ok: false
+        en: "Bao produces the original request, which said 'if the dates are wrong, correct them properly'. You corrected them improperly."
+        vi: "Anh Bảo đưa ra yêu cầu ban đầu, trong đó viết 'nếu ngày sai thì sửa cho đúng quy trình'. Anh/chị đã sửa không đúng quy trình."
+        effects:
+          [
+            rel hanh trust -10,
+            rel bao trust -10,
+            rep.boss -8,
+            stress +6,
+            fact blamed_salesperson witnessed,
+          ]
+---
+scene: fin.scapegoat_meeting
+place: meeting_room
+tags: [audit, pressure, consequence]
+weight: 6
+cooldown: 52
+when: [month in 11 12, turn >= 44, fact.released_reserve_to_hit_target >= 1]
+lines:
+  - who: char:duc
+    en: "The auditor's draft comments on the reserve movements are serious. The owner wants to know who built and released it. I need an answer for the meeting tomorrow. You were the one at the keyboard."
+    vi: 'Nhận xét nháp của kiểm toán về các biến động dự phòng rất nghiêm trọng. Chủ sở hữu muốn biết ai lập và ai giải phóng. Anh cần một câu trả lời cho cuộc họp ngày mai. Em là người ngồi ở bàn phím.'
+choices:
+  - en: 'Bring the emails and the record of who asked for what, and say it plainly.'
+    vi: 'Mang email và hồ sơ về ai yêu cầu gì và nói thẳng.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.6
+        en: 'The room is tense. You are not thanked, but the facts are on the table, and Hanh speaks in support of the record. You keep your job.'
+        vi: 'Căn phòng căng thẳng. Anh/chị không được cảm ơn, nhưng sự thật đã nằm trên bàn, và chị Hạnh lên tiếng ủng hộ hồ sơ. Anh/chị giữ được việc.'
+        effects:
+          [
+            rel duc trust -10,
+            rel hanh trust +3,
+            rep.boss -5,
+            stress +6,
+            fact came_clean_to_auditor witnessed,
+          ]
+      - p: 0.4
+        ok: false
+        en: "Duc produces his own version. It has no emails, but it has authority. The owner's face closes."
+        vi: 'Anh Đức đưa phiên bản của anh. Không có email, nhưng có thẩm quyền. Gương mặt chủ sở hữu khép lại.'
+        effects: [rel duc trust -14, rel hanh trust +2, rep.boss -12, stress +8]
+  - en: 'Say you will accept responsibility for the entries, but that the decision came from above.'
+    vi: 'Nói anh/chị nhận trách nhiệm về các bút toán, nhưng quyết định đến từ cấp trên.'
+    outcomes:
+      - p: 1
+        en: 'It is accurate and diplomatic. Duc hears it, and does not thank you. Hanh gives you a short, private nod afterwards.'
+        vi: 'Chính xác và khéo léo. Anh Đức nghe và không cảm ơn. Sau đó chị Hạnh gật đầu nhẹ, riêng tư, với anh/chị.'
+        effects: [rel duc trust -5, rel hanh trust +2, rep.boss -4, stress +5]
+  - en: 'Say Thu did the postings and you did not check them.'
+    vi: 'Nói Thu ghi bút toán và anh/chị không kiểm tra.'
+    outcomes:
+      - p: 0.55
+        en: 'It works for a day. Thu is suspended pending review. She looks at you on her way out, and you do not look back.'
+        vi: 'Có tác dụng trong một ngày. Thu bị đình chỉ chờ xem xét. Em nhìn anh/chị khi đi ra, và anh/chị không nhìn lại.'
+        effects:
+          [
+            rel duc trust +2,
+            rel thu trust -20,
+            rel thu loyalty -15,
+            rel hanh trust -10,
+            stress +4,
+            fact blamed_thu private,
+          ]
+      - p: 0.45
+        ok: false
+        en: 'Thu produces her notebook. It has dates, amounts and the initials of who told her to post each one. The initials are not hers.'
+        vi: 'Thu đưa cuốn sổ tay ra. Trong đó có ngày, số tiền và chữ viết tắt của người bảo em ghi từng khoản. Chữ viết tắt không phải của em.'
+        effects:
+          [
+            rel duc trust -8,
+            rel thu trust -20,
+            rel hanh trust -14,
+            rep.boss -14,
+            stress +9,
+            fact blamed_thu public,
+          ]
+---
+fact: guessed_adjustment_reason
+severity: 2
+category: integrity
+en: 'you wrote a reason for an entry that you did not know to be true'
+vi: 'bạn viết lý do cho một bút toán mà bạn không biết có đúng không'
+lesson:
+  en: 'A reason on file is a statement of fact. Writing the likely reason as if it were the real one turns a gap in knowledge into a false record.'
+  vi: 'Lý do trong hồ sơ là một phát biểu về sự thật. Viết lý do có khả năng như thể là lý do thật biến một khoảng trống kiến thức thành hồ sơ sai.'
+traces:
+  - { type: record, visibility: 0.3, detectors: [internal_audit, finance] }
+witnessed:
+  boss: -2
+public:
+  boss: -4
+---
+fact: kept_duplicate_payment
+severity: 5
+category: integrity
+en: 'you kept a payment that was sent to the company by mistake'
+vi: 'bạn giữ một khoản tiền bị chuyển nhầm cho công ty'
+lesson:
+  en: "Money that arrives by someone else's mistake is still theirs. Keeping it because they have not noticed is taking it."
+  vi: 'Tiền đến do lỗi của người khác vẫn là của họ. Giữ lại vì họ chưa nhận ra là lấy nó.'
+traces:
+  - { type: payment, visibility: 0.6, detectors: [internal_audit, finance] }
+witnessed:
+  boss: -5
+  finance: -4
+public:
+  boss: -9
+---
+fact: timed_fx_gain
+severity: 2
+category: integrity
+en: 'you chose a booking date to get a better exchange gain'
+vi: 'bạn chọn ngày ghi sổ để có lãi tỷ giá tốt hơn'
+lesson:
+  en: 'Policy exists so that two accountants would record the same thing. Choosing the date by the outcome removes the reason to have a policy.'
+  vi: 'Chính sách tồn tại để hai kế toán ghi nhận cùng một điều. Chọn ngày theo kết quả làm mất lý do để có chính sách.'
+traces:
+  - { type: record, visibility: 0.4, detectors: [internal_audit, finance] }
+witnessed:
+  boss: -3
+  finance: -3
+public:
+  boss: -5
+---
+fact: adjusted_for_covenant
+severity: 7
+category: integrity
+en: 'you adjusted the accounts until a bank covenant was met'
+vi: 'bạn điều chỉnh sổ sách cho đến khi đạt điều khoản cam kết với ngân hàng'
+lesson:
+  en: 'Adjusting numbers to satisfy a lender is misleading the lender, and it leaves the company borrowing on a picture that is not true.'
+  vi: 'Điều chỉnh số liệu để thỏa mãn bên cho vay là đánh lừa họ, và khiến công ty vay dựa trên một bức tranh không đúng.'
+traces:
+  - { type: document, visibility: 0.7, detectors: [internal_audit, finance, boss] }
+witnessed:
+  boss: -8
+  finance: -6
+public:
+  boss: -14
+  buyer: -4
+---
+fact: blamed_salesperson
+severity: 4
+category: integrity
+en: 'you blamed a salesperson for an entry you made'
+vi: 'bạn đổ lỗi cho nhân viên kinh doanh về một bút toán do bạn ghi'
+lesson:
+  en: 'You may have been asked, but you made the entry. Saying only that you followed instructions, when you could have refused, shifts what is yours onto someone else.'
+  vi: 'Có thể bạn bị nhờ, nhưng bạn là người ghi. Chỉ nói rằng bạn làm theo chỉ dẫn, khi bạn có thể từ chối, là đẩy điều của mình sang người khác.'
+traces:
+  - { type: witness, visibility: 0.4, detectors: [boss] }
+witnessed:
+  boss: -4
+  finance: -3
+public:
+  boss: -7
+---
+fact: blamed_thu
+severity: 7
+category: integrity
+en: 'you blamed a junior colleague for decisions that were not hers'
+vi: 'bạn đổ lỗi cho đồng nghiệp trẻ về những quyết định không phải của em'
+lesson:
+  en: 'Blaming the most junior person is the easiest thing in the room, and the most damaging. She holds the evidence, and she remembers who was kind to her.'
+  vi: 'Đổ lỗi cho người ít thâm niên nhất là việc dễ nhất trong phòng, và gây hại nhất. Em nắm bằng chứng và nhớ ai đã tử tế với mình.'
+traces:
+  - { type: witness, visibility: 0.8, detectors: [internal_audit, boss, finance] }
+witnessed:
+  boss: -10
+  finance: -10
+public:
+  boss: -16
