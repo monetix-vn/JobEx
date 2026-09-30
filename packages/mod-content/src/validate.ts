@@ -23,7 +23,7 @@ export interface BuildResult {
   diagnostics: Diagnostic[];
 }
 
-const KINDS: PackKind[] = ['role', 'event', 'scene', 'offer', 'fact', 'term'];
+const KINDS: PackKind[] = ['role', 'event', 'scene', 'offer', 'fact', 'term', 'character'];
 
 function makeAjv(): Ajv {
   const ajv = new Ajv({ allErrors: true, strict: true });
@@ -155,6 +155,7 @@ export function buildRegistry(raw: RawContent, engineVersion = ENGINE_VERSION): 
     offer: new Map(),
     fact: new Map(),
     term: new Map(),
+    character: new Map(),
   } as RegistryData['items'];
   const origins = new Map<string, Origin>();
   const owner = new Map<string, { pack: string; rank: number }>();

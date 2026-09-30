@@ -15,6 +15,7 @@ export const PACK_FOLDERS = {
   offers: 'offer',
   facts: 'fact',
   terms: 'term',
+  characters: 'character',
 } as const;
 export type PackKind = (typeof PACK_FOLDERS)[keyof typeof PACK_FOLDERS];
 export const LOCALES = ['vi', 'en'] as const;
@@ -161,6 +162,27 @@ export interface Fact {
   };
 }
 
+/** What we track between the player and one named person, each from -100 to 100. */
+export const RELATIONSHIP_DIMENSIONS = ['trust', 'loyalty', 'owed'] as const;
+export type RelationshipDimension = (typeof RELATIONSHIP_DIMENSIONS)[number];
+
+/**
+ * A named, recurring person. Scenes put them in the cast as `char:<slug>` (the id without `char.`);
+ * how they feel about the player lives in state as `rel.<slug>.<dimension>`.
+ */
+export interface Character {
+  id: string;
+  name_key: string;
+  title_key: string;
+  department: string;
+  /** The reputation group this person belongs to; what their group learns, they tend to learn. */
+  home_group?: ReputationGroup;
+  /** Short tags that steer writing, e.g. proud, risk_averse. */
+  traits?: string[];
+  /** Where the relationship starts; anything left out starts at 0. */
+  start?: Partial<Record<RelationshipDimension, number>>;
+}
+
 export interface ContentTypes {
   role: Role;
   event: GameEvent;
@@ -168,6 +190,7 @@ export interface ContentTypes {
   offer: Offer;
   fact: Fact;
   term: Term;
+  character: Character;
 }
 
 /** Read-only view of validated, merged content. Modules depend on this, never on mod-content. */

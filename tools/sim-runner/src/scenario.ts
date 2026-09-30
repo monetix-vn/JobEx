@@ -8,6 +8,7 @@ import { narrativeModule } from '@je/mod-narrative';
 import { riskModule } from '@je/mod-risk';
 import { simCoreModule } from '@je/mod-sim-core';
 import { socialModule } from '@je/mod-social';
+import { relationshipsModule } from '@je/mod-relationships';
 import { workloadModule } from '@je/mod-workload';
 import { directorySource } from '@je/pack-validator';
 import type { BotOptions } from './runner';
@@ -77,6 +78,7 @@ ${formatDiagnostics(diagnostics)}`);
       choiceModule,
       ...(shape.directed ? [directorModule] : []),
       knowledgeModule,
+      relationshipsModule,
       socialModule,
       riskModule,
       narrativeModule,
@@ -91,6 +93,7 @@ ${formatDiagnostics(diagnostics)}`);
       knowledge: { content: registry },
       // Real detectors (risk) replace social's stand-in leak.
       social: { content: registry, leakPerSeverity: 0 },
+      relationships: { content: registry },
       risk: { content: registry },
       education: { content: registry, locale: options.locale ?? 'en' },
       narrative: {

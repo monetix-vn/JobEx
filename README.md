@@ -18,6 +18,7 @@ packages/
   mod-director/  event pool and scheduler: what happens this week (season, stress, cooldown, weight)
   mod-knowledge/ ledger of facts: what you did and who knows (private, witnessed, rumor, public)
   mod-social/    gossip and reputation consequences when facts get around
+  mod-relationships/  per-person trust, loyalty and favours (named characters)
   mod-risk/      detectors, quarterly audits, scapegoating, and how a run can end
   mod-education/ glossary words and the end-of-run debrief
   mod-narrative/ scene queue and runtime, locale text resolution

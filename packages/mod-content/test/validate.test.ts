@@ -54,7 +54,15 @@ describe('valid packs', () => {
     expect(hasErrors(diagnostics)).toBe(false);
     expect(registry?.get('scene', 'scene.a')?.location).toBe('loc.room');
     expect(registry?.text('vi', 'k.line')).toBe('hi');
-    expect(registry?.counts()).toEqual({ role: 0, event: 1, scene: 1, offer: 0, fact: 0, term: 0 });
+    expect(registry?.counts()).toEqual({
+      role: 0,
+      event: 1,
+      scene: 1,
+      offer: 0,
+      fact: 0,
+      term: 0,
+      character: 0,
+    });
   });
 
   it('ignores markdown notes placed next to the content, without a warning', async () => {
@@ -460,6 +468,76 @@ describe('glossary terms, lessons and traces', () => {
   });
 });
 
+describe('characters and relationships', () => {
+  const person = {
+    id: 'char.ann',
+    name_key: 'k.ann',
+    title_key: 'k.ann.title',
+    department: 'qc',
+    home_group: 'boss',
+    start: { trust: 10 },
+  };
+  const texts = { ...locale, 'k.ann': 'Ann', 'k.ann.title': 'Lead' };
+  const withCast = (extra: object = {}, outcomeEffects: unknown[] = []) =>
+    pack({
+      'core/characters/c.json': j([person]),
+      'core/locale/en.json': j(texts),
+      'core/locale/vi.json': j(texts),
+      'core/scenes/a.json': j(
+        scene({
+          cast: ['char:ann'],
+          lines: [{ speaker: 'char:ann', text_key: 'k.line' }],
+          choices: [
+            {
+              id: 'c1',
+              text_key: 'k.line',
+              outcomes: [{ p: 1, narration_key: 'k.line', effects: outcomeEffects }],
+            },
+          ],
+          ...extra,
+        }),
+      ),
+    });
+
+  it('loads a character used in a scene and by a relationship effect', async () => {
+    const { registry, diagnostics } = await load(
+      withCast({}, [{ delta: 'rel.ann.trust', value: 3 }]),
+    );
+    expect(hasErrors(diagnostics)).toBe(false);
+    expect(registry?.get('character', 'char.ann')?.department).toBe('qc');
+    expect(codes(diagnostics, 'warning')).not.toContain('character.unused');
+  });
+
+  it('rejects an unknown speaker, an unknown character in an effect and a malformed path', async () => {
+    const speaker = await load(withCast({ cast: ['char:nobody'] }));
+    expect(codes(speaker.diagnostics, 'error')).toContain('ref.missing');
+    const unknown = await load(withCast({}, [{ delta: 'rel.nobody.trust', value: 1 }]));
+    expect(codes(unknown.diagnostics, 'error')).toContain('ref.missing');
+    const bad = await load(withCast({}, [{ delta: 'rel.ann.charm', value: 1 }]));
+    expect(codes(bad.diagnostics, 'error')).toContain('rel.bad_path');
+  });
+
+  it('needs the name and title in both languages, and only notes an unused character', async () => {
+    const missing = await load(
+      pack({
+        'core/characters/c.json': j([person]),
+        'core/locale/en.json': j(texts),
+      }),
+    );
+    expect(codes(missing.diagnostics, 'error')).toContain('locale.missing');
+    const unused = await load(
+      pack({
+        'core/characters/c.json': j([person]),
+        'core/locale/en.json': j(texts),
+        'core/locale/vi.json': j(texts),
+      }),
+    );
+    expect(hasErrors(unused.diagnostics)).toBe(false);
+    expect(codes(unused.diagnostics, 'info')).toContain('character.unused');
+    expect(codes(unused.diagnostics, 'warning')).not.toContain('character.unused');
+  });
+});
+
 describe('roles in events and the job picker', () => {
   const role = {
     id: 'role.t.one',
@@ -512,7 +590,7 @@ describe('module and helpers', () => {
     const loaded = run.entries.find((e) => e.type === 'content.loaded');
     expect(loaded?.payload).toEqual({
       packs: [{ id: 'core', version: '1.0.0' }],
-      counts: { role: 0, event: 1, scene: 1, offer: 0, fact: 0, term: 0 },
+      counts: { role: 0, event: 1, scene: 1, offer: 0, fact: 0, term: 0, character: 0 },
     });
   });
 

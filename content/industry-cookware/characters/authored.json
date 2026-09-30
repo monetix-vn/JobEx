@@ -1,0 +1,55 @@
+[
+  {
+    "id": "char.khoa",
+    "name_key": "char.khoa.name",
+    "title_key": "char.khoa.title",
+    "department": "qc",
+    "home_group": "boss",
+    "traits": ["methodical", "fair", "tired"],
+    "start": {
+      "trust": 10
+    }
+  },
+  {
+    "id": "char.lan",
+    "name_key": "char.lan.name",
+    "title_key": "char.lan.title",
+    "department": "production",
+    "home_group": "production",
+    "traits": ["friendly", "deadline_driven"]
+  },
+  {
+    "id": "char.minh",
+    "name_key": "char.minh.name",
+    "title_key": "char.minh.title",
+    "department": "qc",
+    "home_group": "qc",
+    "traits": ["anxious", "diligent"],
+    "start": {
+      "trust": 15,
+      "loyalty": 10
+    }
+  },
+  {
+    "id": "char.hung",
+    "name_key": "char.hung.name",
+    "title_key": "char.hung.title",
+    "department": "supplier",
+    "traits": ["charming", "persistent"]
+  },
+  {
+    "id": "char.vy",
+    "name_key": "char.vy.name",
+    "title_key": "char.vy.title",
+    "department": "audit",
+    "home_group": "buyer",
+    "traits": ["precise", "impartial"]
+  },
+  {
+    "id": "char.tam",
+    "name_key": "char.tam.name",
+    "title_key": "char.tam.title",
+    "department": "purchasing",
+    "traits": ["pragmatic", "cost_focused"]
+  }
+]

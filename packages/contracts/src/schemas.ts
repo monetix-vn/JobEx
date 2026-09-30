@@ -247,6 +247,31 @@ export const termSchema = {
   },
 };
 
+export const characterSchema = {
+  $id: `${BASE}character.json`,
+  type: 'object',
+  required: ['id', 'name_key', 'title_key', 'department'],
+  additionalProperties: false,
+  properties: {
+    id: { type: 'string', pattern: '^char\\.[a-z][a-z0-9_]*$' },
+    name_key: { type: 'string' },
+    title_key: { type: 'string' },
+    department: { type: 'string' },
+    home_group: { enum: ['boss', 'buyer', 'finance', 'production', 'qc', 'cs'] },
+    traits: { type: 'array', items: { type: 'string' } },
+    start: {
+      type: 'object',
+      additionalProperties: false,
+      properties: Object.fromEntries(
+        ['trust', 'loyalty', 'owed'].map((d) => [
+          d,
+          { type: 'number', minimum: -100, maximum: 100 },
+        ]),
+      ),
+    },
+  },
+};
+
 export const factSchema = {
   $id: `${BASE}fact.json`,
   type: 'object',
@@ -292,6 +317,7 @@ export const PACK_SCHEMAS: Record<PackKind, object> = {
   offer: offerSchema,
   fact: factSchema,
   term: termSchema,
+  character: characterSchema,
 };
 
 export const ALL_SCHEMAS: object[] = [
@@ -304,6 +330,7 @@ export const ALL_SCHEMAS: object[] = [
   offerSchema,
   factSchema,
   termSchema,
+  characterSchema,
 ];
 
 export const SCHEMA_IDS = {
@@ -315,4 +342,5 @@ export const SCHEMA_IDS = {
   offer: offerSchema.$id,
   fact: factSchema.$id,
   term: termSchema.$id,
+  character: characterSchema.$id,
 } as const;

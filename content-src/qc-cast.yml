@@ -1,0 +1,84 @@
+# QC cast and the premiere scene (docs/story/qc.md). Characters recur across scenes and remember you.
+char: khoa
+department: qc
+group: boss
+traits: [methodical, fair, tired]
+start: { trust: 10 }
+en: { name: 'Mr Khoa', title: 'QC Manager' }
+vi: { name: 'Anh Khoa', title: 'Trưởng phòng QC' }
+---
+char: lan
+department: production
+group: production
+traits: [friendly, deadline_driven]
+en: { name: 'Ms Lan', title: 'Production Manager' }
+vi: { name: 'Chị Lan', title: 'Quản đốc sản xuất' }
+---
+char: minh
+department: qc
+group: qc
+traits: [anxious, diligent]
+start: { trust: 15, loyalty: 10 }
+en: { name: 'Minh', title: 'Lab technician' }
+vi: { name: 'Minh', title: 'Kỹ thuật viên phòng lab' }
+---
+char: hung
+department: supplier
+traits: [charming, persistent]
+en: { name: 'Mr Hung', title: 'Supplier account manager' }
+vi: { name: 'Anh Hùng', title: 'Quản lý tài khoản nhà cung cấp' }
+---
+char: vy
+department: audit
+group: buyer
+traits: [precise, impartial]
+en: { name: 'Ms Vy', title: "Buyer's external auditor" }
+vi: { name: 'Chị Vy', title: 'Kiểm toán viên bên ngoài của khách hàng' }
+---
+char: tam
+department: purchasing
+traits: [pragmatic, cost_focused]
+en: { name: 'Mr Tam', title: 'Purchasing Manager' }
+vi: { name: 'Anh Tâm', title: 'Trưởng phòng mua hàng' }
+---
+scene: qc.first_day_walkthrough
+place: qc_lab
+tags: [onboarding, people]
+weight: 6
+cooldown: 52
+when: [turn < 4]
+lines:
+  - who: char:khoa
+    en: 'Welcome to the lab. One rule before anything else: if it is not written down, it did not happen.'
+    vi: 'Chào mừng em đến phòng lab. Một quy tắc trước hết: cái gì không được ghi lại thì coi như chưa từng xảy ra.'
+  - who: char:minh
+    en: 'I will show you where the reference samples are. Please ask me anything, I would rather answer than fix a mistake later.'
+    vi: 'Em sẽ chỉ anh/chị chỗ để mẫu chuẩn. Có gì cứ hỏi em, em thà trả lời còn hơn sửa lỗi về sau.'
+choices:
+  - en: 'Ask Khoa how records are checked, and what he has seen go wrong.'
+    vi: 'Hỏi anh Khoa hồ sơ được kiểm tra thế nào và anh từng thấy những sai sót gì.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: 'Khoa tells you about a failed audit two years ago. He notes that you asked, and so does Minh.'
+        vi: 'Anh Khoa kể về một đợt đánh giá không đạt hai năm trước. Anh để ý là em đã hỏi, Minh cũng vậy.'
+        effects: [rel khoa trust +4, rel minh trust +2, stress +1]
+  - en: 'Shadow Minh for the morning and learn the routine first.'
+    vi: 'Đi theo Minh cả buổi sáng để học quy trình trước.'
+    outcomes:
+      - p: 1
+        en: 'Minh relaxes once he sees you are not there to catch him out. Khoa sees you working and says nothing.'
+        vi: 'Minh thoải mái hơn khi thấy em không đến để bắt lỗi. Anh Khoa thấy em làm việc và không nói gì.'
+        effects: [rel minh trust +4, rel minh loyalty +2, rel khoa trust +1]
+  - en: 'Nod along and pretend you already know the system.'
+    vi: 'Gật đầu và giả vờ đã biết hết hệ thống.'
+    outcomes:
+      - p: 0.7
+        en: 'Nobody questions it. You are left to work things out alone.'
+        vi: 'Không ai thắc mắc. Em phải tự mò mẫm một mình.'
+        effects: [rel khoa trust +1, stress +1]
+      - p: 0.3
+        ok: false
+        en: "Khoa notices you were guessing when you open the wrong record. He says only, 'Ask next time.'"
+        vi: "Anh Khoa nhận ra em đang đoán khi em mở nhầm hồ sơ. Anh chỉ nói: 'Lần sau cứ hỏi.'"
+        effects: [rel khoa trust -4, rep.boss -2, stress +2]

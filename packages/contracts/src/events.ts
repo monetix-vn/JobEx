@@ -127,6 +127,14 @@ export interface CoreEventPayloads {
     sceneId?: string;
   };
   'fact.escalated': { factId: string; from: FactVisibility; to: FactVisibility; knownBy: string[] };
+  /** How a named person now feels about the player (`rel.<slug>.<dimension>` changed). */
+  'relationship.changed': {
+    character: string;
+    dimension: 'trust' | 'loyalty' | 'owed';
+    from: number;
+    to: number;
+    reason?: string;
+  };
   'risk.auditStarted': { turn: number };
   /** `audit` is true when the internal audit itself found it (not just someone during an audit week). */
   'risk.detected': { factId: string; detector: Detector; trace: string; audit: boolean };
@@ -186,6 +194,7 @@ export const EVENT_VERSIONS: Record<CoreEventType, number> = {
   'knowledge.escalate': 1,
   'fact.learned': 1,
   'fact.escalated': 1,
+  'relationship.changed': 1,
   'risk.auditStarted': 1,
   'risk.detected': 1,
   'risk.scapegoated': 1,

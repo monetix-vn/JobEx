@@ -64,6 +64,12 @@ describe('conditions and effects written as plain lines', () => {
       delay_weeks: [4, 6],
     });
     expect(() => compileEffect('fact x secret')).toThrow(/private, witnessed/);
+    expect(compileEffect('rel khoa trust +5')).toEqual({ delta: 'rel.khoa.trust', value: 5 });
+    expect(compileEffect('favor char:lan -1')).toEqual({ delta: 'rel.lan.owed', value: -1 });
+    expect(() => compileEffect('rel khoa charm +1')).toThrow(/trust, loyalty or owed/);
+    expect(compileCondition('rel.khoa.trust >= 20')).toEqual({
+      gte: [{ var: ['rel.khoa.trust', 0] }, 20],
+    });
   });
 });
 

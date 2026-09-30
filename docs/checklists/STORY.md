@@ -21,10 +21,10 @@ source of truth for what scene comes next; update their Status column as you go.
 ## Job 1: QC Specialist (`docs/story/qc.md`)
 
 - [x] Bible draft v1 (AI) (owner approval pending) (needs owner)
-- [x] 18 scenes imported (10 original + 2 consequence + 6 batch 2)
+- [x] 19 scenes imported (10 original + 2 consequence + 6 batch 2 + first_day_walkthrough)
 - [ ] Owner approves bible and episode list (needs owner)
-- [ ] Cast finalised (6 characters) and created as `char.*` (after engine E1)
-- [ ] Onboarding block (4 scenes: first_day_walkthrough, first_signature, training_gap, lab_housekeeping)
+- [x] Cast created as `char.*` (6 characters, `content-src/qc-cast.yml`; names still need owner approval)
+- [~] Onboarding block (1 of 4 imported: first_day_walkthrough; remaining: first_signature, training_gap, lab_housekeeping)
 - [ ] Pre-Tet/Tet block (2)
 - [ ] The Squeeze block (2 + extend audit_day)
 - [ ] Cheaper Steel arc (2)

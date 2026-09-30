@@ -68,6 +68,10 @@ export function createModule(host: ModuleHost): ModuleInstance {
 
   const text = (key: string): string => content.text(locale, key) ?? `[${key}]`;
   const speakerName = (speaker: string): string => {
+    if (speaker.startsWith('char:')) {
+      const person = content.get('character', `char.${speaker.slice('char:'.length)}`);
+      return (person && content.text(locale, person.name_key)) ?? speaker.slice('char:'.length);
+    }
     const name = speaker.replace(/^role:/, '');
     return content.text(locale, `speaker.${name}`) ?? name;
   };

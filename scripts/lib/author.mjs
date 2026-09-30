@@ -39,7 +39,7 @@ export function resolveVariable(name) {
 
 /** Facts and skills may not exist yet, so conditions on them read 0 until they do. */
 function variable(path) {
-  return path.startsWith('fact.') || path.startsWith('skill.') ? { var: [path, 0] } : path;
+  return /^(fact|skill|rel)\./.test(path) ? { var: [path, 0] } : path;
 }
 
 /**
@@ -90,6 +90,22 @@ export function compileEffect(line) {
     }
     return { fact: name.startsWith('fact.') ? name : `fact.${name}`, visibility };
   }
+  if (head === 'rel' || head === 'favor') {
+    // rel khoa trust +5   |   favor khoa +1 (favours the person owes you; negative if you owe them)
+    const [who, ...more] = rest;
+    const dimension = head === 'favor' ? 'owed' : more.shift();
+    const amount = more[0];
+    if (
+      !who ||
+      !['trust', 'loyalty', 'owed'].includes(dimension ?? '') ||
+      !NUMBER.test(amount ?? '')
+    ) {
+      throw new Error(
+        `effect "${line}": write it like: rel khoa trust +5 (trust, loyalty or owed) or favor khoa +1`,
+      );
+    }
+    return { delta: `rel.${who.replace(/^char[.:]/, '')}.${dimension}`, value: num(amount) };
+  }
   if (head === 'schedule') {
     const [target, range] = rest;
     const match = /^(\d+)-(\d+)$/.exec(range ?? '');
@@ -131,10 +147,16 @@ export function compileScene(entry) {
   if (lines.length === 0) problems.push(`${here}: needs at least one line`);
   const speakers = [];
   const sceneLines = lines.map((line, i) => {
-    need(problems, `${here} line ${i + 1}`, line.who, 'who (the speaker, e.g. boss)');
+    need(
+      problems,
+      `${here} line ${i + 1}`,
+      line.who,
+      'who (a role like boss, or a character like char:khoa)',
+    );
     both(`${sid}.l${i + 1}`, `${here} line ${i + 1}`, line);
-    speakers.push(line.who);
-    return { speaker: `role:${line.who}`, text_key: `${sid}.l${i + 1}` };
+    const speaker = String(line.who).startsWith('char:') ? String(line.who) : `role:${line.who}`;
+    speakers.push(speaker);
+    return { speaker, text_key: `${sid}.l${i + 1}` };
   });
 
   const choices = entry.choices ?? [];
@@ -204,7 +226,7 @@ export function compileScene(entry) {
     scene: {
       id: sid,
       location: `loc.${entry.place ?? 'meeting_room'}`,
-      cast: [...new Set(speakers)].map((s) => `role:${s}`),
+      cast: [...new Set(speakers)],
       lines: sceneLines,
       choices: sceneChoices,
       ...(terms.length > 0 ? { terms } : {}),
@@ -277,6 +299,34 @@ export function compileTerm(entry) {
   };
 }
 
+/** Compiles a `char:` entry into { character, en, vi }. */
+export function compileCharacter(entry) {
+  const problems = [];
+  const slug = String(entry.char ?? '').replace(/^char[.:]/, '');
+  if (!/^[a-z][a-z0-9_]*$/.test(slug))
+    throw new Error(`character "${entry.char}" must be lower snake_case`);
+  const id = `char.${slug}`;
+  need(problems, `char ${slug}`, entry.department, 'department');
+  for (const lang of ['en', 'vi']) {
+    need(problems, `char ${slug} (${lang})`, entry[lang]?.name, 'name');
+    need(problems, `char ${slug} (${lang})`, entry[lang]?.title, 'title');
+  }
+  if (problems.length > 0) throw new Error(problems.join('\n'));
+  return {
+    character: {
+      id,
+      name_key: `${id}.name`,
+      title_key: `${id}.title`,
+      department: entry.department,
+      ...(entry.group ? { home_group: entry.group } : {}),
+      ...(entry.traits ? { traits: entry.traits } : {}),
+      ...(entry.start ? { start: entry.start } : {}),
+    },
+    en: { [`${id}.name`]: entry.en.name, [`${id}.title`]: entry.en.title },
+    vi: { [`${id}.name`]: entry.vi.name, [`${id}.title`]: entry.vi.title },
+  };
+}
+
 const readJson = (path, fallback) =>
   existsSync(path) ? JSON.parse(readFileSync(path, 'utf8')) : fallback;
 const writeJson = (path, value) => {
@@ -312,7 +362,8 @@ export function applyEntries(entries, { root = '.', pack = 'industry-cookware' }
       if (entry.scene) return { kind: 'scene', ...compileScene(entry), name: entry.scene };
       if (entry.fact) return { kind: 'fact', ...compileFact(entry), name: entry.fact };
       if (entry.term) return { kind: 'term', ...compileTerm(entry), name: entry.term };
-      throw new Error('an entry needs one of: scene, fact, term');
+      if (entry.char) return { kind: 'character', ...compileCharacter(entry), name: entry.char };
+      throw new Error('an entry needs one of: scene, fact, term, char');
     } catch (error) {
       throw new Error(`entry ${i + 1}:\n${error.message}`);
     }
@@ -323,7 +374,7 @@ export function applyEntries(entries, { root = '.', pack = 'industry-cookware' }
     vi: readJson(join(base, 'locale', 'vi.json'), {}),
   };
   const report = [];
-  for (const dir of ['scenes', 'events', 'facts', 'terms', 'locale'])
+  for (const dir of ['scenes', 'events', 'facts', 'terms', 'characters', 'locale'])
     mkdirSync(join(base, dir), { recursive: true });
 
   for (const item of compiled) {
@@ -349,6 +400,11 @@ export function applyEntries(entries, { root = '.', pack = 'industry-cookware' }
       const facts = readJson(file, []);
       how = upsert(facts, item.fact);
       writeJson(file, facts);
+    } else if (item.kind === 'character') {
+      const file = join(base, 'characters', 'authored.json');
+      const list = readJson(file, []);
+      how = upsert(list, item.character);
+      writeJson(file, list);
     } else {
       const file = join(base, 'terms', 'authored.json');
       const terms = readJson(file, []);

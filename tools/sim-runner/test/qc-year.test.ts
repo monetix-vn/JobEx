@@ -161,6 +161,34 @@ describe('QC Specialist: the same engine, a different job', () => {
     expect(checked).toBeGreaterThan(0);
   });
 
+  it('named people appear by name in both languages and remember what you did', async () => {
+    let seen = 0;
+    for (let i = 0; i < 8; i++) {
+      const en = (await play('qc-year', `qc-rel-${i}`, 'en', 6, { policy: 'first' })).log;
+      const vi = (await play('qc-year', `qc-rel-${i}`, 'vi', 6, { policy: 'first' })).log;
+      const premiere = (log: ReplayLog) =>
+        of(log, 'scene.started')
+          .map((e) => e.payload as CoreEventPayloads['scene.started'])
+          .find((p) => p.sceneId === 'scene.qc.first_day_walkthrough');
+      const scene = premiere(en);
+      if (!scene) continue;
+      seen += 1;
+      expect(scene.lines.map((l) => l.speaker)).toEqual(['Mr Khoa', 'Minh']);
+      expect(premiere(vi)!.lines.map((l) => l.speaker)).toEqual(['Anh Khoa', 'Minh']);
+      // Starting values are seeded, then the careful choice raises trust in Khoa and Minh.
+      const s = state(en);
+      expect(s['rel.khoa.trust']).toBeGreaterThan(10);
+      expect(s['rel.minh.trust']).toBeGreaterThan(15);
+      const changes = of(en, 'relationship.changed').map(
+        (e) => e.payload as CoreEventPayloads['relationship.changed'],
+      );
+      expect(changes.some((c) => c.character === 'char.khoa' && c.dimension === 'trust')).toBe(
+        true,
+      );
+    }
+    expect(seen).toBeGreaterThan(4);
+  });
+
   it('is deterministic and replays identically, like every other scenario', async () => {
     const scenario = await loadScenario('qc-year', { contentDir });
     for (const seed of ['q1', 'q2']) {

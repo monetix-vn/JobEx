@@ -16,6 +16,7 @@ import { narrativeModule } from '@je/mod-narrative';
 import { riskModule } from '@je/mod-risk';
 import { simCoreModule } from '@je/mod-sim-core';
 import { socialModule } from '@je/mod-social';
+import { relationshipsModule } from '@je/mod-relationships';
 import { stubModules } from '@je/mod-stubs';
 import { workloadModule } from '@je/mod-workload';
 
@@ -79,6 +80,7 @@ export async function createGameHost(options: GameHostOptions): Promise<GameHost
     choiceModule,
     directorModule,
     knowledgeModule,
+    relationshipsModule,
     socialModule,
     riskModule,
     narrativeModule,
@@ -92,6 +94,7 @@ export async function createGameHost(options: GameHostOptions): Promise<GameHost
     director: { content: registry },
     knowledge: { content: registry },
     social: { content: registry, leakPerSeverity: 0 },
+    relationships: { content: registry },
     risk: { content: registry },
     education: { content: registry, locale: options.locale ?? 'en' },
     narrative: {

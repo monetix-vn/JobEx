@@ -1,6 +1,7 @@
 # 0002: Story engine first, then a series bible, then scenes
 
-Status: proposed (waiting for the owner's approval). Date: 2026-09-30.
+Status: approved by the owner on 2026-09-30. Steps E1 to E3 implemented (mod-relationships, characters).
+In the implementation, relationship effects are ordinary deltas on `rel.<slug>.<dimension>` (authoring sugar `rel`/`favor`), which kept the effect contract unchanged.
 
 ## Why
 

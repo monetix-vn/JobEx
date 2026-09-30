@@ -58,7 +58,7 @@ variable name. For something the list cannot say, use `when_raw:` with the JSON 
 
 ### Effects
 
-`rep.boss +5` · `stress +3` · `cash -800000` · `delta company.audit_readiness -5` ·
+`rel khoa trust +5` (trust, loyalty or owed) · `favor khoa +1` (favours they owe you) · `rep.boss +5` · `stress +3` · `cash -800000` · `delta company.audit_readiness -5` ·
 `fact accepted_kickback private` (private, witnessed, rumor, public) · `schedule event.qc.x 4-6`.
 
 ## A fact (something the player did that can come back)
@@ -73,6 +73,23 @@ lesson: { en: "...", vi: "..." } # shown in the debrief
 witnessed: { production: -2 } # reputation change once witnessed
 public: { boss: -6, buyer: -8 } # and once public
 ```
+
+## A character (a named person who recurs and remembers you)
+
+```yaml
+char: khoa # the id is char.khoa; scenes use it as "char:khoa"
+department: qc
+group: boss # optional: the reputation group they belong to (facts their group learns change their trust)
+traits: [methodical, fair] # notes for writers
+start: { trust: 10 } # optional starting feelings, -100..100 (trust, loyalty, owed)
+en: { name: "Mr Khoa", title: "QC Manager" }
+vi: { name: "Anh Khoa", title: "Trưởng phòng QC" }
+```
+
+Use them in a scene with `who: char:khoa` (shown by name, in the player's language). Change how they
+feel with `rel khoa trust +4` or `favor khoa +1`, and use it in conditions as `rel.khoa.trust >= 20`.
+Trust and loyalty drift back towards their start every few weeks; unused characters only get a note.
+Example: `content-src/qc-cast.yml`. Vietnamese: never guess the player's gender (use "anh/chị" or rephrase).
 
 ## A glossary term
 

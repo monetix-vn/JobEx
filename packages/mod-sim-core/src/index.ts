@@ -27,12 +27,14 @@ export interface SimCoreConfig {
 }
 
 /** Only these namespaces may be created on demand by a delta; anything else is rejected. */
-const OPEN_NAMESPACES = ['player.', 'company.', 'skill.', 'fact.'];
+const OPEN_NAMESPACES = ['player.', 'company.', 'skill.', 'fact.', 'rel.'];
 const PERCENT_LIMITS = [
   /^player\.(stress|energy|health)$/,
   /^player\.rep\./,
   /^company\.audit_readiness$/,
 ];
+/** Feelings about a person run from -100 to 100. */
+const SIGNED_LIMITS = [/^rel\.[a-z0-9_]+\.(trust|loyalty|owed)$/];
 const WEEKLY_ENERGY = 100;
 
 const DEFAULTS: Record<string, StateValue> = {
@@ -51,8 +53,11 @@ const DEFAULTS: Record<string, StateValue> = {
 /** Reputation created on demand starts neutral, like the seeded ones. */
 const initialFor = (path: string): number => (path.startsWith('player.rep.') ? 50 : 0);
 
-const clamp = (path: string, value: number): number =>
-  PERCENT_LIMITS.some((re) => re.test(path)) ? Math.min(100, Math.max(0, value)) : value;
+const clamp = (path: string, value: number): number => {
+  if (PERCENT_LIMITS.some((re) => re.test(path))) return Math.min(100, Math.max(0, value));
+  if (SIGNED_LIMITS.some((re) => re.test(path))) return Math.min(100, Math.max(-100, value));
+  return value;
+};
 
 /**
  * Owns player and company state. Everyone else changes it by sending `sim.applyDelta` and reads

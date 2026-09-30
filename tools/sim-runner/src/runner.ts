@@ -9,6 +9,7 @@ import { narrativeModule } from '@je/mod-narrative';
 import { riskModule } from '@je/mod-risk';
 import { simCoreModule } from '@je/mod-sim-core';
 import { socialModule } from '@je/mod-social';
+import { relationshipsModule } from '@je/mod-relationships';
 import { stubModules } from '@je/mod-stubs';
 import { toyModule } from '@je/mod-toy';
 import { workloadModule } from '@je/mod-workload';
@@ -24,6 +25,7 @@ const KNOWN: readonly Module[] = [
   choiceModule,
   directorModule,
   knowledgeModule,
+  relationshipsModule,
   socialModule,
   riskModule,
   narrativeModule,

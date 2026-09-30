@@ -3,6 +3,8 @@ import { collectVars, evaluate, ExpressionError, validate as validateExpr } from
 import type { Diagnostic } from './diagnostics';
 import type { RegistryData } from './registry';
 
+const SLUG = /^[a-z][a-z0-9_]*$/;
+const REL_PATH = /^rel\.([a-z][a-z0-9_]*)\.(trust|loyalty|owed)$/;
 const VAR_PATH = /^[a-z][a-z0-9_]*(\.[a-z0-9_]+)*$/;
 
 export interface Origin {
@@ -75,6 +77,20 @@ export function crossCheck(
     for (const target of scheduleTargets(effects))
       requireRef(kind, id, 'event', target, `${field} schedule`);
     for (const effect of effects ?? []) {
+      if ('delta' in effect && effect.delta.startsWith('rel.')) {
+        const match = REL_PATH.exec(effect.delta);
+        if (!match) {
+          push({
+            severity: 'error',
+            code: 'rel.bad_path',
+            message: `${kind} "${id}" ${field}: "${effect.delta}" must look like rel.<character>.trust|loyalty|owed`,
+            ...at(kind, id),
+          });
+        } else {
+          requireRef(kind, id, 'character', `char.${match[1]}`, `${field} relationship`);
+          usedCharacters.add(`char.${match[1]}`);
+        }
+      }
       if ('fact' in effect) {
         requireRef(kind, id, 'fact', effect.fact, `${field} fact`);
         producedFacts.add(effect.fact);
@@ -86,6 +102,7 @@ export function crossCheck(
   const usedScenes = new Set<string>();
   const producedFacts = new Set<string>();
   const usedTerms = new Set<string>();
+  const usedCharacters = new Set<string>();
 
   for (const role of items.role.values()) {
     useKey(role.title_key, role.id, 'role');
@@ -106,6 +123,12 @@ export function crossCheck(
 
   for (const scene of items.scene.values()) {
     scene.lines.forEach((line) => useKey(line.text_key, scene.id, 'scene'));
+    for (const who of [...(scene.cast ?? []), ...scene.lines.map((l) => l.speaker)]) {
+      if (!who.startsWith('char:')) continue;
+      const slug = who.slice('char:'.length);
+      requireRef('scene', scene.id, 'character', `char.${slug}`, 'cast');
+      usedCharacters.add(`char.${slug}`);
+    }
     for (const termId of scene.terms ?? []) {
       requireRef('scene', scene.id, 'term', termId, 'terms');
       usedTerms.add(termId);
@@ -145,6 +168,18 @@ export function crossCheck(
   for (const fact of items.fact.values()) {
     useKey(fact.text_key, fact.id, 'fact');
     if (fact.lesson_key) useKey(fact.lesson_key, fact.id, 'fact');
+  }
+  for (const person of items.character.values()) {
+    useKey(person.name_key, person.id, 'character');
+    useKey(person.title_key, person.id, 'character');
+    if (!SLUG.test(person.id.slice('char.'.length))) {
+      push({
+        severity: 'error',
+        code: 'character.bad_id',
+        message: `character "${person.id}" must be char.<lower_snake_case>`,
+        ...at('character', person.id),
+      });
+    }
   }
   for (const term of items.term.values()) {
     useKey(term.term_key, term.id, 'term');
@@ -193,6 +228,17 @@ export function crossCheck(
         code: 'term.unused',
         message: `glossary term "${term.id}" is not used by any scene`,
         ...at('term', term.id),
+      });
+    }
+  }
+  for (const person of items.character.values()) {
+    if (!usedCharacters.has(person.id)) {
+      push({
+        // The cast is planned ahead of the scenes that use it, so this is only a note.
+        severity: 'info',
+        code: 'character.unused',
+        message: `character "${person.id}" is not used by any scene or relationship effect yet`,
+        ...at('character', person.id),
       });
     }
   }

@@ -1,0 +1,107 @@
+{
+  "id": "scene.qc.first_day_walkthrough",
+  "location": "loc.qc_lab",
+  "cast": ["char:khoa", "char:minh"],
+  "lines": [
+    {
+      "speaker": "char:khoa",
+      "text_key": "scene.qc.first_day_walkthrough.l1"
+    },
+    {
+      "speaker": "char:minh",
+      "text_key": "scene.qc.first_day_walkthrough.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.qc.first_day_walkthrough.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.qc.first_day_walkthrough.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.minh.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.qc.first_day_walkthrough.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.qc.first_day_walkthrough.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.minh.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.minh.loyalty",
+              "value": 2
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.qc.first_day_walkthrough.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.qc.first_day_walkthrough.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.qc.first_day_walkthrough.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -29,15 +29,15 @@ Legend: `[x]` done, `[~]` in progress, `[ ]` not started, `(needs owner)` needs 
 
 Order matters; each item ships with tests and a docs/AUTHORING.md update.
 
-- [ ] E1 `character` content kind: schema, types, validator refs, locale keys, `char:` in scene cast
-- [ ] E2 `mod-relationships` (priority 32): `rel.<char>.trust|loyalty|owed`, decay, effects `rel`/`favor`, conditions on them, `relationship.changed` event
-- [ ] E3 Facts feed relationships (witnessed/rumor -> trust change for who could know)
+- [x] E1 `character` content kind: schema, types, validator refs, locale keys, `char:` in scene cast (branch feature/story-engine)
+- [x] E2 `mod-relationships` (priority 32): `rel.<char>.trust|loyalty|owed`, drift, effects `rel`/`favor` (YAML sugar over deltas), conditions on them, `relationship.changed` event
+- [x] E3 Facts feed relationships (a fact reaching witnessed/public changes trust of characters in the affected reputation group)
 - [ ] E4 `arc` content kind and director state machine (stages, gaps, branches, start/advance from outcomes); migrate the existing `arc.the_squeeze` tag
 - [ ] E5 Validator: arcs reference real events, every arc can end, no orphan stages
 - [ ] E6 Timeline beats: fixed/near-fixed episodes by week or named beat, random incidents between; keep >= 50% random
 - [ ] E7 Debrief: "people who remember you", arcs closed/open
 - [ ] E8 Client: cast panel, relationship hints; both languages
-- [ ] E9 Authoring: extend YAML with `char:`, `rel`, `favor`, `arc` (+ tests)
+- [~] E9 Authoring: `char:`, `rel`, `favor` and `char:` speakers done; `arc` waits for E4
 - [ ] E10 Demo arc with two characters playable end to end (acceptance test), pins updated
 
 ## Phase 3: Roles and endings engine support

@@ -131,6 +131,15 @@ importers:
         specifier: workspace:*
         version: link:../rules
 
+  packages/mod-relationships:
+    dependencies:
+      '@je/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@je/kernel':
+        specifier: workspace:*
+        version: link:../kernel
+
   packages/mod-risk:
     dependencies:
       '@je/contracts':
@@ -228,6 +237,9 @@ importers:
       '@je/mod-narrative':
         specifier: workspace:*
         version: link:../../packages/mod-narrative
+      '@je/mod-relationships':
+        specifier: workspace:*
+        version: link:../../packages/mod-relationships
       '@je/mod-risk':
         specifier: workspace:*
         version: link:../../packages/mod-risk
@@ -279,6 +291,9 @@ importers:
       '@je/mod-narrative':
         specifier: workspace:*
         version: link:../../packages/mod-narrative
+      '@je/mod-relationships':
+        specifier: workspace:*
+        version: link:../../packages/mod-relationships
       '@je/mod-risk':
         specifier: workspace:*
         version: link:../../packages/mod-risk

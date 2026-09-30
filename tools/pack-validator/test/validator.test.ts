@@ -32,11 +32,12 @@ describe('pack validator', () => {
     expect(hasErrors(diagnostics)).toBe(false);
     expect(registry?.counts()).toEqual({
       role: 4,
-      event: 39,
-      scene: 39,
+      event: 40,
+      scene: 40,
       offer: 3,
       fact: 48,
       term: 36,
+      character: 6,
     });
   });
 
