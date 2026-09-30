@@ -94,6 +94,19 @@ seed.
   along in `scene.started` so the client only draws. The validator checks references, translations
   and unused terms.
 
+## Developer workflow (kept small on purpose)
+
+- **Context stays small.** `CLAUDE.md` holds the commands, rules and module map; `docs/STATUS.md` is
+  the handoff note updated after each block; each package README says what it owns. Files stay
+  under roughly 300 lines (`validate.ts` and the integration tests were split for this).
+- **Checks are quiet and targeted.** `pnpm check:fast` maps changed files to packages, adds their
+  dependents (`scripts/lib/affected.mjs`), and runs only those tests; `pnpm run ci:quiet` runs the full
+  CI with one line per step. Formatting touches only changed files (pre-commit hook).
+- **Golden fingerprints are data,** in `tools/sim-runner/test/pins.json`, updated by `pnpm pin:update`
+  rather than edited by hand in test code.
+- **Content is scaffolded, not hand-typed:** `pnpm new:scene` writes a valid scene, event and text keys.
+- **Line endings are pinned to LF** in `.gitattributes` (batch files excepted).
+
 ## Consequences
 
 - Adding a module means adding a package that passes the boundary check and listing it in a

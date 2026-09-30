@@ -1,1 +1,4 @@
+# Keep line endings the same on every machine: Prettier and the tests assume LF.
+# Windows batch files are the exception; cmd needs CRLF for labels and goto.
+* text=auto eol=lf
 *.bat text eol=crlf

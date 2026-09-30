@@ -1,0 +1,3 @@
+#!/bin/sh
+# Formats the staged files (only those) and stages the result. Skip with `git commit --no-verify`.
+node scripts/format-changed.mjs --staged

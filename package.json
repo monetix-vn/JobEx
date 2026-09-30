@@ -8,7 +8,7 @@
     "node": ">=20"
   },
   "scripts": {
-    "format": "prettier --write .",
+    "format": "node scripts/format-changed.mjs",
     "format:check": "prettier --check .",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit -p tsconfig.json",
@@ -21,7 +21,13 @@
     "dev:web": "pnpm --filter @je/demo-host dev",
     "ci": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm check:boundaries && pnpm test && pnpm validate:packs && pnpm sim:determinism && pnpm sim:smoke && pnpm sim:sales && pnpm build:web",
     "sim:sales": "tsx tools/sim-runner/src/cli.ts check --seed 2026 --scenario sales-year --content content",
-    "build:play": "pnpm --filter @je/demo-host build:single"
+    "build:play": "pnpm --filter @je/demo-host build:single",
+    "format:all": "prettier --write .",
+    "check:fast": "node scripts/check-fast.mjs",
+    "ci:quiet": "node scripts/ci-quiet.mjs",
+    "pin:update": "node scripts/pin-update.mjs",
+    "new:scene": "node scripts/new-scene.mjs",
+    "prepare": "node scripts/install-hooks.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",

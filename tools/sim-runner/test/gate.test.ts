@@ -8,6 +8,7 @@ import { canonicalize, replay } from '@je/kernel';
 import { stubModules } from '@je/mod-stubs';
 import { toyModule } from '@je/mod-toy';
 import { checkDeterminism, modulesForLog, runHeadless } from '../src';
+import { expectPin } from './pins';
 
 /** What the original modules did, ignoring ids (which shift when another module adds events). */
 function projection(log: ReplayLog, exclude: string): unknown[] {
@@ -85,7 +86,7 @@ describe('Phase 0 gate: a headless 1-year run', () => {
   it('the fingerprint for a fixed seed is pinned, so accidental behaviour changes are caught', () => {
     const report = checkDeterminism({ seed: '2026', turns: 52 });
     expect(report.ok).toBe(true);
-    expect(report.fingerprint).toBe(PINNED_2026_52);
+    expectPin('stub-year.2026', report.fingerprint);
   });
 
   it('detects a tampered log', () => {
@@ -178,5 +179,3 @@ describe('sim-runner CLI', () => {
     expect(run('bogus').status).toBe(2);
   });
 });
-
-const PINNED_2026_52 = '0463af7f042961';

@@ -42,7 +42,12 @@ Requires Node 20+ and pnpm 9.
 
 ```bash
 pnpm install
-pnpm run ci             # everything CI runs
+pnpm check:fast        # only what you changed (and its dependents), failures only
+pnpm run ci:quiet      # everything CI runs, one line per step
+pnpm run ci            # the same, with full output
+pnpm format            # format only changed files (a pre-commit hook does this too)
+pnpm pin:update        # re-pin golden fingerprints after an intended behaviour change
+pnpm new:scene <key>   # scaffold a scene, its event and EN/VI text keys
 pnpm test              # unit, property and fixture tests
 pnpm check:boundaries  # dependency rules
 pnpm validate:packs    # validate ./content
