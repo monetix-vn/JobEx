@@ -288,7 +288,8 @@
     },
     "weight": 1,
     "cooldown_weeks": 18,
-    "scene": "scene.qc.new_supplier_trial"
+    "scene": "scene.qc.new_supplier_trial",
+    "arc": "arc.cheaper_steel"
   },
   {
     "id": "event.qc.first_day_walkthrough",
@@ -376,5 +377,261 @@
     "weight": 1,
     "cooldown_weeks": 12,
     "scene": "scene.qc.manager_offer"
+  },
+  {
+    "id": "event.qc.first_signature",
+    "role": "role.qc.specialist",
+    "tags": ["onboarding", "release", "pressure"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 2]
+        },
+        {
+          "lte": ["world.turn", 7]
+        }
+      ]
+    },
+    "weight": 3,
+    "cooldown_weeks": 52,
+    "scene": "scene.qc.first_signature"
+  },
+  {
+    "id": "event.qc.training_gap",
+    "role": "role.qc.specialist",
+    "tags": ["onboarding", "people"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 3]
+        },
+        {
+          "lte": ["world.turn", 12]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 40,
+    "scene": "scene.qc.training_gap"
+  },
+  {
+    "id": "event.qc.lab_housekeeping",
+    "role": "role.qc.specialist",
+    "tags": ["onboarding", "compliance"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 4]
+        },
+        {
+          "lte": ["world.turn", 16]
+        }
+      ]
+    },
+    "weight": 1.5,
+    "cooldown_weeks": 30,
+    "scene": "scene.qc.lab_housekeeping"
+  },
+  {
+    "id": "event.qc.pre_tet_pile",
+    "role": "role.qc.specialist",
+    "tags": ["pressure", "workload"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 3]
+        },
+        {
+          "lte": ["world.turn", 8]
+        }
+      ]
+    },
+    "weight": 3,
+    "cooldown_weeks": 52,
+    "scene": "scene.qc.pre_tet_pile"
+  },
+  {
+    "id": "event.qc.tet_bonus_pressure",
+    "role": "role.qc.specialist",
+    "tags": ["pressure", "people"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 5]
+        },
+        {
+          "lte": ["world.turn", 10]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 52,
+    "scene": "scene.qc.tet_bonus_pressure"
+  },
+  {
+    "id": "event.qc.kpi_first_pass_yield",
+    "role": "role.qc.specialist",
+    "tags": ["kpi", "pressure", "people"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 20]
+        },
+        {
+          "lte": ["world.turn", 42]
+        }
+      ]
+    },
+    "weight": 1.5,
+    "cooldown_weeks": 40,
+    "scene": "scene.qc.kpi_first_pass_yield"
+  },
+  {
+    "id": "event.qc.audit_notice_huddle",
+    "role": "role.qc.specialist",
+    "tags": ["audit", "pressure"],
+    "when": {
+      "all": [
+        {
+          "in": ["world.month_of_year", 3, 4]
+        },
+        {
+          "lt": ["company.audit_readiness", 70]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 40,
+    "scene": "scene.qc.audit_notice_huddle"
+  },
+  {
+    "id": "event.qc.vy_spring_visit",
+    "role": "role.qc.specialist",
+    "tags": ["audit", "people", "beat"],
+    "beat": {
+      "from_week": 14,
+      "to_week": 17
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.qc.vy_spring_visit"
+  },
+  {
+    "id": "event.qc.steel_trial_results",
+    "role": "role.qc.specialist",
+    "tags": ["supplier", "materials", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.qc.steel_trial_results"
+  },
+  {
+    "id": "event.qc.steel_field_failure",
+    "role": "role.qc.specialist",
+    "tags": ["supplier", "materials", "consequence", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.qc.steel_field_failure"
+  },
+  {
+    "id": "event.qc.field_complaint_arrives",
+    "role": "role.qc.specialist",
+    "arc": "arc.field_complaint",
+    "tags": ["quality", "complaint", "beat"],
+    "beat": {
+      "from_week": 29,
+      "to_week": 32
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.qc.field_complaint_arrives"
+  },
+  {
+    "id": "event.qc.root_cause_dispute",
+    "role": "role.qc.specialist",
+    "tags": ["quality", "people", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.qc.root_cause_dispute"
+  },
+  {
+    "id": "event.qc.recall_press",
+    "role": "role.qc.specialist",
+    "tags": ["quality", "complaint", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.qc.recall_press"
+  },
+  {
+    "id": "event.qc.minh_mistake",
+    "role": "role.qc.specialist",
+    "arc": "arc.minh",
+    "tags": ["people", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 24]
+        },
+        {
+          "lte": ["world.turn", 40]
+        },
+        {
+          "gte": [
+            {
+              "var": ["rel.minh.trust", 0]
+            },
+            10
+          ]
+        }
+      ]
+    },
+    "weight": 1.5,
+    "cooldown_weeks": 52,
+    "scene": "scene.qc.minh_mistake"
+  },
+  {
+    "id": "event.qc.minh_at_audit",
+    "role": "role.qc.specialist",
+    "tags": ["audit", "people", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.qc.minh_at_audit"
+  },
+  {
+    "id": "event.qc.ms_vy_returns",
+    "role": "role.qc.specialist",
+    "tags": ["audit", "people", "beat"],
+    "beat": {
+      "from_week": 41,
+      "to_week": 44
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.qc.ms_vy_returns"
+  },
+  {
+    "id": "event.qc.scapegoat_meeting",
+    "role": "role.qc.specialist",
+    "tags": ["audit", "pressure", "consequence"],
+    "when": {
+      "all": [
+        {
+          "in": ["world.month_of_year", 11, 12]
+        },
+        {
+          "gte": ["world.turn", 42]
+        },
+        {
+          "gte": [
+            {
+              "var": ["fact.took_supplier_money", 0]
+            },
+            1
+          ]
+        }
+      ]
+    },
+    "weight": 6,
+    "cooldown_weeks": 52,
+    "scene": "scene.qc.scapegoat_meeting"
   }
 ]

@@ -1,0 +1,130 @@
+{
+  "id": "scene.qc.kpi_first_pass_yield",
+  "location": "loc.meeting_room",
+  "cast": ["char:khoa"],
+  "lines": [
+    {
+      "speaker": "char:khoa",
+      "text_key": "scene.qc.kpi_first_pass_yield.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.qc.kpi_first_pass_yield.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.qc.kpi_first_pass_yield.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 5
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.qc.kpi_first_pass_yield.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.qc.kpi_first_pass_yield.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.qc.kpi_first_pass_yield.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.qc.kpi_first_pass_yield.c3",
+      "outcomes": [
+        {
+          "p": 0.75,
+          "narration_key": "scene.qc.kpi_first_pass_yield.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": -1
+            },
+            {
+              "fact": "fact.gamed_yield_kpi",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.25,
+          "result": "fail",
+          "narration_key": "scene.qc.kpi_first_pass_yield.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.minh.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.gamed_yield_kpi",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": ["term.kpi"]
+}

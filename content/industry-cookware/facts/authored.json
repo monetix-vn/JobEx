@@ -692,5 +692,312 @@
         "boss": -16
       }
     }
+  },
+  {
+    "id": "fact.signed_before_result",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.signed_before_result",
+    "lesson_key": "lesson.signed_before_result",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.6,
+        "detectors": ["internal_audit", "qc", "buyer"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -5,
+        "qc": -4,
+        "buyer": -4
+      },
+      "public": {
+        "boss": -9,
+        "buyer": -8
+      }
+    }
+  },
+  {
+    "id": "fact.used_expired_standard",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.used_expired_standard",
+    "lesson_key": "lesson.used_expired_standard",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.6,
+        "detectors": ["internal_audit", "qc", "buyer"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -5,
+        "qc": -4
+      },
+      "public": {
+        "boss": -8,
+        "buyer": -7
+      }
+    }
+  },
+  {
+    "id": "fact.skimmed_lots_before_tet",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.skimmed_lots_before_tet",
+    "lesson_key": "lesson.skimmed_lots_before_tet",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "qc", "buyer"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "qc": -6,
+        "buyer": -5
+      },
+      "public": {
+        "boss": -10,
+        "buyer": -9
+      }
+    }
+  },
+  {
+    "id": "fact.released_borderline_for_bonus",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.released_borderline_for_bonus",
+    "lesson_key": "lesson.released_borderline_for_bonus",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "qc", "buyer"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "qc": -6,
+        "buyer": -6
+      },
+      "public": {
+        "boss": -10,
+        "buyer": -10
+      }
+    }
+  },
+  {
+    "id": "fact.gamed_yield_kpi",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.gamed_yield_kpi",
+    "lesson_key": "lesson.gamed_yield_kpi",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.6,
+        "detectors": ["internal_audit", "qc", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "qc": -6
+      },
+      "public": {
+        "boss": -10
+      }
+    }
+  },
+  {
+    "id": "fact.passed_borderline_steel",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.passed_borderline_steel",
+    "lesson_key": "lesson.passed_borderline_steel",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "qc", "buyer"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -5,
+        "qc": -5,
+        "buyer": -5
+      },
+      "public": {
+        "boss": -9,
+        "buyer": -9
+      }
+    }
+  },
+  {
+    "id": "fact.owned_steel_decision",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.owned_steel_decision",
+    "lesson_key": "lesson.owned_steel_decision",
+    "consequences": {
+      "witnessed": {
+        "boss": 3
+      },
+      "public": {
+        "boss": 5
+      }
+    }
+  },
+  {
+    "id": "fact.hid_borderline_data",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.hid_borderline_data",
+    "lesson_key": "lesson.hid_borderline_data",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.8,
+        "detectors": ["internal_audit", "qc", "buyer"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8,
+        "qc": -8,
+        "buyer": -8
+      },
+      "public": {
+        "boss": -13,
+        "buyer": -13
+      }
+    }
+  },
+  {
+    "id": "fact.dismissed_field_complaint",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.dismissed_field_complaint",
+    "lesson_key": "lesson.dismissed_field_complaint",
+    "traces": [
+      {
+        "type": "message",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "buyer", "qc"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -5,
+        "qc": -5,
+        "buyer": -6
+      },
+      "public": {
+        "boss": -9,
+        "buyer": -10
+      }
+    }
+  },
+  {
+    "id": "fact.picked_side_on_root_cause",
+    "category": "integrity",
+    "severity": 3,
+    "text_key": "fact.picked_side_on_root_cause",
+    "lesson_key": "lesson.picked_side_on_root_cause",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.5,
+        "detectors": ["boss", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -4,
+        "production": -4
+      },
+      "public": {
+        "boss": -7
+      }
+    }
+  },
+  {
+    "id": "fact.minimised_defect_to_buyer",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.minimised_defect_to_buyer",
+    "lesson_key": "lesson.minimised_defect_to_buyer",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.85,
+        "detectors": ["internal_audit", "buyer", "qc"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -10,
+        "qc": -9,
+        "buyer": -10
+      },
+      "public": {
+        "boss": -16,
+        "buyer": -16
+      }
+    }
+  },
+  {
+    "id": "fact.covered_minh_error",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.covered_minh_error",
+    "lesson_key": "lesson.covered_minh_error",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.75,
+        "detectors": ["internal_audit", "qc", "buyer"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "qc": -6
+      },
+      "public": {
+        "boss": -11,
+        "buyer": -8
+      }
+    }
+  },
+  {
+    "id": "fact.blamed_minh",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.blamed_minh",
+    "lesson_key": "lesson.blamed_minh",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.8,
+        "detectors": ["internal_audit", "boss", "qc"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -10,
+        "qc": -10
+      },
+      "public": {
+        "boss": -16
+      }
+    }
   }
 ]

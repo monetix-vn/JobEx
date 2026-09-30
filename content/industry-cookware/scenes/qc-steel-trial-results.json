@@ -1,0 +1,134 @@
+{
+  "id": "scene.qc.steel_trial_results",
+  "location": "loc.qc_lab",
+  "cast": ["char:tam"],
+  "lines": [
+    {
+      "speaker": "char:tam",
+      "text_key": "scene.qc.steel_trial_results.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.qc.steel_trial_results.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.qc.steel_trial_results.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.cheaper_steel",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.qc.steel_trial_results.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": -7
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.cheaper_steel",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.qc.steel_trial_results.c2",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.qc.steel_trial_results.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": -1
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.cheaper_steel",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.qc.steel_trial_results.c3",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.qc.steel_trial_results.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": 6
+            },
+            {
+              "delta": "player.stress",
+              "value": -1
+            },
+            {
+              "fact": "fact.passed_borderline_steel",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.cheaper_steel",
+              "stage": "failure"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

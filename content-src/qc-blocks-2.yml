@@ -1,0 +1,652 @@
+# QC blocks 2 (docs/story/qc.md): Cheaper Steel, Field Complaint, Minh, autumn audit and crisis.
+arc: cheaper_steel
+title:
+  en: 'Cheaper steel'
+  vi: 'Thép giá rẻ'
+stages:
+  - { id: trial, event: qc.new_supplier_trial }
+  - { id: results, event: qc.steel_trial_results, delay: 3-5 }
+  - { id: failure, event: qc.steel_field_failure, delay: 6-10 }
+---
+scene: qc.steel_trial_results
+weight: 0
+place: qc_lab
+tags: [supplier, materials, arc]
+lines:
+  - who: char:tam
+    en: 'The trial lot results are in. Hardness is on the edge of spec, two readings out of twenty are just below. The supplier says it is normal for a first lot. The price saving is real. What is the verdict?'
+    vi: 'Kết quả lô chạy thử đã có. Độ cứng sát ngưỡng tiêu chuẩn, hai trên hai mươi chỉ số thấp hơn một chút. Nhà cung cấp nói lô đầu thường vậy. Khoản tiết kiệm giá là thật. Kết luận thế nào?'
+choices:
+  - en: 'Reject the supplier for now and explain what they must fix before the next trial.'
+    vi: 'Loại nhà cung cấp lúc này và giải thích họ phải sửa gì trước lần thử tiếp theo.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.8
+        en: 'Tam is annoyed but accepts the data. The supplier sends an apologetic email and a corrective plan. The savings will have to wait.'
+        vi: 'Anh Tâm bực nhưng chấp nhận số liệu. Nhà cung cấp gửi email xin lỗi và kế hoạch khắc phục. Khoản tiết kiệm phải chờ.'
+        effects: [rel tam trust -4, rel khoa trust +3, rep.qc +2, stress +2, arc cheaper_steel end]
+      - p: 0.2
+        ok: false
+        en: 'Tam escalates to the directors, who ask whether QC is being unreasonable. You show the data and they let it drop, with some irritation.'
+        vi: 'Anh Tâm báo lên ban giám đốc, họ hỏi QC có quá khắt khe không. Anh/chị đưa số liệu và họ bỏ qua, có phần khó chịu.'
+        effects:
+          [rel tam trust -7, rel khoa trust +3, rep.boss -2, stress +4, arc cheaper_steel end]
+  - en: 'Extend the trial with a second lot and tighter incoming checks, and keep the decision open.'
+    vi: 'Kéo dài thử nghiệm với lô thứ hai và kiểm đầu vào chặt hơn, giữ quyết định mở.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: 'It is a fair middle path. Tam grumbles at the delay but agrees. The second lot will decide.'
+        vi: 'Một lối đi giữa hợp lý. Anh Tâm càu nhàu vì chậm nhưng đồng ý. Lô thứ hai sẽ quyết định.'
+        effects: [rel tam trust -1, rel khoa trust +1, stress +2, arc cheaper_steel end]
+  - en: 'Pass the lot: the two low readings are within normal scatter.'
+    vi: 'Cho lô qua: hai chỉ số thấp nằm trong dao động bình thường.'
+    outcomes:
+      - p: 1
+        en: 'Tam is delighted and thanks you with a lunch invitation. The steel goes onto the line. You chose to read two readings generously.'
+        vi: 'Anh Tâm rất vui và cảm ơn bằng một lời mời ăn trưa. Thép lên chuyền. Anh/chị đã chọn đọc hai chỉ số theo hướng rộng lượng.'
+        effects:
+          [
+            rel tam trust +6,
+            stress -1,
+            fact passed_borderline_steel private,
+            arc cheaper_steel failure,
+          ]
+---
+scene: qc.steel_field_failure
+weight: 0
+place: meeting_room
+tags: [supplier, materials, consequence, arc]
+lines:
+  - who: char:lan
+    en: 'We have had three pots crack at the rivet in the field, all from the new steel. The buyer is asking for the incoming inspection records for that material. What do we show them?'
+    vi: 'Có ba chiếc nồi bị nứt ở chỗ đinh tán ngoài thị trường, đều từ thép mới. Khách yêu cầu hồ sơ kiểm đầu vào của vật liệu đó. Mình cho họ xem gì?'
+  - who: char:tam
+    en: "It is the supplier's problem. Their certificate said it met spec."
+    vi: 'Đó là vấn đề của nhà cung cấp. Giấy chứng nhận của họ nói đạt tiêu chuẩn.'
+choices:
+  - en: 'Own what you signed: show the records, including the borderline readings, and lead the investigation.'
+    vi: 'Nhận điều mình đã ký: đưa hồ sơ, kể cả các chỉ số sát ngưỡng, và dẫn dắt việc điều tra.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "It is a rough week. The records show a borderline pass, and you say so first. The buyer's engineer writes: 'Transparent.' Khoa backs you, carefully."
+        vi: "Một tuần khó khăn. Hồ sơ cho thấy một lần đạt sát ngưỡng và anh/chị nói trước. Kỹ sư của khách viết: 'Minh bạch.' Anh Khoa ủng hộ, một cách thận trọng."
+        effects:
+          [
+            rel khoa trust +3,
+            rel tam trust -5,
+            rep.qc -1,
+            rep.buyer +2,
+            stress +5,
+            fact owned_steel_decision witnessed,
+          ]
+  - en: "Share the blame: the supplier's certificate, the borderline data and the approval were a joint decision."
+    vi: 'Chia sẻ trách nhiệm: giấy chứng nhận của nhà cung cấp, số liệu sát ngưỡng và việc phê duyệt là quyết định chung.'
+    outcomes:
+      - p: 1
+        en: "It is roughly true, and it spreads the damage. Tam resents being included, and Khoa says: 'Next time, decide alone if you are going to sign alone.'"
+        vi: "Gần đúng sự thật, và nó chia nhỏ thiệt hại. Anh Tâm bực vì bị kéo vào, và anh Khoa nói: 'Lần sau, nếu ký một mình thì hãy quyết một mình.'"
+        effects: [rel khoa trust -2, rel tam trust -6, rep.qc -3, stress +4]
+  - en: "Say the supplier's certificate was the only evidence you had, and show the incoming records without the borderline notes."
+    vi: 'Nói giấy chứng nhận của nhà cung cấp là bằng chứng duy nhất và đưa hồ sơ kiểm đầu vào nhưng không kèm ghi chú sát ngưỡng.'
+    outcomes:
+      - p: 0.45
+        en: 'The buyer accepts the records and focuses on the supplier. You feel the relief, and the unease.'
+        vi: 'Khách chấp nhận hồ sơ và tập trung vào nhà cung cấp. Anh/chị thấy nhẹ nhõm, và bất an.'
+        effects: [rel tam trust +3, rep.qc -1, stress +2, fact hid_borderline_data private]
+      - p: 0.55
+        ok: false
+        en: "The buyer's lab asks for the raw data. Minh, asked directly, has to hand over the file with the notes in it."
+        vi: 'Phòng lab của khách đòi dữ liệu gốc. Minh, được hỏi thẳng, phải đưa tệp có các ghi chú.'
+        effects:
+          [
+            rel minh trust -6,
+            rel khoa trust -8,
+            rep.buyer -8,
+            rep.qc -6,
+            stress +6,
+            fact hid_borderline_data public,
+          ]
+---
+arc: field_complaint
+title:
+  en: 'The field complaint'
+  vi: 'Khiếu nại ngoài thị trường'
+stages:
+  - { id: complaint, event: qc.field_complaint_arrives }
+  - { id: dispute, event: qc.root_cause_dispute, delay: 2-3 }
+  - { id: press, event: qc.recall_press, delay: 4-8 }
+---
+scene: qc.field_complaint_arrives
+arc: field_complaint
+place: meeting_room
+tags: [quality, complaint, beat]
+beat: 29-32
+lines:
+  - who: char:khoa
+    en: 'A buyer in Germany has reported rust spots on the inside of a batch of pots, after six weeks in a warehouse. It could be storage. It could be us. They want a response within five days.'
+    vi: 'Một khách ở Đức báo có đốm gỉ bên trong một lô nồi sau sáu tuần trong kho. Có thể do bảo quản. Có thể do mình. Họ muốn phản hồi trong năm ngày.'
+choices:
+  - en: 'Open a formal investigation: retain samples, check the passivation records, and tell the buyer what you are doing.'
+    vi: 'Mở điều tra chính thức: giữ mẫu, kiểm hồ sơ thụ động hóa và nói cho khách biết anh/chị đang làm gì.'
+    cost: { hours: 4 }
+    outcomes:
+      - p: 0.85
+        en: 'You find the passivation step was shortened on two shifts. It is an honest finding. The buyer appreciates the speed, and production is not pleased.'
+        vi: 'Anh/chị phát hiện bước thụ động hóa bị rút ngắn ở hai ca. Một phát hiện trung thực. Khách đánh giá cao tốc độ, còn bên sản xuất không vui.'
+        effects:
+          [
+            rel khoa trust +3,
+            rel lan trust -4,
+            rep.buyer +3,
+            stress +4,
+            arc field_complaint dispute,
+          ]
+      - p: 0.15
+        ok: false
+        en: 'The retained samples have been discarded by mistake. You investigate from records alone, and the buyer hears about it.'
+        vi: 'Các mẫu lưu đã bị bỏ nhầm. Anh/chị điều tra chỉ từ hồ sơ, và khách nghe chuyện đó.'
+        effects: [rel khoa trust +1, rep.buyer -3, stress +5, arc field_complaint dispute]
+  - en: 'Check a limited sample, answer the buyer with what you find, and leave the wider question open.'
+    vi: 'Kiểm một mẫu giới hạn, trả lời khách bằng những gì tìm được và để mở câu hỏi rộng hơn.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: "A quick, partial answer. The buyer accepts it for now. Khoa says: 'We will come back to this, will we not?'"
+        vi: "Một câu trả lời nhanh, một phần. Khách tạm chấp nhận. Anh Khoa nói: 'Mình sẽ quay lại chuyện này, đúng không?'"
+        effects: [rel khoa trust +1, stress +2, arc field_complaint dispute]
+  - en: 'Reply that it is a one-off caused by storage, and close the case.'
+    vi: 'Trả lời rằng đó là sự cố đơn lẻ do bảo quản và đóng hồ sơ.'
+    outcomes:
+      - p: 0.7
+        en: 'The buyer accepts. Lan is relieved. The passivation records stay unopened.'
+        vi: 'Khách chấp nhận. Chị Lan nhẹ nhõm. Hồ sơ thụ động hóa vẫn chưa ai mở.'
+        effects:
+          [
+            rel lan trust +4,
+            stress -1,
+            fact dismissed_field_complaint private,
+            arc field_complaint press,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'The buyer sends a second report, this time with photographs and batch numbers, and copies its director.'
+        vi: 'Khách gửi báo cáo thứ hai, lần này kèm ảnh và số lô, đồng gửi giám đốc của họ.'
+        effects:
+          [
+            rel lan trust +2,
+            rel khoa trust -5,
+            rep.buyer -6,
+            stress +5,
+            fact dismissed_field_complaint witnessed,
+            arc field_complaint press,
+          ]
+---
+scene: qc.root_cause_dispute
+weight: 0
+place: meeting_room
+tags: [quality, people, arc]
+lines:
+  - who: char:lan
+    en: "You say passivation was shortened. My shift leads say the steel was already contaminated when it arrived. Tam says the lab's own cleaning agent could be the cause. Everyone has a story. What do we do?"
+    vi: 'Anh/chị nói bước thụ động hóa bị rút ngắn. Các ca trưởng của em nói thép đã nhiễm từ khi về. Anh Tâm nói chất tẩy rửa của chính phòng lab có thể là nguyên nhân. Ai cũng có một câu chuyện. Mình làm gì đây?'
+choices:
+  - en: 'Follow the data: test samples from each stage and let the results decide, even if they point at QC.'
+    vi: 'Theo dữ liệu: kiểm mẫu từ từng công đoạn và để kết quả quyết định, kể cả khi nó chỉ về QC.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.85
+        en: 'Results take five days. Contamination is in the steel and the shortened step made it worse. Everyone gets a share, and nobody is scapegoated.'
+        vi: 'Kết quả mất năm ngày. Nhiễm bẩn có trong thép và việc rút ngắn bước làm nó nặng hơn. Mỗi bên có một phần, và không ai bị đổ lỗi một mình.'
+        effects:
+          [rel khoa trust +3, rel tam trust -2, rep.qc +2, stress +3, arc field_complaint end]
+      - p: 0.15
+        ok: false
+        en: 'The results are inconclusive. You document the uncertainty honestly and recommend three controls. The meeting ends without a winner.'
+        vi: 'Kết quả không kết luận được. Anh/chị ghi nhận sự không chắc chắn một cách trung thực và khuyến nghị ba biện pháp kiểm soát. Cuộc họp kết thúc không có người thắng.'
+        effects: [rel khoa trust +2, stress +3, arc field_complaint end]
+  - en: "Propose an independent review by the buyer's lab and abide by it."
+    vi: 'Đề xuất để phòng lab của khách xem xét độc lập và tuân theo kết quả.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'It is bold and it works: the buyer trusts an answer they helped reach. Lan is nervous but agrees.'
+        vi: 'Táo bạo và hiệu quả: khách tin một câu trả lời họ cùng tìm ra. Chị Lan lo lắng nhưng đồng ý.'
+        effects:
+          [rel khoa trust +2, rel lan trust -1, rep.buyer +4, stress +2, arc field_complaint end]
+  - en: 'Pick the explanation that protects the lab, and argue it.'
+    vi: 'Chọn cách giải thích bảo vệ phòng lab và bảo vệ nó.'
+    outcomes:
+      - p: 0.6
+        en: "Your version carries the room. Lan's shift leads are blamed, and the procedure is left alone."
+        vi: 'Phiên bản của anh/chị thuyết phục cả phòng. Các ca trưởng của chị Lan bị quy lỗi và quy trình được để nguyên.'
+        effects:
+          [
+            rel lan trust -8,
+            rel khoa trust +1,
+            stress +1,
+            fact picked_side_on_root_cause private,
+            arc field_complaint press,
+          ]
+      - p: 0.4
+        ok: false
+        en: 'A shift lead brings the maintenance log showing the passivation bath was out of range for a week. Your version comes apart in front of everyone.'
+        vi: 'Một ca trưởng mang nhật ký bảo trì cho thấy bể thụ động hóa ngoài ngưỡng cả tuần. Phiên bản của anh/chị sụp đổ trước mặt mọi người.'
+        effects:
+          [
+            rel lan trust -10,
+            rel khoa trust -6,
+            rep.qc -5,
+            rep.production -4,
+            stress +5,
+            fact picked_side_on_root_cause witnessed,
+            arc field_complaint press,
+          ]
+---
+scene: qc.recall_press
+weight: 0
+place: meeting_room
+tags: [quality, complaint, dark, arc]
+lines:
+  - who: char:khoa
+    en: 'The buyer wants a written statement about the rust spots, for their own customers. They want to know how many lots are affected and whether we knew. The directors are nervous. How do we word it?'
+    vi: 'Khách muốn một văn bản về các đốm gỉ, để gửi cho khách hàng của họ. Họ muốn biết bao nhiêu lô bị ảnh hưởng và mình có biết không. Ban giám đốc lo lắng. Mình viết thế nào?'
+choices:
+  - en: 'State the affected lots, what you found, and what you are doing, including what you did not know at the time.'
+    vi: 'Nêu các lô bị ảnh hưởng, những gì đã tìm ra và đang làm, kể cả những gì lúc đó mình chưa biết.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "The statement is factual and uncomfortable. The buyer replies: 'This is the statement we needed. Thank you.' The directors complain about the word 'did not know'."
+        vi: "Văn bản đúng sự thật và khó chịu. Khách trả lời: 'Đây là văn bản chúng tôi cần. Cảm ơn.' Ban giám đốc phàn nàn về cụm 'chưa biết'."
+        effects: [rel khoa trust +4, rep.buyer +4, rep.boss -2, stress +4, arc field_complaint end]
+  - en: 'Write a careful statement that is accurate, but does not volunteer the number of lots.'
+    vi: 'Viết một văn bản thận trọng, chính xác nhưng không chủ động nêu số lô.'
+    outcomes:
+      - p: 0.7
+        en: 'The buyer accepts it and asks a follow-up. You answer it honestly. The statement is correct, if a little reluctant.'
+        vi: 'Khách chấp nhận và hỏi tiếp. Anh/chị trả lời trung thực. Văn bản đúng, dù hơi miễn cưỡng.'
+        effects: [rel khoa trust +1, stress +3, arc field_complaint end]
+      - p: 0.3
+        ok: false
+        en: "The buyer counts the lots from the shipping data and finds more than you mentioned. The word 'reluctant' appears in their reply."
+        vi: "Khách đếm các lô từ dữ liệu giao hàng và thấy nhiều hơn anh/chị nói. Từ 'miễn cưỡng' xuất hiện trong thư trả lời của họ."
+        effects: [rel khoa trust -3, rep.buyer -5, stress +4, arc field_complaint end]
+  - en: 'Describe it as a minor cosmetic issue affecting a small number of units.'
+    vi: 'Mô tả đó là vấn đề thẩm mỹ nhỏ ảnh hưởng số ít sản phẩm.'
+    outcomes:
+      - p: 0.5
+        en: 'The directors love it. The buyer accepts it without comment. The real number is in a drawer.'
+        vi: 'Ban giám đốc rất thích. Khách chấp nhận không bình luận. Con số thật nằm trong ngăn kéo.'
+        effects:
+          [
+            rel khoa trust -2,
+            rep.boss +3,
+            stress +2,
+            fact minimised_defect_to_buyer private,
+            arc field_complaint end,
+          ]
+      - p: 0.5
+        ok: false
+        en: "A buyer's customer posts photographs of corroded pots online, with the word 'cosmetic' quoted from your statement."
+        vi: "Khách hàng của khách đăng ảnh những chiếc nồi bị ăn mòn lên mạng, trích dẫn từ 'thẩm mỹ' trong văn bản của anh/chị."
+        effects:
+          [
+            rel khoa trust -8,
+            rep.buyer -10,
+            rep.boss -6,
+            stress +7,
+            fact minimised_defect_to_buyer public,
+            arc field_complaint end,
+          ]
+---
+arc: minh
+title:
+  en: 'Minh'
+  vi: 'Minh'
+stages:
+  - { id: mistake, event: qc.minh_mistake }
+  - { id: audit, event: qc.minh_at_audit, delay: 10-16 }
+---
+scene: qc.minh_mistake
+arc: minh
+place: qc_lab
+tags: [people, dark]
+weight: 1.5
+cooldown: 52
+when: [turn >= 24, turn <= 40, rel.minh.trust >= 10]
+lines:
+  - who: char:minh
+    en: 'I misread a hardness value on a lot that has already shipped. It was 61 and I wrote 67. It would have failed. Please... I cannot lose this job. Can we just fix the record?'
+    vi: 'Em đọc sai một giá trị độ cứng của lô đã xuất. Là 61 mà em ghi 67. Đáng lẽ nó đã bị loại. Anh/chị ơi... em không thể mất việc này. Mình sửa hồ sơ được không?'
+choices:
+  - en: 'Report it to Khoa now with context, recall the lot for retest, and stand beside Minh while it is handled.'
+    vi: 'Báo anh Khoa ngay kèm bối cảnh, thu hồi lô để kiểm lại và đứng cạnh Minh trong lúc xử lý.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.85
+        en: "Khoa is grave but fair: 'Good that it came to me.' The lot is retested and the record corrected in the open. Minh gets a written warning, not a dismissal."
+        vi: "Anh Khoa nghiêm nhưng công bằng: 'May là báo lên anh.' Lô được kiểm lại và hồ sơ được sửa công khai. Minh nhận cảnh cáo bằng văn bản, không bị đuổi."
+        effects:
+          [
+            rel minh trust +7,
+            rel minh loyalty +6,
+            rel khoa trust +3,
+            rep.qc +1,
+            stress +4,
+            arc minh audit,
+          ]
+      - p: 0.15
+        ok: false
+        en: 'The lot has already been installed at the buyer. The recall is expensive and embarrassing. You did the right thing and it still hurts.'
+        vi: 'Lô đã được lắp ở nơi khách. Việc thu hồi tốn kém và xấu hổ. Anh/chị làm đúng mà vẫn đau.'
+        effects: [rel minh trust +5, rel khoa trust +2, rep.buyer -3, stress +6, arc minh audit]
+  - en: 'Correct the record properly with a dated note, retest what you can, and coach Minh without escalating.'
+    vi: 'Sửa hồ sơ đúng quy trình kèm ghi chú có ngày, kiểm lại phần có thể và hướng dẫn Minh mà không báo lên.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: 'The lot is retested and passes. The correction is documented, and the record shows a colleague noticing an error. Minh does not forget.'
+        vi: 'Lô được kiểm lại và đạt. Việc sửa có ghi chép, và hồ sơ cho thấy một đồng nghiệp nhận ra lỗi. Minh không quên.'
+        effects: [rel minh trust +5, rel minh loyalty +3, stress +2, arc minh audit]
+  - en: 'Change the record to 67 and say nothing.'
+    vi: 'Sửa hồ sơ thành 67 và không nói gì.'
+    outcomes:
+      - p: 0.7
+        en: 'Minh nearly faints with relief. The lot is out there with a value that was never true. You have a colleague who will walk through fire for you.'
+        vi: 'Minh suýt ngất vì nhẹ nhõm. Lô hàng ngoài kia mang một giá trị chưa bao giờ đúng. Anh/chị có một đồng nghiệp sẵn sàng vào lửa vì mình.'
+        effects:
+          [
+            rel minh trust +9,
+            rel minh loyalty +9,
+            stress +3,
+            fact covered_minh_error private,
+            arc minh audit,
+          ]
+      - p: 0.3
+        ok: false
+        en: "The buyer's retest of the lot comes back at 62. The two values, 67 and 62, are five points apart, and the record has two versions of the truth."
+        vi: 'Khách kiểm lại lô ra 62. Hai giá trị, 67 và 62, lệch năm điểm, và hồ sơ có hai phiên bản của sự thật.'
+        effects:
+          [
+            rel minh trust +5,
+            rel khoa trust -8,
+            rep.buyer -6,
+            rep.qc -5,
+            stress +6,
+            fact covered_minh_error witnessed,
+            arc minh audit,
+          ]
+---
+scene: qc.minh_at_audit
+weight: 0
+place: meeting_room
+tags: [audit, people, dark, arc]
+lines:
+  - who: char:vy
+    en: 'I see a correction to a hardness record in the summer. I would like to hear from the person who made the original entry how it happened, and who reviewed the correction.'
+    vi: 'Tôi thấy một sửa đổi ở hồ sơ độ cứng hồi mùa hè. Tôi muốn nghe từ người đã ghi bản gốc về việc nó xảy ra thế nào và ai đã soát lại việc sửa.'
+  - who: char:minh
+    en: 'That was me. I... I am not sure what to say.'
+    vi: 'Là em. Em... em không biết nói gì.'
+choices:
+  - en: 'Tell Minh to say exactly what happened, and sit beside him while he does.'
+    vi: 'Bảo Minh nói đúng sự việc và ngồi cạnh em khi em nói.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "Minh tells it plainly and Vy listens. The finding is recorded as a process improvement. Afterwards he says quietly: 'Thank you for not leaving me alone.'"
+        vi: "Minh kể rõ ràng và chị Vy lắng nghe. Phát hiện được ghi nhận là cải tiến quy trình. Sau đó em khẽ nói: 'Cảm ơn anh/chị đã không để em một mình.'"
+        effects: [rel minh trust +6, rel vy trust +3, rel khoa trust +2, stress +1]
+  - en: 'Let Minh answer alone. He made the entry.'
+    vi: 'Để Minh tự trả lời. Em là người ghi.'
+    outcomes:
+      - p: 1
+        en: 'Minh struggles through it. Vy is patient, but it is clear nobody prepared him. He avoids you for a month.'
+        vi: 'Minh vật lộn trả lời. Chị Vy kiên nhẫn, nhưng rõ ràng không ai chuẩn bị cho em. Em tránh mặt anh/chị cả tháng.'
+        effects: [rel minh trust -7, rel minh loyalty -5, stress +2]
+  - en: 'Tell Minh what to say, and what not to mention.'
+    vi: 'Bảo Minh nên nói gì và không nên nhắc gì.'
+    outcomes:
+      - p: 0.5
+        en: 'Minh recites the script. Vy notes that the answers sound rehearsed, and moves on.'
+        vi: 'Minh đọc kịch bản. Chị Vy ghi chú rằng câu trả lời nghe như được tập trước, rồi chuyển tiếp.'
+        effects: [rel minh trust -3, rel vy trust -4, stress +3, fact scripted_witness private]
+      - p: 0.5
+        ok: false
+        en: "Minh's voice cracks mid-script. He looks at you, then at Vy, then tells her what actually happened. The room is very quiet."
+        vi: 'Giọng Minh nghẹn giữa chừng kịch bản. Em nhìn anh/chị, nhìn chị Vy, rồi kể điều thực sự đã xảy ra. Căn phòng rất yên lặng.'
+        effects:
+          [
+            rel minh trust -6,
+            rel vy trust -10,
+            rel khoa trust -6,
+            rep.boss -5,
+            stress +6,
+            fact scripted_witness witnessed,
+          ]
+---
+scene: qc.ms_vy_returns
+place: meeting_room
+tags: [audit, people, beat]
+beat: 41-44
+lines:
+  - who: char:vy
+    en: 'I was here in spring. This time I am comparing spring to now: records, calibrations, the lots I traced, and any corrections made since. Patterns interest me more than single errors.'
+    vi: 'Tôi đã đến đây hồi mùa xuân. Lần này tôi so mùa xuân với bây giờ: hồ sơ, hiệu chuẩn, các lô tôi đã truy và mọi sửa đổi từ đó. Quy luật khiến tôi quan tâm hơn các lỗi đơn lẻ.'
+choices:
+  - en: 'Open everything, and point out the corrections, the borderline calls and what you learned from them.'
+    vi: 'Mở mọi thứ và chỉ ra các sửa đổi, các quyết định sát ngưỡng và những gì anh/chị học được từ chúng.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Vy takes notes for two days. Her draft says: 'The laboratory demonstrates a culture of disclosure.' Khoa reads it twice and sits down."
+        vi: "Chị Vy ghi chép hai ngày. Bản nháp của chị viết: 'Phòng thí nghiệm thể hiện văn hóa minh bạch.' Anh Khoa đọc hai lần rồi ngồi xuống."
+        effects: [rel vy trust +6, rel khoa trust +4, rep.boss +3, stress +2]
+  - en: 'Answer fully and give her the files she asks for.'
+    vi: 'Trả lời đầy đủ và đưa các hồ sơ chị ấy yêu cầu.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'Uneventful. Her questions are sharper than in spring, and your answers hold.'
+        vi: 'Không có gì đặc biệt. Câu hỏi của chị sắc hơn hồi mùa xuân, và câu trả lời của anh/chị đứng vững.'
+        effects: [rel vy trust +2]
+  - en: 'Give her the files but keep answers short, and do not mention the judgement calls.'
+    vi: 'Đưa hồ sơ nhưng trả lời ngắn và không nhắc các quyết định mang tính đánh giá.'
+    outcomes:
+      - p: 0.6
+        en: 'Vy makes no comment. The visit ends on time, and you are tired from not volunteering anything.'
+        vi: 'Chị Vy không bình luận. Buổi làm việc kết thúc đúng hạn, và anh/chị mệt vì cố không nói thêm điều gì.'
+        effects: [rel vy trust -2, stress +2]
+      - p: 0.4
+        ok: false
+        en: 'Vy finds a pattern across three lots. She asks you to explain each one in writing, copied to Khoa.'
+        vi: 'Chị Vy thấy một quy luật xuyên ba lô. Chị yêu cầu anh/chị giải thích từng lô bằng văn bản, đồng gửi anh Khoa.'
+        effects: [rel vy trust -8, rel khoa trust -6, rep.boss -4, stress +5]
+---
+scene: qc.scapegoat_meeting
+place: meeting_room
+tags: [audit, pressure, consequence]
+weight: 6
+cooldown: 52
+when: [month in 11 12, turn >= 42, fact.took_supplier_money >= 1]
+lines:
+  - who: char:khoa
+    en: "The auditor's draft mentions payments from a supplier to someone in this lab. The directors want a name by tomorrow. I am not going to name someone on a rumour, but I need you to tell me if there is anything I should know."
+    vi: 'Bản nháp của kiểm toán nhắc đến các khoản tiền từ một nhà cung cấp cho ai đó trong phòng lab này. Ban giám đốc muốn một cái tên trước ngày mai. Anh sẽ không nêu tên ai chỉ vì tin đồn, nhưng anh cần em nói nếu có điều gì anh nên biết.'
+choices:
+  - en: 'Tell him everything, now, before anyone else does.'
+    vi: 'Nói hết với anh ngay bây giờ, trước khi ai khác nói.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: "Khoa is silent for a long time. 'I wish you had come earlier. But you came.' You are suspended pending review, and you keep the chance to explain."
+        vi: "Anh Khoa im lặng rất lâu. 'Giá như em đến sớm hơn. Nhưng em đã đến.' Anh/chị bị đình chỉ chờ xem xét và giữ được cơ hội giải thích."
+        effects: [rel khoa trust +1, rep.boss -5, stress +6, fact came_clean_to_auditor witnessed]
+  - en: 'Say you know nothing about any payments.'
+    vi: 'Nói rằng anh/chị không biết gì về bất kỳ khoản tiền nào.'
+    outcomes:
+      - p: 0.35
+        en: "Khoa nods and lets it go. The name the directors get is someone else's. You sleep badly for a month."
+        vi: 'Anh Khoa gật đầu và bỏ qua. Cái tên ban giám đốc nhận là của người khác. Anh/chị ngủ không ngon cả tháng.'
+        effects: [rel khoa trust -4, rel minh trust -3, stress +4]
+      - p: 0.65
+        ok: false
+        en: "The auditor's analyst has already matched the supplier's payment dates to your bank deposits. Khoa is given the file the next morning."
+        vi: 'Chuyên viên của kiểm toán đã đối chiếu ngày thanh toán của nhà cung cấp với các khoản tiền gửi ngân hàng của anh/chị. Sáng hôm sau anh Khoa nhận hồ sơ.'
+        effects: [rel khoa trust -14, rel vy trust -10, rep.boss -12, stress +9]
+  - en: 'Suggest that the new lab technician may have been in contact with the supplier.'
+    vi: 'Gợi ý rằng kỹ thuật viên mới có thể đã liên lạc với nhà cung cấp.'
+    outcomes:
+      - p: 0.4
+        en: 'Khoa writes it down. Minh is questioned for a day. He says nothing wrong, and everyone knows it.'
+        vi: 'Anh Khoa ghi lại. Minh bị hỏi cả ngày. Em không nói gì sai, và ai cũng biết điều đó.'
+        effects:
+          [
+            rel minh trust -20,
+            rel minh loyalty -15,
+            rel khoa trust -6,
+            stress +5,
+            fact blamed_minh private,
+          ]
+      - p: 0.6
+        ok: false
+        en: 'Minh produces his own record of every supplier interaction, including the day you were with Mr Hung. It is dated.'
+        vi: 'Minh đưa hồ sơ riêng về mọi lần làm việc với nhà cung cấp, kể cả ngày anh/chị đi cùng anh Hùng. Có ghi ngày.'
+        effects:
+          [rel minh trust -20, rel khoa trust -16, rep.boss -14, stress +9, fact blamed_minh public]
+---
+fact: passed_borderline_steel
+severity: 5
+category: integrity
+en: 'you passed a borderline steel lot to keep a supplier trial moving'
+vi: 'bạn cho qua một lô thép sát ngưỡng để thử nghiệm nhà cung cấp tiếp tục'
+lesson:
+  en: 'A borderline result is a question, not an answer. Reading it generously to help a cost saving turns the benefit of the doubt against the customer.'
+  vi: 'Kết quả sát ngưỡng là một câu hỏi, không phải câu trả lời. Đọc rộng rãi để giúp tiết kiệm chi phí là xoay lợi ích của sự nghi ngờ chống lại khách hàng.'
+traces:
+  - { type: record, visibility: 0.7, detectors: [internal_audit, qc, buyer] }
+witnessed:
+  boss: -5
+  qc: -5
+  buyer: -5
+public:
+  boss: -9
+  buyer: -9
+---
+fact: owned_steel_decision
+severity: 2
+category: integrity
+en: 'you owned a decision that went wrong and showed the records first'
+vi: 'bạn nhận một quyết định sai và đưa hồ sơ ra trước'
+lesson:
+  en: 'Owning a decision before being asked is not a confession of weakness. It is what makes the rest of your records believable.'
+  vi: 'Nhận một quyết định trước khi bị hỏi không phải là thừa nhận yếu kém. Nó là điều khiến phần còn lại của hồ sơ đáng tin.'
+witnessed:
+  boss: 3
+public:
+  boss: 5
+---
+fact: hid_borderline_data
+severity: 6
+category: integrity
+en: 'you withheld notes showing a borderline result from the buyer'
+vi: 'bạn giữ lại các ghi chú cho thấy một kết quả sát ngưỡng khỏi khách hàng'
+lesson:
+  en: 'Evidence you keep back from a customer during a failure investigation is concealment. The notes are the evidence of what you knew.'
+  vi: 'Bằng chứng bạn giữ lại khỏi khách hàng trong điều tra sự cố là che giấu. Các ghi chú là bằng chứng về những gì bạn biết.'
+traces:
+  - { type: record, visibility: 0.8, detectors: [internal_audit, qc, buyer] }
+witnessed:
+  boss: -8
+  qc: -8
+  buyer: -8
+public:
+  boss: -13
+  buyer: -13
+---
+fact: dismissed_field_complaint
+severity: 5
+category: integrity
+en: 'you closed a customer complaint as a one-off without investigating it'
+vi: 'bạn đóng một khiếu nại của khách là sự cố đơn lẻ mà không điều tra'
+lesson:
+  en: "A complaint is data about your process. Closing it without looking means the next one arrives with no warning, and with someone else's photographs."
+  vi: 'Khiếu nại là dữ liệu về quy trình của bạn. Đóng nó mà không xem nghĩa là cái tiếp theo đến không báo trước, kèm ảnh của người khác.'
+traces:
+  - { type: message, visibility: 0.7, detectors: [internal_audit, buyer, qc] }
+witnessed:
+  boss: -5
+  qc: -5
+  buyer: -6
+public:
+  boss: -9
+  buyer: -10
+---
+fact: picked_side_on_root_cause
+severity: 3
+category: integrity
+en: 'you chose the root-cause story that protected your department'
+vi: 'bạn chọn câu chuyện nguyên nhân gốc bảo vệ bộ phận của mình'
+lesson:
+  en: 'A root-cause investigation that starts with protecting someone will not find the cause. The cause stays in the process and returns.'
+  vi: 'Điều tra nguyên nhân gốc mà bắt đầu bằng việc bảo vệ ai đó sẽ không tìm ra nguyên nhân. Nguyên nhân còn nằm trong quy trình và quay lại.'
+traces:
+  - { type: witness, visibility: 0.5, detectors: [boss, internal_audit] }
+witnessed:
+  boss: -4
+  production: -4
+public:
+  boss: -7
+---
+fact: minimised_defect_to_buyer
+severity: 7
+category: integrity
+en: 'you described a real defect to a customer as a minor cosmetic issue'
+vi: 'bạn mô tả một lỗi thật cho khách hàng là vấn đề thẩm mỹ nhỏ'
+lesson:
+  en: "Understating a defect to a customer protects the company for a week and exposes it for years. The customer's customers are the ones who find out."
+  vi: 'Nói nhẹ một lỗi với khách hàng bảo vệ công ty một tuần và phơi bày nó nhiều năm. Khách hàng của khách hàng mới là người phát hiện.'
+traces:
+  - { type: document, visibility: 0.85, detectors: [internal_audit, buyer, qc] }
+witnessed:
+  boss: -10
+  qc: -9
+  buyer: -10
+public:
+  boss: -16
+  buyer: -16
+---
+fact: covered_minh_error
+severity: 4
+category: integrity
+en: "you changed a record to hide a colleague's misreading"
+vi: 'bạn sửa hồ sơ để che một lần đọc sai của đồng nghiệp'
+lesson:
+  en: "Hiding a colleague's honest error protects one person and falsifies a record. A corrected, documented error protects both."
+  vi: 'Che một lỗi vô tình của đồng nghiệp bảo vệ một người và làm sai hồ sơ. Một lỗi được sửa có ghi chép bảo vệ cả hai.'
+traces:
+  - { type: record, visibility: 0.75, detectors: [internal_audit, qc, buyer] }
+witnessed:
+  boss: -6
+  qc: -6
+public:
+  boss: -11
+  buyer: -8
+---
+fact: blamed_minh
+severity: 7
+category: integrity
+en: 'you pointed the blame at the youngest member of the lab'
+vi: 'bạn đổ lỗi cho người trẻ nhất phòng lab'
+lesson:
+  en: 'Naming the most junior person is the easiest move in the room and the most damaging one. He keeps his own records, and he remembers who was kind to him.'
+  vi: 'Nêu tên người ít thâm niên nhất là nước đi dễ nhất trong phòng và gây hại nhất. Em giữ hồ sơ riêng và nhớ ai đã tử tế với mình.'
+traces:
+  - { type: witness, visibility: 0.8, detectors: [internal_audit, boss, qc] }
+witnessed:
+  boss: -10
+  qc: -10
+public:
+  boss: -16

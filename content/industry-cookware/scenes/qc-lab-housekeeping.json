@@ -1,0 +1,145 @@
+{
+  "id": "scene.qc.lab_housekeeping",
+  "location": "loc.qc_lab",
+  "cast": ["char:minh"],
+  "lines": [
+    {
+      "speaker": "char:minh",
+      "text_key": "scene.qc.lab_housekeeping.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.qc.lab_housekeeping.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.qc.lab_housekeeping.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.minh.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.production",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.qc.lab_housekeeping.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.minh.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.production",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.qc.lab_housekeeping.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.qc.lab_housekeeping.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": -1
+            },
+            {
+              "delta": "rel.minh.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.qc.lab_housekeeping.c3",
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.qc.lab_housekeeping.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.minh.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": -1
+            },
+            {
+              "fact": "fact.used_expired_standard",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.qc.lab_housekeeping.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.minh.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.used_expired_standard",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

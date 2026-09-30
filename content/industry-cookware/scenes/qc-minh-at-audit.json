@@ -1,0 +1,131 @@
+{
+  "id": "scene.qc.minh_at_audit",
+  "location": "loc.meeting_room",
+  "cast": ["char:vy", "char:minh"],
+  "lines": [
+    {
+      "speaker": "char:vy",
+      "text_key": "scene.qc.minh_at_audit.l1"
+    },
+    {
+      "speaker": "char:minh",
+      "text_key": "scene.qc.minh_at_audit.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.qc.minh_at_audit.c1",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.qc.minh_at_audit.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.minh.trust",
+              "value": 6
+            },
+            {
+              "delta": "rel.vy.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.qc.minh_at_audit.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.qc.minh_at_audit.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.minh.trust",
+              "value": -7
+            },
+            {
+              "delta": "rel.minh.loyalty",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.qc.minh_at_audit.c3",
+      "outcomes": [
+        {
+          "p": 0.5,
+          "narration_key": "scene.qc.minh_at_audit.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.minh.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.vy.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.scripted_witness",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.5,
+          "result": "fail",
+          "narration_key": "scene.qc.minh_at_audit.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.minh.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.vy.trust",
+              "value": -10
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.scripted_witness",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

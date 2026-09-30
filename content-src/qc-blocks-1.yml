@@ -1,0 +1,482 @@
+# QC blocks 1 (docs/story/qc.md): onboarding, pre-Tet and Tet, mid-year, the auditor's visit, audit huddle.
+scene: qc.first_signature
+place: qc_lab
+tags: [onboarding, release, pressure]
+weight: 3
+cooldown: 52
+terms: [coa]
+when: [turn >= 2, turn <= 7]
+lines:
+  - who: char:lan
+    en: 'The first lot of the week is tested except for one hardness reading. The truck leaves at four. Could you sign the CoA now and add the reading when it comes in? You are new, I do not want to put you on the spot. It is just the paperwork.'
+    vi: 'Lô đầu tuần đã kiểm xong trừ một chỉ số độ cứng. Xe đi lúc bốn giờ. Anh/chị ký CoA trước rồi bổ sung chỉ số khi có được không? Anh/chị mới vào, em không muốn làm khó. Chỉ là giấy tờ thôi.'
+choices:
+  - en: 'Wait for the reading and sign only when the CoA is complete.'
+    vi: 'Chờ có chỉ số rồi chỉ ký khi CoA đầy đủ.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.8
+        en: "The reading arrives at 3.40 and is fine. The truck leaves twenty minutes late. Lan sighs but says 'Fair enough'. Khoa, passing, nods without a word."
+        vi: "Chỉ số về lúc 3 giờ 40 và đạt. Xe đi trễ hai mươi phút. Chị Lan thở dài nhưng nói 'Cũng phải'. Anh Khoa đi ngang, gật đầu không nói gì."
+        effects: [rel lan trust -1, rel khoa trust +4, rep.qc +2, stress +1]
+      - p: 0.2
+        ok: false
+        en: 'The reading is borderline and needs a retest. The truck leaves without that lot, and the week starts badly with production.'
+        vi: 'Chỉ số ở ngưỡng biên và cần kiểm lại. Xe đi mà không có lô đó, và tuần bắt đầu tệ với bên sản xuất.'
+        effects: [rel lan trust -5, rel khoa trust +3, rep.production -3, stress +3]
+  - en: 'Sign the CoA for the tested parameters only, and note the pending reading.'
+    vi: 'Chỉ ký CoA cho các chỉ tiêu đã kiểm và ghi chú chỉ số còn chờ.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "Lan agrees, and the buyer gets a CoA with an honest note. Khoa reads it later and says: 'That is how it is done.'"
+        vi: "Chị Lan đồng ý, và khách nhận CoA kèm ghi chú trung thực. Sau đó anh Khoa đọc và nói: 'Làm thế mới đúng.'"
+        effects: [rel khoa trust +3, rel lan trust +1, rep.qc +1]
+  - en: 'Sign it in full and add the reading later.'
+    vi: 'Ký đầy đủ và bổ sung chỉ số sau.'
+    outcomes:
+      - p: 0.8
+        en: 'The truck leaves on time. The reading arrives later and is fine, and you feel you got away with something.'
+        vi: 'Xe đi đúng giờ. Chỉ số về sau đó và đạt, và anh/chị cảm thấy mình vừa thoát được điều gì đó.'
+        effects: [rel lan trust +4, stress -1, fact signed_before_result private]
+      - p: 0.2
+        ok: false
+        en: 'The reading comes back 1.5 points below spec. The lot is already on the road with your signature on a full CoA.'
+        vi: 'Chỉ số về thấp hơn tiêu chuẩn 1,5 điểm. Lô hàng đã trên đường với chữ ký của anh/chị trên một CoA đầy đủ.'
+        effects:
+          [
+            rel lan trust +2,
+            rel khoa trust -7,
+            rep.qc -5,
+            rep.buyer -4,
+            stress +4,
+            fact signed_before_result witnessed,
+          ]
+---
+scene: qc.training_gap
+place: qc_lab
+tags: [onboarding, people]
+weight: 2
+cooldown: 40
+when: [turn >= 3, turn <= 12]
+lines:
+  - who: char:minh
+    en: 'I have never been trained on the new viscometer. I have been running it from the manual, and my readings look odd. Please do not tell Khoa, I am afraid he will think I cannot do my job.'
+    vi: 'Em chưa từng được đào tạo về máy đo độ nhớt mới. Em chạy theo sách hướng dẫn và kết quả nhìn hơi lạ. Anh/chị đừng nói với anh Khoa, em sợ anh nghĩ em không làm nổi việc.'
+choices:
+  - en: 'Arrange proper training for him, tell Khoa it is a gap in the process, and sit with him for the first runs.'
+    vi: 'Sắp xếp đào tạo đàng hoàng cho em, báo anh Khoa rằng đó là lỗ hổng quy trình và ngồi cùng em mấy lần chạy đầu.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Khoa schedules a session with the vendor. Minh's readings settle within a week. He tells you, awkwardly, that nobody has done that for him before."
+        vi: 'Anh Khoa sắp xếp một buổi với nhà cung cấp máy. Kết quả của Minh ổn định trong một tuần. Em nói, hơi vụng về, rằng chưa ai làm vậy cho em.'
+        effects: [rel minh trust +7, rel minh loyalty +5, rel khoa trust +3, stress +1]
+  - en: 'Pair him with a colleague for a few runs and check his results yourself.'
+    vi: 'Ghép em với một đồng nghiệp vài lần chạy và tự kiểm tra kết quả của em.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'It helps, mostly. The readings improve, though the gap in the process stays quietly in place.'
+        vi: 'Có ích, phần lớn. Kết quả tốt lên, dù lỗ hổng quy trình vẫn lặng lẽ còn đó.'
+        effects: [rel minh trust +3]
+  - en: 'Tell him to keep going and flag anything odd.'
+    vi: 'Bảo em cứ tiếp tục và báo nếu thấy gì lạ.'
+    outcomes:
+      - p: 0.7
+        en: 'Minh nods. He will not flag anything, not because it is fine, but because he is afraid to.'
+        vi: 'Minh gật đầu. Em sẽ không báo gì, không phải vì ổn, mà vì em sợ.'
+        effects: [rel minh trust -3]
+      - p: 0.3
+        ok: false
+        en: 'Two weeks later a batch of readings is wrong. Minh says nothing, and Khoa finds out from the complaint log.'
+        vi: 'Hai tuần sau một loạt kết quả sai. Minh không nói gì, và anh Khoa biết qua nhật ký khiếu nại.'
+        effects: [rel minh trust -6, rel khoa trust -4, rep.qc -3, stress +3]
+---
+scene: qc.lab_housekeeping
+place: qc_lab
+tags: [onboarding, compliance]
+weight: 1.5
+cooldown: 30
+when: [turn >= 4, turn <= 16]
+lines:
+  - who: char:minh
+    en: 'I found three bottles of reagent in the fridge past their expiry date. One of them is the standard for the hardness test. Throwing it away means a new order and a wait of two weeks.'
+    vi: 'Em thấy ba chai thuốc thử trong tủ lạnh quá hạn sử dụng. Một trong số đó là chất chuẩn cho phép thử độ cứng. Bỏ đi nghĩa là phải đặt mới và chờ hai tuần.'
+choices:
+  - en: 'Discard the expired reagents, log the disposal, and rush-order the standard.'
+    vi: 'Bỏ các thuốc thử hết hạn, ghi nhận việc hủy và đặt gấp chất chuẩn.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.8
+        en: 'The hardness test is paused for four days while the standard arrives. Production grumbles. The log is clean.'
+        vi: 'Phép thử độ cứng tạm dừng bốn ngày chờ chất chuẩn. Bên sản xuất càu nhàu. Nhật ký sạch.'
+        effects: [rel minh trust +3, rel khoa trust +3, rep.production -2, stress +1]
+      - p: 0.2
+        ok: false
+        en: 'The rush order is delayed. Hardness testing is paused for ten days and the backlog is painful.'
+        vi: 'Đơn đặt gấp bị chậm. Phép thử độ cứng dừng mười ngày và tồn đọng rất đau đầu.'
+        effects: [rel minh trust +3, rel khoa trust +2, rep.production -5, stress +3]
+  - en: "Label the standard 'for non-critical use only' and keep testing with the others."
+    vi: "Dán nhãn chất chuẩn 'chỉ dùng cho mục đích không quan trọng' và tiếp tục kiểm bằng các loại còn lại."
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'It is a workable compromise, but a little vague. Khoa reads the label and raises an eyebrow, then lets it stand for a week.'
+        vi: 'Một thỏa hiệp khả thi nhưng hơi mơ hồ. Anh Khoa đọc nhãn, nhướng mày, rồi để vậy một tuần.'
+        effects: [rel khoa trust -1, rel minh trust +1, stress +1]
+  - en: 'Keep using the expired standard until the new one arrives. The difference will be tiny.'
+    vi: 'Tiếp tục dùng chất chuẩn hết hạn cho đến khi có chất mới. Sai khác chắc rất nhỏ.'
+    outcomes:
+      - p: 0.8
+        en: 'Testing goes on without a pause. Minh looks uncomfortable and says nothing.'
+        vi: 'Việc kiểm tra tiếp tục không gián đoạn. Minh trông không thoải mái và không nói gì.'
+        effects: [rel minh trust -4, stress -1, fact used_expired_standard private]
+      - p: 0.2
+        ok: false
+        en: "A buyer's lab retests the same lot and gets readings two points apart. They ask which standard you used."
+        vi: 'Phòng lab của khách kiểm lại cùng lô và ra chỉ số lệch hai điểm. Họ hỏi anh/chị dùng chất chuẩn nào.'
+        effects:
+          [
+            rel minh trust -6,
+            rep.buyer -6,
+            rep.qc -4,
+            stress +4,
+            fact used_expired_standard witnessed,
+          ]
+---
+scene: qc.pre_tet_pile
+place: qc_lab
+tags: [pressure, workload]
+weight: 3
+cooldown: 52
+when: [turn >= 3, turn <= 8]
+lines:
+  - who: char:lan
+    en: 'It is the last run before Tet and we have twice the normal volume. The lab has four people and forty lots. The buyers want everything shipped before the holiday. Whatever you can do, please do it.'
+    vi: 'Đây là đợt chạy cuối trước Tết và khối lượng gấp đôi bình thường. Phòng lab có bốn người và bốn mươi lô. Khách muốn mọi thứ giao trước kỳ nghỉ. Anh/chị làm được gì thì làm giúp.'
+choices:
+  - en: 'Ask Khoa for two temporary staff from production, and test every lot fully.'
+    vi: 'Nhờ anh Khoa xin hai người tạm từ sản xuất và kiểm mọi lô đầy đủ.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.7
+        en: 'Khoa gets you one person for three days. It is not enough, but the lots that go out are fully tested and the ones that do not wait until January.'
+        vi: 'Anh Khoa xin được cho anh/chị một người trong ba ngày. Chưa đủ, nhưng các lô xuất đi đều được kiểm đầy đủ và các lô còn lại chờ đến tháng Giêng.'
+        effects: [rel khoa trust +3, rel lan trust -3, rep.qc +2, stress +3]
+      - p: 0.3
+        ok: false
+        en: 'No help arrives. You work late every night, and four lots still miss the holiday shipment.'
+        vi: 'Không có người hỗ trợ. Anh/chị làm muộn mỗi tối, và bốn lô vẫn lỡ chuyến giao trước Tết.'
+        effects: [rel khoa trust +2, rel lan trust -6, stress +5]
+  - en: 'Prioritise by risk: full tests on critical lots, reduced checks on low-risk ones, all written down.'
+    vi: 'Ưu tiên theo rủi ro: kiểm đầy đủ lô quan trọng, kiểm rút gọn lô rủi ro thấp, tất cả có ghi chép.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: 'A sensible triage. Khoa signs the plan, Lan gets most of her shipments, and the records show exactly what was checked.'
+        vi: 'Một phân loại hợp lý. Anh Khoa ký kế hoạch, chị Lan nhận được phần lớn hàng, và hồ sơ ghi chính xác những gì đã kiểm.'
+        effects: [rel khoa trust +2, rel lan trust +1, stress +2]
+  - en: 'Skim every lot quickly and sign them all so nothing misses the holiday.'
+    vi: 'Xem lướt mọi lô thật nhanh và ký hết để không lỡ kỳ nghỉ.'
+    outcomes:
+      - p: 0.8
+        en: 'Forty lots go out before Tet. Lan sends a fruit basket. You sleep for two days.'
+        vi: 'Bốn mươi lô xuất đi trước Tết. Chị Lan gửi một giỏ trái cây. Anh/chị ngủ hai ngày liền.'
+        effects: [rel lan trust +6, stress -2, fact skimmed_lots_before_tet private]
+      - p: 0.2
+        ok: false
+        en: "In February, a buyer returns two of the lots. The complaint log says 'inspected 11 January, 02:10 a.m.'"
+        vi: "Tháng Hai, khách trả lại hai lô. Nhật ký khiếu nại ghi 'kiểm ngày 11 tháng Giêng, 2 giờ 10 sáng'."
+        effects:
+          [
+            rel lan trust +3,
+            rel khoa trust -6,
+            rep.buyer -5,
+            rep.qc -4,
+            stress +4,
+            fact skimmed_lots_before_tet witnessed,
+          ]
+---
+scene: qc.tet_bonus_pressure
+place: meeting_room
+tags: [pressure, people]
+weight: 2
+cooldown: 52
+when: [turn >= 5, turn <= 10]
+lines:
+  - who: char:lan
+    en: 'You know the Tet bonus is tied to shipped volume, for everyone, including the lab. Every held lot costs the whole plant. I am not asking you to sign anything bad. I am asking you to think about what the lab will look like if we miss the target.'
+    vi: 'Anh/chị biết thưởng Tết gắn với sản lượng giao, cho mọi người, kể cả phòng lab. Mỗi lô bị giữ làm cả nhà máy thiệt. Em không nhờ anh/chị ký thứ gì xấu. Em nhờ anh/chị nghĩ xem phòng lab sẽ ra sao nếu mình hụt chỉ tiêu.'
+choices:
+  - en: 'Say the release rules do not change with the bonus, and offer to help find honest ways to speed up testing.'
+    vi: 'Nói quy tắc xuất hàng không đổi theo thưởng và đề nghị giúp tìm cách trung thực để kiểm nhanh hơn.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.75
+        en: 'Lan listens. You agree to schedule the testing earlier in the week. It is not what she wanted, but it helps.'
+        vi: 'Chị Lan lắng nghe. Hai bên thống nhất xếp lịch kiểm sớm hơn trong tuần. Không phải điều chị muốn, nhưng có ích.'
+        effects: [rel lan trust +1, rel khoa trust +3, rep.qc +2, stress +2]
+      - p: 0.25
+        ok: false
+        en: 'Lan is cold for a week. A few colleagues give you looks in the canteen. Your principles are right and lonely.'
+        vi: 'Chị Lan lạnh nhạt một tuần. Vài đồng nghiệp nhìn anh/chị khác lạ ở căng tin. Nguyên tắc của anh/chị đúng và cô đơn.'
+        effects: [rel lan trust -5, rel khoa trust +3, rep.production -3, stress +3]
+  - en: 'Agree to fast-track the lots that are clearly fine, and hold the rest.'
+    vi: 'Đồng ý ưu tiên nhanh các lô rõ ràng ổn và giữ các lô còn lại.'
+    outcomes:
+      - p: 1
+        en: 'Lan accepts the split. The bonus is at risk, but nobody can say you blocked it for no reason.'
+        vi: 'Chị Lan chấp nhận cách chia. Thưởng có nguy cơ, nhưng không ai nói được anh/chị chặn vô cớ.'
+        effects: [rel lan trust +1, rel khoa trust +1, stress +1]
+  - en: 'Tell her you will do what you can, and release borderline lots on the benefit of the doubt.'
+    vi: 'Nói với chị sẽ cố hết sức và cho xuất các lô sát ngưỡng theo hướng có lợi.'
+    outcomes:
+      - p: 0.8
+        en: 'The plant hits the volume. The bonus is paid, and Lan brings you a thank-you card signed by the whole shift.'
+        vi: 'Nhà máy đạt sản lượng. Thưởng được trả, và chị Lan mang đến một tấm thiệp cảm ơn có chữ ký cả ca.'
+        effects:
+          [
+            rel lan trust +7,
+            rep.production +4,
+            stress -1,
+            fact released_borderline_for_bonus private,
+          ]
+      - p: 0.2
+        ok: false
+        en: 'One borderline lot turns out to be a failure in the field. The complaint quotes the release date, two days before the bonus cut-off.'
+        vi: 'Một lô sát ngưỡng hóa ra hỏng ngoài thị trường. Khiếu nại trích ngày xuất, hai ngày trước hạn chốt thưởng.'
+        effects:
+          [
+            rel lan trust +3,
+            rel khoa trust -7,
+            rep.buyer -5,
+            rep.qc -5,
+            stress +4,
+            fact released_borderline_for_bonus witnessed,
+          ]
+---
+scene: qc.kpi_first_pass_yield
+place: meeting_room
+tags: [kpi, pressure, people]
+weight: 1.5
+cooldown: 40
+terms: [kpi]
+when: [turn >= 20, turn <= 42]
+lines:
+  - who: char:khoa
+    en: 'First-pass yield is our headline KPI this year, and it is down two points. The directors ask about it every week. You can improve it by catching more problems earlier, or by judging more lots as passing the first time. One of those is real.'
+    vi: 'Tỷ lệ đạt lần đầu là chỉ số chính của mình năm nay và đang giảm hai điểm. Ban giám đốc hỏi về nó mỗi tuần. Em có thể cải thiện bằng cách bắt lỗi sớm hơn, hoặc bằng cách đánh giá nhiều lô đạt ngay lần đầu. Chỉ một trong hai cách là thật.'
+choices:
+  - en: "Show Khoa the KPI's weakness: it rewards passing lots, not finding problems, and propose a second measure."
+    vi: 'Chỉ cho anh Khoa điểm yếu của chỉ số này: nó thưởng cho việc cho qua lô, chứ không phải tìm ra vấn đề, và đề xuất thêm một thước đo thứ hai.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.7
+        en: 'Khoa takes your note to the directors. A second measure, escapes found after release, is added. It takes months, but it is real.'
+        vi: 'Anh Khoa mang ghi chú của anh/chị lên ban giám đốc. Một thước đo thứ hai, lỗi lọt ra sau khi xuất hàng, được thêm vào. Mất vài tháng, nhưng là thật.'
+        effects: [rel khoa trust +5, rep.boss +3, stress +2]
+      - p: 0.3
+        ok: false
+        en: "The directors say the KPI stays as it is. Khoa sighs: 'I tried. You helped me try.' The number keeps falling."
+        vi: "Ban giám đốc nói giữ nguyên chỉ số. Anh Khoa thở dài: 'Anh đã thử. Em đã giúp anh thử.' Con số vẫn tiếp tục giảm."
+        effects: [rel khoa trust +4, stress +3]
+  - en: 'Report the real number, explain why it fell, and show what you are doing about the causes.'
+    vi: 'Báo cáo con số thật, giải thích vì sao giảm và cho thấy anh/chị đang làm gì với nguyên nhân.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "It is an honest report with a plan. Khoa nods: 'That I can defend.' Yield stays down, but the trend has an explanation."
+        vi: "Một báo cáo trung thực kèm kế hoạch. Anh Khoa gật đầu: 'Cái này anh bảo vệ được.' Tỷ lệ vẫn thấp, nhưng xu hướng đã có lời giải thích."
+        effects: [rel khoa trust +2, stress +1]
+  - en: 'Re-classify borderline results as passing on the first test, so the number recovers.'
+    vi: 'Phân loại lại các kết quả sát ngưỡng thành đạt ngay lần kiểm đầu để con số hồi phục.'
+    outcomes:
+      - p: 0.75
+        en: 'Yield is back up two points. Khoa is relieved and does not ask how. The directors move on to another topic.'
+        vi: 'Tỷ lệ đạt tăng lại hai điểm. Anh Khoa nhẹ nhõm và không hỏi bằng cách nào. Ban giám đốc chuyển sang chủ đề khác.'
+        effects: [rel khoa trust +3, rep.boss +3, stress -1, fact gamed_yield_kpi private]
+      - p: 0.25
+        ok: false
+        en: 'Minh notices that retests were relabelled as first tests. He looks at you, then quietly at the records.'
+        vi: 'Minh nhận ra các lần kiểm lại bị gắn nhãn là kiểm lần đầu. Em nhìn anh/chị rồi lặng lẽ nhìn hồ sơ.'
+        effects: [rel minh trust -8, rel khoa trust -3, stress +3, fact gamed_yield_kpi witnessed]
+---
+scene: qc.audit_notice_huddle
+place: meeting_room
+tags: [audit, pressure]
+weight: 2
+cooldown: 40
+when: [month in 3 4, company.audit_readiness < 70]
+lines:
+  - who: char:khoa
+    en: "The buyer's audit is in three weeks. Tam suggests we give the lab a fresh coat of paint and tidy the floor. I would rather spend the time on the records. What do you think we should focus on?"
+    vi: 'Khách đánh giá sau ba tuần nữa. Anh Tâm đề nghị sơn lại phòng lab và dọn sàn. Anh thích dùng thời gian cho hồ sơ hơn. Em nghĩ mình nên tập trung vào đâu?'
+  - who: char:tam
+    en: 'First impressions matter. A clean lab says we are careful. I am just saying.'
+    vi: 'Ấn tượng đầu quan trọng. Phòng lab sạch thể hiện mình cẩn thận. Tôi chỉ nói vậy thôi.'
+choices:
+  - en: 'List the real gaps: overdue calibrations, unsigned records, training. Fix those first, and clean the floor afterwards.'
+    vi: 'Liệt kê các lỗ hổng thật: hiệu chuẩn quá hạn, hồ sơ chưa ký, đào tạo. Sửa chúng trước, rồi mới dọn sàn.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.8
+        en: 'The list is longer than anyone wanted. Khoa turns it into an action plan with owners and dates. The audit will find less than it could have.'
+        vi: 'Danh sách dài hơn mọi người muốn. Anh Khoa biến nó thành kế hoạch hành động có người phụ trách và ngày hạn. Đợt đánh giá sẽ tìm thấy ít hơn mức có thể.'
+        effects:
+          [rel khoa trust +4, rel tam trust -2, rep.qc +2, stress +2, company.audit_readiness +8]
+      - p: 0.2
+        ok: false
+        en: 'The list is too long to finish in three weeks. You prioritise, document the rest as known gaps with dates, and sleep badly.'
+        vi: 'Danh sách quá dài để xong trong ba tuần. Anh/chị ưu tiên, ghi phần còn lại như các lỗ hổng đã biết kèm ngày, và ngủ không ngon.'
+        effects: [rel khoa trust +3, stress +3, company.audit_readiness +4]
+  - en: 'Prioritise the gaps most likely to be found, and do a light tidy of the lab as well.'
+    vi: 'Ưu tiên các lỗ hổng dễ bị phát hiện nhất và dọn phòng lab nhẹ nhàng.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'A balanced plan. Tam gets his tidy lab and Khoa gets some of his records. Not perfect, but workable.'
+        vi: 'Một kế hoạch cân bằng. Anh Tâm có phòng lab gọn và anh Khoa có một phần hồ sơ. Không hoàn hảo, nhưng khả thi.'
+        effects: [rel khoa trust +1, rel tam trust +1, stress +1, company.audit_readiness +4]
+  - en: 'Go with Tam: paint and tidy, and trust that the auditor will not look deep.'
+    vi: 'Theo anh Tâm: sơn và dọn, tin rằng kiểm toán viên sẽ không xem sâu.'
+    outcomes:
+      - p: 0.7
+        en: 'The lab looks wonderful. The records are where they were. You hope.'
+        vi: 'Phòng lab trông tuyệt vời. Hồ sơ vẫn như cũ. Anh/chị hy vọng.'
+        effects: [rel tam trust +5, rel khoa trust -3, stress -1, company.audit_readiness +2]
+      - p: 0.3
+        ok: false
+        en: 'Khoa finds out that the records work was never started. He does not shout, which is the worst sign.'
+        vi: 'Anh Khoa biết rằng việc làm hồ sơ chưa bao giờ bắt đầu. Anh không quát, và đó là dấu hiệu tệ nhất.'
+        effects:
+          [rel tam trust +3, rel khoa trust -8, rep.boss -3, stress +3, company.audit_readiness -2]
+---
+scene: qc.vy_spring_visit
+place: meeting_room
+tags: [audit, people, beat]
+beat: 14-17
+lines:
+  - who: char:vy
+    en: "I am the buyer's external auditor. I would like to see your calibration records, the last six months of incoming inspections, and two lots from start to finish: raw material to shipment. Take your time, but I do read the dates."
+    vi: 'Tôi là kiểm toán viên bên ngoài của khách hàng. Tôi muốn xem hồ sơ hiệu chuẩn, sáu tháng kiểm nguyên liệu đầu vào gần nhất và hai lô từ đầu đến cuối: từ nguyên liệu đến xuất hàng. Cứ thong thả, nhưng tôi có đọc ngày tháng.'
+  - who: char:khoa
+    en: 'Show her what she asks for. If she asks something you do not know, say so.'
+    vi: 'Đưa cho cô ấy những gì cô ấy yêu cầu. Nếu cô ấy hỏi điều em không biết thì cứ nói là không biết.'
+choices:
+  - en: 'Show her everything organised, including the records that needed corrections and the reasons.'
+    vi: 'Cho chị ấy xem mọi thứ gọn gàng, kể cả hồ sơ đã phải sửa và lý do.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Vy traces two lots end to end without stopping. At the end she says: 'Traceable. That is rarer than people think.' Khoa exhales."
+        vi: "Chị Vy truy hai lô từ đầu đến cuối không dừng. Cuối cùng chị nói: 'Truy vết được. Hiếm hơn người ta nghĩ.' Anh Khoa thở ra."
+        effects: [rel vy trust +5, rel khoa trust +3, rep.boss +2, stress +1]
+  - en: 'Answer what she asks and produce the files she requests.'
+    vi: 'Trả lời những gì chị ấy hỏi và đưa các hồ sơ chị ấy yêu cầu.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "A routine visit. Vy writes three observations. None is serious and two were already on Khoa's list."
+        vi: 'Một buổi làm việc thường lệ. Chị Vy ghi ba quan sát. Không cái nào nghiêm trọng và hai cái đã có trong danh sách của anh Khoa.'
+        effects: [rel vy trust +1, rel khoa trust +1]
+  - en: 'Offer her the two best lots to trace, and steer her away from the calibration log.'
+    vi: 'Đề nghị chị ấy truy hai lô tốt nhất và dẫn chị tránh nhật ký hiệu chuẩn.'
+    outcomes:
+      - p: 0.55
+        en: 'Vy traces your two lots and finds nothing. She does not ask for the calibration log. You feel the small, dangerous relief of a shortcut that worked.'
+        vi: 'Chị Vy truy hai lô của anh/chị và không thấy gì. Chị không hỏi nhật ký hiệu chuẩn. Anh/chị thấy sự nhẹ nhõm nhỏ, nguy hiểm của một lối tắt đã thành công.'
+        effects: [rel vy trust -2, stress -1, fact steered_auditor_sample private]
+      - p: 0.45
+        ok: false
+        en: 'Vy picks a third lot of her own and asks for the calibration log without looking up. The date on the last entry is ten weeks old.'
+        vi: 'Chị Vy tự chọn một lô thứ ba và đòi nhật ký hiệu chuẩn mà không ngẩng lên. Ngày ở mục cuối đã cách mười tuần.'
+        effects:
+          [rel vy trust -9, rel khoa trust -5, stress +4, fact steered_auditor_sample witnessed]
+---
+fact: signed_before_result
+severity: 4
+category: integrity
+en: 'you signed a certificate before the last result was in'
+vi: 'bạn ký chứng nhận trước khi có kết quả cuối cùng'
+lesson:
+  en: 'A signature on a certificate says every result is in and within spec. Signing first and hoping is how a small courtesy becomes a false statement.'
+  vi: 'Chữ ký trên chứng nhận nói rằng mọi kết quả đã có và đạt chuẩn. Ký trước và hy vọng là cách một sự nể nang nhỏ thành lời khai sai.'
+traces:
+  - { type: document, visibility: 0.6, detectors: [internal_audit, qc, buyer] }
+witnessed:
+  boss: -5
+  qc: -4
+  buyer: -4
+public:
+  boss: -9
+  buyer: -8
+---
+fact: used_expired_standard
+severity: 4
+category: integrity
+en: 'you kept using an expired reference standard'
+vi: 'bạn tiếp tục dùng chất chuẩn đã hết hạn'
+lesson:
+  en: 'A reference standard defines what a test result means. Once it has expired, every result measured with it carries a doubt nobody can remove.'
+  vi: 'Chất chuẩn xác định ý nghĩa của một kết quả kiểm. Khi đã hết hạn, mọi kết quả đo bằng nó mang một nghi ngờ không ai gỡ được.'
+traces:
+  - { type: record, visibility: 0.6, detectors: [internal_audit, qc, buyer] }
+witnessed:
+  boss: -5
+  qc: -4
+public:
+  boss: -8
+  buyer: -7
+---
+fact: skimmed_lots_before_tet
+severity: 5
+category: integrity
+en: 'you signed lots you had only skimmed, to catch the holiday shipment'
+vi: 'bạn ký các lô chỉ xem lướt để kịp chuyến giao trước Tết'
+lesson:
+  en: 'A deadline is when inspection matters most. Signing lots you did not really check turns your signature into a formality, and formalities are not defences.'
+  vi: 'Hạn chót là lúc kiểm tra quan trọng nhất. Ký các lô bạn không thực sự kiểm biến chữ ký thành thủ tục, và thủ tục không phải là lá chắn.'
+traces:
+  - { type: record, visibility: 0.7, detectors: [internal_audit, qc, buyer] }
+witnessed:
+  boss: -6
+  qc: -6
+  buyer: -5
+public:
+  boss: -10
+  buyer: -9
+---
+fact: released_borderline_for_bonus
+severity: 5
+category: integrity
+en: 'you released borderline lots so the plant would reach its bonus target'
+vi: 'bạn cho xuất các lô sát ngưỡng để nhà máy đạt chỉ tiêu thưởng'
+lesson:
+  en: 'When a bonus depends on your signature, the rules have to hold hardest. Benefit of the doubt belongs to the customer, not to the target.'
+  vi: 'Khi thưởng phụ thuộc vào chữ ký của bạn, quy tắc phải được giữ chặt nhất. Lợi ích của sự nghi ngờ thuộc về khách hàng, không phải chỉ tiêu.'
+traces:
+  - { type: record, visibility: 0.7, detectors: [internal_audit, qc, buyer] }
+witnessed:
+  boss: -6
+  qc: -6
+  buyer: -6
+public:
+  boss: -10
+  buyer: -10
+---
+fact: gamed_yield_kpi
+severity: 5
+category: integrity
+en: 'you relabelled retests as first-pass results to improve a KPI'
+vi: 'bạn gắn nhãn lại các lần kiểm lại thành kết quả lần đầu để cải thiện KPI'
+lesson:
+  en: 'Gaming a KPI makes the number look better while the problem stays. The next person to rely on that number will make a worse decision because of you.'
+  vi: 'Làm đẹp KPI khiến con số trông tốt hơn trong khi vấn đề vẫn còn. Người tiếp theo dựa vào con số đó sẽ quyết định tệ hơn vì bạn.'
+traces:
+  - { type: record, visibility: 0.6, detectors: [internal_audit, qc, boss] }
+witnessed:
+  boss: -6
+  qc: -6
+public:
+  boss: -10

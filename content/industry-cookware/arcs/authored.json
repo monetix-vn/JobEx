@@ -103,5 +103,60 @@
         "delay_weeks": [4, 7]
       }
     ]
+  },
+  {
+    "id": "arc.cheaper_steel",
+    "title_key": "arc.cheaper_steel.title",
+    "stages": [
+      {
+        "id": "trial",
+        "event": "event.qc.new_supplier_trial"
+      },
+      {
+        "id": "results",
+        "event": "event.qc.steel_trial_results",
+        "delay_weeks": [3, 5]
+      },
+      {
+        "id": "failure",
+        "event": "event.qc.steel_field_failure",
+        "delay_weeks": [6, 10]
+      }
+    ]
+  },
+  {
+    "id": "arc.field_complaint",
+    "title_key": "arc.field_complaint.title",
+    "stages": [
+      {
+        "id": "complaint",
+        "event": "event.qc.field_complaint_arrives"
+      },
+      {
+        "id": "dispute",
+        "event": "event.qc.root_cause_dispute",
+        "delay_weeks": [2, 3]
+      },
+      {
+        "id": "press",
+        "event": "event.qc.recall_press",
+        "delay_weeks": [4, 8]
+      }
+    ]
+  },
+  {
+    "id": "arc.minh",
+    "title_key": "arc.minh.title",
+    "stages": [
+      {
+        "id": "mistake",
+        "event": "event.qc.minh_mistake"
+      },
+      {
+        "id": "audit",
+        "event": "event.qc.minh_at_audit",
+        "delay_weeks": [10, 16]
+      }
+    ]
   }
 ]

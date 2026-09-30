@@ -45,7 +45,7 @@
       "skill.backbone": 30
     },
     "dark_offers": ["offer.release_out_of_spec"],
-    "overhead_hours": 17
+    "overhead_hours": 14
   },
   {
     "id": "role.qc.manager",

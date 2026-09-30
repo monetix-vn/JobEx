@@ -31,6 +31,10 @@
             {
               "delta": "player.stress",
               "value": 1
+            },
+            {
+              "arc": "arc.cheaper_steel",
+              "stage": "results"
             }
           ]
         },
@@ -50,6 +54,10 @@
             {
               "delta": "player.stress",
               "value": 2
+            },
+            {
+              "arc": "arc.cheaper_steel",
+              "stage": "results"
             }
           ]
         }
@@ -77,6 +85,10 @@
             {
               "delta": "player.stress",
               "value": 1
+            },
+            {
+              "arc": "arc.cheaper_steel",
+              "stage": "results"
             }
           ]
         }
@@ -101,6 +113,10 @@
             {
               "fact": "fact.fast_tracked_supplier",
               "visibility": "private"
+            },
+            {
+              "arc": "arc.cheaper_steel",
+              "stage": "failure"
             }
           ]
         },
@@ -124,6 +140,10 @@
             {
               "fact": "fact.fast_tracked_supplier",
               "visibility": "public"
+            },
+            {
+              "arc": "arc.cheaper_steel",
+              "stage": "failure"
             }
           ]
         }

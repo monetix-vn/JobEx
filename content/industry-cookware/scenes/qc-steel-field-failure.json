@@ -1,0 +1,143 @@
+{
+  "id": "scene.qc.steel_field_failure",
+  "location": "loc.meeting_room",
+  "cast": ["char:lan", "char:tam"],
+  "lines": [
+    {
+      "speaker": "char:lan",
+      "text_key": "scene.qc.steel_field_failure.l1"
+    },
+    {
+      "speaker": "char:tam",
+      "text_key": "scene.qc.steel_field_failure.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.qc.steel_field_failure.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.qc.steel_field_failure.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": -1
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.owned_steel_decision",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.qc.steel_field_failure.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.qc.steel_field_failure.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": -2
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.qc.steel_field_failure.c3",
+      "outcomes": [
+        {
+          "p": 0.45,
+          "narration_key": "scene.qc.steel_field_failure.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.hid_borderline_data",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.55,
+          "result": "fail",
+          "narration_key": "scene.qc.steel_field_failure.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.minh.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.hid_borderline_data",
+              "visibility": "public"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

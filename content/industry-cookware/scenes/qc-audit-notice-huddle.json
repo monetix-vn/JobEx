@@ -1,0 +1,157 @@
+{
+  "id": "scene.qc.audit_notice_huddle",
+  "location": "loc.meeting_room",
+  "cast": ["char:khoa", "char:tam"],
+  "lines": [
+    {
+      "speaker": "char:khoa",
+      "text_key": "scene.qc.audit_notice_huddle.l1"
+    },
+    {
+      "speaker": "char:tam",
+      "text_key": "scene.qc.audit_notice_huddle.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.qc.audit_notice_huddle.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.qc.audit_notice_huddle.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "delta": "company.audit_readiness",
+              "value": 8
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.qc.audit_notice_huddle.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "delta": "company.audit_readiness",
+              "value": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.qc.audit_notice_huddle.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.qc.audit_notice_huddle.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "delta": "company.audit_readiness",
+              "value": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.qc.audit_notice_huddle.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.qc.audit_notice_huddle.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": -1
+            },
+            {
+              "delta": "company.audit_readiness",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.qc.audit_notice_huddle.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "delta": "company.audit_readiness",
+              "value": -2
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+{
+  "id": "scene.qc.recall_press",
+  "location": "loc.meeting_room",
+  "cast": ["char:khoa"],
+  "lines": [
+    {
+      "speaker": "char:khoa",
+      "text_key": "scene.qc.recall_press.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.qc.recall_press.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.qc.recall_press.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.field_complaint",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.qc.recall_press.c2",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.qc.recall_press.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.field_complaint",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.qc.recall_press.c2.fail",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.field_complaint",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.qc.recall_press.c3",
+      "outcomes": [
+        {
+          "p": 0.5,
+          "narration_key": "scene.qc.recall_press.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.minimised_defect_to_buyer",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.field_complaint",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.5,
+          "result": "fail",
+          "narration_key": "scene.qc.recall_press.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -10
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 7
+            },
+            {
+              "fact": "fact.minimised_defect_to_buyer",
+              "visibility": "public"
+            },
+            {
+              "arc": "arc.field_complaint",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

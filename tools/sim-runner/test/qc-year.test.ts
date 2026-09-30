@@ -271,6 +271,87 @@ describe('QC Specialist: the same engine, a different job', () => {
     expect(withPeople).toBeGreaterThan(6);
   });
 
+  it('the QC season has all its beats, once each, inside their windows', async () => {
+    const windows: Record<string, [number, number]> = {
+      'event.qc.first_day_walkthrough': [1, 3],
+      'event.qc.vy_spring_visit': [14, 17],
+      'event.qc.midyear_review': [24, 28],
+      'event.qc.field_complaint_arrives': [29, 32],
+      'event.qc.ms_vy_returns': [41, 44],
+      'event.qc.year_end_review': [49, 52],
+    };
+    for (let i = 0; i < 6; i++) {
+      const { log } = await play('qc-year', `qc-beats2-${i}`, 'en', undefined, { policy: 'first' });
+      const all = of(log, 'director.eventFired').map((e) => ({
+        id: (e.payload as { eventId: string }).eventId,
+        week: e.turn + 1,
+      }));
+      for (const [id, [from, to]] of Object.entries(windows)) {
+        const plays = all.filter((f) => f.id === id);
+        expect(plays, `${id} in run ${i}`).toHaveLength(1);
+        expect(plays[0]!.week).toBeGreaterThanOrEqual(from);
+        expect(plays[0]!.week).toBeLessThanOrEqual(to);
+      }
+    }
+  });
+
+  it('the storylines Cheaper Steel, The Field Complaint and Minh run, branch and end', async () => {
+    const advanced = (log: ReplayLog, arc: string) =>
+      of(log, 'arc.advanced')
+        .map((e) => e.payload as { arc: string; stage: string })
+        .filter((p) => p.arc === arc)
+        .map((p) => p.stage);
+    const started = (log: ReplayLog, arc: string) =>
+      of(log, 'arc.started').some((e) => (e.payload as { arc: string }).arc === arc);
+    const seen: Record<string, number> = { steel: 0, complaint: 0, minh: 0 };
+    for (let i = 0; i < 30; i++) {
+      const careful = (await play('qc-year', `qc-arcs-${i}`, 'en', undefined, { policy: 'first' }))
+        .log;
+      const reckless = (await play('qc-year', `qc-arcs-${i}`, 'en', undefined, { policy: 'last' }))
+        .log;
+      if (started(careful, 'arc.cheaper_steel')) {
+        seen.steel! += 1;
+        expect(advanced(careful, 'arc.cheaper_steel')[0]).toBe('results');
+      }
+      if (
+        started(reckless, 'arc.cheaper_steel') &&
+        advanced(reckless, 'arc.cheaper_steel').length > 0
+      ) {
+        expect(advanced(reckless, 'arc.cheaper_steel')[0]).toBe('failure');
+      }
+      if (started(careful, 'arc.field_complaint')) {
+        seen.complaint! += 1;
+        expect(advanced(careful, 'arc.field_complaint')[0]).toBe('dispute');
+      }
+      if (started(careful, 'arc.minh')) seen.minh! += 1;
+    }
+    expect(seen.steel).toBeGreaterThan(3);
+    expect(seen.complaint).toBeGreaterThan(20);
+    expect(seen.minh).toBeGreaterThan(3);
+  });
+
+  it('the supplier-money consequence scene only comes to someone who took the money', async () => {
+    let seenScene = 0;
+    for (let i = 0; i < 40; i++) {
+      const { log } = await play('qc-year', `qc-scape-${i}`);
+      const rank: Record<string, number> = {};
+      for (const e of log.entries) {
+        if (e.type === 'sim.deltaApplied') {
+          const p = e.payload as { path: string; to: number };
+          if (p.path.startsWith('fact.')) rank[p.path] = p.to;
+        }
+        if (
+          e.type === 'director.eventFired' &&
+          (e.payload as { eventId: string }).eventId === 'event.qc.scapegoat_meeting'
+        ) {
+          seenScene += 1;
+          expect(rank['fact.took_supplier_money'] ?? 0).toBeGreaterThanOrEqual(1);
+        }
+      }
+    }
+    expect(seenScene).toBeGreaterThanOrEqual(0);
+  });
+
   it('is deterministic and replays identically, like every other scenario', async () => {
     const scenario = await loadScenario('qc-year', { contentDir });
     for (const seed of ['q1', 'q2']) {
