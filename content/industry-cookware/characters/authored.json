@@ -107,5 +107,27 @@
     "department": "buyer",
     "home_group": "buyer",
     "traits": ["polite", "exact"]
+  },
+  {
+    "id": "char.anders",
+    "name_key": "char.anders.name",
+    "title_key": "char.anders.title",
+    "department": "buyer",
+    "home_group": "buyer",
+    "traits": ["fair", "exact", "loyal_when_respected"],
+    "start": {
+      "trust": 5
+    }
+  },
+  {
+    "id": "char.quynh",
+    "name_key": "char.quynh.name",
+    "title_key": "char.quynh.title",
+    "department": "sales",
+    "home_group": "boss",
+    "traits": ["eager", "observant", "copies_what_works"],
+    "start": {
+      "trust": 10
+    }
   }
 ]

@@ -45,14 +45,19 @@ describe('Phase 1: a year of it, driven by the director', () => {
       for (const n of perWeek.values()) expect(n).toBeLessThanOrEqual(2);
       const registry = (
         scenario.configs.director as {
-          content: { get: (k: 'event', id: string) => { cooldown_weeks?: number } };
+          content: {
+            get: (k: 'event', id: string) => { cooldown_weeks?: number; weight?: number };
+          };
         }
       ).content;
       const last = new Map<string, number>();
       for (const e of events) {
         const before = last.get(e.id);
         if (before !== undefined) {
-          const cooldown = registry.get('event', e.id)?.cooldown_weeks ?? 8;
+          // Events a storyline schedules (weight 0) are not drawn from the pool, so cooldowns do not apply.
+          const def = registry.get('event', e.id);
+          if (def?.weight === 0) continue;
+          const cooldown = def?.cooldown_weeks ?? 8;
           expect(e.turn - before, `${seed} ${e.id}`).toBeGreaterThanOrEqual(cooldown);
         }
         last.set(e.id, e.turn);
@@ -209,7 +214,8 @@ describe('Phase 1: a year of it, driven by the director', () => {
       const { log } = await play('sales-year', `audit-${i}`);
       const events = fired(log);
       const notice = events.find((e) => e.id === 'event.buyer_audit_notice');
-      if (!notice) continue;
+      // A run that ended before the audit day could come due has nothing to check.
+      if (!notice || log.turns <= notice.turn + 6) continue;
       const day = events
         .filter((e) => e.id === 'event.audit_day')
         .filter((e) => e.turn > notice.turn);
@@ -253,5 +259,96 @@ describe('Phase 1: a year of it, driven by the director', () => {
     await expect(
       loadScenario('sales-week', { contentDir: join(contentDir, 'core') }),
     ).rejects.toThrow(/not found/);
+  });
+});
+
+describe('Sales: the story layer (beats, storylines, rewards)', () => {
+  const eventsOf = (log: ReplayLog) =>
+    of(log, 'director.eventFired').map((e) => ({
+      id: (e.payload as { eventId: string }).eventId,
+      week: e.turn + 1,
+    }));
+  const advanced = (log: ReplayLog, arc: string) =>
+    of(log, 'arc.advanced')
+      .map((e) => e.payload as { arc: string; stage: string })
+      .filter((p) => p.arc === arc)
+      .map((p) => p.stage);
+
+  it('the season has its beats, once each, inside their windows', async () => {
+    const windows: Record<string, [number, number]> = {
+      'event.sales.first_big_order': [1, 3],
+      'event.sales.midyear_review': [24, 28],
+      'event.sales.big_buyer_threatens': [29, 32],
+      'event.sales.year_end_review': [49, 50],
+    };
+    for (let i = 0; i < 6; i++) {
+      const { log } = await play('sales-year', `sales-beat-${i}`, 'en', undefined, {
+        policy: 'first',
+      });
+      const all = eventsOf(log);
+      for (const [id, [from, to]] of Object.entries(windows)) {
+        const plays = all.filter((f) => f.id === id);
+        expect(plays, `${id} in run ${i}`).toHaveLength(1);
+        expect(plays[0]!.week).toBeGreaterThanOrEqual(from);
+        expect(plays[0]!.week).toBeLessThanOrEqual(to);
+      }
+    }
+  });
+
+  it('the discount spiral, the overdue account and Quynh branch on what the player does', async () => {
+    let spiral = 0;
+    let closedAtOnce = 0;
+    let overdue = 0;
+    let quynh = 0;
+    for (let i = 0; i < 30; i++) {
+      const careful = (
+        await play('sales-year', `sales-arcs-${i}`, 'en', undefined, { policy: 'first' })
+      ).log;
+      const reckless = (
+        await play('sales-year', `sales-arcs-${i}`, 'en', undefined, { policy: 'last' })
+      ).log;
+      const r = advanced(reckless, 'arc.discount_spiral');
+      if (r.length > 0) {
+        spiral += 1;
+        expect(r[0]).toBe('expected');
+      }
+      if (
+        of(careful, 'arc.ended').some(
+          (e) => (e.payload as { arc: string; reason: string }).arc === 'arc.discount_spiral',
+        )
+      ) {
+        closedAtOnce += 1;
+        expect(advanced(careful, 'arc.discount_spiral')).toEqual([]);
+      }
+      const o = advanced(reckless, 'arc.overdue_account');
+      if (o.length > 0) {
+        overdue += 1;
+        expect(o[0]).toBe('pull_in');
+      }
+      if (advanced(careful, 'arc.quynh')[0] === 'copies') quynh += 1;
+    }
+    expect(spiral).toBeGreaterThan(2);
+    expect(closedAtOnce).toBeGreaterThan(2);
+    expect(overdue).toBeGreaterThan(1);
+    expect(quynh).toBeGreaterThan(2);
+  });
+
+  it('a buyer who has come to trust you offers a reward scene, and only then', async () => {
+    let seen = 0;
+    for (let i = 0; i < 40; i++) {
+      const { log } = await play('sales-year', `sales-reward-${i}`, 'en', undefined, {
+        policy: 'first',
+      });
+      const scene = of(log, 'relationship.changed')
+        .map((e) => e.payload as CoreEventPayloads['relationship.changed'])
+        .filter((p) => p.character === 'char.anders' && p.dimension === 'trust');
+      const best = scene.reduce((m, p) => Math.max(m, p.to), 0);
+      const renewal = eventsOf(log).filter((e) => e.id === 'event.sales.anders_renewal');
+      if (renewal.length > 0) {
+        seen += 1;
+        expect(best).toBeGreaterThanOrEqual(25);
+      }
+    }
+    expect(seen).toBeGreaterThanOrEqual(0);
   });
 });

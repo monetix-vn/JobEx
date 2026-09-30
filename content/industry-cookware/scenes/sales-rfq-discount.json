@@ -34,6 +34,10 @@
             {
               "delta": "player.rep.buyer",
               "value": 2
+            },
+            {
+              "arc": "arc.discount_spiral",
+              "stage": "end"
             }
           ]
         },
@@ -49,6 +53,10 @@
             {
               "delta": "player.stress",
               "value": 3
+            },
+            {
+              "arc": "arc.discount_spiral",
+              "stage": "end"
             }
           ]
         }
@@ -72,6 +80,10 @@
             {
               "delta": "player.rep.buyer",
               "value": 2
+            },
+            {
+              "arc": "arc.discount_spiral",
+              "stage": "end"
             }
           ]
         },
@@ -87,6 +99,10 @@
             {
               "delta": "player.stress",
               "value": 4
+            },
+            {
+              "arc": "arc.discount_spiral",
+              "stage": "end"
             }
           ]
         }
@@ -111,6 +127,10 @@
             {
               "fact": "fact.discount_above_limit",
               "visibility": "private"
+            },
+            {
+              "arc": "arc.discount_spiral",
+              "stage": "expected"
             }
           ]
         },
@@ -130,6 +150,10 @@
             {
               "fact": "fact.discount_above_limit",
               "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.discount_spiral",
+              "stage": "expected"
             }
           ]
         }

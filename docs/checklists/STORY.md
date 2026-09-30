@@ -38,17 +38,11 @@ source of truth for what scene comes next; update their Status column as you go.
 
 ## Job 2: Export Sales Specialist (`docs/story/sales.md`)
 
-- [x] Bible outline v1 (AI)
-- [x] 18 scenes imported
-- [ ] Expand bible to QC level of detail (episode table with timing, cast, choices) (owner approves)
-- [ ] Cast finalised (Thao, Anders, Lan, Duc, Quynh, competitor)
-- [ ] Premiere and first big order
-- [ ] Discount Spiral arc
-- [ ] Overdue Account arc
-- [ ] Quynh arc
-- [ ] Midseason twist and crisis scenes
-- [ ] Finale and annual review
-- [ ] Balance check and review
+- [x] Bible v2 (AI): cast, season timeline, four storylines, dark-side ladder, episode list (owner review pending)
+- [x] 34 scenes imported: the original 19 plus 15 new (premiere, midyear review, big-buyer twist, year-end review, manager offer with the promoted ending, discount spiral x2, overdue pull-in, Quynh x2, factory visit, quota push, credit ask, expense padding, Anders's renewal); 8 new facts; characters Anders and Quynh
+- [x] First-cut balance check: existing sales tests pass with the new scenes; `sales-year.test.ts` has new story-layer tests; pins updated
+- [ ] Remaining Sales scenes (second Tet block, trade-fair follow-up arc, finance interview, more Quynh)
+- [ ] Practitioner review of the Sales text
 
 ## Job 3: Finance and Accounting (`docs/story/finance.md`)
 

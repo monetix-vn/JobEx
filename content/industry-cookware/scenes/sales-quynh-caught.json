@@ -1,0 +1,135 @@
+{
+  "id": "scene.sales.quynh_caught",
+  "location": "loc.meeting_room",
+  "cast": ["char:bao"],
+  "lines": [
+    {
+      "speaker": "char:bao",
+      "text_key": "scene.sales.quynh_caught.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sales.quynh_caught.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.sales.quynh_caught.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.quynh.trust",
+              "value": 7
+            },
+            {
+              "delta": "rel.quynh.loyalty",
+              "value": 6
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sales.quynh_caught.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.sales.quynh_caught.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.quynh.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.quynh.loyalty",
+              "value": -6
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sales.quynh_caught.c3",
+      "outcomes": [
+        {
+          "p": 0.55,
+          "narration_key": "scene.sales.quynh_caught.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.quynh.trust",
+              "value": -16
+            },
+            {
+              "delta": "rel.quynh.loyalty",
+              "value": -12
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.blamed_quynh",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.45,
+          "result": "fail",
+          "narration_key": "scene.sales.quynh_caught.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.quynh.trust",
+              "value": -16
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -10
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -8
+            },
+            {
+              "delta": "player.stress",
+              "value": 7
+            },
+            {
+              "fact": "fact.blamed_quynh",
+              "visibility": "public"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

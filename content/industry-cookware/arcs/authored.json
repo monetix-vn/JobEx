@@ -158,5 +158,60 @@
         "delay_weeks": [10, 16]
       }
     ]
+  },
+  {
+    "id": "arc.discount_spiral",
+    "title_key": "arc.discount_spiral.title",
+    "stages": [
+      {
+        "id": "discount",
+        "event": "event.sales.rfq_discount"
+      },
+      {
+        "id": "expected",
+        "event": "event.sales.discount_expected",
+        "delay_weeks": [5, 9]
+      },
+      {
+        "id": "review",
+        "event": "event.sales.margin_review",
+        "delay_weeks": [4, 8]
+      }
+    ]
+  },
+  {
+    "id": "arc.overdue_account",
+    "title_key": "arc.overdue_account.title",
+    "stages": [
+      {
+        "id": "overdue",
+        "event": "event.sales.payment_overdue"
+      },
+      {
+        "id": "pull_in",
+        "event": "event.sales.overdue_pull_in",
+        "delay_weeks": [3, 5]
+      }
+    ]
+  },
+  {
+    "id": "arc.quynh",
+    "title_key": "arc.quynh.title",
+    "stages": [
+      {
+        "id": "mentor",
+        "event": "event.sales.new_hire_mentor"
+      },
+      {
+        "id": "copies",
+        "event": "event.sales.quynh_copies_you",
+        "delay_weeks": [10, 16]
+      },
+      {
+        "id": "caught",
+        "event": "event.sales.quynh_caught",
+        "delay_weeks": [4, 8]
+      }
+    ]
   }
 ]

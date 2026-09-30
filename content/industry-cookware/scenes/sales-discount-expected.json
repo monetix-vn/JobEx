@@ -1,0 +1,165 @@
+{
+  "id": "scene.sales.discount_expected",
+  "location": "loc.sales_office",
+  "cast": ["char:anders"],
+  "lines": [
+    {
+      "speaker": "char:anders",
+      "text_key": "scene.sales.discount_expected.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sales.discount_expected.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.sales.discount_expected.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.anders.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.discount_spiral",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.sales.discount_expected.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.anders.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.discount_spiral",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sales.discount_expected.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.sales.discount_expected.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.anders.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "arc": "arc.discount_spiral",
+              "stage": "review"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sales.discount_expected.c3",
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.sales.discount_expected.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.anders.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": -1
+            },
+            {
+              "fact": "fact.discount_above_limit",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.discount_spiral",
+              "stage": "review"
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.sales.discount_expected.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.anders.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.discount_above_limit",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.discount_spiral",
+              "stage": "review"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

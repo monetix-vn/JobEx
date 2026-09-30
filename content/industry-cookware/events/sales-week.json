@@ -13,7 +13,8 @@
     "weight": 1,
     "scene": "scene.sales.rfq_discount",
     "cooldown_weeks": 8,
-    "role": "role.sales.export.specialist"
+    "role": "role.sales.export.specialist",
+    "arc": "arc.discount_spiral"
   },
   {
     "id": "event.sales.forecast_meeting",
@@ -35,7 +36,8 @@
     "when": {
       "gte": ["world.month_of_year", 2]
     },
-    "role": "role.sales.export.specialist"
+    "role": "role.sales.export.specialist",
+    "arc": "arc.overdue_account"
   },
   {
     "id": "event.sales.sample_request",
@@ -135,7 +137,8 @@
     "weight": 0.8,
     "cooldown_weeks": 16,
     "scene": "scene.sales.new_hire_mentor",
-    "role": "role.sales.export.specialist"
+    "role": "role.sales.export.specialist",
+    "arc": "arc.quynh"
   },
   {
     "id": "event.sales.trade_fair",
@@ -299,5 +302,204 @@
       ]
     },
     "role": "role.sales.export.specialist"
+  },
+  {
+    "id": "event.sales.first_big_order",
+    "role": "role.sales.export.specialist",
+    "tags": ["onboarding", "people", "beat"],
+    "beat": {
+      "from_week": 1,
+      "to_week": 3
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.sales.first_big_order"
+  },
+  {
+    "id": "event.sales.discount_expected",
+    "role": "role.sales.export.specialist",
+    "tags": ["buyer", "pricing", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.sales.discount_expected"
+  },
+  {
+    "id": "event.sales.margin_review",
+    "role": "role.sales.export.specialist",
+    "tags": ["pricing", "finance", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.sales.margin_review"
+  },
+  {
+    "id": "event.sales.overdue_pull_in",
+    "role": "role.sales.export.specialist",
+    "tags": ["receivables", "pressure", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.sales.overdue_pull_in"
+  },
+  {
+    "id": "event.sales.quynh_copies_you",
+    "role": "role.sales.export.specialist",
+    "tags": ["people", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.sales.quynh_copies_you"
+  },
+  {
+    "id": "event.sales.quynh_caught",
+    "role": "role.sales.export.specialist",
+    "tags": ["people", "dark", "consequence", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.sales.quynh_caught"
+  },
+  {
+    "id": "event.sales.buyer_visit_factory",
+    "role": "role.sales.export.specialist",
+    "tags": ["buyer", "people", "pressure"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 12]
+        },
+        {
+          "lte": ["world.turn", 44]
+        }
+      ]
+    },
+    "weight": 1.5,
+    "cooldown_weeks": 40,
+    "scene": "scene.sales.buyer_visit_factory"
+  },
+  {
+    "id": "event.sales.quota_push",
+    "role": "role.sales.export.specialist",
+    "tags": ["pressure", "people"],
+    "when": {
+      "all": [
+        {
+          "in": ["world.month_of_year", 3, 6, 9, 12]
+        },
+        {
+          "gte": ["world.turn", 8]
+        }
+      ]
+    },
+    "weight": 1.5,
+    "cooldown_weeks": 14,
+    "scene": "scene.sales.quota_push"
+  },
+  {
+    "id": "event.sales.credit_ask",
+    "role": "role.sales.export.specialist",
+    "tags": ["buyer", "risk", "dark"],
+    "when": {
+      "gte": ["world.turn", 10]
+    },
+    "weight": 1.2,
+    "cooldown_weeks": 26,
+    "scene": "scene.sales.credit_ask"
+  },
+  {
+    "id": "event.sales.expense_padding",
+    "role": "role.sales.export.specialist",
+    "tags": ["people", "integrity", "dark"],
+    "when": {
+      "gte": ["world.turn", 14]
+    },
+    "weight": 1,
+    "cooldown_weeks": 30,
+    "scene": "scene.sales.expense_padding"
+  },
+  {
+    "id": "event.sales.midyear_review",
+    "role": "role.sales.export.specialist",
+    "tags": ["people", "review", "beat"],
+    "beat": {
+      "from_week": 24,
+      "to_week": 28
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.sales.midyear_review"
+  },
+  {
+    "id": "event.sales.big_buyer_threatens",
+    "role": "role.sales.export.specialist",
+    "tags": ["buyer", "pressure", "beat"],
+    "beat": {
+      "from_week": 29,
+      "to_week": 32
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.sales.big_buyer_threatens"
+  },
+  {
+    "id": "event.sales.anders_renewal",
+    "role": "role.sales.export.specialist",
+    "tags": ["buyer", "people", "reward"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 34]
+        },
+        {
+          "gte": [
+            {
+              "var": ["rel.anders.trust", 0]
+            },
+            25
+          ]
+        }
+      ]
+    },
+    "weight": 4,
+    "cooldown_weeks": 52,
+    "scene": "scene.sales.anders_renewal"
+  },
+  {
+    "id": "event.sales.year_end_review",
+    "role": "role.sales.export.specialist",
+    "tags": ["people", "review", "beat"],
+    "beat": {
+      "from_week": 49,
+      "to_week": 50
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.sales.year_end_review"
+  },
+  {
+    "id": "event.sales.manager_offer",
+    "role": "role.sales.export.specialist",
+    "tags": ["people", "promotion", "beat"],
+    "when": {
+      "all": [
+        {
+          "gte": [
+            {
+              "var": ["rel.bao.trust", 0]
+            },
+            20
+          ]
+        },
+        {
+          "gte": ["player.rep.boss", 58]
+        },
+        {
+          "gte": ["player.rep.buyer", 55]
+        }
+      ]
+    },
+    "beat": {
+      "from_week": 51,
+      "to_week": 52
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.sales.manager_offer"
   }
 ]

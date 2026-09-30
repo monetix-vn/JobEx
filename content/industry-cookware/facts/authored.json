@@ -999,5 +999,191 @@
         "boss": -16
       }
     }
+  },
+  {
+    "id": "fact.buried_discount_in_freight",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.buried_discount_in_freight",
+    "lesson_key": "lesson.buried_discount_in_freight",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.6,
+        "detectors": ["internal_audit", "finance", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -7,
+        "finance": -5,
+        "buyer": -2
+      },
+      "public": {
+        "boss": -12
+      }
+    }
+  },
+  {
+    "id": "fact.pulled_shipment_in",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.pulled_shipment_in",
+    "lesson_key": "lesson.pulled_shipment_in",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "buyer", "finance"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "buyer": -6
+      },
+      "public": {
+        "boss": -10,
+        "buyer": -10
+      }
+    }
+  },
+  {
+    "id": "fact.approved_quynh_shortcut",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.approved_quynh_shortcut",
+    "lesson_key": "lesson.approved_quynh_shortcut",
+    "traces": [
+      {
+        "type": "message",
+        "visibility": 0.5,
+        "detectors": ["boss", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -4
+      },
+      "public": {
+        "boss": -7
+      }
+    }
+  },
+  {
+    "id": "fact.blamed_quynh",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.blamed_quynh",
+    "lesson_key": "lesson.blamed_quynh",
+    "traces": [
+      {
+        "type": "message",
+        "visibility": 0.8,
+        "detectors": ["boss", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8
+      },
+      "public": {
+        "boss": -13
+      }
+    }
+  },
+  {
+    "id": "fact.staged_factory_visit",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.staged_factory_visit",
+    "lesson_key": "lesson.staged_factory_visit",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.7,
+        "detectors": ["buyer", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "buyer": -8
+      },
+      "public": {
+        "boss": -10,
+        "buyer": -14
+      }
+    }
+  },
+  {
+    "id": "fact.padded_quota_orders",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.padded_quota_orders",
+    "lesson_key": "lesson.padded_quota_orders",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "finance", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "finance": -5
+      },
+      "public": {
+        "boss": -10
+      }
+    }
+  },
+  {
+    "id": "fact.padded_expense_claim",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.padded_expense_claim",
+    "lesson_key": "lesson.padded_expense_claim",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.6,
+        "detectors": ["internal_audit", "finance"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -5,
+        "finance": -5
+      },
+      "public": {
+        "boss": -9
+      }
+    }
+  },
+  {
+    "id": "fact.exploited_buyer_trust",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.exploited_buyer_trust",
+    "lesson_key": "lesson.exploited_buyer_trust",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.7,
+        "detectors": ["buyer", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -5,
+        "buyer": -10
+      },
+      "public": {
+        "boss": -9,
+        "buyer": -16
+      }
+    }
   }
 ]

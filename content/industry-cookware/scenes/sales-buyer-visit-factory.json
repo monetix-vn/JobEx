@@ -1,0 +1,149 @@
+{
+  "id": "scene.sales.buyer_visit_factory",
+  "location": "loc.factory_floor",
+  "cast": ["char:anders", "char:lan"],
+  "lines": [
+    {
+      "speaker": "char:anders",
+      "text_key": "scene.sales.buyer_visit_factory.l1"
+    },
+    {
+      "speaker": "char:lan",
+      "text_key": "scene.sales.buyer_visit_factory.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sales.buyer_visit_factory.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.sales.buyer_visit_factory.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.anders.trust",
+              "value": 8
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.sales.buyer_visit_factory.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.anders.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sales.buyer_visit_factory.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.sales.buyer_visit_factory.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.anders.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sales.buyer_visit_factory.c3",
+      "outcomes": [
+        {
+          "p": 0.65,
+          "narration_key": "scene.sales.buyer_visit_factory.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.anders.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.staged_factory_visit",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.35,
+          "result": "fail",
+          "narration_key": "scene.sales.buyer_visit_factory.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.anders.trust",
+              "value": -12
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -8
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.staged_factory_visit",
+              "visibility": "public"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

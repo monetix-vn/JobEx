@@ -35,6 +35,10 @@
             {
               "delta": "player.stress",
               "value": 2
+            },
+            {
+              "arc": "arc.quynh",
+              "stage": "copies"
             }
           ]
         },
@@ -50,6 +54,10 @@
             {
               "delta": "player.stress",
               "value": 4
+            },
+            {
+              "arc": "arc.quynh",
+              "stage": "copies"
             }
           ]
         }
@@ -70,6 +78,10 @@
             {
               "fact": "fact.taught_shortcuts",
               "visibility": "private"
+            },
+            {
+              "arc": "arc.quynh",
+              "stage": "copies"
             }
           ]
         },
@@ -89,6 +101,10 @@
             {
               "fact": "fact.taught_shortcuts",
               "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.quynh",
+              "stage": "copies"
             }
           ]
         }
@@ -109,6 +125,10 @@
             {
               "delta": "player.stress",
               "value": -1
+            },
+            {
+              "arc": "arc.quynh",
+              "stage": "copies"
             }
           ]
         }

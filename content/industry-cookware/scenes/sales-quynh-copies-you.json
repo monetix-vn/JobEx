@@ -1,0 +1,104 @@
+{
+  "id": "scene.sales.quynh_copies_you",
+  "location": "loc.sales_office",
+  "cast": ["char:quynh"],
+  "lines": [
+    {
+      "speaker": "char:quynh",
+      "text_key": "scene.sales.quynh_copies_you.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sales.quynh_copies_you.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.sales.quynh_copies_you.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.quynh.trust",
+              "value": 6
+            },
+            {
+              "delta": "rel.quynh.loyalty",
+              "value": 4
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "arc": "arc.quynh",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sales.quynh_copies_you.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.sales.quynh_copies_you.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.quynh.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "arc": "arc.quynh",
+              "stage": "caught"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sales.quynh_copies_you.c3",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.sales.quynh_copies_you.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.quynh.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.quynh.loyalty",
+              "value": 5
+            },
+            {
+              "delta": "player.stress",
+              "value": -1
+            },
+            {
+              "fact": "fact.approved_quynh_shortcut",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.quynh",
+              "stage": "caught"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

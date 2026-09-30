@@ -1,0 +1,929 @@
+# Sales blocks (docs/story/sales.md). Bao (char.bao, from fin-cast.yml) is the Sales Manager: the player's boss here.
+char: anders
+department: buyer
+group: buyer
+traits: [fair, exact, loyal_when_respected]
+start: { trust: 5 }
+en: { name: 'Mr Anders', title: 'Buyer, European retail chain' }
+vi: { name: 'Ông Anders', title: 'Người mua, chuỗi bán lẻ châu Âu' }
+---
+char: quynh
+department: sales
+group: boss
+traits: [eager, observant, copies_what_works]
+start: { trust: 10 }
+en: { name: 'Quynh', title: 'Junior sales coordinator' }
+vi: { name: 'Quỳnh', title: 'Điều phối viên kinh doanh mới vào' }
+---
+scene: sales.first_big_order
+place: sales_office
+tags: [onboarding, people, beat]
+beat: 1-3
+lines:
+  - who: char:bao
+    en: 'Good timing. Mr Anders is sending his first big order this month. Twenty thousand pots. It is the order that decides whether we become his main supplier. I will be honest: the delivery date he wants is tight.'
+    vi: 'Đúng lúc lắm. Ông Anders sắp gửi đơn lớn đầu tiên trong tháng này. Hai mươi nghìn chiếc nồi. Đơn này quyết định mình có thành nhà cung cấp chính của ông ấy không. Anh nói thật: ngày giao ông ấy muốn rất sát.'
+  - who: char:anders
+    en: 'I have had three suppliers fail on dates this year. I do not need the cheapest. I need someone who tells me the truth when it is going to be late.'
+    vi: 'Năm nay có ba nhà cung cấp trễ hạn với tôi. Tôi không cần rẻ nhất. Tôi cần người nói thật khi việc sắp trễ.'
+choices:
+  - en: 'Check the real capacity with Lan before you promise a date, and give Anders a date you can defend.'
+    vi: 'Kiểm công suất thật với chị Lan trước khi hứa ngày và đưa cho ông Anders một ngày bảo vệ được.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.8
+        en: "The date is nine days later than Anders wanted. He pauses, then: 'That I can plan around.' Bao is nervous, Lan is grateful. You have a real date."
+        vi: "Ngày giao trễ hơn ông Anders muốn chín ngày. Ông ngừng một lúc rồi nói: 'Cái này tôi lên kế hoạch được.' Anh Bảo lo, chị Lan biết ơn. Anh/chị có một ngày thật."
+        effects: [rel anders trust +6, rel lan trust +3, rel bao trust -2, stress +2]
+      - p: 0.2
+        ok: false
+        en: 'Anders says nine days is too late and gives the first tranche to a rival. You keep the second. It is an honest loss.'
+        vi: 'Ông Anders nói chín ngày là quá trễ và giao đợt đầu cho đối thủ. Anh/chị giữ đợt hai. Một thất bại trung thực.'
+        effects: [rel anders trust +2, rel bao trust -5, rep.buyer -2, stress +3]
+  - en: 'Promise a date in between and ask Lan to try her best to meet it.'
+    vi: 'Hứa một ngày ở giữa và nhờ chị Lan cố hết sức để kịp.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "Anders accepts. Lan says, 'I will try', and you both know what that means. It may hold, or it may not."
+        vi: "Ông Anders chấp nhận. Chị Lan nói 'Em sẽ cố', và cả hai đều biết điều đó nghĩa là gì. Có thể giữ được, có thể không."
+        effects: [rel anders trust +2, rel lan trust -1, rel bao trust +2, stress +2]
+  - en: 'Promise him exactly the date he asked for and sort out production afterwards.'
+    vi: 'Hứa đúng ngày ông ấy yêu cầu và xử lý sản xuất sau.'
+    outcomes:
+      - p: 0.7
+        en: 'Anders is delighted. Bao claps your shoulder. Lan hears about the date from Bao, in the corridor.'
+        vi: 'Ông Anders rất vui. Anh Bảo vỗ vai anh/chị. Chị Lan nghe về ngày giao từ anh Bảo, ngoài hành lang.'
+        effects:
+          [
+            rel anders trust +5,
+            rel bao trust +5,
+            rel lan trust -6,
+            stress +1,
+            fact promised_unrealistic_date private,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'Lan says, in front of Bao, that the date is impossible and that nobody asked her. The room goes cold.'
+        vi: 'Chị Lan nói trước mặt anh Bảo rằng ngày đó bất khả thi và không ai hỏi chị. Căn phòng lạnh đi.'
+        effects:
+          [
+            rel anders trust +3,
+            rel bao trust -2,
+            rel lan trust -9,
+            stress +4,
+            fact promised_unrealistic_date witnessed,
+          ]
+---
+arc: discount_spiral
+title:
+  en: 'The discount spiral'
+  vi: 'Vòng xoáy giảm giá'
+stages:
+  - { id: discount, event: sales.rfq_discount }
+  - { id: expected, event: sales.discount_expected, delay: 5-9 }
+  - { id: review, event: sales.margin_review, delay: 4-8 }
+---
+scene: sales.discount_expected
+weight: 0
+place: sales_office
+tags: [buyer, pricing, dark, arc]
+lines:
+  - who: char:anders
+    en: 'For the next order I assume the same price as last time. Six percent off list. I have already told my own board. Is there a problem?'
+    vi: 'Cho đơn tiếp theo tôi giả định giá như lần trước. Giảm sáu phần trăm so với giá niêm yết. Tôi đã báo với hội đồng của mình rồi. Có vấn đề gì không?'
+choices:
+  - en: 'Explain plainly that the six percent was a one-time deal tied to volume, and offer a tiered price for this order.'
+    vi: 'Giải thích rõ rằng sáu phần trăm là thỏa thuận một lần gắn với sản lượng và đề xuất giá theo bậc cho đơn này.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.7
+        en: "Anders is not pleased but he respects the clarity. 'Fine. I will tell my board it was a promotion.' The price holds at four percent."
+        vi: "Ông Anders không hài lòng nhưng tôn trọng sự rõ ràng. 'Được. Tôi sẽ báo hội đồng đó là khuyến mãi.' Giá giữ ở mức bốn phần trăm."
+        effects: [rel anders trust +2, rel bao trust +1, stress +2, arc discount_spiral end]
+      - p: 0.3
+        ok: false
+        en: 'Anders says he will look at other suppliers. You hold the line. The order shrinks by a third.'
+        vi: 'Ông Anders nói sẽ xem các nhà cung cấp khác. Anh/chị giữ lập trường. Đơn hàng giảm một phần ba.'
+        effects:
+          [rel anders trust -4, rel bao trust -3, rep.buyer -2, stress +4, arc discount_spiral end]
+  - en: 'Offer four percent and ask Duc to approve the margin impact in writing.'
+    vi: 'Đề xuất bốn phần trăm và nhờ anh Đức duyệt ảnh hưởng biên lợi nhuận bằng văn bản.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'Duc signs a reduced discount with a note on volume. It is slow but it is on paper, and Anders accepts the smaller number.'
+        vi: 'Anh Đức ký khoản giảm giá thấp hơn kèm ghi chú về sản lượng. Chậm nhưng có giấy tờ, và ông Anders chấp nhận con số nhỏ hơn.'
+        effects: [rel anders trust +1, rel duc trust +3, stress +1, arc discount_spiral review]
+  - en: 'Say yes to six percent again and deal with the approval later.'
+    vi: 'Nhận lời sáu phần trăm lần nữa và xử lý phê duyệt sau.'
+    outcomes:
+      - p: 0.8
+        en: 'Anders thanks you. The order is large. The discount sits outside your authority for the second time.'
+        vi: 'Ông Anders cảm ơn. Đơn hàng lớn. Khoản giảm giá lần thứ hai nằm ngoài thẩm quyền của anh/chị.'
+        effects:
+          [
+            rel anders trust +5,
+            rel bao trust +1,
+            stress -1,
+            fact discount_above_limit private,
+            arc discount_spiral review,
+          ]
+      - p: 0.2
+        ok: false
+        en: 'Duc sees the price on the order confirmation and calls you in. He asks whether this is the first time.'
+        vi: 'Anh Đức thấy giá trên xác nhận đơn hàng và gọi anh/chị vào. Anh hỏi đây có phải lần đầu không.'
+        effects:
+          [
+            rel anders trust +3,
+            rel duc trust -6,
+            rep.boss -3,
+            stress +4,
+            fact discount_above_limit witnessed,
+            arc discount_spiral review,
+          ]
+---
+scene: sales.margin_review
+weight: 0
+place: meeting_room
+tags: [pricing, finance, dark, arc]
+lines:
+  - who: char:duc
+    en: "I am reviewing margins by customer. Anders's account is down six points in a year. The directors want to know whether the growth is worth it. I need you to walk me through what you agreed and why."
+    vi: 'Anh đang soát biên lợi nhuận theo khách hàng. Tài khoản ông Anders giảm sáu điểm trong một năm. Ban giám đốc muốn biết tăng trưởng có đáng không. Anh cần em kể lại những gì đã thỏa thuận và vì sao.'
+choices:
+  - en: 'Show him every discount, its approval and its reasoning, including the ones you would now do differently.'
+    vi: 'Cho anh ấy xem mọi khoản giảm giá, việc phê duyệt và lý do, kể cả những khoản anh/chị giờ sẽ làm khác.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Duc reads the file for an hour. 'Honest, and more useful than a clean story.' The directors set a margin floor for the account, and you help design it."
+        vi: "Anh Đức đọc hồ sơ một giờ. 'Trung thực, và có ích hơn một câu chuyện sạch.' Ban giám đốc đặt mức sàn biên cho tài khoản, và anh/chị giúp thiết kế nó."
+        effects:
+          [rel duc trust +5, rel bao trust -1, rep.boss +2, stress +3, arc discount_spiral end]
+  - en: 'Present the numbers, framed as the price of winning the account, and propose a recovery plan.'
+    vi: 'Trình bày số liệu như cái giá để giành tài khoản và đề xuất kế hoạch phục hồi.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'Duc accepts the framing with a raised eyebrow. The recovery plan is reasonable and you will be held to it.'
+        vi: 'Anh Đức chấp nhận cách trình bày với một cái nhướng mày. Kế hoạch phục hồi hợp lý và anh/chị sẽ bị yêu cầu thực hiện.'
+        effects: [rel duc trust +1, stress +2, arc discount_spiral end]
+  - en: 'Show the price list and the freight lines, and let the unapproved discounts stay buried in the freight.'
+    vi: 'Cho xem bảng giá và các dòng cước vận chuyển và để các khoản giảm giá không được duyệt nằm lẫn trong cước.'
+    outcomes:
+      - p: 0.6
+        en: 'Duc sees healthy margins on the product lines and accepts the freight as a market cost. You close the file before he asks again.'
+        vi: 'Anh Đức thấy biên tốt ở các dòng sản phẩm và chấp nhận cước vận chuyển như chi phí thị trường. Anh/chị đóng hồ sơ trước khi anh hỏi lại.'
+        effects:
+          [
+            rel duc trust +2,
+            stress +1,
+            fact buried_discount_in_freight private,
+            arc discount_spiral end,
+          ]
+      - p: 0.4
+        ok: false
+        en: 'Hanh in Finance notices the freight charged to Anders is half the average. She says nothing in the meeting, and sends Duc a two-line email afterwards.'
+        vi: 'Chị Hạnh ở Tài chính thấy cước tính cho ông Anders bằng một nửa mức trung bình. Chị không nói gì trong cuộc họp và gửi anh Đức email hai dòng sau đó.'
+        effects:
+          [
+            rel duc trust -8,
+            rep.boss -5,
+            stress +5,
+            fact buried_discount_in_freight witnessed,
+            arc discount_spiral end,
+          ]
+---
+arc: overdue_account
+title:
+  en: 'The overdue account'
+  vi: 'Tài khoản quá hạn'
+stages:
+  - { id: overdue, event: sales.payment_overdue }
+  - { id: pull_in, event: sales.overdue_pull_in, delay: 3-5 }
+---
+scene: sales.overdue_pull_in
+weight: 0
+place: sales_office
+tags: [receivables, pressure, dark, arc]
+lines:
+  - who: char:bao
+    en: 'The overdue balance is going to hurt our quarter numbers. Here is an idea: the next order from that buyer is ready early. Ship it now, invoice it now, and the quarter looks fine. The buyer gets goods they were going to get anyway.'
+    vi: 'Khoản nợ quá hạn sẽ làm tổn thương số liệu quý của mình. Anh có một ý: đơn tiếp theo của khách đó đã sẵn sàng sớm. Giao ngay, xuất hóa đơn ngay, quý sẽ ổn. Khách nhận hàng họ vốn sẽ nhận.'
+choices:
+  - en: "Decline: they have not paid the last one, and shipping more adds risk. Offer to chase the overdue balance with Finance's help."
+    vi: 'Từ chối: họ chưa trả đơn trước, giao thêm chỉ tăng rủi ro. Đề nghị cùng Tài chính đòi khoản quá hạn.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.8
+        en: "Bao frowns, then sighs. Hanh and you agree a call plan with the buyer's AP. The money comes in three weeks later. The quarter is weaker, and truer."
+        vi: 'Anh Bảo cau mày rồi thở dài. Chị Hạnh và anh/chị thống nhất kế hoạch gọi cho bộ phận phải trả của khách. Tiền về ba tuần sau. Quý yếu hơn, và đúng hơn.'
+        effects:
+          [
+            rel bao trust -4,
+            rel hanh trust +3,
+            rel duc trust +2,
+            stress +2,
+            arc overdue_account end,
+          ]
+      - p: 0.2
+        ok: false
+        en: 'The buyer does not pay at all that quarter, and Bao reminds you of his offer. You had a point, at a price.'
+        vi: 'Khách không trả gì trong quý đó, và anh Bảo nhắc anh/chị về đề nghị của anh. Anh/chị có lý, nhưng phải trả giá.'
+        effects: [rel bao trust -6, rel hanh trust +3, stress +4, arc overdue_account end]
+  - en: 'Offer to ship early only if the buyer agrees in writing to the earlier date, and pay the next invoice on the normal terms.'
+    vi: 'Đề nghị giao sớm chỉ khi khách đồng ý bằng văn bản về ngày sớm hơn và thanh toán hóa đơn tiếp theo theo điều khoản thường.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'It is legitimate: the buyer wants the goods early anyway. The revenue is real and the paper trail is clean. Bao is pleased, Finance approves.'
+        vi: 'Hợp lệ: khách vốn muốn hàng sớm. Doanh thu là thật và hồ sơ sạch. Anh Bảo hài lòng, Tài chính chấp thuận.'
+        effects: [rel bao trust +3, rel duc trust +1, stress +1, arc overdue_account end]
+  - en: 'Ship it early without telling the buyer it is early, and invoice it now.'
+    vi: 'Giao sớm mà không nói với khách là sớm và xuất hóa đơn ngay.'
+    outcomes:
+      - p: 0.7
+        en: "The quarter closes beautifully. The buyer's goods-received clerk signs for pots nobody expected, and the paperwork is ready."
+        vi: 'Quý khép lại đẹp. Nhân viên nhận hàng của khách ký nhận những chiếc nồi chẳng ai mong đợi, và giấy tờ đã sẵn sàng.'
+        effects:
+          [
+            rel bao trust +7,
+            rel bao owed +2,
+            stress -1,
+            fact pulled_shipment_in private,
+            arc overdue_account end,
+          ]
+      - p: 0.3
+        ok: false
+        en: "The buyer's warehouse is full and refuses the delivery. The pots sit in a bonded warehouse at your cost, and the invoice is disputed."
+        vi: 'Kho của khách đầy và từ chối nhận hàng. Nồi nằm trong kho ngoại quan do công ty chịu phí, và hóa đơn bị tranh chấp.'
+        effects:
+          [
+            rel bao trust +3,
+            rel hanh trust -5,
+            rep.buyer -6,
+            rep.boss -4,
+            stress +5,
+            fact pulled_shipment_in witnessed,
+            arc overdue_account end,
+          ]
+---
+arc: quynh
+title:
+  en: 'Quynh'
+  vi: 'Quỳnh'
+stages:
+  - { id: mentor, event: sales.new_hire_mentor }
+  - { id: copies, event: sales.quynh_copies_you, delay: 10-16 }
+  - { id: caught, event: sales.quynh_caught, delay: 4-8 }
+---
+scene: sales.quynh_copies_you
+weight: 0
+place: sales_office
+tags: [people, dark, arc]
+lines:
+  - who: char:quynh
+    en: 'I did my first quote alone, and I thought I would do it the way you do. I gave the buyer the date that sounded best and promised to check production afterwards. Is that right? It is what I saw.'
+    vi: 'Em tự làm báo giá đầu tiên và nghĩ mình sẽ làm theo cách anh/chị làm. Em cho khách ngày nghe hay nhất và hứa kiểm tra sản xuất sau. Vậy có đúng không ạ? Đó là điều em đã thấy.'
+choices:
+  - en: 'Tell her it is not right, explain why, and go through the quote together and fix it.'
+    vi: 'Nói với em là không đúng, giải thích vì sao và cùng xem lại báo giá rồi sửa.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: "Quynh listens carefully and rewrites the quote with a date Lan approved. She says, 'I was only copying. I am glad you told me.' You feel the weight of being copied."
+        vi: "Quỳnh lắng nghe cẩn thận và viết lại báo giá với ngày chị Lan đã duyệt. Em nói: 'Em chỉ bắt chước thôi. Em mừng vì anh/chị nói.' Anh/chị cảm nhận sức nặng của việc bị bắt chước."
+        effects:
+          [rel quynh trust +6, rel quynh loyalty +4, rel lan trust +1, stress +1, arc quynh end]
+  - en: 'Tell her the rule, but say that in practice everyone does it, so she should be careful who finds out.'
+    vi: 'Nói với em quy tắc nhưng bảo rằng thực tế ai cũng làm, nên em cần cẩn thận ai biết.'
+    outcomes:
+      - p: 1
+        en: 'Quynh nods slowly. She does not look reassured. She has learned that the rule and the practice are two different things.'
+        vi: 'Quỳnh gật đầu chậm. Em không có vẻ yên tâm. Em đã học được rằng quy tắc và thực tế là hai chuyện khác nhau.'
+        effects: [rel quynh trust +1, stress +1, arc quynh caught]
+  - en: 'Tell her it is fine, that is how deals get made, and not to worry about production.'
+    vi: 'Nói với em là ổn, đó là cách chốt đơn, và đừng lo về sản xuất.'
+    outcomes:
+      - p: 1
+        en: 'Quynh beams. You have made an ally, and set her on the same path. She starts telling the new hire the same thing.'
+        vi: 'Quỳnh rạng rỡ. Anh/chị đã có một đồng minh, và đặt em lên cùng con đường. Em bắt đầu nói điều đó với nhân viên mới.'
+        effects:
+          [
+            rel quynh trust +5,
+            rel quynh loyalty +5,
+            stress -1,
+            fact approved_quynh_shortcut private,
+            arc quynh caught,
+          ]
+---
+scene: sales.quynh_caught
+weight: 0
+place: meeting_room
+tags: [people, dark, consequence, arc]
+lines:
+  - who: char:bao
+    en: 'Quynh promised a delivery date to a buyer that Lan says is impossible. The buyer has complained. Quynh says, honestly, that she learned it from watching you. I would like to hear your account.'
+    vi: 'Quỳnh hứa với khách một ngày giao mà chị Lan nói là không thể. Khách đã khiếu nại. Quỳnh nói, thật lòng, rằng em học điều đó từ việc nhìn anh/chị. Anh muốn nghe lời kể của em.'
+choices:
+  - en: 'Take responsibility for what you modelled, protect Quynh from the worst of it, and help fix the order with the buyer.'
+    vi: 'Nhận trách nhiệm về điều anh/chị đã làm gương, bảo vệ Quỳnh khỏi phần tệ nhất và giúp sửa đơn hàng với khách.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Bao is quiet, then says: 'That is what a senior does.' Quynh keeps her job and her respect for you. You carry the blame you earned."
+        vi: "Anh Bảo im lặng rồi nói: 'Đó là việc của người đi trước.' Quỳnh giữ được việc và sự tôn trọng dành cho anh/chị. Anh/chị gánh phần lỗi mình xứng đáng nhận."
+        effects:
+          [rel quynh trust +7, rel quynh loyalty +6, rel bao trust +1, rep.boss -2, stress +4]
+  - en: 'Say she should have checked the date herself; you never told her to skip production.'
+    vi: 'Nói em lẽ ra phải tự kiểm ngày; anh/chị chưa bao giờ bảo em bỏ qua sản xuất.'
+    outcomes:
+      - p: 1
+        en: 'It is technically true. Bao lets it stand. Quynh does not look at you again for a month.'
+        vi: 'Đúng về mặt kỹ thuật. Anh Bảo để vậy. Quỳnh không nhìn anh/chị nữa trong một tháng.'
+        effects: [rel quynh trust -8, rel quynh loyalty -6, rel bao trust -1, stress +2]
+  - en: 'Say Quynh is inexperienced and it is her own mistake.'
+    vi: 'Nói Quỳnh thiếu kinh nghiệm và đó là lỗi của riêng em.'
+    outcomes:
+      - p: 0.55
+        en: 'Bao gives Quynh a formal warning. You keep your record clean. Quynh hears it from the corridor, and stops speaking to you.'
+        vi: 'Anh Bảo cảnh cáo Quỳnh chính thức. Hồ sơ của anh/chị vẫn sạch. Quỳnh nghe chuyện ngoài hành lang và thôi nói chuyện với anh/chị.'
+        effects:
+          [
+            rel quynh trust -16,
+            rel quynh loyalty -12,
+            rel bao trust +1,
+            stress +3,
+            fact blamed_quynh private,
+          ]
+      - p: 0.45
+        ok: false
+        en: 'Quynh has messages from you telling her not to worry about production. She shows them to Bao. He reads them twice.'
+        vi: 'Quỳnh có tin nhắn của anh/chị bảo em đừng lo về sản xuất. Em đưa cho anh Bảo. Anh đọc hai lần.'
+        effects:
+          [rel quynh trust -16, rel bao trust -10, rep.boss -8, stress +7, fact blamed_quynh public]
+---
+scene: sales.buyer_visit_factory
+place: factory_floor
+tags: [buyer, people, pressure]
+weight: 1.5
+cooldown: 40
+when: [turn >= 12, turn <= 44]
+lines:
+  - who: char:anders
+    en: 'I will be at your factory on Thursday. I want to see the line producing my order, the packing area and the finished goods store. I do not want a show. I want to see a normal day.'
+    vi: 'Thứ Năm tôi sẽ đến nhà máy của anh/chị. Tôi muốn xem chuyền sản xuất đơn của tôi, khu đóng gói và kho thành phẩm. Tôi không muốn xem trình diễn. Tôi muốn xem một ngày bình thường.'
+  - who: char:lan
+    en: 'Line 2 has a rework pile and the packing area is a mess. We could clear it for a day.'
+    vi: 'Chuyền 2 có một đống hàng làm lại và khu đóng gói rất bừa. Mình có thể dọn trong một ngày.'
+choices:
+  - en: 'Show Anders the normal day, including the rework pile, and explain how you deal with it.'
+    vi: 'Cho ông Anders xem ngày bình thường, kể cả đống hàng làm lại, và giải thích cách xử lý.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.8
+        en: "Anders spends an hour at the rework pile asking questions. On the way out he says: 'You are the first supplier who did not hide it.' Lan is relieved."
+        vi: "Ông Anders dành một giờ ở đống hàng làm lại để hỏi. Khi ra về ông nói: 'Anh/chị là nhà cung cấp đầu tiên không giấu nó.' Chị Lan nhẹ nhõm."
+        effects: [rel anders trust +8, rel lan trust +2, rep.buyer +3, stress +3]
+      - p: 0.2
+        ok: false
+        en: 'Anders finds a real quality issue in the rework pile and raises it with the directors. It is uncomfortable, but it is fixed in a week.'
+        vi: 'Ông Anders phát hiện một vấn đề chất lượng thật trong đống hàng làm lại và nêu với ban giám đốc. Khó chịu, nhưng được sửa trong một tuần.'
+        effects: [rel anders trust +4, rel bao trust -3, stress +4]
+  - en: 'Tidy the obvious mess, but do not hide anything, and answer every question.'
+    vi: 'Dọn chỗ bừa rõ ràng nhưng không giấu gì và trả lời mọi câu hỏi.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'A clean, honest visit. Anders notes the tidiness and the answers, and moves on to the packing spec.'
+        vi: 'Một chuyến thăm sạch và trung thực. Ông Anders ghi nhận sự gọn gàng và các câu trả lời rồi chuyển sang quy cách đóng gói.'
+        effects: [rel anders trust +3, rel lan trust +1, stress +2]
+  - en: 'Clear the rework pile and stage a perfect line for the visit.'
+    vi: 'Dọn đống hàng làm lại và dựng một chuyền hoàn hảo cho buổi thăm.'
+    outcomes:
+      - p: 0.65
+        en: "The visit is flawless. Anders is impressed. Lan's team works through the night to do it, and you know it is not a normal day."
+        vi: 'Chuyến thăm hoàn hảo. Ông Anders ấn tượng. Đội của chị Lan làm xuyên đêm để kịp, và anh/chị biết đó không phải ngày bình thường.'
+        effects:
+          [rel anders trust +3, rel lan trust -3, stress +1, fact staged_factory_visit private]
+      - p: 0.35
+        ok: false
+        en: 'Anders asks to see the rework pile and is shown an empty floor. A worker says quietly, in English, that it was moved this morning.'
+        vi: 'Ông Anders xin xem đống hàng làm lại và được cho xem một sàn trống. Một công nhân nói khẽ bằng tiếng Anh rằng nó được chuyển sáng nay.'
+        effects:
+          [
+            rel anders trust -12,
+            rel bao trust -6,
+            rep.buyer -8,
+            stress +5,
+            fact staged_factory_visit public,
+          ]
+---
+scene: sales.quota_push
+place: sales_office
+tags: [pressure, people]
+weight: 1.5
+cooldown: 14
+when: [month in 3 6 9 12, turn >= 8]
+lines:
+  - who: char:bao
+    en: 'We are at 91 percent of quota with two weeks left. The directors will ask me about it on Friday. I need you to find the other nine percent. However you can. Do not tell me how.'
+    vi: 'Mình đang ở 91 phần trăm chỉ tiêu, còn hai tuần. Ban giám đốc sẽ hỏi anh vào thứ Sáu. Anh cần em tìm chín phần trăm còn lại. Bằng mọi cách. Đừng nói cho anh biết bằng cách nào.'
+choices:
+  - en: 'Review the pipeline honestly, tell Bao which deals are real this quarter, and give him a number you can stand behind.'
+    vi: 'Rà pipeline trung thực, nói với anh Bảo những đơn nào thật trong quý và đưa một con số anh/chị đảm bảo được.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.75
+        en: "The real number is 96 percent. Bao is disappointed, then practical: 'I can defend 96 honestly. I could not defend 100.' The directors are unhappy but not surprised."
+        vi: "Con số thật là 96 phần trăm. Anh Bảo thất vọng rồi thực tế: 'Anh bảo vệ 96 một cách trung thực được. Anh không bảo vệ nổi 100.' Ban giám đốc không vui nhưng không bất ngờ."
+        effects: [rel bao trust +2, rep.boss +1, stress +3]
+      - p: 0.25
+        ok: false
+        en: 'The number is 93. Bao is silent for a long moment. You have given him nothing he can spin, and he knows it was honest.'
+        vi: 'Con số là 93. Anh Bảo im lặng rất lâu. Anh/chị không cho anh thứ gì để tô vẽ, và anh biết điều đó trung thực.'
+        effects: [rel bao trust -3, stress +4]
+  - en: 'Ask two buyers whether they would bring forward a planned order by a few weeks, openly, for a small incentive.'
+    vi: 'Hỏi hai khách xem họ có đẩy sớm một đơn đã dự kiến vài tuần không, công khai, đổi lấy một ưu đãi nhỏ.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.6
+        en: 'One buyer agrees. The pull-forward is real and documented. It gets you to 96, honestly. Bao is pleased.'
+        vi: 'Một khách đồng ý. Việc đẩy sớm là thật và có hồ sơ. Đưa anh/chị lên 96, một cách trung thực. Anh Bảo hài lòng.'
+        effects: [rel bao trust +4, rel anders trust -1, stress +2]
+      - p: 0.4
+        ok: false
+        en: 'Both buyers say no, and one mentions to his colleague that you seem desperate. It does not help the quarter.'
+        vi: 'Cả hai khách từ chối, và một người nói với đồng nghiệp rằng anh/chị có vẻ tuyệt vọng. Không giúp gì cho quý.'
+        effects: [rel bao trust -1, rep.buyer -2, stress +3]
+  - en: "Book orders that are not confirmed yet as 'expected' and let them count."
+    vi: "Ghi các đơn chưa xác nhận là 'dự kiến' và để chúng được tính."
+    outcomes:
+      - p: 0.7
+        en: 'The quota shows 101 percent. Bao does not ask, and thanks you, carefully. The unconfirmed orders might come in.'
+        vi: 'Chỉ tiêu hiển thị 101 phần trăm. Anh Bảo không hỏi, và cảm ơn anh/chị, một cách thận trọng. Các đơn chưa xác nhận có thể về.'
+        effects: [rel bao trust +7, rep.boss +4, stress -1, fact padded_quota_orders private]
+      - p: 0.3
+        ok: false
+        en: 'Two of the orders do not materialise. Duc notices the gap between bookings and invoices at quarter end and asks Bao about it.'
+        vi: 'Hai đơn không thành. Anh Đức nhận ra khoảng cách giữa đơn và hóa đơn vào cuối quý và hỏi anh Bảo.'
+        effects:
+          [
+            rel bao trust +2,
+            rel duc trust -6,
+            rep.boss -5,
+            stress +5,
+            fact padded_quota_orders witnessed,
+          ]
+---
+scene: sales.credit_ask
+place: sales_office
+tags: [buyer, risk, dark]
+weight: 1.2
+cooldown: 26
+when: [turn >= 10]
+lines:
+  - who: char:anders
+    en: 'We would like to increase the next order considerably. Our payment terms will be ninety days, not sixty. I understand you have credit limits, but I am sure we can find a way.'
+    vi: 'Chúng tôi muốn tăng đơn tiếp theo đáng kể. Điều khoản thanh toán của chúng tôi sẽ là chín mươi ngày, không phải sáu mươi. Tôi hiểu anh/chị có hạn mức tín dụng, nhưng tôi chắc mình tìm được cách.'
+choices:
+  - en: "Explain the credit limit, and offer to ask Finance for a formal review of the buyer's credit with the numbers."
+    vi: 'Giải thích hạn mức tín dụng và đề nghị nhờ Tài chính soát xét chính thức tín dụng của khách kèm số liệu.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.8
+        en: "Finance approves a moderate increase with a guarantee from the buyer's bank. Anders accepts: 'That is how it should be done.'"
+        vi: "Tài chính duyệt mức tăng vừa phải kèm bảo lãnh từ ngân hàng của khách. Ông Anders chấp nhận: 'Đúng là phải làm như vậy.'"
+        effects: [rel anders trust +4, rel duc trust +3, rel bao trust +1, stress +2]
+      - p: 0.2
+        ok: false
+        en: 'Finance declines the increase. Anders is disappointed and splits the order with a rival. It is a clean loss.'
+        vi: 'Tài chính từ chối tăng. Ông Anders thất vọng và chia đơn cho đối thủ. Một thất bại sạch.'
+        effects: [rel anders trust -2, rel duc trust +3, rel bao trust -4, stress +3]
+  - en: 'Offer the larger order at sixty-day terms, with a small prepayment.'
+    vi: 'Đề nghị đơn lớn hơn với điều khoản sáu mươi ngày kèm một khoản trả trước nhỏ.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'Anders haggles for a day and accepts. The terms stay within policy and the order is large.'
+        vi: 'Ông Anders mặc cả một ngày rồi chấp nhận. Điều khoản nằm trong chính sách và đơn hàng lớn.'
+        effects: [rel anders trust +2, rel duc trust +1, stress +1]
+  - en: 'Agree to ninety days and keep the extended credit off the credit report.'
+    vi: 'Đồng ý chín mươi ngày và để khoản tín dụng kéo dài không xuất hiện trong báo cáo tín dụng.'
+    outcomes:
+      - p: 0.75
+        en: 'The order is signed. The credit exposure is not where Finance looks. You have given Anders something he will remember.'
+        vi: 'Đơn được ký. Khoản rủi ro tín dụng không nằm ở chỗ Tài chính nhìn. Anh/chị đã cho ông Anders một điều ông sẽ nhớ.'
+        effects: [rel anders trust +6, rel bao trust +4, stress +1, fact credit_above_limit private]
+      - p: 0.25
+        ok: false
+        en: "Anders's company delays payment by a further month. The exposure shows up on Duc's cash forecast, and so does your name."
+        vi: 'Công ty ông Anders trì hoãn thanh toán thêm một tháng. Rủi ro hiện trên dự báo tiền của anh Đức, và tên anh/chị cũng vậy.'
+        effects:
+          [
+            rel anders trust +2,
+            rel duc trust -7,
+            rep.boss -5,
+            stress +5,
+            fact credit_above_limit witnessed,
+          ]
+---
+scene: sales.expense_padding
+place: sales_office
+tags: [people, integrity, dark]
+weight: 1
+cooldown: 30
+when: [turn >= 14]
+lines:
+  - who: char:bao
+    en: 'When you submit your trade fair expenses, add something for the dinner with the buyers last week, will you? We had it in the office, but it makes the claim look better, and the sales budget will go unused otherwise.'
+    vi: 'Khi em nộp chi phí hội chợ, em thêm một khoản cho bữa tối với khách tuần trước nhé? Bọn mình ăn ở văn phòng, nhưng làm bảng kê đẹp hơn, và ngân sách kinh doanh nếu không dùng sẽ bị cắt.'
+choices:
+  - en: 'Submit the true expenses only, and tell Bao you would rather not make claims for things that did not happen.'
+    vi: 'Chỉ nộp chi phí thật và nói với anh Bảo anh/chị không muốn kê khai những việc không xảy ra.'
+    outcomes:
+      - p: 0.85
+        en: "Bao shrugs: 'Fine. Suit yourself.' It costs a little warmth, and Hanh in Finance notices a clean claim."
+        vi: "Anh Bảo nhún vai: 'Được. Tùy em.' Mất chút thiện cảm, và chị Hạnh ở Tài chính để ý một bảng kê sạch."
+        effects: [rel bao trust -3, rel hanh trust +2, stress +1]
+      - p: 0.15
+        ok: false
+        en: 'Bao says he will remember you were difficult when bonuses come round. The budget goes unused, as he predicted.'
+        vi: 'Anh Bảo nói sẽ nhớ anh/chị làm khó khi đến kỳ thưởng. Ngân sách không dùng hết, đúng như anh dự đoán.'
+        effects: [rel bao trust -7, rel hanh trust +2, stress +3]
+  - en: 'Offer to claim for a real planned client dinner instead, properly booked.'
+    vi: 'Đề nghị kê khai cho một bữa tối khách hàng thật đã lên kế hoạch thay vào đó, hạch toán đúng.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "Bao laughs, 'You are a funny one,' and arranges a real dinner with Anders. The budget is used, and the claim is true."
+        vi: "Anh Bảo cười: 'Em thú vị đấy,' và sắp xếp một bữa tối thật với ông Anders. Ngân sách được dùng và bảng kê đúng."
+        effects: [rel bao trust +1, rel anders trust +2, stress +1]
+  - en: 'Add the dinner to the claim.'
+    vi: 'Thêm bữa tối vào bảng kê.'
+    outcomes:
+      - p: 0.8
+        en: 'It is approved without comment. Bao grins. It is not a large amount, and that is exactly what makes it easy.'
+        vi: 'Được duyệt không bình luận. Anh Bảo cười. Khoản không lớn, và chính điều đó làm nó dễ dàng.'
+        effects: [rel bao trust +5, stress +1, fact padded_expense_claim private]
+      - p: 0.2
+        ok: false
+        en: "Hanh in Finance asks for the receipt for a dinner 'for eight'. There was none. The claim is returned, with a polite note."
+        vi: "Chị Hạnh ở Tài chính yêu cầu hóa đơn cho bữa tối 'tám người'. Không có. Bảng kê bị trả lại kèm ghi chú lịch sự."
+        effects:
+          [
+            rel bao trust +2,
+            rel hanh trust -6,
+            rep.boss -4,
+            stress +4,
+            fact padded_expense_claim witnessed,
+          ]
+---
+scene: sales.midyear_review
+place: meeting_room
+tags: [people, review, beat]
+beat: 24-28
+lines:
+  - who: char:bao
+    en: 'Mid-year. Your numbers are decent. Mr Anders speaks well of you, Finance says you are careful, and Lan says you are the salesperson who asks her first. That last one is unusual. What do you think you are good at, and what do you want to be known for?'
+    vi: 'Giữa năm. Số liệu của em khá. Ông Anders nói tốt về em, Tài chính nói em cẩn thận và chị Lan nói em là nhân viên kinh doanh hỏi chị đầu tiên. Điều cuối khá hiếm. Em nghĩ em giỏi gì và muốn được biết đến vì điều gì?'
+choices:
+  - en: 'Say you want to be known as the person buyers can trust and colleagues can plan around, even if it costs some quota.'
+    vi: 'Nói rằng anh/chị muốn được biết đến là người khách hàng tin được và đồng nghiệp lên kế hoạch cùng được, kể cả khi mất một chút chỉ tiêu.'
+    outcomes:
+      - p: 0.75
+        en: "Bao nods slowly. 'That is rare. I will need you to show it when the pressure comes.' He writes something down."
+        vi: "Anh Bảo gật đầu chậm. 'Hiếm đấy. Anh cần em chứng tỏ khi áp lực đến.' Anh ghi gì đó."
+        effects: [rel bao trust +3, rep.boss +2, stress -1]
+      - p: 0.25
+        ok: false
+        en: 'Bao says, flatly, that buyers trust whoever delivers the numbers. The conversation is polite and he is not convinced.'
+        vi: 'Anh Bảo nói thẳng rằng khách tin người mang lại số liệu. Cuộc nói chuyện lịch sự và anh không bị thuyết phục.'
+        effects: [rel bao trust -2, stress +2]
+  - en: 'Say you want to hit your numbers and be promoted, and ask what he needs from you.'
+    vi: 'Nói anh/chị muốn đạt chỉ tiêu và được thăng tiến và hỏi anh cần gì ở mình.'
+    outcomes:
+      - p: 1
+        en: "Bao smiles: 'That is a clear answer.' He sets two stretch targets. Both are achievable, one of them tempting."
+        vi: "Anh Bảo cười: 'Một câu trả lời rõ ràng.' Anh đặt hai chỉ tiêu nâng cao. Cả hai đều đạt được, một trong hai đầy cám dỗ."
+        effects: [rel bao trust +2, rep.boss +1, stress +2]
+  - en: 'Say whatever he seems to want to hear.'
+    vi: 'Nói bất cứ điều gì anh có vẻ muốn nghe.'
+    outcomes:
+      - p: 0.6
+        en: "Bao is pleased and promises to 'look after you'. You leave unsure what you said."
+        vi: "Anh Bảo hài lòng và hứa 'chăm sóc em'. Anh/chị ra về không chắc mình đã nói gì."
+        effects: [rel bao trust +3, stress +1]
+      - p: 0.4
+        ok: false
+        en: 'Bao asks a follow-up that contradicts what you said. You realise he already knew your real view, and was giving you a chance.'
+        vi: 'Anh Bảo hỏi tiếp một câu mâu thuẫn với điều anh/chị nói. Anh/chị nhận ra anh đã biết quan điểm thật của mình và đang cho cơ hội.'
+        effects: [rel bao trust -5, stress +3]
+---
+scene: sales.big_buyer_threatens
+place: meeting_room
+tags: [buyer, pressure, beat]
+beat: 29-32
+lines:
+  - who: char:anders
+    en: 'I must tell you something. A competitor has offered me a price fourteen percent below yours, and a delivery guarantee. My board is asking why I do not switch. I would like to stay. Persuade me.'
+    vi: 'Tôi phải nói với anh/chị một điều. Một đối thủ chào giá thấp hơn của anh/chị mười bốn phần trăm và có cam kết giao hàng. Hội đồng của tôi hỏi sao tôi không chuyển. Tôi muốn ở lại. Hãy thuyết phục tôi.'
+  - who: char:bao
+    en: 'Match the price, whatever it takes. We cannot lose Anders. Do not come back to me until it is done.'
+    vi: 'Khớp giá, bằng mọi giá. Mình không thể mất ông Anders. Đừng quay lại gặp anh trước khi xong.'
+choices:
+  - en: 'Do not match the price. Show Anders the total cost of ownership: on-time record, quality record and what a failed delivery costs him.'
+    vi: 'Không khớp giá. Cho ông Anders xem tổng chi phí sở hữu: hồ sơ giao đúng hạn, hồ sơ chất lượng và một lần giao hỏng khiến ông thiệt bao nhiêu.'
+    cost: { hours: 4 }
+    outcomes:
+      - p: 0.65
+        en: "Anders reads the numbers for a long time. 'You are more expensive and more honest. My board will grumble. I will stay, at a two percent adjustment.' Bao exhales."
+        vi: "Ông Anders đọc số liệu rất lâu. 'Anh/chị đắt hơn và trung thực hơn. Hội đồng sẽ càu nhàu. Tôi sẽ ở lại, với điều chỉnh hai phần trăm.' Anh Bảo thở ra."
+        effects: [rel anders trust +8, rel bao trust +3, rep.buyer +4, stress +4]
+      - p: 0.35
+        ok: false
+        en: 'Anders stays for half his volume and moves half to the competitor. Bao is angry. You lost the price argument and won the trust one.'
+        vi: 'Ông Anders ở lại với nửa sản lượng và chuyển nửa sang đối thủ. Anh Bảo giận. Anh/chị thua tranh luận về giá nhưng thắng ở lòng tin.'
+        effects: [rel anders trust +5, rel bao trust -6, rep.buyer -2, stress +6]
+  - en: 'Offer a moderate price reduction within your authority, tied to a twelve-month volume commitment.'
+    vi: 'Đề xuất giảm giá vừa phải trong thẩm quyền, gắn với cam kết sản lượng mười hai tháng.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: 'Anders accepts a compromise: three percent and a longer contract. Bao says it is not enough, but it is honest, and it is what you can sign.'
+        vi: 'Ông Anders chấp nhận một thỏa hiệp: ba phần trăm và hợp đồng dài hơn. Anh Bảo nói chưa đủ, nhưng trung thực và là điều anh/chị ký được.'
+        effects: [rel anders trust +3, rel bao trust -1, stress +3]
+  - en: 'Match the price, and work out how to recover the margin later.'
+    vi: 'Khớp giá và tính cách phục hồi biên lợi nhuận sau.'
+    outcomes:
+      - p: 0.7
+        en: 'Anders stays, delighted. Bao hugs you. The margin on his account drops to a number that will need an explanation.'
+        vi: 'Ông Anders ở lại, rất vui. Anh Bảo ôm anh/chị. Biên lợi nhuận tài khoản ông giảm xuống một con số sẽ cần được giải thích.'
+        effects:
+          [rel anders trust +4, rel bao trust +6, stress +1, fact discount_above_limit private]
+      - p: 0.3
+        ok: false
+        en: "Anders uses your matched price to negotiate the competitor's price down further. He is not loyal, he is shopping. You learn it the hard way."
+        vi: 'Ông Anders dùng giá anh/chị vừa khớp để ép giá đối thủ xuống thêm. Ông không trung thành, ông đi so giá. Anh/chị học điều đó theo cách đau.'
+        effects:
+          [
+            rel anders trust -4,
+            rel bao trust +2,
+            rep.boss -3,
+            stress +5,
+            fact discount_above_limit witnessed,
+          ]
+---
+scene: sales.anders_renewal
+place: meeting_room
+tags: [buyer, people, reward]
+weight: 4
+cooldown: 52
+when: [turn >= 34, rel.anders.trust >= 25]
+lines:
+  - who: char:anders
+    en: 'You have been the most honest supplier I have worked with. I would like to make you my main supplier for next year, with a three-year framework. The price is for you to propose. I will trust it.'
+    vi: 'Anh/chị là nhà cung cấp trung thực nhất tôi từng làm việc. Tôi muốn đưa anh/chị thành nhà cung cấp chính của tôi cho năm sau, với hợp đồng khung ba năm. Giá để anh/chị đề xuất. Tôi sẽ tin nó.'
+choices:
+  - en: 'Propose a fair price with a clear review clause, and tell him what you will and will not promise.'
+    vi: 'Đề xuất một mức giá hợp lý kèm điều khoản xem xét rõ ràng và nói với ông điều anh/chị sẽ và sẽ không hứa.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: 'Anders signs the framework the next week. Bao is overjoyed. The contract has your honesty written into its review clause, and it is the best deal of the year.'
+        vi: 'Ông Anders ký hợp đồng khung tuần sau. Anh Bảo vui mừng. Hợp đồng có sự trung thực của anh/chị viết vào điều khoản xem xét, và là thương vụ tốt nhất năm.'
+        effects: [rel anders trust +5, rel bao trust +5, rep.buyer +6, rep.boss +5, stress +1]
+  - en: 'Propose a fair price and quietly include a margin that would not survive his comparison.'
+    vi: 'Đề xuất giá hợp lý và lặng lẽ thêm một mức biên không chịu nổi sự so sánh của ông.'
+    outcomes:
+      - p: 0.7
+        en: 'Anders signs without checking. The margin is good, and Bao is delighted. You have used the trust he gave you.'
+        vi: 'Ông Anders ký mà không kiểm tra. Biên tốt, và anh Bảo rất vui. Anh/chị đã dùng lòng tin ông trao.'
+        effects:
+          [
+            rel anders trust +2,
+            rel bao trust +6,
+            rep.boss +4,
+            stress +1,
+            fact exploited_buyer_trust private,
+          ]
+      - p: 0.3
+        ok: false
+        en: "Anders's analyst benchmarks the price against the market and reports the gap. Anders calls you himself, and he is quiet."
+        vi: 'Chuyên viên của ông Anders so giá với thị trường và báo khoảng chênh. Ông Anders tự gọi cho anh/chị, và ông rất trầm.'
+        effects:
+          [
+            rel anders trust -14,
+            rel bao trust -4,
+            rep.buyer -10,
+            stress +6,
+            fact exploited_buyer_trust public,
+          ]
+  - en: 'Thank him but say you cannot commit for three years, and propose one year with an option.'
+    vi: 'Cảm ơn ông nhưng nói anh/chị không thể cam kết ba năm và đề xuất một năm kèm quyền gia hạn.'
+    outcomes:
+      - p: 1
+        en: "Anders laughs, surprised. 'I have never had a supplier refuse a longer contract.' He signs the one-year deal, and respects you more."
+        vi: "Ông Anders cười, ngạc nhiên. 'Tôi chưa từng có nhà cung cấp nào từ chối hợp đồng dài hơn.' Ông ký hợp đồng một năm và tôn trọng anh/chị hơn."
+        effects: [rel anders trust +4, rel bao trust -2, rep.buyer +3]
+---
+scene: sales.year_end_review
+place: meeting_room
+tags: [people, review, beat]
+beat: 49-50
+lines:
+  - who: char:bao
+    en: 'Annual review. Before I give you my view, tell me how you would rate your own year, and what you would do differently.'
+    vi: 'Đánh giá cuối năm. Trước khi anh nói quan điểm, em hãy tự chấm năm của mình và nói em sẽ làm khác đi điều gì.'
+choices:
+  - en: 'Give an honest account, including the promises you stretched and what they cost.'
+    vi: 'Kể thật lòng, kể cả những lời hứa anh/chị đã nới và cái giá của chúng.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "Bao is quiet, then says: 'That is more honest than I am with myself.' He writes: 'Reliable in the telling.'"
+        vi: "Anh Bảo im lặng rồi nói: 'Em trung thực hơn cả anh với chính mình.' Anh viết: 'Đáng tin khi kể lại.'"
+        effects: [rel bao trust +5, rep.boss +4, stress -2]
+  - en: 'Stay modest: list the wins and one thing to improve.'
+    vi: 'Khiêm tốn: nêu các thắng lợi và một điều cần cải thiện.'
+    outcomes:
+      - p: 1
+        en: 'A safe review. Bao nods and moves on to the next topic.'
+        vi: 'Một buổi đánh giá an toàn. Anh Bảo gật đầu và chuyển chủ đề.'
+        effects: [rel bao trust +1, rep.boss +1]
+  - en: 'Present the year as a clean success and leave out the promises you bent.'
+    vi: 'Trình bày cả năm như một thành công sạch và bỏ qua các lời hứa anh/chị đã bẻ.'
+    outcomes:
+      - p: 0.65
+        en: 'It lands well, and you leave with a bonus recommendation and a small weight in your chest.'
+        vi: 'Được đón nhận tốt, và anh/chị ra về với đề xuất thưởng và một chút nặng nề trong lòng.'
+        effects: [rel bao trust +2, rep.boss +4, stress +1, fact polished_year_review private]
+      - p: 0.35
+        ok: false
+        en: "Bao has Lan's notes on the dates you promised. He puts them on the table without comment."
+        vi: 'Anh Bảo có ghi chú của chị Lan về các ngày anh/chị đã hứa. Anh đặt chúng lên bàn mà không bình luận.'
+        effects: [rel bao trust -8, rep.boss -5, stress +4, fact polished_year_review witnessed]
+---
+scene: sales.manager_offer
+place: meeting_room
+tags: [people, promotion, beat]
+beat: 51-52
+when: [rel.bao.trust >= 20, rep.boss >= 58, rep.buyer >= 55]
+lines:
+  - who: char:bao
+    en: 'I am being moved up to regional director at the end of the year. The directors asked who should run export sales. I named you. One condition: you will be asked, every quarter, to reach numbers that are not quite reachable. I need to know what you will do.'
+    vi: 'Cuối năm anh được lên giám đốc khu vực. Ban giám đốc hỏi ai nên phụ trách bán hàng xuất khẩu. Anh nêu tên em. Một điều kiện: mỗi quý em sẽ được yêu cầu đạt những con số gần như không đạt nổi. Anh cần biết em sẽ làm gì.'
+choices:
+  - en: 'Accept, and say you will bring honest numbers and real options every time, and expect the directors to hear that too.'
+    vi: 'Nhận lời và nói rằng anh/chị sẽ mang số liệu trung thực và phương án thật mỗi lần, và mong ban giám đốc cũng nghe điều đó.'
+    outcomes:
+      - p: 1
+        en: "Bao smiles. 'Then you are the right person.' You take over export sales with your terms understood, and with Anders's contract in your drawer."
+        vi: "Anh Bảo cười. 'Vậy em là người phù hợp.' Anh/chị tiếp quản bán hàng xuất khẩu với điều kiện đã được hiểu và hợp đồng của ông Anders trong ngăn kéo."
+        effects: [rel bao trust +5, rep.boss +5, end promoted]
+  - en: 'Thank him, but decline: you would rather sell than manage the pressure.'
+    vi: 'Cảm ơn anh nhưng từ chối: anh/chị muốn bán hàng hơn là quản lý áp lực.'
+    outcomes:
+      - p: 1
+        en: "Bao looks disappointed, then understanding. 'The next manager may not be as careful as you.'"
+        vi: "Anh Bảo có vẻ thất vọng rồi thông cảm. 'Người quản lý tiếp theo có thể không cẩn thận như em.'"
+        effects: [rel bao trust +2, stress -3]
+  - en: 'Accept without asking what the condition means in practice.'
+    vi: 'Nhận lời mà không hỏi điều kiện đó thực tế nghĩa là gì.'
+    outcomes:
+      - p: 1
+        en: 'Bao shakes your hand a little too warmly. You realise you agreed to something you did not ask about.'
+        vi: 'Anh Bảo bắt tay anh/chị hơi quá nồng nhiệt. Anh/chị nhận ra mình đã đồng ý với điều mình không hỏi.'
+        effects:
+          [rel bao trust +5, rep.boss +4, fact accepted_smoothing_condition private, end promoted]
+---
+fact: buried_discount_in_freight
+severity: 6
+category: integrity
+en: 'you hid unapproved discounts inside the freight charges'
+vi: 'bạn giấu các khoản giảm giá không được duyệt trong cước vận chuyển'
+lesson:
+  en: 'A discount that does not appear on the price line is still a discount. Moving it elsewhere only stops the people who approve prices from seeing it.'
+  vi: 'Khoản giảm giá không xuất hiện ở dòng giá vẫn là giảm giá. Chuyển nó sang chỗ khác chỉ khiến người duyệt giá không thấy nó.'
+traces:
+  - { type: document, visibility: 0.6, detectors: [internal_audit, finance, boss] }
+witnessed:
+  boss: -7
+  finance: -5
+  buyer: -2
+public:
+  boss: -12
+---
+fact: pulled_shipment_in
+severity: 5
+category: integrity
+en: 'you shipped an order early, without the buyer knowing, to reach a number'
+vi: 'bạn giao một đơn hàng sớm mà khách không biết để đạt một con số'
+lesson:
+  en: "Moving shipments between periods to fix a number is revenue management, not sales. The buyer's warehouse, not your spreadsheet, is where it is tested."
+  vi: 'Chuyển đơn giao giữa các kỳ để chỉnh con số là điều chỉnh doanh thu, không phải bán hàng. Kho của khách, chứ không phải bảng tính của bạn, là nơi nó bị kiểm tra.'
+traces:
+  - { type: document, visibility: 0.7, detectors: [internal_audit, buyer, finance] }
+witnessed:
+  boss: -6
+  buyer: -6
+public:
+  boss: -10
+  buyer: -10
+---
+fact: approved_quynh_shortcut
+severity: 4
+category: integrity
+en: 'you told a junior colleague that bending a rule is fine because everyone does it'
+vi: 'bạn nói với đồng nghiệp trẻ rằng bẻ quy tắc là ổn vì ai cũng làm'
+lesson:
+  en: 'Juniors learn rules from what seniors do, not what they say. A shortcut passed down is a habit you have given to someone else.'
+  vi: 'Người mới học quy tắc từ việc người đi trước làm, không phải điều họ nói. Lối tắt được truyền lại là thói quen bạn đã trao cho người khác.'
+traces:
+  - { type: message, visibility: 0.5, detectors: [boss, internal_audit] }
+witnessed:
+  boss: -4
+public:
+  boss: -7
+---
+fact: blamed_quynh
+severity: 5
+category: integrity
+en: 'you blamed a junior colleague for a habit she learned from you'
+vi: 'bạn đổ lỗi cho đồng nghiệp trẻ về thói quen em học từ bạn'
+lesson:
+  en: 'A junior who copies you is repeating your example. Blaming her for it moves the cost of your habit onto the person with the least power to bear it.'
+  vi: 'Người mới bắt chước bạn là đang lặp lại tấm gương của bạn. Đổ lỗi cho em là chuyển cái giá của thói quen bạn sang người có ít quyền nhất để gánh.'
+traces:
+  - { type: message, visibility: 0.8, detectors: [boss, internal_audit] }
+witnessed:
+  boss: -8
+public:
+  boss: -13
+---
+fact: staged_factory_visit
+severity: 6
+category: integrity
+en: 'you staged a factory visit to hide how the line really works'
+vi: 'bạn dàn dựng chuyến thăm nhà máy để giấu cách chuyền hoạt động thật'
+lesson:
+  en: 'A buyer who visits wants to see a normal day. A staged visit works until someone on the floor tells the truth, and then it costs you every visit after.'
+  vi: 'Khách đến thăm muốn xem một ngày bình thường. Một chuyến thăm dàn dựng chỉ có tác dụng đến khi một người dưới xưởng nói thật, và từ đó nó làm anh/chị mất mọi chuyến thăm sau.'
+traces:
+  - { type: witness, visibility: 0.7, detectors: [buyer, internal_audit] }
+witnessed:
+  boss: -6
+  buyer: -8
+public:
+  boss: -10
+  buyer: -14
+---
+fact: padded_quota_orders
+severity: 5
+category: integrity
+en: 'you counted unconfirmed orders toward quota'
+vi: 'bạn tính các đơn chưa xác nhận vào chỉ tiêu'
+lesson:
+  en: 'A quota number is a forecast the company plans around. Counting orders that are not real makes the plan, and the next quarter, worse.'
+  vi: 'Con số chỉ tiêu là một dự báo công ty dựa vào để lên kế hoạch. Tính các đơn không thật khiến kế hoạch, và quý tiếp theo, tệ hơn.'
+traces:
+  - { type: document, visibility: 0.7, detectors: [internal_audit, finance, boss] }
+witnessed:
+  boss: -6
+  finance: -5
+public:
+  boss: -10
+---
+fact: padded_expense_claim
+severity: 4
+category: integrity
+en: 'you claimed an expense for a meal that did not happen'
+vi: 'bạn kê khai chi phí cho một bữa ăn không xảy ra'
+lesson:
+  en: "An expense claim is a statement that a cost happened. A small padded claim is still a false statement, and it teaches the company's own people that statements are flexible."
+  vi: 'Bảng kê chi phí là lời khai rằng một khoản chi đã xảy ra. Một khoản kê khống nhỏ vẫn là lời khai sai, và nó dạy chính người trong công ty rằng lời khai có thể linh hoạt.'
+traces:
+  - { type: document, visibility: 0.6, detectors: [internal_audit, finance] }
+witnessed:
+  boss: -5
+  finance: -5
+public:
+  boss: -9
+---
+fact: exploited_buyer_trust
+severity: 5
+category: integrity
+en: "you used a buyer's trust to set a price he would not have accepted if he had checked"
+vi: 'bạn dùng lòng tin của khách để đặt một mức giá ông sẽ không chấp nhận nếu kiểm tra'
+lesson:
+  en: 'Trust is worth more than one margin. A price set because the buyer stopped checking is a bet that he never will.'
+  vi: 'Lòng tin đáng giá hơn một khoản biên. Mức giá đặt vì khách thôi kiểm tra là cược rằng ông sẽ không bao giờ kiểm tra.'
+traces:
+  - { type: document, visibility: 0.7, detectors: [buyer, internal_audit] }
+witnessed:
+  boss: -5
+  buyer: -10
+public:
+  boss: -9
+  buyer: -16

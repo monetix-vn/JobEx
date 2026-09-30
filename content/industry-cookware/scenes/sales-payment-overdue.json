@@ -31,6 +31,10 @@
             {
               "delta": "player.rep.buyer",
               "value": 1
+            },
+            {
+              "arc": "arc.overdue_account",
+              "stage": "end"
             }
           ]
         },
@@ -46,6 +50,10 @@
             {
               "delta": "player.stress",
               "value": 3
+            },
+            {
+              "arc": "arc.overdue_account",
+              "stage": "end"
             }
           ]
         }
@@ -69,6 +77,10 @@
             {
               "delta": "player.rep.boss",
               "value": -1
+            },
+            {
+              "arc": "arc.overdue_account",
+              "stage": "end"
             }
           ]
         },
@@ -88,6 +100,10 @@
             {
               "delta": "player.stress",
               "value": 3
+            },
+            {
+              "arc": "arc.overdue_account",
+              "stage": "end"
             }
           ]
         }
@@ -112,6 +128,10 @@
             {
               "delta": "player.rep.production",
               "value": -1
+            },
+            {
+              "arc": "arc.overdue_account",
+              "stage": "pull_in"
             }
           ]
         },
@@ -131,6 +151,10 @@
             {
               "delta": "player.stress",
               "value": 4
+            },
+            {
+              "arc": "arc.overdue_account",
+              "stage": "pull_in"
             }
           ]
         }
