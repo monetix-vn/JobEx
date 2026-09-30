@@ -74,7 +74,7 @@ if (args.includes('--facts')) {
   });
   for (const e of shown) {
     const short = e.role ? (SHORT[e.role] ?? e.role) : 'any';
-    const choices = lookup(e).choices.length;
+    const choices = lookup(e).choices?.length ?? 0;
     console.log(
       `${e.id}  ${short}  w${e.weight} cd${e.cooldown_weeks}w  ${choices} choices  [${(e.tags ?? []).join(', ')}]`,
     );

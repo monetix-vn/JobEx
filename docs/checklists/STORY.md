@@ -1,0 +1,75 @@
+# Story and script checklist
+
+Everything about what the game says: the series, cast, timeline, scenes, events. AI: read
+`docs/AI-GUIDE.md` first. The engine work that stories depend on is in `docs/checklists/TECH.md`
+(Phase 2); do not write arc/character content before its engine item is done.
+
+Legend: `[x]` done, `[~]` in progress, `[ ]` not started. Episode status values: `planned`, `draft`,
+`imported`, `reviewed`. The per-episode tables live in the bibles (`docs/story/<job>.md`) and are the
+source of truth for what scene comes next; update their Status column as you go.
+
+## Global
+
+- [x] Tone and scene rules written (`content/industry-cookware/events/README.md`)
+- [x] Authoring format and tools (`docs/AUTHORING.md`)
+- [x] Bible template (`docs/story/TEMPLATE.md`)
+- [ ] Owner approves the series-level direction: realism vs. tone, dark-side intensity, setting (Binh Duong or neutral) (needs owner)
+- [ ] Shared company bible: factory, departments, calendar (Tet, audits, peaks), recurring outsiders, so all three jobs share one world
+- [ ] Glossary coverage pass: every jargon term used in scenes is a term
+- [ ] Practitioner review of all text, per job (needs owner to find reviewers)
+
+## Job 1: QC Specialist (`docs/story/qc.md`)
+
+- [x] Bible draft v1 (AI) (owner approval pending) (needs owner)
+- [x] 18 scenes imported (10 original + 2 consequence + 6 batch 2)
+- [ ] Owner approves bible and episode list (needs owner)
+- [ ] Cast finalised (6 characters) and created as `char.*` (after engine E1)
+- [ ] Onboarding block (4 scenes: first_day_walkthrough, first_signature, training_gap, lab_housekeeping)
+- [ ] Pre-Tet/Tet block (2)
+- [ ] The Squeeze block (2 + extend audit_day)
+- [ ] Cheaper Steel arc (2)
+- [ ] The Hamper arc (3)
+- [ ] Mid-year block (2)
+- [ ] Field Complaint arc (4, incl. minh_mistake)
+- [ ] Autumn audit and crisis block (4)
+- [ ] Finale block (2) and the promotion ending
+- [ ] Balance check: careful completes, reckless caught, 55 to 65 decisions a year; pins updated
+- [ ] VI text read by a native speaker; practitioner review
+
+## Job 2: Export Sales Specialist (`docs/story/sales.md`)
+
+- [x] Bible outline v1 (AI)
+- [x] 18 scenes imported
+- [ ] Expand bible to QC level of detail (episode table with timing, cast, choices) (owner approves)
+- [ ] Cast finalised (Thao, Anders, Lan, Duc, Quynh, competitor)
+- [ ] Premiere and first big order
+- [ ] Discount Spiral arc
+- [ ] Overdue Account arc
+- [ ] Quynh arc
+- [ ] Midseason twist and crisis scenes
+- [ ] Finale and annual review
+- [ ] Balance check and review
+
+## Job 3: Finance and Accounting (`docs/story/finance.md`)
+
+- [x] Bible skeleton (AI)
+- [ ] Expand bible to QC level of detail (owner approves)
+- [ ] Decide month-end mechanic (needs owner)
+- [ ] Role file (after engine R2), tasks, KPIs
+- [ ] Scenes (about 40), arcs: Month-End Push, Receipt Problem, The Audit
+- [ ] Balance check and review
+
+## Later jobs (not yet designed)
+
+- [ ] Choose the next jobs (Production Planner? Purchasing? HR? Logistics?) (needs owner)
+- [ ] For each: bible, then scenes (same steps as above)
+
+## Story-writing loop (each session)
+
+1. Open the job's bible, find the first `planned` episode in timeline order whose engine
+   dependencies are done.
+2. Draft it in YAML under `content-src/<job>-<block>.yml` following the tone guide.
+3. `pnpm author <file> --dry-run`, then import; run `pnpm run ci:quiet`; fix balance; `pnpm pin:update`
+   if the year's behaviour changed.
+4. Update the episode's Status in the bible, tick this list, update `docs/STATUS.md`, commit.
+5. Report to the owner: what was added, anything that needs review.

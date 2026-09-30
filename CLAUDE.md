@@ -1,5 +1,7 @@
 # JobEx: working notes for Claude
 
+**Picking up work? Start at `docs/AI-GUIDE.md`** (checklists: `docs/checklists/TECH.md`, `STORY.md`).
+
 A simulation game that teaches other jobs by living their pressures, including the dark side. TypeScript
 pnpm monorepo. Read this first; it replaces re-reading the plans or module sources. Current state and
 next steps: `docs/STATUS.md`. Decisions: `docs/adr/`. Each package's README says what it owns.
