@@ -1,0 +1,137 @@
+{
+  "id": "scene.fin.close_bank_rec_c",
+  "location": "loc.finance_office",
+  "cast": ["char:hanh"],
+  "lines": [
+    {
+      "speaker": "char:hanh",
+      "text_key": "scene.fin.close_bank_rec_c.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.fin.close_bank_rec_c.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.85,
+          "narration_key": "scene.fin.close_bank_rec_c.c1.ok",
+          "effects": [
+            {
+              "delta": "close.bank_rec",
+              "value": 2
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "p": 0.15,
+          "result": "fail",
+          "narration_key": "scene.fin.close_bank_rec_c.c1.fail",
+          "effects": [
+            {
+              "delta": "close.bank_rec",
+              "value": 1
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.vy.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.fin.close_bank_rec_c.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.fin.close_bank_rec_c.c2.ok",
+          "effects": [
+            {
+              "delta": "close.bank_rec",
+              "value": 1
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.fin.close_bank_rec_c.c3",
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.fin.close_bank_rec_c.c3.ok",
+          "effects": [
+            {
+              "delta": "close.bank_rec",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": -1
+            },
+            {
+              "fact": "fact.wrote_off_unexplained_item",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.fin.close_bank_rec_c.c3.fail",
+          "effects": [
+            {
+              "delta": "close.bank_rec",
+              "value": 1
+            },
+            {
+              "delta": "rel.vy.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "fact": "fact.wrote_off_unexplained_item",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

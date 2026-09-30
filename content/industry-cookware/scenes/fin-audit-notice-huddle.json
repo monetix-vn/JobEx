@@ -1,0 +1,118 @@
+{
+  "id": "scene.fin.audit_notice_huddle",
+  "location": "loc.meeting_room",
+  "cast": ["char:hanh"],
+  "lines": [
+    {
+      "speaker": "char:hanh",
+      "text_key": "scene.fin.audit_notice_huddle.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.fin.audit_notice_huddle.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.fin.audit_notice_huddle.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.hanh.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "delta": "company.audit_readiness",
+              "value": 8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.fin.audit_notice_huddle.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.fin.audit_notice_huddle.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.hanh.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "delta": "company.audit_readiness",
+              "value": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.fin.audit_notice_huddle.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.fin.audit_notice_huddle.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.hanh.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": -1
+            },
+            {
+              "delta": "company.audit_readiness",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.fin.audit_notice_huddle.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.hanh.trust",
+              "value": -9
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "delta": "company.audit_readiness",
+              "value": -2
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

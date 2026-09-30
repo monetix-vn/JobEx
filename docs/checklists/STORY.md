@@ -53,7 +53,7 @@ source of truth for what scene comes next; update their Status column as you go.
 - [x] Role file `role.fin.accountant` (+ chief accountant) in the pack, not yet playable (no blurb)
 - [x] 37 scenes imported: cast (6 + shared Vy), 8 month-end step scenes, 6 beats + manager_offer, arcs The Cut-off, The Receipt Problem (+ Vy asks), The Cookie Jar, Thu, random incidents, crisis consequences, resignation; 22 facts, 2 terms; job is playable (`?role=fin`)
 - [x] First-cut balance check (`fin-year.test.ts`): careful completes or is promoted with stress about 50 and 60-66 decisions, reckless caught by week 15-37
-- [ ] Remaining Finance scenes (see the list in `docs/story/finance.md`) and more close-step variants
+- [x] Remaining planned Finance scenes and a third close-step variant for quarter ends (46 Finance scenes)
 - [ ] Practitioner review of the Finance text
 
 ## Later jobs (not yet designed)

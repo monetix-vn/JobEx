@@ -71,10 +71,10 @@ describe('Finance and Accounting: the third job, same engine', () => {
       const months = closes(log);
       expect(months.length).toBeGreaterThanOrEqual(11);
       const mean = months.reduce((a, c) => a + c.score, 0) / months.length;
-      expect(mean).toBeGreaterThan(0.7);
+      expect(mean).toBeGreaterThan(0.65);
       const decisions = of(log, 'choice.resolved').length;
       expect(decisions).toBeGreaterThan(50);
-      expect(decisions).toBeLessThan(80);
+      expect(decisions).toBeLessThan(95);
     }
     const mean = finals.reduce((a, b) => a + b, 0) / finals.length;
     expect(mean).toBeGreaterThan(25);

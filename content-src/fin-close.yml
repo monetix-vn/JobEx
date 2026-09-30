@@ -5,7 +5,7 @@ place: finance_office
 tags: [close, bank]
 weight: 10
 cooldown: 3
-when: [close.open = 1, close.bank_rec = 0, month in 1 3 5 7 9 11]
+when: [close.open = 1, close.bank_rec = 0, month in 1 5 7 11]
 lines:
   - who: char:thu
     en: 'There is a 4.2 million dong item on the bank reconciliation that has sat there three weeks. I cannot match it to any invoice or payment.'
@@ -50,7 +50,7 @@ place: finance_office
 tags: [close, bank]
 weight: 10
 cooldown: 3
-when: [close.open = 1, close.bank_rec = 0, month in 2 4 6 8 10 12]
+when: [close.open = 1, close.bank_rec = 0, month in 2 4 8 10]
 lines:
   - who: char:hanh
     en: 'The bank statement and our ledger disagree by 180 thousand dong. It is small, but I do not sign a reconciliation that does not reconcile.'
@@ -101,7 +101,7 @@ place: finance_office
 tags: [close, receivables]
 weight: 10
 cooldown: 3
-when: [close.open = 1, close.ar_aging = 0, month in 1 3 5 7 9 11]
+when: [close.open = 1, close.ar_aging = 0, month in 1 5 7 11]
 lines:
   - who: char:bao
     en: 'That customer is 75 days overdue, I know. But they are about to pay, I promise. Please do not age it into the red bucket, it makes my whole region look bad.'
@@ -154,7 +154,7 @@ place: finance_office
 tags: [close, receivables]
 weight: 10
 cooldown: 3
-when: [close.open = 1, close.ar_aging = 0, month in 2 4 6 8 10 12]
+when: [close.open = 1, close.ar_aging = 0, month in 2 4 8 10]
 lines:
   - who: char:duc
     en: 'The bank wants our DSO figure this week. Two of the disputed invoices are dragging it up. Surely disputed is not the same as overdue?'
@@ -199,7 +199,7 @@ place: finance_office
 tags: [close, accruals]
 weight: 10
 cooldown: 3
-when: [close.open = 1, close.accruals = 0, month in 1 3 5 7 9 11]
+when: [close.open = 1, close.accruals = 0, month in 1 5 7 11]
 terms: [accrual]
 lines:
   - who: char:duc
@@ -246,7 +246,7 @@ place: finance_office
 tags: [close, accruals]
 weight: 10
 cooldown: 3
-when: [close.open = 1, close.accruals = 0, month in 2 4 6 8 10 12]
+when: [close.open = 1, close.accruals = 0, month in 2 4 8 10]
 terms: [accrual]
 lines:
   - who: char:hanh
@@ -292,7 +292,7 @@ place: finance_office
 tags: [close, cutoff]
 weight: 10
 cooldown: 3
-when: [close.open = 1, close.cutoff = 0, month in 1 3 5 7 9 11]
+when: [close.open = 1, close.cutoff = 0, month in 1 5 7 11]
 terms: [cutoff]
 lines:
   - who: char:bao
@@ -346,7 +346,7 @@ place: finance_office
 tags: [close, cutoff]
 weight: 10
 cooldown: 3
-when: [close.open = 1, close.cutoff = 0, month in 2 4 6 8 10 12]
+when: [close.open = 1, close.cutoff = 0, month in 2 4 8 10]
 terms: [cutoff]
 lines:
   - who: char:thu

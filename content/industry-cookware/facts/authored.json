@@ -1185,5 +1185,28 @@
         "buyer": -16
       }
     }
+  },
+  {
+    "id": "fact.skipped_cutoff_check",
+    "category": "integrity",
+    "severity": 3,
+    "text_key": "fact.skipped_cutoff_check",
+    "lesson_key": "lesson.skipped_cutoff_check",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.5,
+        "detectors": ["internal_audit", "finance"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -3,
+        "finance": -3
+      },
+      "public": {
+        "boss": -6
+      }
+    }
   }
 ]

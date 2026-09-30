@@ -1,0 +1,466 @@
+# Finance: third variant of each close step (quarter-end months), plus the remaining planned scenes.
+scene: fin.close_bank_rec_c
+place: finance_office
+tags: [close, bank]
+weight: 10
+cooldown: 3
+when: [close.open = 1, close.bank_rec = 0, month in 3 6 9 12]
+lines:
+  - who: char:hanh
+    en: 'Quarter end, so the bank will send the confirmation letters to the auditor. Every account has to agree with what the bank will say, to the dong. Two of ours do not. Tell me how you want to deal with it.'
+    vi: 'Cuối quý, nên ngân hàng sẽ gửi thư xác nhận cho kiểm toán. Mọi tài khoản phải khớp với điều ngân hàng sẽ nói, đến từng đồng. Hai tài khoản của mình chưa khớp. Em nói chị nghe em muốn xử lý thế nào.'
+choices:
+  - en: 'Reconcile both accounts line by line today and send Hanh the reconciliations with notes.'
+    vi: 'Đối chiếu cả hai tài khoản từng dòng ngay hôm nay và gửi chị Hạnh bảng đối chiếu kèm ghi chú.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.85
+        en: 'One is a timing difference, one a bank fee booked twice. Both are explained and corrected before the letters go out.'
+        vi: 'Một khoản là chênh lệch thời điểm, một khoản là phí ngân hàng ghi hai lần. Cả hai được giải thích và sửa trước khi thư gửi đi.'
+        effects: [close bank_rec +2, rel hanh trust +3, stress +1]
+      - p: 0.15
+        ok: false
+        en: 'One difference is still unexplained when the letters go out. You document it and tell the auditor in advance.'
+        vi: 'Một khoản chênh vẫn chưa giải thích được khi thư gửi đi. Anh/chị ghi lại và báo trước cho kiểm toán.'
+        effects: [close bank_rec +1, rel hanh trust +1, rel vy trust +2, stress +3]
+  - en: 'Reconcile the larger account fully and mark the smaller difference as a known timing item.'
+    vi: 'Đối chiếu đầy đủ tài khoản lớn và đánh dấu khoản chênh nhỏ là mục chênh lệch thời điểm đã biết.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "Hanh reads the note twice. 'Acceptable, provided it clears next week.' It does."
+        vi: "Chị Hạnh đọc ghi chú hai lần. 'Chấp nhận được, miễn là tuần sau xóa.' Và nó đã xóa."
+        effects: [close bank_rec +1, rel hanh trust +1]
+  - en: "Adjust the ledger balances so both agree with last month's bank statements."
+    vi: 'Điều chỉnh số dư sổ cái để cả hai khớp với sao kê ngân hàng tháng trước.'
+    outcomes:
+      - p: 0.8
+        en: 'Both accounts agree on paper. The adjustments are in a journal entry with a one-word description.'
+        vi: 'Cả hai tài khoản khớp trên giấy. Các điều chỉnh nằm trong một bút toán có mô tả một từ.'
+        effects: [close bank_rec +1, stress -1, fact wrote_off_unexplained_item private]
+      - p: 0.2
+        ok: false
+        en: "The bank's confirmation shows a balance that does not match yours by 4.6 million. Vy asks for the journal entry."
+        vi: 'Xác nhận của ngân hàng cho thấy số dư lệch của anh/chị 4,6 triệu. Chị Vy yêu cầu bút toán.'
+        effects:
+          [
+            close bank_rec +1,
+            rel vy trust -6,
+            rel hanh trust -5,
+            rep.boss -3,
+            fact wrote_off_unexplained_item witnessed,
+          ]
+---
+scene: fin.close_ar_aging_c
+place: finance_office
+tags: [close, receivables]
+weight: 10
+cooldown: 3
+when: [close.open = 1, close.ar_aging = 0, month in 3 6 9 12]
+lines:
+  - who: char:hanh
+    en: 'The auditor will pick twenty customer balances at quarter end and ask the customers to confirm them. Three of ours are disputed. Do we write to those customers, or hope they do not get picked?'
+    vi: 'Kiểm toán sẽ chọn hai mươi số dư khách hàng cuối quý và đề nghị khách xác nhận. Ba khoản của mình đang tranh chấp. Mình viết thư cho các khách đó, hay hy vọng họ không bị chọn?'
+choices:
+  - en: 'Write to the three customers now, resolve what can be resolved, and record the rest as disputed.'
+    vi: 'Viết thư cho ba khách ngay bây giờ, giải quyết phần nào giải quyết được và ghi phần còn lại là tranh chấp.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.8
+        en: 'Two disputes are settled with credit notes. The third stays open and is shown as disputed. The ageing is accurate and so is the provision.'
+        vi: 'Hai tranh chấp được giải quyết bằng giấy báo có. Khoản thứ ba vẫn mở và được ghi là tranh chấp. Tuổi nợ chính xác và dự phòng cũng vậy.'
+        effects: [close ar_aging +2, rel hanh trust +3, rep.buyer +1, stress +2]
+      - p: 0.2
+        ok: false
+        en: 'A customer takes offence at being contacted and says so to Bao. The dispute is real, but the conversation is unpleasant.'
+        vi: 'Một khách phật ý vì bị liên hệ và nói với anh Bảo. Tranh chấp là thật, nhưng cuộc trò chuyện khó chịu.'
+        effects: [close ar_aging +2, rel hanh trust +2, rel bao trust -4, stress +3]
+  - en: 'Flag the three disputed balances in the ageing and prepare a note for the auditor, without contacting the customers.'
+    vi: 'Đánh dấu ba khoản tranh chấp trong báo cáo tuổi nợ và chuẩn bị ghi chú cho kiểm toán, không liên hệ khách.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'Hanh accepts: the files are honest. Whether the customers confirm is out of your hands.'
+        vi: 'Chị Hạnh chấp nhận: hồ sơ trung thực. Khách có xác nhận hay không nằm ngoài tầm tay anh/chị.'
+        effects: [close ar_aging +1, rel hanh trust +1]
+  - en: 'Quietly clear the disputed balances to a credit-note suspense account before the confirmations go out.'
+    vi: 'Lặng lẽ chuyển các khoản tranh chấp sang tài khoản treo giấy báo có trước khi thư xác nhận được gửi.'
+    outcomes:
+      - p: 0.7
+        en: 'The balances no longer show. The confirmations come back clean. The suspense account grows.'
+        vi: 'Các khoản không còn hiện. Thư xác nhận trở về sạch. Tài khoản treo tăng lên.'
+        effects: [close ar_aging +1, stress -1, fact hid_overdue_balance private]
+      - p: 0.3
+        ok: false
+        en: 'A customer confirms a balance that is 18 million higher than yours. Vy asks where the difference went.'
+        vi: 'Một khách xác nhận một số dư cao hơn số của anh/chị 18 triệu. Chị Vy hỏi phần chênh đi đâu.'
+        effects:
+          [
+            close ar_aging +1,
+            rel vy trust -8,
+            rel hanh trust -6,
+            rep.boss -5,
+            stress +4,
+            fact hid_overdue_balance public,
+          ]
+---
+scene: fin.close_accruals_c
+place: finance_office
+tags: [close, accruals]
+weight: 10
+cooldown: 3
+when: [close.open = 1, close.accruals = 0, month in 3 6 9 12]
+terms: [accrual]
+lines:
+  - who: char:duc
+    en: 'It is quarter end. The warranty provision, the holiday pay accrual and the bonus accrual are all estimates. I would like the total to look steady. You have some room in each, have you not?'
+    vi: 'Cuối quý rồi. Dự phòng bảo hành, trích trước nghỉ phép và trích trước thưởng đều là ước tính. Anh muốn tổng trông ổn định. Em có chút dư địa ở mỗi khoản, đúng không?'
+choices:
+  - en: 'Calculate each one from its own data, and show Duc the total and its range.'
+    vi: 'Tính từng khoản từ dữ liệu riêng của nó và cho anh Đức xem tổng số cùng khoảng dao động.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.85
+        en: 'The total is slightly lower than last quarter. Duc accepts, reluctantly, that the ranges are honest.'
+        vi: 'Tổng thấp hơn quý trước một chút. Anh Đức miễn cưỡng chấp nhận rằng các khoảng là trung thực.'
+        effects: [close accruals +2, rel duc trust -2, rel hanh trust +3, stress +1]
+      - p: 0.15
+        ok: false
+        en: 'One estimate rests on data nobody kept. You mark it as a judgement and explain the method.'
+        vi: 'Một ước tính dựa trên dữ liệu không ai lưu. Anh/chị ghi rõ là đánh giá chủ quan và giải thích phương pháp.'
+        effects: [close accruals +1, stress +2]
+  - en: 'Use the midpoint of each range and document the method.'
+    vi: 'Dùng điểm giữa của mỗi khoảng và ghi lại phương pháp.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'Steady enough, honest enough. Hanh files the working and says nothing, which from her is approval.'
+        vi: 'Đủ ổn định, đủ trung thực. Chị Hạnh lưu bảng tính và không nói gì, mà từ chị thì đó là đồng ý.'
+        effects: [close accruals +1, rel duc trust +1, rel hanh trust +1]
+  - en: 'Pick the top of each range, so you have room next quarter.'
+    vi: 'Chọn đầu trên của mỗi khoảng để quý sau còn dư địa.'
+    outcomes:
+      - p: 0.8
+        en: 'The profit is a little lower and very steady. Duc is delighted. You have also built a cushion you will want to use.'
+        vi: 'Lợi nhuận hơi thấp và rất đều. Anh Đức rất vui. Anh/chị cũng đã dựng một tấm đệm mà sau này sẽ muốn dùng.'
+        effects: [close accruals +1, rel duc trust +4, stress -1, fact padded_reserve private]
+      - p: 0.2
+        ok: false
+        en: 'Hanh compares the three accruals to their real outcomes. All three are high, and in the same direction.'
+        vi: 'Chị Hạnh so ba khoản trích trước với kết quả thực tế. Cả ba đều cao, và cùng một hướng.'
+        effects:
+          [close accruals +1, rel hanh trust -6, rel duc trust +2, fact padded_reserve witnessed]
+---
+scene: fin.close_cutoff_c
+place: finance_office
+tags: [close, cutoff]
+weight: 10
+cooldown: 3
+when: [close.open = 1, close.cutoff = 0, month in 3 6 9 12]
+terms: [cutoff]
+lines:
+  - who: char:vy
+    en: 'I will be testing quarter-end cut-off next month. I will take your last ten invoices and first ten invoices of the new quarter and trace each to the delivery record. If you would like to check them yourself first, this is the time.'
+    vi: 'Tháng sau tôi sẽ kiểm tra cắt kỳ cuối quý. Tôi sẽ lấy mười hóa đơn cuối và mười hóa đơn đầu quý mới rồi truy từng cái về hồ sơ giao hàng. Nếu anh/chị muốn tự kiểm trước, đây là lúc.'
+choices:
+  - en: 'Trace the last ten and first ten invoices to their delivery records yourself, and correct anything that is in the wrong period.'
+    vi: 'Tự truy mười hóa đơn cuối và mười hóa đơn đầu về hồ sơ giao hàng và sửa bất cứ thứ gì nằm sai kỳ.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.85
+        en: "Two invoices were in the wrong quarter, both small. You correct them and tell Vy. Her note: 'Self-identified and corrected.'"
+        vi: "Hai hóa đơn nằm sai quý, đều nhỏ. Anh/chị sửa và báo chị Vy. Ghi chú của chị: 'Tự phát hiện và đã sửa.'"
+        effects: [close cutoff +2, rel vy trust +4, rel hanh trust +3, stress +1]
+      - p: 0.15
+        ok: false
+        en: "One of the wrong-period invoices is large, and the correction moves the quarter's revenue. Duc is unhappy. Nothing in it is false."
+        vi: 'Một hóa đơn nằm sai kỳ có giá trị lớn, và việc sửa làm dịch chuyển doanh thu quý. Anh Đức không vui. Không có gì trong đó là sai.'
+        effects: [close cutoff +2, rel vy trust +4, rel duc trust -5, stress +4]
+  - en: 'Check only the largest invoices at the boundary, and note what you did not check.'
+    vi: 'Chỉ kiểm các hóa đơn lớn nhất ở ranh giới kỳ và ghi lại phần chưa kiểm.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'A reasonable, honest scope. Hanh accepts the note. Vy will test the rest herself.'
+        vi: 'Phạm vi hợp lý và trung thực. Chị Hạnh chấp nhận ghi chú. Chị Vy sẽ tự kiểm phần còn lại.'
+        effects: [close cutoff +1, rel hanh trust +1]
+  - en: 'Do not check. If there is a problem, Vy will find it, and that is her job.'
+    vi: 'Không kiểm. Nếu có vấn đề, chị Vy sẽ tìm ra, đó là việc của chị ấy.'
+    outcomes:
+      - p: 0.6
+        en: 'Nothing is found. You were lucky, and you know it.'
+        vi: 'Không thấy gì. Anh/chị may mắn, và anh/chị biết điều đó.'
+        effects: [close cutoff +1, stress -1, fact skipped_cutoff_check private]
+      - p: 0.4
+        ok: false
+        en: 'Vy finds three invoices booked a week early. She asks why nobody checked. Hanh looks at you.'
+        vi: 'Chị Vy tìm thấy ba hóa đơn ghi sớm một tuần. Chị hỏi vì sao không ai kiểm. Chị Hạnh nhìn anh/chị.'
+        effects:
+          [
+            close cutoff +1,
+            rel vy trust -6,
+            rel hanh trust -6,
+            rep.boss -4,
+            stress +4,
+            fact skipped_cutoff_check witnessed,
+          ]
+---
+scene: fin.bank_rec_gap
+place: finance_office
+tags: [onboarding, bank]
+weight: 2
+cooldown: 52
+when: [turn >= 5, turn <= 15]
+lines:
+  - who: char:hanh
+    en: 'I have found a reconciling item from last September that nobody can explain. It is 12.7 million dong, so it is not trivial. It predates you. I would like you to look at it, and tell me what you think we should do.'
+    vi: 'Chị tìm thấy một khoản chênh đối chiếu từ tháng Chín năm ngoái mà không ai giải thích được. Là 12,7 triệu đồng, không phải nhỏ. Nó có từ trước khi em vào. Chị muốn em xem và nói chị nghe mình nên làm gì.'
+choices:
+  - en: 'Investigate it properly, even if it takes days, and report what you find.'
+    vi: 'Điều tra đàng hoàng, dù mất mấy ngày, và báo cáo điều tìm được.'
+    cost: { hours: 4 }
+    outcomes:
+      - p: 0.7
+        en: 'It is a supplier refund misapplied to the wrong invoice. You fix it, and Hanh trusts you with the harder tasks from then on.'
+        vi: 'Đó là khoản hoàn tiền nhà cung cấp gán nhầm vào hóa đơn khác. Anh/chị sửa, và từ đó chị Hạnh giao cho anh/chị những việc khó hơn.'
+        effects: [rel hanh trust +6, rel thu trust +1, stress +2]
+      - p: 0.3
+        ok: false
+        en: 'The trail ends with a former employee and a missing file. You document everything you found and recommend a write-off, with approval.'
+        vi: 'Dấu vết dừng ở một nhân viên cũ và một hồ sơ thất lạc. Anh/chị ghi lại mọi điều tìm được và đề nghị xóa sổ, kèm phê duyệt.'
+        effects: [rel hanh trust +4, stress +3]
+  - en: 'Propose a write-off with a clear explanation of why it cannot be traced, and ask Hanh to approve it.'
+    vi: 'Đề xuất xóa sổ kèm giải thích rõ vì sao không truy ra được và nhờ chị Hạnh phê duyệt.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'Hanh reads the memo and approves it with a signature. It is a legitimate write-off: explained, authorised, on paper.'
+        vi: 'Chị Hạnh đọc bản ghi nhớ và ký duyệt. Đó là một khoản xóa sổ hợp lệ: có giải thích, có phê duyệt, có giấy tờ.'
+        effects: [rel hanh trust +2, stress +1]
+  - en: 'Tell her you did not find anything, and leave it on the list.'
+    vi: 'Nói với chị là chưa tìm ra gì và để nó trong danh sách.'
+    outcomes:
+      - p: 1
+        en: 'Hanh nods and the item stays another quarter. The hint of a shrug in her voice tells you she expected more.'
+        vi: 'Chị Hạnh gật đầu và khoản đó ở lại thêm một quý. Chút nhún vai trong giọng chị cho anh/chị biết chị mong đợi nhiều hơn.'
+        effects: [rel hanh trust -2]
+---
+scene: fin.tet_bonus_calc
+place: finance_office
+tags: [pressure, accruals]
+weight: 2
+cooldown: 52
+terms: [accrual]
+when: [turn >= 3, turn <= 8]
+lines:
+  - who: char:duc
+    en: 'The Tet bonus estimate is due. The directors have promised a generous one. I need the accrual to match the promise, not the rulebook. The rulebook says nothing has been earned yet.'
+    vi: 'Đến hạn ước tính thưởng Tết. Ban giám đốc đã hứa một khoản hậu hĩnh. Anh cần khoản trích trước khớp với lời hứa, không phải với quy chế. Quy chế nói chưa có gì được hưởng.'
+choices:
+  - en: 'Calculate the accrual from the plan as it stands, and show Duc what the rulebook allows and what it does not.'
+    vi: 'Tính trích trước theo kế hoạch hiện tại và cho anh Đức thấy quy chế cho phép gì và không cho phép gì.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.8
+        en: "Duc reads it. 'So, a smaller number, unless the directors formalise the promise.' He takes it to them, and a written plan follows."
+        vi: "Anh Đức đọc. 'Vậy là số nhỏ hơn, trừ khi ban giám đốc chính thức hóa lời hứa.' Anh mang lên họ, và một kế hoạch bằng văn bản ra đời."
+        effects: [rel duc trust +1, rel hanh trust +4, stress +2]
+      - p: 0.2
+        ok: false
+        en: 'The directors refuse to formalise it, and the accrual stays low. Staff grumble quietly about Finance.'
+        vi: 'Ban giám đốc từ chối chính thức hóa, và khoản trích trước vẫn thấp. Nhân viên lặng lẽ than phiền về bên Tài chính.'
+        effects: [rel duc trust -3, rel hanh trust +4, rep.boss -1, stress +3]
+  - en: 'Accrue a moderate amount and note that the rest depends on a written decision by the directors.'
+    vi: 'Trích trước một khoản vừa phải và ghi rằng phần còn lại phụ thuộc quyết định bằng văn bản của ban giám đốc.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'Duc accepts the compromise. The note triggers a written decision in two weeks, and the year starts with a clean record.'
+        vi: 'Anh Đức chấp nhận thỏa hiệp. Ghi chú kích hoạt một quyết định bằng văn bản trong hai tuần, và năm bắt đầu với hồ sơ sạch.'
+        effects: [rel duc trust +1, rel hanh trust +1, stress +1]
+  - en: 'Accrue the full promised amount, as Duc asks.'
+    vi: 'Trích trước toàn bộ số đã hứa theo yêu cầu của anh Đức.'
+    outcomes:
+      - p: 0.8
+        en: 'Duc thanks you warmly. The books now show a liability nobody approved, and the profit looks lower than it should.'
+        vi: 'Anh Đức cảm ơn nồng nhiệt. Sổ sách giờ hiện một khoản nợ chưa ai duyệt, và lợi nhuận trông thấp hơn mức đúng.'
+        effects: [rel duc trust +4, stress -1, fact rounded_accrual private]
+      - p: 0.2
+        ok: false
+        en: "Hanh asks what approval supports the accrual. You point to Duc. Duc says he asked for 'an estimate'."
+        vi: "Chị Hạnh hỏi phê duyệt nào hỗ trợ khoản trích trước. Anh/chị chỉ vào anh Đức. Anh Đức nói anh chỉ nhờ 'một ước tính'."
+        effects: [rel duc trust -5, rel hanh trust -5, fact rounded_accrual witnessed]
+---
+scene: fin.audit_notice_huddle
+place: meeting_room
+tags: [audit, pressure]
+weight: 2
+cooldown: 40
+when: [month in 3 4, company.audit_readiness < 70]
+lines:
+  - who: char:hanh
+    en: "The buyer's audit is in three weeks. They will look at revenue recognition, credit control and expenses. We have gaps in all three. Tell me where you would spend the time."
+    vi: 'Khách đánh giá sau ba tuần nữa. Họ sẽ xem ghi nhận doanh thu, kiểm soát tín dụng và chi phí. Mình có lỗ hổng ở cả ba. Em nói chị nghe em sẽ dành thời gian vào đâu.'
+choices:
+  - en: 'List the gaps honestly with owners and dates, fix the worst first, and give Hanh the list so she can decide what to tell the buyer.'
+    vi: 'Liệt kê các lỗ hổng trung thực kèm người phụ trách và ngày hạn, sửa chỗ tệ nhất trước và đưa danh sách cho chị Hạnh để chị quyết định nói gì với khách.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: 'Hanh takes the list to Duc. The buyer is told honestly about two gaps with dated fixes. Audit readiness improves.'
+        vi: 'Chị Hạnh mang danh sách lên anh Đức. Khách được báo trung thực về hai lỗ hổng kèm ngày sửa. Mức sẵn sàng kiểm toán tốt lên.'
+        effects: [rel hanh trust +4, rep.boss +2, stress +2, company.audit_readiness +8]
+  - en: 'Fix what can be fixed in three weeks and document the rest as known, without listing them for the buyer.'
+    vi: 'Sửa những gì sửa được trong ba tuần và ghi phần còn lại là đã biết, không liệt kê cho khách.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'A pragmatic plan. Hanh accepts it, with a note that the gaps must be disclosed if asked.'
+        vi: 'Một kế hoạch thực dụng. Chị Hạnh chấp nhận, kèm ghi chú rằng phải công khai các lỗ hổng nếu được hỏi.'
+        effects: [rel hanh trust +1, stress +1, company.audit_readiness +4]
+  - en: 'Concentrate on making the documents look complete and let the substance follow.'
+    vi: 'Tập trung làm cho hồ sơ trông đầy đủ và để phần nội dung theo sau.'
+    outcomes:
+      - p: 0.7
+        en: 'The files look good. The substance does not follow. You tell yourself there will be time after the audit.'
+        vi: 'Hồ sơ trông đẹp. Phần nội dung không theo sau. Anh/chị tự nhủ sẽ có thời gian sau kiểm toán.'
+        effects: [rel hanh trust -2, stress -1, company.audit_readiness +2]
+      - p: 0.3
+        ok: false
+        en: 'Hanh notices a file that was created last week, dated three months ago. She does not ask. She simply looks at you.'
+        vi: 'Chị Hạnh để ý một hồ sơ mới tạo tuần trước nhưng đề ngày ba tháng trước. Chị không hỏi. Chị chỉ nhìn anh/chị.'
+        effects: [rel hanh trust -9, rep.boss -4, stress +4, company.audit_readiness -2]
+---
+scene: fin.dso_pressure
+place: meeting_room
+tags: [receivables, pressure, dark]
+weight: 1.5
+cooldown: 26
+when: [turn >= 26, turn <= 46]
+lines:
+  - who: char:duc
+    en: 'The bank wants DSO below 55 days. We are at 63. Bao says the customers will pay, but not this quarter. I need you to think about what can reasonably be done with the receivables.'
+    vi: 'Ngân hàng muốn DSO dưới 55 ngày. Mình đang ở 63. Anh Bảo nói khách sẽ trả, nhưng không phải quý này. Anh cần em nghĩ xem có thể làm gì hợp lý với các khoản phải thu.'
+choices:
+  - en: 'Propose real actions: earlier invoicing, a collections push on the five largest balances, and an honest forecast.'
+    vi: 'Đề xuất hành động thật: xuất hóa đơn sớm hơn, chiến dịch thu nợ năm khoản lớn nhất và một dự báo trung thực.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.7
+        en: 'DSO falls to 58 over the quarter: not enough for the bank, but real. Duc presents it with a plan. The bank extends the deadline.'
+        vi: 'DSO giảm xuống 58 trong quý: chưa đủ cho ngân hàng, nhưng là thật. Anh Đức trình bày kèm kế hoạch. Ngân hàng gia hạn thời hạn.'
+        effects: [rel duc trust +3, rel hanh trust +3, rep.boss +3, stress +3]
+      - p: 0.3
+        ok: false
+        en: 'The collections push brings in less than hoped, and DSO stays at 61. You give Duc the facts. He says it is not what he wanted to hear.'
+        vi: 'Chiến dịch thu nợ thu về ít hơn mong đợi, và DSO ở mức 61. Anh/chị đưa sự thật cho anh Đức. Anh nói không phải điều anh muốn nghe.'
+        effects: [rel duc trust -2, rel hanh trust +3, stress +4]
+  - en: 'Offer a small early-payment discount to a few customers, approved by Duc, to pull cash in.'
+    vi: 'Đề nghị chiết khấu thanh toán sớm nhỏ cho vài khách, do anh Đức duyệt, để kéo tiền về.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'Three customers take it. Cash improves, margin falls slightly, and the approval is on file. A legitimate trade-off, openly made.'
+        vi: 'Ba khách nhận lời. Tiền mặt tốt lên, biên giảm nhẹ, và phê duyệt đã lưu. Một đánh đổi hợp lệ, được thực hiện công khai.'
+        effects: [rel duc trust +2, rel hanh trust +1, stress +2]
+  - en: "Reclassify the slowest balances as 'other receivables' so they fall out of the DSO calculation."
+    vi: "Phân loại lại các khoản chậm nhất thành 'phải thu khác' để chúng rơi khỏi phép tính DSO."
+    outcomes:
+      - p: 0.7
+        en: 'DSO drops to 52. Duc says it is excellent work. The balances are still owed, and still late, and now harder to see.'
+        vi: 'DSO giảm xuống 52. Anh Đức nói công việc xuất sắc. Các khoản vẫn còn nợ, vẫn trễ, và giờ khó thấy hơn.'
+        effects: [rel duc trust +6, stress -1, fact hid_overdue_balance private]
+      - p: 0.3
+        ok: false
+        en: 'The auditor compares the DSO to the ageing report and the receivables note. The numbers do not reconcile.'
+        vi: 'Kiểm toán viên so DSO với báo cáo tuổi nợ và thuyết minh phải thu. Các con số không khớp.'
+        effects:
+          [
+            rel duc trust +3,
+            rel vy trust -8,
+            rel hanh trust -6,
+            rep.boss -5,
+            stress +5,
+            fact hid_overdue_balance public,
+          ]
+---
+scene: fin.year_end_close
+place: finance_office
+tags: [close, pressure, dark]
+weight: 4
+cooldown: 40
+terms: [cutoff]
+when: [close.open = 1, month in 12, turn >= 44]
+lines:
+  - who: char:bao
+    en: 'It is the last week of the year. I am 400 million short of the annual target, and I have two shipments that leave on the second of January. Book them this year. It is the same goods, just a few days.'
+    vi: 'Đây là tuần cuối năm. Anh thiếu 400 triệu so với chỉ tiêu cả năm, và có hai lô hàng rời kho ngày mùng hai tháng Giêng. Anh/chị ghi vào năm nay. Cùng một lô hàng, chỉ chênh vài ngày.'
+  - who: char:hanh
+    en: 'This will be audited. It is your call, and I will support what you decide. But decide knowing that.'
+    vi: 'Cái này sẽ bị kiểm toán. Em quyết, và chị sẽ ủng hộ quyết định của em. Nhưng hãy quyết với hiểu biết đó.'
+choices:
+  - en: 'Refuse: they belong to next year, and say so clearly to Bao and to Duc in writing.'
+    vi: 'Từ chối: chúng thuộc năm sau, và nói rõ với anh Bảo và anh Đức bằng văn bản.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.85
+        en: "Bao is angry and the year ends below target. Hanh nods once. In January, the auditor's note says: 'Cut-off at year end was properly applied.'"
+        vi: "Anh Bảo giận và năm kết thúc dưới chỉ tiêu. Chị Hạnh gật đầu một lần. Tháng Giêng, ghi chú của kiểm toán viết: 'Cắt kỳ cuối năm được áp dụng đúng.'"
+        effects: [rel bao trust -8, rel hanh trust +5, rel vy trust +3, rep.boss +3, stress +4]
+      - p: 0.15
+        ok: false
+        en: 'Duc overrules you and asks someone else to book it. You have a written record, and not much else.'
+        vi: 'Anh Đức gạt quyết định của anh/chị và nhờ người khác ghi. Anh/chị có bản ghi bằng văn bản, và không nhiều hơn thế.'
+        effects: [rel bao trust -6, rel duc trust -6, rel hanh trust +4, stress +6]
+  - en: 'Offer to book what has actually shipped by the 31st, and help Bao find more that can legitimately go out.'
+    vi: 'Đề nghị ghi phần thực sự đã xuất đến ngày 31 và giúp anh Bảo tìm thêm phần có thể xuất hợp lệ.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: 'Bao finds one shipment that can leave on the 30th. It is not everything. It is honest, and he owes you one.'
+        vi: 'Anh Bảo tìm được một lô có thể xuất ngày 30. Không phải tất cả. Trung thực, và anh ấy nợ anh/chị một lần.'
+        effects: [rel bao trust +1, rel bao owed +1, rel hanh trust +2, stress +2]
+  - en: 'Book both shipments in December.'
+    vi: 'Ghi cả hai lô vào tháng Mười Hai.'
+    outcomes:
+      - p: 0.6
+        en: 'The year closes at target. Bao embraces you. The entries carry December dates and January dispatch logs.'
+        vi: 'Năm khép lại đúng chỉ tiêu. Anh Bảo ôm anh/chị. Các bút toán mang ngày tháng Mười Hai và nhật ký xuất hàng tháng Giêng.'
+        effects:
+          [
+            rel bao trust +8,
+            rel bao owed +3,
+            rel duc trust +3,
+            rep.boss +3,
+            stress -1,
+            fact booked_revenue_early private,
+          ]
+      - p: 0.4
+        ok: false
+        en: "The auditor's year-end cut-off test picks both shipments. The dispatch logs are dated the second of January. The error is material."
+        vi: 'Kiểm tra cắt kỳ cuối năm của kiểm toán chọn đúng cả hai lô. Nhật ký xuất hàng ghi ngày mùng hai tháng Giêng. Sai lệch là trọng yếu.'
+        effects:
+          [
+            rel bao trust +4,
+            rel hanh trust -10,
+            rel vy trust -10,
+            rep.boss -8,
+            stress +7,
+            fact booked_revenue_early public,
+          ]
+---
+fact: skipped_cutoff_check
+severity: 3
+category: integrity
+en: 'you skipped checking the cut-off before the auditor did'
+vi: 'bạn bỏ qua việc kiểm tra cắt kỳ trước khi kiểm toán viên làm'
+lesson:
+  en: 'Letting the auditor find your errors is a choice to be caught rather than to fix. A self-check costs an afternoon and changes how everything else is read.'
+  vi: 'Để kiểm toán viên tìm ra lỗi của bạn là chọn bị bắt thay vì sửa. Tự kiểm tra tốn một buổi chiều và thay đổi cách mọi thứ khác được đọc.'
+traces:
+  - { type: record, visibility: 0.5, detectors: [internal_audit, finance] }
+witnessed:
+  boss: -3
+  finance: -3
+public:
+  boss: -6

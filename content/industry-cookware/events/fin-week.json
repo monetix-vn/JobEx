@@ -22,7 +22,7 @@
           ]
         },
         {
-          "in": ["world.month_of_year", 1, 3, 5, 7, 9, 11]
+          "in": ["world.month_of_year", 1, 5, 7, 11]
         }
       ]
     },
@@ -53,7 +53,7 @@
           ]
         },
         {
-          "in": ["world.month_of_year", 2, 4, 6, 8, 10, 12]
+          "in": ["world.month_of_year", 2, 4, 8, 10]
         }
       ]
     },
@@ -84,7 +84,7 @@
           ]
         },
         {
-          "in": ["world.month_of_year", 1, 3, 5, 7, 9, 11]
+          "in": ["world.month_of_year", 1, 5, 7, 11]
         }
       ]
     },
@@ -115,7 +115,7 @@
           ]
         },
         {
-          "in": ["world.month_of_year", 2, 4, 6, 8, 10, 12]
+          "in": ["world.month_of_year", 2, 4, 8, 10]
         }
       ]
     },
@@ -146,7 +146,7 @@
           ]
         },
         {
-          "in": ["world.month_of_year", 1, 3, 5, 7, 9, 11]
+          "in": ["world.month_of_year", 1, 5, 7, 11]
         }
       ]
     },
@@ -177,7 +177,7 @@
           ]
         },
         {
-          "in": ["world.month_of_year", 2, 4, 6, 8, 10, 12]
+          "in": ["world.month_of_year", 2, 4, 8, 10]
         }
       ]
     },
@@ -208,7 +208,7 @@
           ]
         },
         {
-          "in": ["world.month_of_year", 1, 3, 5, 7, 9, 11]
+          "in": ["world.month_of_year", 1, 5, 7, 11]
         }
       ]
     },
@@ -239,7 +239,7 @@
           ]
         },
         {
-          "in": ["world.month_of_year", 2, 4, 6, 8, 10, 12]
+          "in": ["world.month_of_year", 2, 4, 8, 10]
         }
       ]
     },
@@ -677,5 +677,227 @@
     "weight": 6,
     "cooldown_weeks": 52,
     "scene": "scene.fin.scapegoat_meeting"
+  },
+  {
+    "id": "event.fin.close_bank_rec_c",
+    "role": "role.fin.accountant",
+    "tags": ["close", "bank"],
+    "when": {
+      "all": [
+        {
+          "eq": [
+            {
+              "var": ["close.open", 0]
+            },
+            1
+          ]
+        },
+        {
+          "eq": [
+            {
+              "var": ["close.bank_rec", 0]
+            },
+            0
+          ]
+        },
+        {
+          "in": ["world.month_of_year", 3, 6, 9, 12]
+        }
+      ]
+    },
+    "weight": 10,
+    "cooldown_weeks": 3,
+    "scene": "scene.fin.close_bank_rec_c"
+  },
+  {
+    "id": "event.fin.close_ar_aging_c",
+    "role": "role.fin.accountant",
+    "tags": ["close", "receivables"],
+    "when": {
+      "all": [
+        {
+          "eq": [
+            {
+              "var": ["close.open", 0]
+            },
+            1
+          ]
+        },
+        {
+          "eq": [
+            {
+              "var": ["close.ar_aging", 0]
+            },
+            0
+          ]
+        },
+        {
+          "in": ["world.month_of_year", 3, 6, 9, 12]
+        }
+      ]
+    },
+    "weight": 10,
+    "cooldown_weeks": 3,
+    "scene": "scene.fin.close_ar_aging_c"
+  },
+  {
+    "id": "event.fin.close_accruals_c",
+    "role": "role.fin.accountant",
+    "tags": ["close", "accruals"],
+    "when": {
+      "all": [
+        {
+          "eq": [
+            {
+              "var": ["close.open", 0]
+            },
+            1
+          ]
+        },
+        {
+          "eq": [
+            {
+              "var": ["close.accruals", 0]
+            },
+            0
+          ]
+        },
+        {
+          "in": ["world.month_of_year", 3, 6, 9, 12]
+        }
+      ]
+    },
+    "weight": 10,
+    "cooldown_weeks": 3,
+    "scene": "scene.fin.close_accruals_c"
+  },
+  {
+    "id": "event.fin.close_cutoff_c",
+    "role": "role.fin.accountant",
+    "tags": ["close", "cutoff"],
+    "when": {
+      "all": [
+        {
+          "eq": [
+            {
+              "var": ["close.open", 0]
+            },
+            1
+          ]
+        },
+        {
+          "eq": [
+            {
+              "var": ["close.cutoff", 0]
+            },
+            0
+          ]
+        },
+        {
+          "in": ["world.month_of_year", 3, 6, 9, 12]
+        }
+      ]
+    },
+    "weight": 10,
+    "cooldown_weeks": 3,
+    "scene": "scene.fin.close_cutoff_c"
+  },
+  {
+    "id": "event.fin.bank_rec_gap",
+    "role": "role.fin.accountant",
+    "tags": ["onboarding", "bank"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 5]
+        },
+        {
+          "lte": ["world.turn", 15]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 52,
+    "scene": "scene.fin.bank_rec_gap"
+  },
+  {
+    "id": "event.fin.tet_bonus_calc",
+    "role": "role.fin.accountant",
+    "tags": ["pressure", "accruals"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 3]
+        },
+        {
+          "lte": ["world.turn", 8]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 52,
+    "scene": "scene.fin.tet_bonus_calc"
+  },
+  {
+    "id": "event.fin.audit_notice_huddle",
+    "role": "role.fin.accountant",
+    "tags": ["audit", "pressure"],
+    "when": {
+      "all": [
+        {
+          "in": ["world.month_of_year", 3, 4]
+        },
+        {
+          "lt": ["company.audit_readiness", 70]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 40,
+    "scene": "scene.fin.audit_notice_huddle"
+  },
+  {
+    "id": "event.fin.dso_pressure",
+    "role": "role.fin.accountant",
+    "tags": ["receivables", "pressure", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 26]
+        },
+        {
+          "lte": ["world.turn", 46]
+        }
+      ]
+    },
+    "weight": 1.5,
+    "cooldown_weeks": 26,
+    "scene": "scene.fin.dso_pressure"
+  },
+  {
+    "id": "event.fin.year_end_close",
+    "role": "role.fin.accountant",
+    "tags": ["close", "pressure", "dark"],
+    "when": {
+      "all": [
+        {
+          "eq": [
+            {
+              "var": ["close.open", 0]
+            },
+            1
+          ]
+        },
+        {
+          "in": ["world.month_of_year", 12]
+        },
+        {
+          "gte": ["world.turn", 44]
+        }
+      ]
+    },
+    "weight": 4,
+    "cooldown_weeks": 40,
+    "scene": "scene.fin.year_end_close"
   }
 ]

@@ -98,9 +98,9 @@ approved. Choices are c1 by the book / c2 legitimate compromise / c3 shortcut.
 | fin.first_close                              | week 1 to 3, beat                | Hanh, Thu          | First month-end close; Hanh explains the checklist    | ask to learn the steps / follow the list / skip to the numbers            | -   | imported |
 | fin.first_adjustment                         | weeks 3 to 10                    | Hanh               | A small journal entry needs a reason on file          | write the reason / ask Hanh / leave blank                                 | -   | imported |
 | fin.thu_training                             | weeks 4 to 12                    | Thu                | Thu was never shown the approval rules                | teach her / pair / let her guess                                          | D   | imported |
-| fin.bank_rec_gap                             | weeks 5 to 14                    | Hanh               | A reconciling item you cannot explain                 | investigate / flag with a note / write it off                             | -   | planned |
+| fin.bank_rec_gap                             | weeks 5 to 14                    | Hanh               | A reconciling item you cannot explain                 | investigate / flag with a note / write it off                             | -   | imported |
 | **Tet and early year (Jan to Feb)**          |                                  |                    |                                                       |                                                                           |     |         |
-| fin.tet_bonus_calc                           | weeks 3 to 7                     | Duc, Hanh          | Bonus accrual estimate under pressure                 | compute fully / estimate with range / use the number Duc wants            | C   | planned |
+| fin.tet_bonus_calc                           | weeks 3 to 7                     | Duc, Hanh          | Bonus accrual estimate under pressure                 | compute fully / estimate with range / use the number Duc wants            | C   | imported |
 | fin.missing_documents                        | weeks 6 to 12                    | Bao, Thu           | Invoices without delivery proof                       | hold / request proof / accept                                             | -   | imported |
 | **The Cut-off (quarter ends)**               |                                  |                    |                                                       |                                                                           |     |         |
 | fin.quarter_close_push                       | weeks 11 to 13                   | Bao, Hanh          | Bao wants a Friday shipment booked this quarter       | refuse / book on shipping date / book early                               | A   | imported |
@@ -108,7 +108,7 @@ approved. Choices are c1 by the book / c2 legitimate compromise / c3 shortcut.
 | fin.quarter_close_push_2                     | weeks 24 to 26                   | Bao, Duc           | Bigger shipment, half-year target                     | refuse / split / book early                                               | A   | planned |
 | fin.cutoff_test_prep                         | weeks 38 to 40                   | Hanh, Vy           | Auditor will test cut-off                             | correct entries / disclose / patch                                        | A   | imported |
 | **The Squeeze (shared)**                     |                                  |                    |                                                       |                                                                           |     |         |
-| fin.audit_notice_huddle                      | after buyer notice               | Hanh, Duc          | Preparing documents for a buyer audit                 | real gap list / prioritise / cosmetic fix                                 | -   | planned |
+| fin.audit_notice_huddle                      | after buyer notice               | Hanh, Duc          | Preparing documents for a buyer audit                 | real gap list / prioritise / cosmetic fix                                 | -   | imported |
 | fin.vy_interim                               | weeks 14 to 17, beat             | Vy, Hanh           | Ms Vy's interim visit and sample requests             | open files / guided / steer                                               | -   | imported |
 | **The Receipt Problem (May to Oct)**         |                                  |                    |                                                       |                                                                           |     |         |
 | fin.long_receipts                            | weeks 18 to 24                   | Long               | Stack of expenses with no receipts                    | ask for receipts / book as staff advance / book as business               | B   | imported |
@@ -122,7 +122,7 @@ approved. Choices are c1 by the book / c2 legitimate compromise / c3 shortcut.
 | **Mid-year (Jun to Jul)**                    |                                  |                    |                                                       |                                                                           |     |         |
 | fin.midyear_review                           | weeks 24 to 28, beat             | Hanh               | Hanh's feedback on your work so far                   | accept / defend with data / spin                                          | -   | imported |
 | fin.buyer_disputes_invoice                   | week 28 to 32, beat (twist)      | Petra, Bao         | A large buyer disputes an invoice that was adjusted   | correct / explain with support / hold the line                            | A   | imported |
-| fin.dso_pressure                             | weeks 26 to 40                   | Duc, Bao           | DSO target: move overdue balances?                    | report honestly / payment plan / reclassify                               | -   | planned |
+| fin.dso_pressure                             | weeks 26 to 40                   | Duc, Bao           | DSO target: move overdue balances?                    | report honestly / payment plan / reclassify                               | -   | imported |
 | **Collections and risk (Aug to Oct)**        |                                  |                    |                                                       |                                                                           |     |         |
 | fin.overdue_balance                          | weeks 30 to 38                   | Bao, Petra         | A buyer is 90 days overdue; Bao asks you to leave it  | provide / reserve / hide by moving                                        | -   | imported |
 | fin.duplicate_payment                        | weeks 18 to 44                   | Thu                | A duplicate payment in the company's favour           | refund it / hold and log / keep it                                        | -   | imported |
@@ -135,17 +135,16 @@ approved. Choices are c1 by the book / c2 legitimate compromise / c3 shortcut.
 | fin.management_letter                        | weeks 45 to 48                   | Hanh, Duc          | Audit findings and who takes the blame                | present the record / share responsibility / point at Thu                  | -   | imported |
 | fin.scapegoat_meeting                        | needs a severe fact, crisis      | Duc, Hanh          | Management looks for one person to blame              | present the record / shared responsibility / point at Thu                 | -   | imported |
 | **Year-end finale (Dec)**                    |                                  |                    |                                                       |                                                                           |     |         |
-| fin.year_end_close                           | weeks 49 to 52                   | Hanh, Bao          | Last close of the year: final pressure from sales     | refuse / book on date / book early                                        | A   | planned |
+| fin.year_end_close                           | weeks 49 to 52                   | Hanh, Bao          | Last close of the year: final pressure from sales     | refuse / book on date / book early                                        | A   | imported |
 | fin.year_end_review                          | weeks 49 to 52, beat             | Hanh               | Annual review and promotion                           | honest / modest / polished                                                | -   | imported |
 | fin.manager_offer                            | rare, good record + relationships| Hanh, Duc          | Offered the chief accountant seat with a condition    | accept on your terms / decline / accept the condition (needs ending)      | -   | imported |
 
-Implemented differently from the table above (2026-10-01): the month-end close is eight step scenes
-(`fin.close_<step>_a` and `_b`, odd and even months, two variants per step) instead of the planned
-one-off incidents; `fin.long_wedding` became `fin.long_event` (stage `event` of the receipt arc);
-`fin.resignation_thought` (stress 75+, leads to the walked-away ending) was added. Still planned:
-`fin.bank_rec_gap`, `fin.tet_bonus_calc`, `fin.quarter_close_push_2` (bigger second-half version),
-`fin.audit_notice_huddle`, `fin.dso_pressure`, `fin.year_end_close`; more variants of the close steps.
-37 Finance scenes are in the game now; the target is still about 40 to 45.
+Implemented differently from the table above (2026-10-01): the month-end close is twelve step scenes
+(`fin.close_<step>_a`, `_b`, `_c`: months 1 5 7 11, months 2 4 8 10, and the quarter-end months 3 6 9 12)
+instead of one-off incidents; `fin.long_wedding` became `fin.long_event` (stage `event` of the receipt
+arc); `fin.resignation_thought` (stress 75+, leads to the walked-away ending) was added.
+`fin.quarter_close_push_2` was folded into `fin.quarter_close_push` (it fires in every quarter-end
+month) and `fin.year_end_close` (December). 46 Finance scenes are in the game now.
 
 Target: about 38 to 42 distinct scenes, about 20 random incidents and about 20 beat/arc scenes, for
 about 55 to 65 decisions a run. Count now: 40 planned.
