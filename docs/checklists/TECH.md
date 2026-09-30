@@ -59,7 +59,7 @@ Order matters; each item ships with tests and a docs/AUTHORING.md update.
 ## Phase 5: Quality and scale
 
 - [x] Q1 Balance reports at scale: `pnpm balance:report [--runs 40]` writes `docs/BALANCE.md` (endings, weeks, decisions, stress, storylines per job and test player); role field `events_per_week` sets a job's pace
-- [ ] Q2 Content lint in CI: decisions per year per job within target, every fact has a lesson, every arc reachable
+- [x] Q2 Content lint (`tools/pack-validator/test/content-lint.test.ts`, part of `pnpm test`): c1/c2/c3 numbering, lessons for severity 3+, dark scenes leave a fact and can fail on c3, no placeholders, enough scenes and beats per job; arcs are covered by the validator
 - [ ] Q3 Performance check for long runs
 - [ ] Q4 Practitioner review workflow (export a job's text to a reviewable document)
 - [ ] Q5 Packaging: web build hosting, versioned releases

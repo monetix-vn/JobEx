@@ -306,7 +306,7 @@ choices:
   - en: 'Tell her it is fine, that is how deals get made, and not to worry about production.'
     vi: 'Nói với em là ổn, đó là cách chốt đơn, và đừng lo về sản xuất.'
     outcomes:
-      - p: 1
+      - p: 0.75
         en: 'Quynh beams. You have made an ally, and set her on the same path. She starts telling the new hire the same thing.'
         vi: 'Quỳnh rạng rỡ. Anh/chị đã có một đồng minh, và đặt em lên cùng con đường. Em bắt đầu nói điều đó với nhân viên mới.'
         effects:
@@ -315,6 +315,19 @@ choices:
             rel quynh loyalty +5,
             stress -1,
             fact approved_quynh_shortcut private,
+            arc quynh caught,
+          ]
+      - p: 0.25
+        ok: false
+        en: 'Bao overhears Quynh telling a buyer, in your exact words, that production can be sorted out later. He looks at you across the office.'
+        vi: 'Anh Bảo nghe Quỳnh nói với khách, đúng từng chữ của anh/chị, rằng sản xuất có thể xử lý sau. Anh nhìn anh/chị qua văn phòng.'
+        effects:
+          [
+            rel quynh trust +3,
+            rel bao trust -5,
+            rep.boss -3,
+            stress +3,
+            fact approved_quynh_shortcut witnessed,
             arc quynh caught,
           ]
 ---

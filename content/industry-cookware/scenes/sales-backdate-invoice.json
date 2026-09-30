@@ -59,10 +59,51 @@
     {
       "id": "c2",
       "text_key": "scene.sales.backdate_invoice.c2",
+      "cost": {
+        "hours": 3
+      },
+      "requires": {
+        "gte": ["skill.negotiation", 35]
+      },
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.sales.backdate_invoice.c2.ok",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.sales.backdate_invoice.c2.fail",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sales.backdate_invoice.c3",
       "outcomes": [
         {
           "p": 0.7,
-          "narration_key": "scene.sales.backdate_invoice.c2.ok",
+          "narration_key": "scene.sales.backdate_invoice.c3.ok",
           "effects": [
             {
               "delta": "player.cash_vnd",
@@ -81,7 +122,7 @@
         {
           "p": 0.3,
           "result": "fail",
-          "narration_key": "scene.sales.backdate_invoice.c2.fail",
+          "narration_key": "scene.sales.backdate_invoice.c3.fail",
           "effects": [
             {
               "delta": "player.rep.finance",
@@ -98,47 +139,6 @@
             {
               "fact": "fact.backdated_documents",
               "visibility": "witnessed"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "c3",
-      "text_key": "scene.sales.backdate_invoice.c3",
-      "cost": {
-        "hours": 3
-      },
-      "requires": {
-        "gte": ["skill.negotiation", 35]
-      },
-      "outcomes": [
-        {
-          "p": 0.6,
-          "narration_key": "scene.sales.backdate_invoice.c3.ok",
-          "effects": [
-            {
-              "delta": "player.rep.boss",
-              "value": 3
-            },
-            {
-              "delta": "player.rep.buyer",
-              "value": 1
-            }
-          ]
-        },
-        {
-          "p": 0.4,
-          "result": "fail",
-          "narration_key": "scene.sales.backdate_invoice.c3.fail",
-          "effects": [
-            {
-              "delta": "player.rep.boss",
-              "value": -2
-            },
-            {
-              "delta": "player.stress",
-              "value": 3
             }
           ]
         }

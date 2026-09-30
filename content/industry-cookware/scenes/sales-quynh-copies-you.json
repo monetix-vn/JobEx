@@ -73,7 +73,7 @@
       "text_key": "scene.sales.quynh_copies_you.c3",
       "outcomes": [
         {
-          "p": 1,
+          "p": 0.75,
           "narration_key": "scene.sales.quynh_copies_you.c3.ok",
           "effects": [
             {
@@ -91,6 +91,37 @@
             {
               "fact": "fact.approved_quynh_shortcut",
               "visibility": "private"
+            },
+            {
+              "arc": "arc.quynh",
+              "stage": "caught"
+            }
+          ]
+        },
+        {
+          "p": 0.25,
+          "result": "fail",
+          "narration_key": "scene.sales.quynh_copies_you.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.quynh.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.approved_quynh_shortcut",
+              "visibility": "witnessed"
             },
             {
               "arc": "arc.quynh",
