@@ -62,6 +62,7 @@ describe('valid packs', () => {
       fact: 0,
       term: 0,
       character: 0,
+      arc: 0,
     });
   });
 
@@ -538,6 +539,78 @@ describe('characters and relationships', () => {
   });
 });
 
+describe('arcs', () => {
+  const arc = {
+    id: 'arc.story',
+    title_key: 'k.arc',
+    stages: [
+      { id: 'one', event: 'event.a' },
+      { id: 'two', event: 'event.b', delay_weeks: [1, 3] },
+    ],
+  };
+  const texts = { ...locale, 'k.arc': 'Story' };
+  const outcome = (effects: unknown[]) =>
+    scene({
+      choices: [
+        { id: 'c1', text_key: 'k.line', outcomes: [{ p: 1, narration_key: 'k.line', effects }] },
+      ],
+    });
+  const build = (effects: unknown[] = [{ arc: 'arc.story', stage: 'two' }], arcOverride = arc) =>
+    pack({
+      'core/arcs/s.json': j([arcOverride]),
+      'core/locale/en.json': j(texts),
+      'core/locale/vi.json': j(texts),
+      'core/scenes/a.json': j(outcome(effects)),
+      'core/scenes/b.json': j(scene({ id: 'scene.b' })),
+      'core/events/a.json': j([
+        event({ arc: 'arc.story' }),
+        { id: 'event.b', scene: 'scene.b', weight: 0 },
+      ]),
+    });
+
+  it('loads an arc whose stages are reached by a choice effect, with no warnings', async () => {
+    const { registry, diagnostics } = await load(build());
+    expect(hasErrors(diagnostics)).toBe(false);
+    expect(codes(diagnostics, 'warning')).toEqual([]);
+    expect(registry?.get('arc', 'arc.story')?.stages).toHaveLength(2);
+  });
+
+  it('rejects unknown events, arcs and stages, reserved or repeated stage ids', async () => {
+    const badEvent = { ...arc, stages: [{ id: 'one', event: 'event.gone' }] };
+    expect(codes((await load(build([], badEvent))).diagnostics, 'error')).toContain('ref.missing');
+    expect(
+      codes((await load(build([{ arc: 'arc.nope', stage: 'two' }]))).diagnostics, 'error'),
+    ).toContain('ref.missing');
+    expect(
+      codes((await load(build([{ arc: 'arc.story', stage: 'three' }]))).diagnostics, 'error'),
+    ).toContain('arc.bad_stage');
+    const reserved = { ...arc, stages: [{ id: 'end', event: 'event.a' }] };
+    expect(codes((await load(build([], reserved))).diagnostics, 'error')).toContain(
+      'arc.bad_stage_id',
+    );
+    const twice = { ...arc, stages: [arc.stages[0]!, arc.stages[0]!] };
+    expect(codes((await load(build([], twice))).diagnostics, 'error')).toContain(
+      'arc.bad_stage_id',
+    );
+  });
+
+  it('warns about a stage nothing leads to, and accepts "end" as a stage', async () => {
+    const unreachable = await load(build([]));
+    expect(codes(unreachable.diagnostics, 'warning')).toContain('arc.stage_unreachable');
+    const ended = await load(build([{ arc: 'arc.story', stage: 'end' }]));
+    expect(codes(ended.diagnostics, 'error')).toEqual([]);
+  });
+
+  it('an event that names an unknown arc is an error', async () => {
+    const files = build();
+    files['core/events/a.json'] = j([
+      event({ arc: 'arc.nope' }),
+      { id: 'event.b', scene: 'scene.b', weight: 0 },
+    ]);
+    expect(codes((await load(files)).diagnostics, 'error')).toContain('ref.missing');
+  });
+});
+
 describe('roles in events and the job picker', () => {
   const role = {
     id: 'role.t.one',
@@ -590,7 +663,7 @@ describe('module and helpers', () => {
     const loaded = run.entries.find((e) => e.type === 'content.loaded');
     expect(loaded?.payload).toEqual({
       packs: [{ id: 'core', version: '1.0.0' }],
-      counts: { role: 0, event: 1, scene: 1, offer: 0, fact: 0, term: 0, character: 0 },
+      counts: { role: 0, event: 1, scene: 1, offer: 0, fact: 0, term: 0, character: 0, arc: 0 },
     });
   });
 

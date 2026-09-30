@@ -189,6 +189,50 @@ describe('QC Specialist: the same engine, a different job', () => {
     expect(seen).toBeGreaterThan(4);
   });
 
+  it('the Hamper storyline escalates for the shortcut-taker and ends at once for the careful', async () => {
+    const arcEvents = (
+      log: ReplayLog,
+    ): { type: string; arc?: string; stage?: string; reason?: string }[] =>
+      log.entries
+        .filter((e) => e.type.startsWith('arc.'))
+        .map((e) => ({
+          ...(e.payload as { arc?: string; stage?: string; reason?: string }),
+          type: e.type,
+        }))
+        .filter((e) => e.arc === 'arc.the_hamper');
+    const stagesOf = (log: ReplayLog) =>
+      arcEvents(log)
+        .filter((e) => e.type === 'arc.advanced')
+        .map((e) => e.stage as string);
+    let escalated = 0;
+    let careful = 0;
+    for (let i = 0; i < 40; i++) {
+      const reckless = (
+        await play('qc-year', `qc-hamper-${i}`, 'en', undefined, { policy: 'last' })
+      ).log;
+      const stages = stagesOf(reckless);
+      if (stages.length > 0) {
+        escalated += 1;
+        // The arc only ever moves forward through its stages.
+        const order = ['favour', 'money', 'threat'];
+        expect(stages.map((s) => order.indexOf(s))).toEqual(
+          [...stages.map((s) => order.indexOf(s))].sort((a, b) => a - b),
+        );
+        expect(stages[0]).toBe('favour');
+      }
+      const good = (await play('qc-year', `qc-hamper-${i}`, 'en', undefined, { policy: 'first' }))
+        .log;
+      const events = arcEvents(good);
+      if (events.some((e) => e.type === 'arc.started')) {
+        careful += 1;
+        expect(events.some((e) => e.type === 'arc.ended' && e.reason === 'end')).toBe(true);
+        expect(stagesOf(good)).toEqual([]);
+      }
+    }
+    expect(escalated).toBeGreaterThan(5);
+    expect(careful).toBeGreaterThan(5);
+  });
+
   it('is deterministic and replays identically, like every other scenario', async () => {
     const scenario = await loadScenario('qc-year', { contentDir });
     for (const seed of ['q1', 'q2']) {

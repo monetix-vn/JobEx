@@ -28,6 +28,10 @@
             {
               "fact": "fact.declined_supplier_gift",
               "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_hamper",
+              "stage": "end"
             }
           ]
         },
@@ -47,6 +51,10 @@
             {
               "fact": "fact.declined_supplier_gift",
               "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_hamper",
+              "stage": "end"
             }
           ]
         }
@@ -71,6 +79,10 @@
             {
               "fact": "fact.declined_supplier_gift",
               "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_hamper",
+              "stage": "favour"
             }
           ]
         },
@@ -90,6 +102,10 @@
             {
               "fact": "fact.declined_supplier_gift",
               "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_hamper",
+              "stage": "favour"
             }
           ]
         }
@@ -114,6 +130,10 @@
             {
               "fact": "fact.accepted_supplier_gift",
               "visibility": "private"
+            },
+            {
+              "arc": "arc.the_hamper",
+              "stage": "favour"
             }
           ]
         },
@@ -141,6 +161,10 @@
             {
               "fact": "fact.accepted_supplier_gift",
               "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_hamper",
+              "stage": "favour"
             }
           ]
         }

@@ -1,0 +1,27 @@
+[
+  {
+    "id": "arc.the_hamper",
+    "title_key": "arc.the_hamper.title",
+    "stages": [
+      {
+        "id": "gift",
+        "event": "event.qc.supplier_gift"
+      },
+      {
+        "id": "favour",
+        "event": "event.qc.hung_favour",
+        "delay_weeks": [3, 5]
+      },
+      {
+        "id": "money",
+        "event": "event.qc.hung_money",
+        "delay_weeks": [2, 4]
+      },
+      {
+        "id": "threat",
+        "event": "event.qc.hung_threat",
+        "delay_weeks": [3, 5]
+      }
+    ]
+  }
+]

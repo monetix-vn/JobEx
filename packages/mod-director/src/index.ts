@@ -17,7 +17,7 @@ export const manifest: ModuleManifest = {
   version: '0.1.0',
   priority: 35,
   consumes: ['sim.stateChanged', 'turn.phaseStarted', 'choice.resolved'],
-  emits: ['director.eventFired'],
+  emits: ['director.eventFired', 'arc.started', 'arc.advanced', 'arc.ended'],
   contractsVersion: CONTRACTS_VERSION,
 };
 
@@ -44,6 +44,11 @@ interface Scheduled {
  * Weight 0 means "scheduled only". Effects of type `schedule` (on the event itself, or on a
  * resolved choice) queue a later event after a random delay. It only decides *what* happens; the
  * narrative module plays it and the choice module resolves it.
+ *
+ * Storylines (content kind `arc`): an event tagged with an arc starts it (`arc.started`); an
+ * `{ arc, stage }` effect on an event or a resolved choice moves it to that stage, queueing the
+ * stage's event after its delay (`arc.advanced`), or ends it for stage "end". An arc also ends
+ * once its last stage's event has played. Ended arcs ignore later effects.
  */
 export function createModule(host: ModuleHost): ModuleInstance {
   const config = host.config as Partial<DirectorConfig> | undefined;
@@ -68,20 +73,59 @@ export function createModule(host: ModuleHost): ModuleInstance {
     }
   };
 
-  const schedule = (effects: readonly Effect[] | undefined, turn: number): void => {
+  const arcs = new Map<string, { status: 'active' | 'ended'; stage?: string }>();
+
+  const schedule = (effects: readonly Effect[] | undefined, turn: number): EventDraft[] => {
+    const drafts: EventDraft[] = [];
     for (const effect of effects ?? []) {
-      if (!('schedule' in effect)) continue;
-      const delay = host.rng.int(effect.delay_weeks[0], effect.delay_weeks[1]);
-      scheduled.push({ eventId: effect.schedule, due: turn + delay });
+      if ('schedule' in effect) {
+        const delay = host.rng.int(effect.delay_weeks[0], effect.delay_weeks[1]);
+        scheduled.push({ eventId: effect.schedule, due: turn + delay });
+      } else if ('arc' in effect) {
+        const arc = content.get('arc', effect.arc);
+        const state = arcs.get(effect.arc);
+        if (!arc || state?.status === 'ended') continue;
+        if (effect.stage === 'end') {
+          arcs.set(effect.arc, { status: 'ended', stage: 'end' });
+          drafts.push({ type: 'arc.ended', payload: { arc: effect.arc, reason: 'end' } });
+          continue;
+        }
+        const stage = arc.stages.find((s) => s.id === effect.stage);
+        if (!stage) continue;
+        const [min, max] = stage.delay_weeks ?? [1, 1];
+        const due = turn + host.rng.int(min, max);
+        arcs.set(effect.arc, { status: 'active', stage: stage.id });
+        scheduled.push({ eventId: stage.event, due });
+        drafts.push({
+          type: 'arc.advanced',
+          payload: { arc: arc.id, stage: stage.id, eventId: stage.event, due },
+        });
+      }
     }
     scheduled.sort((a, b) => a.due - b.due || (a.eventId < b.eventId ? -1 : 1));
+    return drafts;
   };
 
-  const fire = (event: GameEvent, turn: number): EventDraft => {
+  const fire = (event: GameEvent, turn: number): EventDraft[] => {
     lastFired[event.id] = turn;
     fired += 1;
-    schedule(event.effects, turn);
-    return { type: 'director.eventFired', payload: { eventId: event.id, tags: event.tags ?? [] } };
+    const drafts: EventDraft[] = [
+      { type: 'director.eventFired', payload: { eventId: event.id, tags: event.tags ?? [] } },
+    ];
+    if (event.arc && !arcs.has(event.arc) && content.get('arc', event.arc)) {
+      arcs.set(event.arc, { status: 'active' });
+      drafts.push({ type: 'arc.started', payload: { arc: event.arc, eventId: event.id } });
+    }
+    drafts.push(...schedule(event.effects, turn));
+    // An arc is over once its last stage has played.
+    for (const arc of content.all('arc')) {
+      const last = arc.stages[arc.stages.length - 1];
+      if (last?.event === event.id && arcs.get(arc.id)?.status === 'active') {
+        arcs.set(arc.id, { status: 'ended', stage: last.id });
+        drafts.push({ type: 'arc.ended', payload: { arc: arc.id, reason: 'finished' } });
+      }
+    }
+    return drafts;
   };
 
   return {
@@ -92,7 +136,7 @@ export function createModule(host: ModuleHost): ModuleInstance {
 
       'choice.resolved': (env) => {
         const p = env.payload as CoreEventPayloads['choice.resolved'];
-        schedule(p.effects, host.clock.now().turn);
+        return schedule(p.effects, host.clock.now().turn);
       },
 
       'turn.phaseStarted': (env) => {
@@ -101,6 +145,7 @@ export function createModule(host: ModuleHost): ModuleInstance {
         const turn = host.clock.now().turn;
         const drafts: EventDraft[] = [];
         const taken = new Set<string>();
+        let played = 0;
 
         // 1. Scheduled events that have come due, in due order.
         const due = scheduled.filter((s) => s.due <= turn);
@@ -109,7 +154,8 @@ export function createModule(host: ModuleHost): ModuleInstance {
           const event = content.get('event', item.eventId);
           if (!event || taken.has(event.id)) continue;
           taken.add(event.id);
-          drafts.push(fire(event, turn));
+          drafts.push(...fire(event, turn));
+          played += 1;
         }
 
         // 2. Fill the rest of the week from the pool, by weight, without replacement.
@@ -124,7 +170,7 @@ export function createModule(host: ModuleHost): ModuleInstance {
           })
           .filter(holds)
           .sort((a, b) => (a.id < b.id ? -1 : 1));
-        for (let slot = drafts.length; slot < wanted && pool.length > 0; slot++) {
+        for (let slot = played; slot < wanted && pool.length > 0; slot++) {
           const total = pool.reduce((sum, e) => sum + (e.weight ?? 1), 0);
           let roll = host.rng.next() * total;
           let index = pool.length - 1;
@@ -136,7 +182,8 @@ export function createModule(host: ModuleHost): ModuleInstance {
             }
           }
           const [picked] = pool.splice(index, 1);
-          drafts.push(fire(picked!, turn));
+          drafts.push(...fire(picked!, turn));
+          played += 1;
         }
         return drafts;
       },
@@ -145,6 +192,7 @@ export function createModule(host: ModuleHost): ModuleInstance {
       fired,
       lastFired: Object.fromEntries(Object.entries(lastFired).sort()),
       scheduled: scheduled.map((s) => ({ ...s })),
+      arcs: Object.fromEntries([...arcs.entries()].sort(([a], [b]) => (a < b ? -1 : 1))),
     }),
   };
 }

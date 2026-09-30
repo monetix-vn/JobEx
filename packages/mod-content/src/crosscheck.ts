@@ -91,6 +91,22 @@ export function crossCheck(
           usedCharacters.add(`char.${match[1]}`);
         }
       }
+      if ('arc' in effect) {
+        requireRef(kind, id, 'arc', effect.arc, `${field} arc`);
+        const arc = items.arc.get(effect.arc);
+        const stage = arc?.stages.find((s) => s.id === effect.stage);
+        if (stage) {
+          scheduled.add(stage.event);
+          reachedStages.add(`${arc!.id}#${stage.id}`);
+        } else if (arc && effect.stage !== 'end') {
+          push({
+            severity: 'error',
+            code: 'arc.bad_stage',
+            message: `${kind} "${id}" ${field}: arc "${arc.id}" has no stage "${effect.stage}" (use one of its stages, or "end")`,
+            ...at(kind, id),
+          });
+        }
+      }
       if ('fact' in effect) {
         requireRef(kind, id, 'fact', effect.fact, `${field} fact`);
         producedFacts.add(effect.fact);
@@ -99,6 +115,7 @@ export function crossCheck(
   };
 
   const scheduled = new Set<string>();
+  const reachedStages = new Set<string>();
   const usedScenes = new Set<string>();
   const producedFacts = new Set<string>();
   const usedTerms = new Set<string>();
@@ -112,8 +129,26 @@ export function crossCheck(
       requireRef('role', role.id, 'offer', offer, 'dark_offers');
   }
 
+  for (const arc of items.arc.values()) {
+    useKey(arc.title_key, arc.id, 'arc');
+    const seen = new Set<string>();
+    for (const stage of arc.stages) {
+      requireRef('arc', arc.id, 'event', stage.event, `stage ${stage.id}`);
+      if (stage.id === 'end' || seen.has(stage.id)) {
+        push({
+          severity: 'error',
+          code: 'arc.bad_stage_id',
+          message: `arc "${arc.id}" stage id "${stage.id}" is ${stage.id === 'end' ? 'reserved' : 'used twice'}`,
+          ...at('arc', arc.id),
+        });
+      }
+      seen.add(stage.id);
+    }
+  }
+
   for (const event of items.event.values()) {
     requireRef('event', event.id, 'scene', event.scene, 'scene');
+    if (event.arc) requireRef('event', event.id, 'arc', event.arc, 'arc');
     if (event.role) requireRef('event', event.id, 'role', event.role, 'role');
     usedScenes.add(event.scene);
     if (event.when !== undefined) checkExpr('event', event.id, 'when', event.when);
@@ -230,6 +265,18 @@ export function crossCheck(
         ...at('term', term.id),
       });
     }
+  }
+  for (const arc of items.arc.values()) {
+    arc.stages.slice(1).forEach((stage) => {
+      if (!reachedStages.has(`${arc.id}#${stage.id}`)) {
+        push({
+          severity: 'warning',
+          code: 'arc.stage_unreachable',
+          message: `arc "${arc.id}" stage "${stage.id}" is never reached: no effect moves the arc to it`,
+          ...at('arc', arc.id),
+        });
+      }
+    });
   }
   for (const person of items.character.values()) {
     if (!usedCharacters.has(person.id)) {

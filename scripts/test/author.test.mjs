@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import {
   applyEntries,
+  compileArc,
   compileCondition,
   compileEffect,
   compileScene,
@@ -67,6 +68,8 @@ describe('conditions and effects written as plain lines', () => {
     expect(compileEffect('rel khoa trust +5')).toEqual({ delta: 'rel.khoa.trust', value: 5 });
     expect(compileEffect('favor char:lan -1')).toEqual({ delta: 'rel.lan.owed', value: -1 });
     expect(() => compileEffect('rel khoa charm +1')).toThrow(/trust, loyalty or owed/);
+    expect(compileEffect('arc hamper favour')).toEqual({ arc: 'arc.hamper', stage: 'favour' });
+    expect(() => compileEffect('arc hamper')).toThrow(/arc hamper favour/);
     expect(compileCondition('rel.khoa.trust >= 20')).toEqual({
       gte: [{ var: ['rel.khoa.trust', 0] }, 20],
     });
@@ -166,6 +169,41 @@ vi: { term: Số lô, definition: "Mã nhận diện một lô sản xuất." }
       'role.sales.export.specialist',
     );
     expect(compileScene({ ...base, role: 'any' }).event.role).toBeUndefined();
+  });
+});
+
+describe('storylines', () => {
+  it('compiles an arc with stage delays and its title in both languages', () => {
+    const { arc, en, vi } = compileArc({
+      arc: 'hamper',
+      title: { en: 'The hamper', vi: 'Giỏ quà' },
+      stages: [
+        { id: 'gift', event: 'qc.supplier_gift' },
+        { id: 'favour', event: 'event.qc.favour', delay: '3-5' },
+        { id: 'money', event: 'qc.money', delay: 2 },
+      ],
+    });
+    expect(arc.stages).toEqual([
+      { id: 'gift', event: 'event.qc.supplier_gift' },
+      { id: 'favour', event: 'event.qc.favour', delay_weeks: [3, 5] },
+      { id: 'money', event: 'event.qc.money', delay_weeks: [2, 2] },
+    ]);
+    expect([en['arc.hamper.title'], vi['arc.hamper.title']]).toEqual(['The hamper', 'Giỏ quà']);
+    expect(() =>
+      compileArc({
+        arc: 'x',
+        title: { en: 'a' },
+        stages: [{ id: 's', event: 'e', delay: 'soon' }],
+      }),
+    ).toThrow(/Vietnamese title[\s\S]*delay must look like/);
+  });
+
+  it('imports the Hamper example and the validator accepts the arc', () => {
+    const root = workspace();
+    const yml = readFileSync(join(repo, 'content-src', 'qc-hamper.yml'), 'utf8');
+    applyEntries(parseEntries(yml), { root });
+    expect(json(root, 'arcs/authored.json').map((a) => a.id)).toContain('arc.the_hamper');
+    expect(validate(root).status).toBe(0);
   });
 });
 

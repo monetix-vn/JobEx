@@ -44,6 +44,12 @@ const effect = {
     },
     {
       type: 'object',
+      required: ['arc', 'stage'],
+      additionalProperties: false,
+      properties: { arc: idString, stage: { type: 'string', pattern: '^[a-z][a-z0-9_]*$' } },
+    },
+    {
+      type: 'object',
       required: ['fact', 'visibility'],
       additionalProperties: false,
       properties: {
@@ -272,6 +278,31 @@ export const characterSchema = {
   },
 };
 
+export const arcSchema = {
+  $id: `${BASE}arc.json`,
+  type: 'object',
+  required: ['id', 'title_key', 'stages'],
+  additionalProperties: false,
+  properties: {
+    id: idString,
+    title_key: { type: 'string' },
+    stages: {
+      type: 'array',
+      minItems: 1,
+      items: {
+        type: 'object',
+        required: ['id', 'event'],
+        additionalProperties: false,
+        properties: {
+          id: { type: 'string', pattern: '^[a-z][a-z0-9_]*$' },
+          event: idString,
+          delay_weeks: range,
+        },
+      },
+    },
+  },
+};
+
 export const factSchema = {
   $id: `${BASE}fact.json`,
   type: 'object',
@@ -318,6 +349,7 @@ export const PACK_SCHEMAS: Record<PackKind, object> = {
   fact: factSchema,
   term: termSchema,
   character: characterSchema,
+  arc: arcSchema,
 };
 
 export const ALL_SCHEMAS: object[] = [
@@ -331,6 +363,7 @@ export const ALL_SCHEMAS: object[] = [
   factSchema,
   termSchema,
   characterSchema,
+  arcSchema,
 ];
 
 export const SCHEMA_IDS = {
@@ -343,4 +376,5 @@ export const SCHEMA_IDS = {
   fact: factSchema.$id,
   term: termSchema.$id,
   character: characterSchema.$id,
+  arc: arcSchema.$id,
 } as const;

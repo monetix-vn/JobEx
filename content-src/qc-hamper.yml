@@ -1,0 +1,230 @@
+# Arc D "The Hamper" (docs/story/qc.md): gift -> favour -> money -> threat, branching on the player's choices.
+# The first stage is the existing scene.qc.supplier_gift; it is wired to this arc in the JSON (see
+# content/industry-cookware/arcs and the arc effects on that scene's outcomes).
+arc: the_hamper
+title:
+  en: 'The hamper'
+  vi: 'Giỏ quà'
+stages:
+  - { id: gift, event: qc.supplier_gift }
+  - { id: favour, event: qc.hung_favour, delay: 3-5 }
+  - { id: money, event: qc.hung_money, delay: 2-4 }
+  - { id: threat, event: qc.hung_threat, delay: 3-5 }
+---
+scene: qc.hung_favour
+weight: 0
+place: qc_lab
+tags: [supplier, pressure, arc]
+terms: [coa]
+lines:
+  - who: char:hung
+    en: "Thanks again for the other week. One small thing: tomorrow's delivery is already on the truck, and the paperwork will follow. Could you just let it through?"
+    vi: 'Cảm ơn anh/chị về chuyện tuần trước. Nhờ anh/chị một việc nhỏ: chuyến hàng ngày mai đã lên xe rồi, giấy tờ sẽ gửi sau. Anh/chị cho qua giúp được không?'
+choices:
+  - en: 'Say no: nothing is accepted without its paperwork, and that includes his.'
+    vi: 'Từ chối: không có giấy tờ thì không nhận, kể cả của anh ấy.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'Hung laughs it off, a little too quickly. The delivery waits at the gate until the paperwork arrives.'
+        vi: 'Anh Hùng cười xòa, hơi quá nhanh. Chuyến hàng chờ ở cổng cho đến khi có giấy tờ.'
+        effects: [rel hung trust -3, rep.qc +2, arc the_hamper end]
+  - en: 'Tell Khoa about the request and agree a written conditional release with him.'
+    vi: 'Báo anh Khoa về đề nghị này và thống nhất với anh ấy một biên bản nhận có điều kiện.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: "Khoa nods: 'Good. Write it down.' Hung gets a polite yes with conditions and loses his easy route."
+        vi: "Anh Khoa gật đầu: 'Tốt. Ghi lại đi.' Anh Hùng nhận được một cái gật đầu có điều kiện và mất đường tắt."
+        effects: [rel khoa trust +5, rel hung trust -2, rep.boss +2, arc the_hamper end]
+  - en: 'Let the delivery through on his word.'
+    vi: 'Cho chuyến hàng qua cửa theo lời anh ấy.'
+    outcomes:
+      - p: 0.85
+        en: 'The truck is unloaded within the hour. Hung remembers who helped him.'
+        vi: 'Xe được dỡ hàng trong vòng một tiếng. Anh Hùng nhớ ai đã giúp mình.'
+        effects:
+          [
+            rel hung trust +5,
+            rel hung owed +1,
+            rep.production +2,
+            fact accepted_on_supplier_word private,
+            arc the_hamper money,
+          ]
+      - p: 0.15
+        ok: false
+        en: 'Lan sees the truck unloaded without a release. She says nothing, but she notices.'
+        vi: 'Chị Lan thấy xe được dỡ hàng mà không có phiếu nhận. Chị không nói gì nhưng đã để ý.'
+        effects:
+          [
+            rel lan trust -4,
+            rel hung owed +1,
+            fact accepted_on_supplier_word witnessed,
+            arc the_hamper money,
+          ]
+---
+scene: qc.hung_money
+weight: 0
+place: qc_lab
+tags: [supplier, integrity, dark, arc]
+lines:
+  - who: char:hung
+    en: 'You have been a real friend to us. There is a little something in this envelope, nothing formal, just a thank-you from the company. No need to mention it to anyone.'
+    vi: 'Anh/chị giúp bên em nhiều quá. Trong phong bì này có chút quà, không chính thức đâu, chỉ là lời cảm ơn của công ty. Không cần nói với ai.'
+choices:
+  - en: 'Refuse the envelope and tell Khoa about the offer the same day.'
+    vi: 'Từ chối phong bì và báo anh Khoa về đề nghị ngay trong ngày.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'Khoa writes it up and moves the account to another inspector. Hung will not look at you again.'
+        vi: 'Anh Khoa ghi nhận lại và chuyển tài khoản này cho người khác kiểm. Anh Hùng không nhìn anh/chị nữa.'
+        effects: [rel khoa trust +8, rel hung trust -10, rep.boss +4, stress +2, arc the_hamper end]
+  - en: 'Refuse the envelope, say nothing more, and hope that is the end of it.'
+    vi: 'Từ chối phong bì, không nói gì thêm và hy vọng chuyện kết thúc ở đó.'
+    outcomes:
+      - p: 1
+        en: "Hung pockets it with a smile that does not reach his eyes. 'Of course. Another time.'"
+        vi: "Anh Hùng cất phong bì với nụ cười không chạm tới mắt. 'Tất nhiên rồi. Để dịp khác.'"
+        effects: [rel hung trust -4, stress +2, arc the_hamper threat]
+  - en: 'Take the envelope.'
+    vi: 'Nhận phong bì.'
+    outcomes:
+      - p: 0.8
+        en: "It is more than a month's salary. It sits in your drawer and feels heavier each day."
+        vi: 'Nhiều hơn một tháng lương. Nó nằm trong ngăn kéo và mỗi ngày một nặng thêm.'
+        effects:
+          [
+            cash +15000000,
+            rel hung trust +6,
+            rel hung owed +3,
+            stress +3,
+            fact took_supplier_money private,
+            arc the_hamper threat,
+          ]
+      - p: 0.2
+        ok: false
+        en: 'Minh walks in as the envelope changes hands. He looks away, but he saw it.'
+        vi: 'Minh bước vào đúng lúc phong bì đổi chủ. Bạn ấy quay đi, nhưng đã thấy.'
+        effects:
+          [
+            cash +15000000,
+            rel minh trust -15,
+            rel hung owed +3,
+            stress +5,
+            fact took_supplier_money witnessed,
+            arc the_hamper threat,
+          ]
+---
+scene: qc.hung_threat
+weight: 0
+place: qc_lab
+tags: [supplier, integrity, dark, arc]
+lines:
+  - who: char:hung
+    en: 'Our new contract is being negotiated and some people are asking how friendly we have been with QC. I would hate for anyone to misunderstand our history. You will speak up for us, will you not?'
+    vi: 'Hợp đồng mới đang đàm phán và có người hỏi bên em thân thiết với QC đến mức nào. Em không muốn ai hiểu lầm chuyện cũ. Anh/chị sẽ lên tiếng giúp bên em chứ?'
+choices:
+  - en: 'Go to Khoa and tell him everything, before Hung does.'
+    vi: 'Đến gặp anh Khoa và kể hết mọi chuyện trước khi anh Hùng làm điều đó.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: "It is a hard conversation. Khoa is quiet a long time, then says: 'Thank you for telling me. We handle this properly now.' You are reprimanded, not fired."
+        vi: "Cuộc nói chuyện rất nặng nề. Anh Khoa im lặng rất lâu rồi nói: 'Cảm ơn em đã nói. Giờ mình xử lý cho đàng hoàng.' Anh/chị bị khiển trách, không bị đuổi."
+        effects:
+          [
+            rel khoa trust +2,
+            rel hung trust -15,
+            rep.boss -3,
+            stress +4,
+            fact came_clean_about_supplier witnessed,
+            arc the_hamper end,
+          ]
+  - en: 'Tell Hung nothing has changed and you will not be pushed.'
+    vi: 'Nói với anh Hùng rằng mọi thứ vẫn như cũ và anh/chị sẽ không bị ép.'
+    outcomes:
+      - p: 0.6
+        en: 'Hung backs off for now. The silence between you is its own kind of threat.'
+        vi: 'Anh Hùng tạm lùi. Sự im lặng giữa hai người tự nó là một lời đe dọa.'
+        effects: [rel hung trust -8, stress +3, arc the_hamper end]
+      - p: 0.4
+        ok: false
+        en: 'Hung does not back off. By Friday, two people in procurement know about the hamper.'
+        vi: 'Anh Hùng không lùi. Đến thứ Sáu, hai người bên mua hàng đã biết chuyện giỏ quà.'
+        effects:
+          [
+            rel tam trust -6,
+            rep.boss -4,
+            stress +4,
+            fact accepted_supplier_gift rumor,
+            arc the_hamper end,
+          ]
+  - en: 'Do him one more favour to keep him quiet.'
+    vi: 'Giúp anh ấy thêm một việc nữa để anh ấy giữ im lặng.'
+    outcomes:
+      - p: 0.5
+        en: 'It works, for now. You now owe him silence as well as he owes you.'
+        vi: 'Tạm thời ổn. Giờ anh/chị nợ anh ấy cả sự im lặng, cũng như anh ấy nợ anh/chị.'
+        effects:
+          [
+            rel hung trust +4,
+            rel hung owed +2,
+            stress +3,
+            fact paid_off_supplier private,
+            arc the_hamper end,
+          ]
+      - p: 0.5
+        ok: false
+        en: 'The favour is logged by the gate guard. The pattern is easy to see once someone looks.'
+        vi: 'Việc giúp này bị bảo vệ cổng ghi lại. Quy luật rất dễ thấy khi có người chịu nhìn.'
+        effects:
+          [
+            rel khoa trust -10,
+            rep.boss -6,
+            stress +5,
+            fact paid_off_supplier witnessed,
+            arc the_hamper end,
+          ]
+---
+fact: took_supplier_money
+severity: 5
+category: integrity
+en: 'you took cash from a supplier whose deliveries you inspect'
+vi: 'bạn nhận tiền mặt từ nhà cung cấp mà bạn kiểm hàng'
+lesson:
+  en: 'Cash from a supplier you inspect is a bribe, however it is described. The first hamper and the first favour are how it starts.'
+  vi: 'Tiền mặt từ nhà cung cấp mà bạn kiểm hàng là hối lộ, dù được gọi bằng tên gì. Giỏ quà đầu tiên và việc giúp đầu tiên là cách nó bắt đầu.'
+witnessed:
+  boss: -10
+  qc: -8
+public:
+  boss: -15
+  buyer: -10
+---
+fact: paid_off_supplier
+severity: 4
+category: integrity
+en: 'you did a supplier a further favour to keep him quiet'
+vi: 'bạn giúp nhà cung cấp thêm một việc để ông ta giữ im lặng'
+lesson:
+  en: 'Paying for silence with more favours turns a mistake into a pattern, and the other person now holds something over you.'
+  vi: 'Trả giá cho sự im lặng bằng thêm ân huệ biến một sai lầm thành một thói quen, và người kia giờ nắm thóp bạn.'
+witnessed:
+  boss: -6
+  qc: -4
+public:
+  boss: -10
+---
+fact: came_clean_about_supplier
+severity: 2
+category: integrity
+en: "you told your manager about the supplier's offers before they came out"
+vi: 'bạn báo quản lý về những đề nghị của nhà cung cấp trước khi chúng bị lộ'
+lesson:
+  en: 'Telling your manager first costs you a reprimand but keeps the facts in your hands, and it is what a fair review looks for.'
+  vi: 'Báo quản lý trước khiến bạn bị khiển trách nhưng giữ sự thật trong tay bạn, và đó là điều một buổi xem xét công bằng tìm kiếm.'
+witnessed:
+  boss: 4
+public:
+  boss: 6

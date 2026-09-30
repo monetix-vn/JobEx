@@ -1,0 +1,127 @@
+{
+  "id": "scene.qc.hung_favour",
+  "location": "loc.qc_lab",
+  "cast": ["char:hung"],
+  "lines": [
+    {
+      "speaker": "char:hung",
+      "text_key": "scene.qc.hung_favour.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.qc.hung_favour.c1",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.qc.hung_favour.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.hung.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": 2
+            },
+            {
+              "arc": "arc.the_hamper",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.qc.hung_favour.c2",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.qc.hung_favour.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.hung.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 2
+            },
+            {
+              "arc": "arc.the_hamper",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.qc.hung_favour.c3",
+      "outcomes": [
+        {
+          "p": 0.85,
+          "narration_key": "scene.qc.hung_favour.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.hung.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.hung.owed",
+              "value": 1
+            },
+            {
+              "delta": "player.rep.production",
+              "value": 2
+            },
+            {
+              "fact": "fact.accepted_on_supplier_word",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_hamper",
+              "stage": "money"
+            }
+          ]
+        },
+        {
+          "p": 0.15,
+          "result": "fail",
+          "narration_key": "scene.qc.hung_favour.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.hung.owed",
+              "value": 1
+            },
+            {
+              "fact": "fact.accepted_on_supplier_word",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_hamper",
+              "stage": "money"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": ["term.coa"]
+}

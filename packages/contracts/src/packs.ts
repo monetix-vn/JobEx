@@ -16,6 +16,7 @@ export const PACK_FOLDERS = {
   facts: 'fact',
   terms: 'term',
   characters: 'character',
+  arcs: 'arc',
 } as const;
 export type PackKind = (typeof PACK_FOLDERS)[keyof typeof PACK_FOLDERS];
 export const LOCALES = ['vi', 'en'] as const;
@@ -42,7 +43,12 @@ export interface FactEffect {
   fact: string;
   visibility: 'private' | 'witnessed' | 'public' | 'rumor';
 }
-export type Effect = ScheduleEffect | DeltaEffect | FactEffect;
+/** Moves a storyline to a stage (its event is scheduled after the stage's delay), or ends it with stage "end". */
+export interface ArcEffect {
+  arc: string;
+  stage: string;
+}
+export type Effect = ScheduleEffect | DeltaEffect | FactEffect | ArcEffect;
 
 export interface Role {
   id: string;
@@ -183,6 +189,25 @@ export interface Character {
   start?: Partial<Record<RelationshipDimension, number>>;
 }
 
+/** One step of a storyline: the event it plays and how long after the previous step it comes. */
+export interface ArcStage {
+  id: string;
+  event: string;
+  /** Weeks between advancing to this stage and its event coming due. Default [1, 1]. */
+  delay_weeks?: [number, number];
+}
+
+/**
+ * A multi-week storyline. Its first stage is the start; scene outcomes choose what comes next with
+ * an `{ arc, stage }` effect, so choices branch it. It ends on `{ arc, stage: "end" }` or when its
+ * last stage's event has played.
+ */
+export interface Arc {
+  id: string;
+  title_key: string;
+  stages: ArcStage[];
+}
+
 export interface ContentTypes {
   role: Role;
   event: GameEvent;
@@ -191,6 +216,7 @@ export interface ContentTypes {
   fact: Fact;
   term: Term;
   character: Character;
+  arc: Arc;
 }
 
 /** Read-only view of validated, merged content. Modules depend on this, never on mod-content. */

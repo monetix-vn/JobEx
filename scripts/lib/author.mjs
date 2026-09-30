@@ -106,6 +106,14 @@ export function compileEffect(line) {
     }
     return { delta: `rel.${who.replace(/^char[.:]/, '')}.${dimension}`, value: num(amount) };
   }
+  if (head === 'arc') {
+    // arc hamper favour   (move the storyline to a stage; "end" ends it)
+    const [name, stage] = rest;
+    if (!name || !/^[a-z][a-z0-9_]*$/.test(stage ?? '')) {
+      throw new Error(`effect "${line}": write it like: arc hamper favour (or: arc hamper end)`);
+    }
+    return { arc: name.startsWith('arc.') ? name : `arc.${name}`, stage };
+  }
   if (head === 'schedule') {
     const [target, range] = rest;
     const match = /^(\d+)-(\d+)$/.exec(range ?? '');
@@ -234,6 +242,9 @@ export function compileScene(entry) {
     event: {
       id: `event.${prefix}.${key}`,
       ...(role ? { role } : {}),
+      ...(entry.arc
+        ? { arc: String(entry.arc).startsWith('arc.') ? entry.arc : `arc.${entry.arc}` }
+        : {}),
       tags: entry.tags ?? ['pressure'],
       ...(when ? { when } : {}),
       weight: entry.weight ?? 1,
@@ -296,6 +307,41 @@ export function compileTerm(entry) {
     term: { id, term_key: `${id}.term`, definition_key: `${id}.def` },
     en: { [`${id}.term`]: entry.en.term, [`${id}.def`]: entry.en.definition },
     vi: { [`${id}.term`]: entry.vi.term, [`${id}.def`]: entry.vi.definition },
+  };
+}
+
+/** Compiles an `arc:` entry (recognised by its `stages`) into { arc, en, vi }. */
+export function compileArc(entry) {
+  const problems = [];
+  const slug = String(entry.arc ?? '').replace(/^arc\./, '');
+  if (!/^[a-z][a-z0-9_]*$/.test(slug))
+    throw new Error(`arc "${entry.arc}" must be lower snake_case`);
+  const id = `arc.${slug}`;
+  need(problems, `arc ${slug} title`, entry.title?.en, 'English title');
+  need(problems, `arc ${slug} title`, entry.title?.vi, 'Vietnamese title');
+  const stages = (entry.stages ?? []).map((stage, i) => {
+    const where = `arc ${slug} stage ${i + 1}`;
+    need(problems, where, stage.id, 'id');
+    need(problems, where, stage.event, 'event (e.g. qc.hung_favour)');
+    let delay;
+    if (stage.delay !== undefined) {
+      const match = /^(\d+)(?:-(\d+))?$/.exec(String(stage.delay));
+      if (!match) problems.push(`${where}: delay must look like 2 or 2-4 (weeks)`);
+      else delay = [Number(match[1]), Number(match[2] ?? match[1])];
+    }
+    const event = String(stage.event ?? '');
+    return {
+      id: stage.id,
+      event: event.startsWith('event.') ? event : `event.${event}`,
+      ...(delay ? { delay_weeks: delay } : {}),
+    };
+  });
+  if (stages.length === 0) problems.push(`arc ${slug}: needs at least one stage`);
+  if (problems.length > 0) throw new Error(problems.join('\n'));
+  return {
+    arc: { id, title_key: `${id}.title`, stages },
+    en: { [`${id}.title`]: entry.title.en },
+    vi: { [`${id}.title`]: entry.title.vi },
   };
 }
 
@@ -362,8 +408,9 @@ export function applyEntries(entries, { root = '.', pack = 'industry-cookware' }
       if (entry.scene) return { kind: 'scene', ...compileScene(entry), name: entry.scene };
       if (entry.fact) return { kind: 'fact', ...compileFact(entry), name: entry.fact };
       if (entry.term) return { kind: 'term', ...compileTerm(entry), name: entry.term };
+      if (entry.stages) return { kind: 'arc', ...compileArc(entry), name: entry.arc };
       if (entry.char) return { kind: 'character', ...compileCharacter(entry), name: entry.char };
-      throw new Error('an entry needs one of: scene, fact, term, char');
+      throw new Error('an entry needs one of: scene, fact, term, char, arc (with stages)');
     } catch (error) {
       throw new Error(`entry ${i + 1}:\n${error.message}`);
     }
@@ -374,7 +421,7 @@ export function applyEntries(entries, { root = '.', pack = 'industry-cookware' }
     vi: readJson(join(base, 'locale', 'vi.json'), {}),
   };
   const report = [];
-  for (const dir of ['scenes', 'events', 'facts', 'terms', 'characters', 'locale'])
+  for (const dir of ['scenes', 'events', 'facts', 'terms', 'characters', 'arcs', 'locale'])
     mkdirSync(join(base, dir), { recursive: true });
 
   for (const item of compiled) {
@@ -400,6 +447,11 @@ export function applyEntries(entries, { root = '.', pack = 'industry-cookware' }
       const facts = readJson(file, []);
       how = upsert(facts, item.fact);
       writeJson(file, facts);
+    } else if (item.kind === 'arc') {
+      const file = join(base, 'arcs', 'authored.json');
+      const list = readJson(file, []);
+      how = upsert(list, item.arc);
+      writeJson(file, list);
     } else if (item.kind === 'character') {
       const file = join(base, 'characters', 'authored.json');
       const list = readJson(file, []);

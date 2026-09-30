@@ -127,6 +127,11 @@ export interface CoreEventPayloads {
     sceneId?: string;
   };
   'fact.escalated': { factId: string; from: FactVisibility; to: FactVisibility; knownBy: string[] };
+  /** A storyline began, because an event tagged with it fired. */
+  'arc.started': { arc: string; eventId: string };
+  /** A storyline moved to a stage; its event comes due at `due` (a turn number). */
+  'arc.advanced': { arc: string; stage: string; eventId: string; due: number };
+  'arc.ended': { arc: string; reason: 'end' | 'finished' };
   /** How a named person now feels about the player (`rel.<slug>.<dimension>` changed). */
   'relationship.changed': {
     character: string;
@@ -195,6 +200,9 @@ export const EVENT_VERSIONS: Record<CoreEventType, number> = {
   'fact.learned': 1,
   'fact.escalated': 1,
   'relationship.changed': 1,
+  'arc.started': 1,
+  'arc.advanced': 1,
+  'arc.ended': 1,
   'risk.auditStarted': 1,
   'risk.detected': 1,
   'risk.scapegoated': 1,

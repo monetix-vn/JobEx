@@ -91,6 +91,25 @@ feel with `rel khoa trust +4` or `favor khoa +1`, and use it in conditions as `r
 Trust and loyalty drift back towards their start every few weeks; unused characters only get a note.
 Example: `content-src/qc-cast.yml`. Vietnamese: never guess the player's gender (use "anh/chị" or rephrase).
 
+## A storyline (arc): a multi-week story the player's choices steer
+
+```yaml
+arc: the_hamper
+title: { en: "The hamper", vi: "Giỏ quà" }
+stages: # the first stage is the start
+  - { id: gift, event: qc.supplier_gift }
+  - { id: favour, event: qc.hung_favour, delay: 3-5 } # weeks after the arc moves to this stage
+  - { id: money, event: qc.hung_money, delay: 2-4 }
+```
+
+- Tag the scene that starts it with `arc: the_hamper` (on the scene entry). Later scenes use
+  `weight: 0`, so they only appear when the arc brings them.
+- Choices steer it with effects: `arc the_hamper favour` (move to that stage, its event comes after
+  the delay) or `arc the_hamper end` (close the storyline). The arc also finishes when its last
+  stage's event has played. Different choices going to different stages is how a story branches.
+- Every stage after the first must be reached by some effect (the validator warns otherwise).
+- Example: `content-src/qc-hamper.yml` (gift, favour, money, threat, with four endings).
+
 ## A glossary term
 
 ```yaml

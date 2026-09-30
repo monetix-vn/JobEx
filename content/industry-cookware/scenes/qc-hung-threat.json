@@ -1,0 +1,162 @@
+{
+  "id": "scene.qc.hung_threat",
+  "location": "loc.qc_lab",
+  "cast": ["char:hung"],
+  "lines": [
+    {
+      "speaker": "char:hung",
+      "text_key": "scene.qc.hung_threat.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.qc.hung_threat.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.qc.hung_threat.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.hung.trust",
+              "value": -15
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.came_clean_about_supplier",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_hamper",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.qc.hung_threat.c2",
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.qc.hung_threat.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.hung.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.the_hamper",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.qc.hung_threat.c2.fail",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.accepted_supplier_gift",
+              "visibility": "rumor"
+            },
+            {
+              "arc": "arc.the_hamper",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.qc.hung_threat.c3",
+      "outcomes": [
+        {
+          "p": 0.5,
+          "narration_key": "scene.qc.hung_threat.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.hung.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.hung.owed",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.paid_off_supplier",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_hamper",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.5,
+          "result": "fail",
+          "narration_key": "scene.qc.hung_threat.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": -10
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.paid_off_supplier",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_hamper",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

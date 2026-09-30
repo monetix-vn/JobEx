@@ -100,5 +100,53 @@
         "buyer": -6
       }
     }
+  },
+  {
+    "id": "fact.took_supplier_money",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.took_supplier_money",
+    "lesson_key": "lesson.took_supplier_money",
+    "consequences": {
+      "witnessed": {
+        "boss": -10,
+        "qc": -8
+      },
+      "public": {
+        "boss": -15,
+        "buyer": -10
+      }
+    }
+  },
+  {
+    "id": "fact.paid_off_supplier",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.paid_off_supplier",
+    "lesson_key": "lesson.paid_off_supplier",
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "qc": -4
+      },
+      "public": {
+        "boss": -10
+      }
+    }
+  },
+  {
+    "id": "fact.came_clean_about_supplier",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.came_clean_about_supplier",
+    "lesson_key": "lesson.came_clean_about_supplier",
+    "consequences": {
+      "witnessed": {
+        "boss": 4
+      },
+      "public": {
+        "boss": 6
+      }
+    }
   }
 ]

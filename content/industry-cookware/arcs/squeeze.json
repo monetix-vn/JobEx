@@ -1,0 +1,10 @@
+[
+  {
+    "id": "arc.the_squeeze",
+    "title_key": "arc.the_squeeze.title",
+    "stages": [
+      { "id": "notice", "event": "event.buyer_audit_notice" },
+      { "id": "audit", "event": "event.audit_day", "delay_weeks": [4, 6] }
+    ]
+  }
+]

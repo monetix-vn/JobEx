@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { ContentView, Effect, EventDraft, GameEvent } from '@je/contracts';
+import type { Arc, ContentView, Effect, EventDraft, GameEvent } from '@je/contracts';
 import { SeededRandom, runFixture } from '@je/kernel';
 import { directorModule, manifest, type DirectorConfig } from '../src';
 
@@ -8,10 +8,14 @@ const ev = (id: string, extra: Partial<GameEvent> = {}): GameEvent => ({
   scene: `scene.${id}`,
   ...extra,
 });
-const viewOf = (events: GameEvent[]): ContentView => ({
+const viewOf = (events: GameEvent[], arcs: Arc[] = []): ContentView => ({
   get: ((kind: string, id: string) =>
-    kind === 'event' ? events.find((e) => e.id === id) : undefined) as never,
-  all: ((kind: string) => (kind === 'event' ? events : [])) as never,
+    kind === 'event'
+      ? events.find((e) => e.id === id)
+      : kind === 'arc'
+        ? arcs.find((a) => a.id === id)
+        : undefined) as never,
+  all: ((kind: string) => (kind === 'event' ? events : kind === 'arc' ? arcs : [])) as never,
   text: () => undefined,
 });
 
@@ -21,7 +25,9 @@ const state = (vars: Record<string, number>, full = true) => ({
 });
 const plan = { type: 'turn.phaseStarted', payload: { phase: 'plan' } };
 const ids = (out: EventDraft[] | void): string[] =>
-  (out ?? []).map((e) => (e.payload as { eventId: string }).eventId);
+  (out ?? [])
+    .filter((e) => e.type === 'director.eventFired')
+    .map((e) => (e.payload as { eventId: string }).eventId);
 
 /** One-week fixture: state, then the plan phase, on a fixed clock. */
 function week(
@@ -41,14 +47,19 @@ function week(
 }
 
 /** A director driven week by week on a moving clock, with a real seeded RNG stream. */
-function driver(events: GameEvent[], cfg: Partial<DirectorConfig> = {}, seed = 'drv') {
+function driver(
+  events: GameEvent[],
+  cfg: Partial<DirectorConfig> = {},
+  seed = 'drv',
+  arcs: Arc[] = [],
+) {
   let turn = 0;
   const instance = directorModule.createModule({
     moduleId: 'director',
     rng: new SeededRandom(seed).stream('director'),
     clock: { now: () => ({ turn, year: 0, week_of_year: 0, month_of_year: 1, quarter: 1 }) },
     ports: {} as never,
-    config: { content: viewOf(events), ...cfg },
+    config: { content: viewOf(events, arcs), ...cfg },
   });
   const envelope = (type: string, payload: unknown) => ({
     id: 'e',
@@ -62,19 +73,30 @@ function driver(events: GameEvent[], cfg: Partial<DirectorConfig> = {}, seed = '
   return {
     /** Runs the plan phase of `at` and returns the events fired. */
     plan(at: number): string[] {
+      return ids(this.planAll(at));
+    },
+    /** Like plan, but returns every draft (arc events included). */
+    planAll(at: number): EventDraft[] {
       turn = at;
-      return ids(
-        instance.handlers['turn.phaseStarted']!(envelope('turn.phaseStarted', { phase: 'plan' })),
+      return (
+        instance.handlers['turn.phaseStarted']!(envelope('turn.phaseStarted', { phase: 'plan' })) ??
+        []
       );
     },
-    resolve(at: number, effects: Effect[]): void {
+    resolve(at: number, effects: Effect[]): EventDraft[] {
       turn = at;
-      instance.handlers['choice.resolved']!(
-        envelope('choice.resolved', { sceneId: 's', choiceId: 'c', outcome: 'ok', effects }),
+      return (
+        instance.handlers['choice.resolved']!(
+          envelope('choice.resolved', { sceneId: 's', choiceId: 'c', outcome: 'ok', effects }),
+        ) ?? []
       );
     },
     snapshot: () =>
-      instance.snapshot() as { fired: number; scheduled: { eventId: string; due: number }[] },
+      instance.snapshot() as {
+        fired: number;
+        scheduled: { eventId: string; due: number }[];
+        arcs: Record<string, { status: string; stage?: string }>;
+      },
   };
 }
 
@@ -205,6 +227,86 @@ describe('director: scheduled consequences', () => {
   });
 });
 
+describe('director: storylines (arcs)', () => {
+  const arc: Arc = {
+    id: 'arc.hamper',
+    title_key: 't',
+    stages: [
+      { id: 'gift', event: 'event.gift' },
+      { id: 'favour', event: 'event.favour', delay_weeks: [2, 2] },
+      { id: 'threat', event: 'event.threat', delay_weeks: [3, 3] },
+    ],
+  };
+  const events = [
+    ev('event.gift', { arc: 'arc.hamper', weight: 1 }),
+    ev('event.favour', { weight: 0 }),
+    ev('event.threat', { weight: 0 }),
+  ];
+  const types = (out: EventDraft[]) => out.map((e) => e.type);
+
+  it('an event tagged with an arc starts it, once', () => {
+    const d = driver(events, { eventsPerWeek: [1, 1], defaultCooldownWeeks: 1 }, 'a', [arc]);
+    const first = d.planAll(0);
+    expect(types(first)).toEqual(['director.eventFired', 'arc.started']);
+    expect(first[1]!.payload).toEqual({ arc: 'arc.hamper', eventId: 'event.gift' });
+    expect(types(d.planAll(3))).toEqual(['director.eventFired']);
+  });
+
+  it('a choice effect moves the arc to a stage and its event comes due after the stage delay', () => {
+    const d = driver(events, { eventsPerWeek: [1, 1] }, 'b', [arc]);
+    d.planAll(0);
+    const moved = d.resolve(1, [{ arc: 'arc.hamper', stage: 'favour' }]);
+    expect(moved).toEqual([
+      {
+        type: 'arc.advanced',
+        payload: { arc: 'arc.hamper', stage: 'favour', eventId: 'event.favour', due: 3 },
+      },
+    ]);
+    expect([1, 2].map((t) => d.plan(t))).toEqual([[], []]);
+    expect(d.plan(3)).toEqual(['event.favour']);
+  });
+
+  it('different choices branch to different stages, and the last stage finishes the arc', () => {
+    const d = driver(events, { eventsPerWeek: [1, 1] }, 'c', [arc]);
+    d.planAll(0);
+    d.resolve(1, [{ arc: 'arc.hamper', stage: 'threat' }]);
+    expect(d.plan(4)).toEqual(['event.threat']);
+    expect(d.snapshot()).toMatchObject({
+      arcs: { 'arc.hamper': { status: 'ended', stage: 'threat' } },
+    });
+  });
+
+  it('stage "end" ends an arc early, and an ended arc ignores later effects', () => {
+    const d = driver(events, { eventsPerWeek: [1, 1] }, 'd', [arc]);
+    d.planAll(0);
+    expect(d.resolve(1, [{ arc: 'arc.hamper', stage: 'end' }])).toEqual([
+      { type: 'arc.ended', payload: { arc: 'arc.hamper', reason: 'end' } },
+    ]);
+    expect(d.resolve(2, [{ arc: 'arc.hamper', stage: 'favour' }])).toEqual([]);
+    expect(d.snapshot().scheduled).toEqual([]);
+  });
+
+  it('ignores effects for unknown arcs and stages', () => {
+    const d = driver(events, { eventsPerWeek: [1, 1] }, 'e', [arc]);
+    expect(
+      d.resolve(1, [
+        { arc: 'arc.nope', stage: 'x' },
+        { arc: 'arc.hamper', stage: 'nope' },
+      ]),
+    ).toEqual([]);
+  });
+
+  it('is deterministic for a seed', () => {
+    const go = () => {
+      const d = driver(events, { eventsPerWeek: [1, 2] }, 'same', [arc]);
+      const out = [d.planAll(0), d.resolve(1, [{ arc: 'arc.hamper', stage: 'favour' }])];
+      for (let t = 2; t < 8; t++) out.push(d.planAll(t));
+      return JSON.stringify(out);
+    };
+    expect(go()).toBe(go());
+  });
+});
+
 describe('director: roles', () => {
   const events = [
     ev('event.any'),
@@ -245,7 +347,12 @@ describe('director: roles', () => {
 
 describe('director: contract', () => {
   it('declares what it uses and needs content', () => {
-    expect(manifest.emits).toEqual(['director.eventFired']);
+    expect(manifest.emits).toEqual([
+      'director.eventFired',
+      'arc.started',
+      'arc.advanced',
+      'arc.ended',
+    ]);
     expect(() => directorModule.createModule({ config: undefined } as never)).toThrow(/config/);
   });
 

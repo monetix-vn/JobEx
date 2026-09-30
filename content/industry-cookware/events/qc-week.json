@@ -61,7 +61,8 @@
     "tags": ["integrity", "supplier", "dark"],
     "weight": 0.7,
     "cooldown_weeks": 20,
-    "scene": "scene.qc.supplier_gift"
+    "scene": "scene.qc.supplier_gift",
+    "arc": "arc.the_hamper"
   },
   {
     "id": "event.qc.oven_drift",
@@ -299,5 +300,29 @@
     "weight": 6,
     "cooldown_weeks": 52,
     "scene": "scene.qc.first_day_walkthrough"
+  },
+  {
+    "id": "event.qc.hung_favour",
+    "role": "role.qc.specialist",
+    "tags": ["supplier", "pressure", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.qc.hung_favour"
+  },
+  {
+    "id": "event.qc.hung_money",
+    "role": "role.qc.specialist",
+    "tags": ["supplier", "integrity", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.qc.hung_money"
+  },
+  {
+    "id": "event.qc.hung_threat",
+    "role": "role.qc.specialist",
+    "tags": ["supplier", "integrity", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.qc.hung_threat"
   }
 ]
