@@ -94,6 +94,19 @@ seed.
   along in `scene.started` so the client only draws. The validator checks references, translations
   and unused terms.
 
+## A second job (Phase 1)
+
+- **Jobs are content, not code.** A playable role is a `role` with a `blurb_key`; the picker lists
+  them. An event with a `role` is only drawn for that job (the director reads `player.role` from
+  the state mirror); events without one, and scheduled consequences, are for everybody. The same
+  nine modules ran the QC job with no engine change beyond that one filter.
+- **How busy a job is belongs to the job:** `overhead_hours` on the role, tuned by simulation.
+- **Authoring convention:** choice 1 is by the book, 2 a legitimate compromise, 3 the shortcut. The
+  test players (`first`, `last`) and balance guards depend on it.
+- **Facts and traces are per job too:** QC's deeds (rounding a result, backdating a calibration,
+  filling records, hiding a defect) have their own facts, traces, lessons and vocabulary, and their
+  own consequence events, all through the existing knowledge, social, risk and education modules.
+
 ## Developer workflow (kept small on purpose)
 
 - **Context stays small.** `CLAUDE.md` holds the commands, rules and module map; `docs/STATUS.md` is

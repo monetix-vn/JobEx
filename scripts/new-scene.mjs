@@ -11,12 +11,17 @@ const key = args.find((a, i) => !a.startsWith('--') && !args[i - 1]?.startsWith(
 
 if (!key) {
   console.error(
-    'usage: pnpm new:scene <snake_case_key> [--pack industry-cookware] [--prefix sales]',
+    'usage: pnpm new:scene <snake_case_key> [--pack industry-cookware] [--prefix sales|qc] [--role <role id>]',
   );
   process.exit(2);
 }
 try {
-  const files = scaffoldScene({ key, pack: flag('pack'), prefix: flag('prefix') });
+  const files = scaffoldScene({
+    key,
+    pack: flag('pack'),
+    prefix: flag('prefix'),
+    role: flag('role'),
+  });
   console.log(files.map((f) => `wrote ${f}`).join('\n'));
   console.log(
     '\nNext: write the text (en and vi), set costs and effects, then `pnpm validate:packs`.',

@@ -89,14 +89,16 @@ remembered for next time.
 | Headless 1-year run completes and replays identically from a seed   | `tools/sim-runner/test/gate.test.ts`, `pnpm sim:determinism` |
 | A toy module is added with no change to existing modules            | `tools/sim-runner/test/gate.test.ts` (second describe)   |
 
-## Phase 1 so far: one Sales Specialist, text only
+## Phase 1 so far: two jobs, text only
 
-Nine modules run on the `industry-cookware` pack: `mod-sim-core`, `mod-workload`, `mod-choice`,
+You pick a job at the start (**Export Sales Specialist** or **Quality Control Specialist**) and can
+choose another after each debrief. Nine modules run on the `industry-cookware` pack: `mod-sim-core`, `mod-workload`, `mod-choice`,
 `mod-narrative`, `mod-director`, `mod-knowledge`, `mod-social`, `mod-risk` and `mod-education`.
 
-- **Decisions:** each week the director draws one or two of 20 pressure events (shipments pulled
-  forward, discount requests, overdue payments, quality complaints, Tet rush, kickback offers,
-  backdated invoices, and more) by season, stress, cooldown and weight, and plays scheduled
+- **Decisions:** each week the director draws one or two pressure events for your job (sales: shipments
+  pulled forward, discount requests, kickback offers, backdated invoices, and more, 18 in all; QC: a
+  failing batch, a borderline result, a supplier's gift, an overdue calibration, records to tidy
+  before an audit, a safety defect, and more, 10 in all) by season, stress, cooldown and weight, and plays scheduled
   consequences when they come due.
 - **Consequences:** what you do becomes a *fact* (21 are defined in content) with a visibility:
   private, witnessed, rumor or public. Word spreads week by week, faster the more serious the fact.
@@ -112,9 +114,10 @@ Nine modules run on the `industry-cookware` pack: `mod-sim-core`, `mod-workload`
   *prosecuted* (a grave offence is public), or *burnout*. A careful player finishes the year; a
   reckless one is usually gone within a few months. A bad year alone is never a firing.
 - **Debrief:** every run ends with a review: how it ended, the chain from what you did to what came
-  back, what each thing teaches, and the workplace vocabulary you met. Glossary words (24 so far)
+  back, what each thing teaches, and the workplace vocabulary you met. Glossary words (35 so far)
   are tappable inside the scenes where they appear.
 
 Run it headless with `pnpm exec tsx tools/sim-runner/src/cli.ts run --scenario sales-year --seed 7`
+(or `--scenario qc-year`)
 (`--policy first` plays carefully, `--policy last` recklessly; `sales-week` scripts just the first
 three scenes), or play it in the browser.

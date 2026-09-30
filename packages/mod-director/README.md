@@ -11,7 +11,8 @@ Each week at the plan phase it:
    evaluated counts as false), that are off cooldown (`cooldown_weeks`, default 8), with weight above
    0, drawn by weight without replacement from its own RNG stream.
 
-Weight 0 means "scheduled only". `schedule` effects, on an event or on a resolved choice, queue an
+An event with a `role` is only drawn for a player in that role (`player.role`); events without one
+are for everybody. Weight 0 means "scheduled only". `schedule` effects, on an event or on a resolved choice, queue an
 event after a random `delay_weeks`. Each event fired emits `director.eventFired`.
 
 Not yet: tension curve, arcs, and per-tag pacing. Those come with the later director work.

@@ -1,0 +1,63 @@
+[
+  {
+    "id": "role.qc.specialist",
+    "department": "dept.qc",
+    "level": 1,
+    "title_key": "role.qc.specialist.title",
+    "blurb_key": "role.qc.specialist.blurb",
+    "reports_to": "role.qc.manager",
+    "kpis": [
+      {
+        "id": "kpi.first_pass_yield",
+        "weight": 0.5
+      },
+      {
+        "id": "kpi.complaint_rate",
+        "weight": 0.3
+      }
+    ],
+    "weekly_demand": [
+      {
+        "task": "task.incoming_inspection",
+        "per_week": [4, 7],
+        "effort_h": 2.0
+      },
+      {
+        "task": "task.batch_release",
+        "per_week": [3, 5],
+        "effort_h": 1.5
+      },
+      {
+        "task": "task.customer_complaint",
+        "per_week": [0, 2],
+        "effort_h": 3.0
+      }
+    ],
+    "approval_limits": {
+      "deviation_pct": 0
+    },
+    "skills": ["inspection", "analysis", "backbone"],
+    "start_state": {
+      "salary_vnd": 13000000,
+      "stress": 25,
+      "skill.inspection": 40,
+      "skill.analysis": 35,
+      "skill.backbone": 30
+    },
+    "dark_offers": ["offer.release_out_of_spec"],
+    "overhead_hours": 17
+  },
+  {
+    "id": "role.qc.manager",
+    "department": "dept.qc",
+    "level": 2,
+    "title_key": "role.qc.manager.title",
+    "approval_limits": {
+      "deviation_pct": 5
+    },
+    "start_state": {
+      "salary_vnd": 30000000,
+      "stress": 40
+    }
+  }
+]

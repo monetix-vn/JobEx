@@ -284,6 +284,26 @@ describe('mount', () => {
     expect(root.querySelector('.je-status')?.textContent).toContain('Run ended');
   });
 
+  it('offers a way to play again from the debrief, only when the host provides one', () => {
+    const t = fakeTransport();
+    const root = document.createElement('div');
+    document.body.append(root);
+    let restarts = 0;
+    mount(root, t.transport, { onRestart: () => (restarts += 1) });
+    t.push(env('debrief.ready', debrief));
+    const again = root.querySelector<HTMLButtonElement>('.je-again');
+    expect(again?.textContent).toBe('Choose another job');
+    again!.click();
+    expect(restarts).toBe(1);
+
+    const plain = document.createElement('div');
+    document.body.append(plain);
+    const t2 = fakeTransport();
+    mount(plain, t2.transport);
+    t2.push(env('debrief.ready', debrief));
+    expect(plain.querySelector('.je-again')).toBeNull();
+  });
+
   it('the debrief is shown in the shell language, and leaves out empty sections', () => {
     const root = document.createElement('div');
     document.body.append(root);

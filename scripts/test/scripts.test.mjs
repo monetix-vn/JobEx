@@ -121,6 +121,23 @@ describe('scene scaffold', () => {
     expect(result.status).toBe(0);
   });
 
+  it('binds a scene to its job by prefix, or to an explicit role', () => {
+    const root = workspace();
+    scaffoldScene({ root, key: 'lab_visit', prefix: 'qc' });
+    scaffoldScene({ root, key: 'sales_visit' });
+    scaffoldScene({ root, key: 'shared_event', prefix: 'sales', role: 'role.qc.specialist' });
+    const events = (file) =>
+      JSON.parse(readFileSync(join(root, 'content/industry-cookware/events', file), 'utf8'));
+    expect(events('qc-week.json').find((e) => e.id === 'event.qc.lab_visit').role).toBe(
+      'role.qc.specialist',
+    );
+    const sales = events('sales-week.json');
+    expect(sales.find((e) => e.id === 'event.sales.sales_visit').role).toBe(
+      'role.sales.export.specialist',
+    );
+    expect(sales.find((e) => e.id === 'event.sales.shared_event').role).toBe('role.qc.specialist');
+  });
+
   it('refuses a bad key, an existing scene and a missing pack, and changes nothing when it refuses', () => {
     const root = workspace();
     expect(() => scaffoldScene({ root, key: 'Bad Key' })).toThrow(/snake_case/);

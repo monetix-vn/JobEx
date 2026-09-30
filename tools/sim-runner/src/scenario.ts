@@ -13,6 +13,7 @@ import { directorySource } from '@je/pack-validator';
 import type { BotOptions } from './runner';
 
 export const SALES_ROLE = 'role.sales.export.specialist';
+export const QC_ROLE = 'role.qc.specialist';
 
 /** The three pressure scenes of the Sales Specialist's week (Monday, Wednesday, Friday). */
 export const SALES_WEEK_SCENES = [
@@ -40,29 +41,32 @@ function salesScript(): Record<string, string[]> {
   return { '0': [...SALES_WEEK_SCENES] };
 }
 
+/** Scenarios by name: which job, how long, and whether the director (not a script) picks events. */
+const SCENARIOS: Record<string, { roleId: string; turns: number; directed: boolean }> = {
+  'sales-week': { roleId: SALES_ROLE, turns: 4, directed: false },
+  'sales-year': { roleId: SALES_ROLE, turns: 52, directed: true },
+  'qc-year': { roleId: QC_ROLE, turns: 52, directed: true },
+};
+
 /**
  * Real Phase 1 modules on real content, for one Sales Specialist.
  *   sales-week: the three pressure scenes scripted into week 0, then quiet weeks (4 weeks).
- *   sales-year: the director draws one or two events a week from the whole pool for a year.
+ *   sales-year, qc-year: the director draws one or two events a week, for that job, for a year.
  * Both track what the player did as facts, let word get around (knowledge and social), run real
  * detection, audits and endings (risk), and end with a debrief (education).
  */
 export async function loadScenario(name: string, options: ScenarioOptions): Promise<Scenario> {
-  const shape =
-    name === 'sales-week'
-      ? { turns: 4, directed: false }
-      : name === 'sales-year'
-        ? { turns: 52, directed: true }
-        : undefined;
-  if (!shape) throw new Error(`unknown scenario "${name}" (try sales-week or sales-year)`);
+  const shape = SCENARIOS[name];
+  if (!shape)
+    throw new Error(`unknown scenario "${name}" (try ${Object.keys(SCENARIOS).join(', ')})`);
 
   const { registry, diagnostics } = await loadContent(directorySource(options.contentDir));
   if (!registry || hasErrors(diagnostics)) {
     throw new Error(`content is invalid:
 ${formatDiagnostics(diagnostics)}`);
   }
-  if (!registry.get('role', SALES_ROLE)) {
-    throw new Error(`role "${SALES_ROLE}" not found in ${options.contentDir}`);
+  if (!registry.get('role', shape.roleId)) {
+    throw new Error(`role "${shape.roleId}" not found in ${options.contentDir}`);
   }
   const turns = options.turns ?? shape.turns;
   return {
@@ -80,8 +84,8 @@ ${formatDiagnostics(diagnostics)}`);
     ],
     configs: {
       'mod-content': { registry },
-      'sim-core': { content: registry, roleId: SALES_ROLE },
-      workload: { content: registry, roleId: SALES_ROLE },
+      'sim-core': { content: registry, roleId: shape.roleId },
+      workload: { content: registry, roleId: shape.roleId },
       choice: { content: registry },
       ...(shape.directed ? { director: { content: registry } } : {}),
       knowledge: { content: registry },

@@ -48,6 +48,10 @@ export interface Role {
   department: string;
   level: number;
   title_key: string;
+  /** One or two sentences shown when the player picks a job. Roles without one are not playable. */
+  blurb_key?: string;
+  /** Weekly hours the listed tasks do not cover (meetings, email, admin). Sets how busy the job is. */
+  overhead_hours?: number;
   reports_to?: string;
   kpis?: { id: string; weight: number }[];
   weekly_demand?: { task: string; per_week: [number, number]; effort_h: number }[];
@@ -61,6 +65,8 @@ export interface GameEvent {
   id: string;
   tags?: string[];
   when?: Expr;
+  /** Only this role can get the event. Omit for events any role can meet. */
+  role?: string;
   weight?: number;
   cooldown_weeks?: number;
   arc?: string;

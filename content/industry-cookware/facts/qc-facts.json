@@ -1,0 +1,445 @@
+[
+  {
+    "id": "fact.qc_held_batch",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.qc_held_batch",
+    "lesson_key": "lesson.qc_held_batch",
+    "consequences": {
+      "witnessed": {
+        "production": -4,
+        "boss": 2
+      },
+      "public": {
+        "boss": 5,
+        "buyer": 3,
+        "production": -2
+      }
+    }
+  },
+  {
+    "id": "fact.retested_until_pass",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.retested_until_pass",
+    "lesson_key": "lesson.retested_until_pass",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.6,
+        "detectors": ["internal_audit", "buyer"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "qc": -5,
+        "boss": -3
+      },
+      "public": {
+        "boss": -10,
+        "buyer": -8,
+        "qc": -8
+      }
+    }
+  },
+  {
+    "id": "fact.released_with_waiver",
+    "category": "integrity",
+    "severity": 3,
+    "text_key": "fact.released_with_waiver",
+    "lesson_key": "lesson.released_with_waiver",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.3,
+        "detectors": ["buyer", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "production": 2,
+        "boss": 1
+      },
+      "public": {
+        "buyer": -3
+      }
+    }
+  },
+  {
+    "id": "fact.rounded_result",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.rounded_result",
+    "lesson_key": "lesson.rounded_result",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "buyer"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "qc": -6,
+        "boss": -4
+      },
+      "public": {
+        "boss": -12,
+        "buyer": -10,
+        "qc": -10
+      }
+    }
+  },
+  {
+    "id": "fact.flagged_borderline",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.flagged_borderline",
+    "lesson_key": "lesson.flagged_borderline",
+    "consequences": {
+      "witnessed": {
+        "qc": 3
+      },
+      "public": {
+        "boss": 3,
+        "qc": 4
+      }
+    }
+  },
+  {
+    "id": "fact.accepted_on_supplier_word",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.accepted_on_supplier_word",
+    "lesson_key": "lesson.accepted_on_supplier_word",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.5,
+        "detectors": ["internal_audit", "buyer"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "qc": -4,
+        "boss": -3
+      },
+      "public": {
+        "boss": -8,
+        "production": -5,
+        "buyer": -10
+      }
+    }
+  },
+  {
+    "id": "fact.quarantined_lot",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.quarantined_lot",
+    "lesson_key": "lesson.quarantined_lot",
+    "consequences": {
+      "witnessed": {
+        "production": -3,
+        "qc": 2
+      },
+      "public": {
+        "boss": 3,
+        "production": -1
+      }
+    }
+  },
+  {
+    "id": "fact.backdated_calibration",
+    "category": "integrity",
+    "severity": 8,
+    "text_key": "fact.backdated_calibration",
+    "lesson_key": "lesson.backdated_calibration",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "buyer"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "qc": -8,
+        "boss": -6
+      },
+      "public": {
+        "boss": -14,
+        "buyer": -10,
+        "qc": -12
+      }
+    }
+  },
+  {
+    "id": "fact.stopped_use_uncalibrated",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.stopped_use_uncalibrated",
+    "lesson_key": "lesson.stopped_use_uncalibrated",
+    "consequences": {
+      "witnessed": {
+        "production": -3,
+        "qc": 3
+      },
+      "public": {
+        "boss": 3,
+        "qc": 5
+      }
+    }
+  },
+  {
+    "id": "fact.filled_records",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.filled_records",
+    "lesson_key": "lesson.filled_records",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "buyer"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "qc": -6,
+        "boss": -4
+      },
+      "public": {
+        "boss": -12,
+        "buyer": -12,
+        "qc": -10
+      }
+    }
+  },
+  {
+    "id": "fact.told_the_gap",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.told_the_gap",
+    "lesson_key": "lesson.told_the_gap",
+    "consequences": {
+      "witnessed": {
+        "boss": -2,
+        "qc": 2
+      },
+      "public": {
+        "buyer": 3,
+        "qc": 4,
+        "boss": 2
+      }
+    }
+  },
+  {
+    "id": "fact.downplayed_defect",
+    "category": "integrity",
+    "severity": 8,
+    "text_key": "fact.downplayed_defect",
+    "lesson_key": "lesson.downplayed_defect",
+    "traces": [
+      {
+        "type": "message",
+        "visibility": 0.6,
+        "detectors": ["buyer", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "qc": -6,
+        "buyer": -6
+      },
+      "public": {
+        "buyer": -14,
+        "boss": -10,
+        "qc": -10
+      }
+    }
+  },
+  {
+    "id": "fact.ignored_shortcut",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.ignored_shortcut",
+    "lesson_key": "lesson.ignored_shortcut",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.4,
+        "detectors": ["boss", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "qc": -4
+      },
+      "public": {
+        "boss": -8,
+        "qc": -8,
+        "buyer": -6
+      }
+    }
+  },
+  {
+    "id": "fact.reported_shortcut",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.reported_shortcut",
+    "lesson_key": "lesson.reported_shortcut",
+    "consequences": {
+      "witnessed": {
+        "qc": -3,
+        "boss": 3
+      },
+      "public": {
+        "boss": 5,
+        "qc": -2
+      }
+    }
+  },
+  {
+    "id": "fact.accepted_supplier_gift",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.accepted_supplier_gift",
+    "lesson_key": "lesson.accepted_supplier_gift",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.4,
+        "detectors": ["boss", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -5,
+        "production": -2
+      },
+      "public": {
+        "boss": -12,
+        "qc": -10,
+        "finance": -6
+      }
+    }
+  },
+  {
+    "id": "fact.declined_supplier_gift",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.declined_supplier_gift",
+    "lesson_key": "lesson.declined_supplier_gift",
+    "consequences": {
+      "public": {
+        "boss": 3,
+        "qc": 3
+      }
+    }
+  },
+  {
+    "id": "fact.unauthorized_adjustment",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.unauthorized_adjustment",
+    "lesson_key": "lesson.unauthorized_adjustment",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.5,
+        "detectors": ["internal_audit", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "production": -5,
+        "boss": -4
+      },
+      "public": {
+        "boss": -9,
+        "production": -8,
+        "qc": -6
+      }
+    }
+  },
+  {
+    "id": "fact.escalated_drift",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.escalated_drift",
+    "lesson_key": "lesson.escalated_drift",
+    "consequences": {
+      "witnessed": {
+        "production": -4,
+        "boss": 3
+      },
+      "public": {
+        "boss": 5,
+        "production": -2,
+        "qc": 3
+      }
+    }
+  },
+  {
+    "id": "fact.delayed_recall_notice",
+    "category": "integrity",
+    "severity": 10,
+    "text_key": "fact.delayed_recall_notice",
+    "lesson_key": "lesson.delayed_recall_notice",
+    "traces": [
+      {
+        "type": "message",
+        "visibility": 0.7,
+        "detectors": ["buyer", "internal_audit", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -12,
+        "qc": -10
+      },
+      "public": {
+        "boss": -20,
+        "buyer": -25,
+        "qc": -15,
+        "finance": -10
+      }
+    }
+  },
+  {
+    "id": "fact.flagged_safety_risk",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.flagged_safety_risk",
+    "lesson_key": "lesson.flagged_safety_risk",
+    "consequences": {
+      "witnessed": {
+        "production": -6,
+        "boss": 2
+      },
+      "public": {
+        "boss": 8,
+        "buyer": 8,
+        "qc": 6,
+        "production": -3
+      }
+    }
+  },
+  {
+    "id": "fact.lied_to_auditor",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.lied_to_auditor",
+    "lesson_key": "lesson.lied_to_auditor",
+    "consequences": {
+      "witnessed": {
+        "qc": -6,
+        "boss": -5
+      },
+      "public": {
+        "boss": -12,
+        "qc": -10
+      }
+    }
+  }
+]

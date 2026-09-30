@@ -53,7 +53,8 @@ export function createModule(host: ModuleHost): ModuleInstance {
   const role = config.content.get('role', config.roleId);
   if (!role) throw new Error(`mod-workload: unknown role "${config.roleId}"`);
   const capacity = config.capacityHours ?? DEFAULT_CAPACITY;
-  const overhead = config.overheadHours ?? DEFAULT_OVERHEAD;
+  // An explicit config wins (tests, balancing); otherwise the job's own figure; otherwise a default.
+  const overhead = config.overheadHours ?? role.overhead_hours ?? DEFAULT_OVERHEAD;
   const demandSpec = role.weekly_demand ?? [];
 
   const world = new VarStore();

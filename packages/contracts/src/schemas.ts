@@ -81,6 +81,8 @@ export const roleSchema = {
     department: idString,
     level: { type: 'integer', minimum: 1 },
     title_key: { type: 'string' },
+    blurb_key: { type: 'string' },
+    overhead_hours: { type: 'number', minimum: 0, maximum: 60 },
     reports_to: idString,
     kpis: {
       type: 'array',
@@ -120,6 +122,7 @@ export const eventSchema = {
     id: idString,
     tags: { type: 'array', items: { type: 'string' } },
     when: expr,
+    role: idString,
     weight: { type: 'number', minimum: 0 },
     cooldown_weeks: { type: 'integer', minimum: 0 },
     arc: idString,

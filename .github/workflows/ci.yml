@@ -40,5 +40,8 @@ jobs:
       # 6b. The real block A modules on real content: a year of the Sales Specialist
       - run: pnpm sim:sales
 
+      # 6c. The second job (QC Specialist) on the same engine
+      - run: pnpm sim:qc
+
       # 7. Build the web client shell
       - run: pnpm build:web

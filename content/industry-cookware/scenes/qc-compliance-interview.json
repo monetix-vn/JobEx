@@ -1,0 +1,142 @@
+{
+  "id": "scene.qc.compliance_interview",
+  "location": "loc.meeting_room",
+  "cast": ["role:compliance_officer"],
+  "lines": [
+    {
+      "speaker": "role:compliance_officer",
+      "text_key": "scene.qc.compliance_interview.l1"
+    },
+    {
+      "speaker": "role:compliance_officer",
+      "text_key": "scene.qc.compliance_interview.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.qc.compliance_interview.c1",
+      "cost": {
+        "hours": 4
+      },
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.qc.compliance_interview.c1.ok",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 8
+            },
+            {
+              "fact": "fact.confessed",
+              "visibility": "witnessed"
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.qc.compliance_interview.c1.fail",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -14
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": -8
+            },
+            {
+              "delta": "player.stress",
+              "value": 12
+            },
+            {
+              "fact": "fact.confessed",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.qc.compliance_interview.c2",
+      "outcomes": [
+        {
+          "p": 0.3,
+          "narration_key": "scene.qc.compliance_interview.c2.ok",
+          "effects": [
+            {
+              "delta": "player.stress",
+              "value": 6
+            }
+          ]
+        },
+        {
+          "p": 0.7,
+          "result": "fail",
+          "narration_key": "scene.qc.compliance_interview.c2.fail",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -20
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": -12
+            },
+            {
+              "delta": "player.stress",
+              "value": 15
+            },
+            {
+              "fact": "fact.lied_to_compliance",
+              "visibility": "public"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.qc.compliance_interview.c3",
+      "outcomes": [
+        {
+          "p": 0.5,
+          "narration_key": "scene.qc.compliance_interview.c3.ok",
+          "effects": [
+            {
+              "delta": "player.stress",
+              "value": 6
+            }
+          ]
+        },
+        {
+          "p": 0.5,
+          "result": "fail",
+          "narration_key": "scene.qc.compliance_interview.c3.fail",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 8
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": ["term.conflict_of_interest", "term.recall"]
+}

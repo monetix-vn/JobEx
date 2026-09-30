@@ -13,6 +13,8 @@ export interface MountOptions {
   locale?: UiLocale;
   /** Called when the player picks another language; the host decides how to switch. */
   onLocaleChange?: (locale: UiLocale) => void;
+  /** Called from the debrief when the player wants to play again (usually: pick a job). */
+  onRestart?: () => void;
 }
 
 export interface ClientHandle {
@@ -20,7 +22,7 @@ export interface ClientHandle {
   dispose(): void;
 }
 
-const STYLE = `
+export const STYLE = `
 .je{font-family:ui-monospace,Menlo,Consolas,monospace;background:#1b1b2f;color:#eee;max-width:560px;margin:0 auto;padding:12px;image-rendering:pixelated}
 .je-status{display:flex;justify-content:space-between;border:3px solid #eee;padding:4px 8px;margin-bottom:8px}
 .je-langs{display:flex;gap:4px}
@@ -35,6 +37,11 @@ const STYLE = `
 .je-dialogue{border:3px solid #eee;background:#0d0d1a;padding:8px;min-height:96px}
 .je-previous{border-left:3px solid #ffd166;padding-left:8px;margin-bottom:8px;color:#bbb;font-style:italic}
 .je-line b{color:#ffd166}
+.je-picker h2{margin:0 0 6px;font-size:1.15em;color:#ffd166}
+.je-job{display:block;width:100%;text-align:left;margin-top:8px;padding:10px;font:inherit;color:#eee;background:#33335a;border:3px solid #eee;cursor:pointer}
+.je-job:hover,.je-job:focus{background:#4a4a80}
+.je-job b{display:block;color:#ffd166;margin-bottom:4px}
+.je-again{margin-top:12px;padding:8px 12px;font:inherit;color:#111;background:#ffd166;border:3px solid #eee;cursor:pointer}
 .je-terms{margin-top:8px;font-size:.9em}
 .je-terms-hint{color:#999;margin-right:6px}
 .je-term{font:inherit;color:#9ad1ff;background:none;border:0;border-bottom:1px dashed #9ad1ff;margin-right:8px;padding:0;cursor:pointer}
@@ -51,7 +58,7 @@ const STYLE = `
 .je-choice:disabled{opacity:.45;cursor:not-allowed}
 `;
 
-function el<K extends keyof HTMLElementTagNameMap>(
+export function el<K extends keyof HTMLElementTagNameMap>(
   tag: K,
   className: string,
   text?: string,
@@ -87,7 +94,11 @@ interface Ui {
 }
 
 /** The end-of-run review, replacing the map and dialogue. */
-function debriefView(d: NonNullable<ClientState['debrief']>, t: UiStrings): HTMLElement {
+function debriefView(
+  d: NonNullable<ClientState['debrief']>,
+  t: UiStrings,
+  onRestart: MountOptions['onRestart'],
+): HTMLElement {
   const box = el('div', 'je-debrief');
   box.append(el('h2', '', d.title), el('p', '', d.body));
 
@@ -121,6 +132,12 @@ function debriefView(d: NonNullable<ClientState['debrief']>, t: UiStrings): HTML
     box.append(el('h3', '', t.debrief.standing));
     box.append(el('p', 'je-final', standing.join('  |  ')));
   }
+  if (onRestart) {
+    const again = el('button', 'je-again', t.playAgain);
+    again.type = 'button';
+    again.addEventListener('click', onRestart);
+    box.append(again);
+  }
   return box;
 }
 
@@ -131,6 +148,7 @@ function render(
   send: Transport['send'],
   locale: UiLocale,
   onLocaleChange: MountOptions['onLocaleChange'],
+  onRestart: MountOptions['onRestart'],
   ui: Ui,
 ): void {
   const t = UI_STRINGS[locale];
@@ -167,7 +185,7 @@ function render(
   if (reps) view.append(el('div', 'je-stats je-reps', reps));
 
   if (state.debrief) {
-    view.append(debriefView(state.debrief, t));
+    view.append(debriefView(state.debrief, t, onRestart));
     root.replaceChildren(view);
     return;
   }
@@ -264,6 +282,7 @@ export function mount(
       (type, payload) => transport.send(type, payload),
       locale,
       options.onLocaleChange,
+      options.onRestart,
       ui,
     );
   draw();

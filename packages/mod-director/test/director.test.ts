@@ -205,6 +205,44 @@ describe('director: scheduled consequences', () => {
   });
 });
 
+describe('director: roles', () => {
+  const events = [
+    ev('event.any'),
+    ev('event.sales', { role: 'role.sales' }),
+    ev('event.qc', { role: 'role.qc' }),
+  ];
+  const as = (role: string | undefined, seed = 'r') =>
+    week(
+      events,
+      [
+        {
+          type: 'sim.stateChanged',
+          payload: { full: true, vars: role ? { 'player.role': role } : {} },
+        },
+        plan,
+      ],
+      { eventsPerWeek: [3, 3] },
+      seed,
+    ).sort();
+
+  it('draws events for everybody plus the ones for the player role, and never another role', () => {
+    expect(as('role.sales')).toEqual(['event.any', 'event.sales']);
+    expect(as('role.qc')).toEqual(['event.any', 'event.qc']);
+  });
+
+  it('a player with no known role only gets the events meant for everybody', () => {
+    expect(as(undefined)).toEqual(['event.any']);
+  });
+
+  it('a scheduled consequence is delivered whatever the role', () => {
+    const d = driver([ev('event.audit', { role: 'role.other', weight: 0 })], {
+      eventsPerWeek: [1, 1],
+    });
+    d.resolve(0, [{ schedule: 'event.audit', delay_weeks: [1, 1] }]);
+    expect(d.plan(1)).toEqual(['event.audit']);
+  });
+});
+
 describe('director: contract', () => {
   it('declares what it uses and needs content', () => {
     expect(manifest.emits).toEqual(['director.eventFired']);

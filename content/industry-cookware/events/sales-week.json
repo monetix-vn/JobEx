@@ -4,14 +4,16 @@
     "tags": ["buyer", "delivery", "pressure"],
     "weight": 1.2,
     "scene": "scene.sales.shipment_pull_in",
-    "cooldown_weeks": 10
+    "cooldown_weeks": 10,
+    "role": "role.sales.export.specialist"
   },
   {
     "id": "event.sales.rfq_discount",
     "tags": ["buyer", "pricing", "pressure"],
     "weight": 1,
     "scene": "scene.sales.rfq_discount",
-    "cooldown_weeks": 8
+    "cooldown_weeks": 8,
+    "role": "role.sales.export.specialist"
   },
   {
     "id": "event.sales.forecast_meeting",
@@ -21,7 +23,8 @@
     "cooldown_weeks": 12,
     "when": {
       "in": ["world.month_of_year", 3, 6, 9, 12]
-    }
+    },
+    "role": "role.sales.export.specialist"
   },
   {
     "id": "event.sales.payment_overdue",
@@ -31,21 +34,24 @@
     "scene": "scene.sales.payment_overdue",
     "when": {
       "gte": ["world.month_of_year", 2]
-    }
+    },
+    "role": "role.sales.export.specialist"
   },
   {
     "id": "event.sales.sample_request",
     "tags": ["buyer", "samples"],
     "weight": 1,
     "cooldown_weeks": 12,
-    "scene": "scene.sales.sample_request"
+    "scene": "scene.sales.sample_request",
+    "role": "role.sales.export.specialist"
   },
   {
     "id": "event.sales.quality_complaint",
     "tags": ["quality", "buyer", "pressure"],
     "weight": 1,
     "cooldown_weeks": 14,
-    "scene": "scene.sales.quality_complaint"
+    "scene": "scene.sales.quality_complaint",
+    "role": "role.sales.export.specialist"
   },
   {
     "id": "event.sales.tet_rush",
@@ -55,7 +61,8 @@
     "scene": "scene.sales.tet_rush",
     "when": {
       "in": ["world.month_of_year", 12, 1]
-    }
+    },
+    "role": "role.sales.export.specialist"
   },
   {
     "id": "event.sales.buyer_gift",
@@ -65,7 +72,8 @@
     "scene": "scene.sales.buyer_gift",
     "when": {
       "gte": ["player.rep.buyer", 45]
-    }
+    },
+    "role": "role.sales.export.specialist"
   },
   {
     "id": "event.sales.backdate_invoice",
@@ -75,14 +83,16 @@
     "scene": "scene.sales.backdate_invoice",
     "when": {
       "in": ["world.month_of_year", 3, 6, 9, 12]
-    }
+    },
+    "role": "role.sales.export.specialist"
   },
   {
     "id": "event.sales.competitor_quote",
     "tags": ["pricing", "competition", "pressure"],
     "weight": 1,
     "cooldown_weeks": 12,
-    "scene": "scene.sales.competitor_quote"
+    "scene": "scene.sales.competitor_quote",
+    "role": "role.sales.export.specialist"
   },
   {
     "id": "event.sales.overtime_request",
@@ -92,35 +102,40 @@
     "scene": "scene.sales.overtime_request",
     "when": {
       "gte": ["player.stress", 40]
-    }
+    },
+    "role": "role.sales.export.specialist"
   },
   {
     "id": "event.sales.customs_docs",
     "tags": ["logistics", "compliance", "dark"],
     "weight": 1,
     "cooldown_weeks": 12,
-    "scene": "scene.sales.customs_docs"
+    "scene": "scene.sales.customs_docs",
+    "role": "role.sales.export.specialist"
   },
   {
     "id": "event.sales.kpi_review",
     "tags": ["review", "boss", "pressure"],
     "weight": 1,
     "cooldown_weeks": 12,
-    "scene": "scene.sales.kpi_review"
+    "scene": "scene.sales.kpi_review",
+    "role": "role.sales.export.specialist"
   },
   {
     "id": "event.sales.fx_price",
     "tags": ["finance", "pricing", "dark"],
     "weight": 0.8,
     "cooldown_weeks": 20,
-    "scene": "scene.sales.fx_price"
+    "scene": "scene.sales.fx_price",
+    "role": "role.sales.export.specialist"
   },
   {
     "id": "event.sales.new_hire_mentor",
     "tags": ["colleagues"],
     "weight": 0.8,
     "cooldown_weeks": 16,
-    "scene": "scene.sales.new_hire_mentor"
+    "scene": "scene.sales.new_hire_mentor",
+    "role": "role.sales.export.specialist"
   },
   {
     "id": "event.sales.trade_fair",
@@ -130,7 +145,8 @@
     "scene": "scene.sales.trade_fair",
     "when": {
       "in": ["world.month_of_year", 1, 2, 8]
-    }
+    },
+    "role": "role.sales.export.specialist"
   },
   {
     "id": "event.sales.finance_inquiry",
@@ -185,7 +201,8 @@
           ]
         }
       ]
-    }
+    },
+    "role": "role.sales.export.specialist"
   },
   {
     "id": "event.sales.buyer_confronts",
@@ -232,7 +249,8 @@
           ]
         }
       ]
-    }
+    },
+    "role": "role.sales.export.specialist"
   },
   {
     "id": "event.sales.compliance_interview",
@@ -279,6 +297,7 @@
           ]
         }
       ]
-    }
+    },
+    "role": "role.sales.export.specialist"
   }
 ]

@@ -118,5 +118,60 @@
     "id": "term.fx_risk",
     "term_key": "term.fx_risk.term",
     "definition_key": "term.fx_risk.def"
+  },
+  {
+    "id": "term.coa",
+    "term_key": "term.coa.term",
+    "definition_key": "term.coa.def"
+  },
+  {
+    "id": "term.non_conformance",
+    "term_key": "term.non_conformance.term",
+    "definition_key": "term.non_conformance.def"
+  },
+  {
+    "id": "term.deviation_waiver",
+    "term_key": "term.deviation_waiver.term",
+    "definition_key": "term.deviation_waiver.def"
+  },
+  {
+    "id": "term.sampling_plan",
+    "term_key": "term.sampling_plan.term",
+    "definition_key": "term.sampling_plan.def"
+  },
+  {
+    "id": "term.specification_limit",
+    "term_key": "term.specification_limit.term",
+    "definition_key": "term.specification_limit.def"
+  },
+  {
+    "id": "term.calibration",
+    "term_key": "term.calibration.term",
+    "definition_key": "term.calibration.def"
+  },
+  {
+    "id": "term.traceability",
+    "term_key": "term.traceability.term",
+    "definition_key": "term.traceability.def"
+  },
+  {
+    "id": "term.capa",
+    "term_key": "term.capa.term",
+    "definition_key": "term.capa.def"
+  },
+  {
+    "id": "term.recall",
+    "term_key": "term.recall.term",
+    "definition_key": "term.recall.def"
+  },
+  {
+    "id": "term.quarantine",
+    "term_key": "term.quarantine.term",
+    "definition_key": "term.quarantine.def"
+  },
+  {
+    "id": "term.lot",
+    "term_key": "term.lot.term",
+    "definition_key": "term.lot.def"
   }
 ]

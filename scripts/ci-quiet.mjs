@@ -13,6 +13,7 @@ const STEPS = [
   ['determinism', 'sim:determinism'],
   ['smoke', 'sim:smoke'],
   ['sales year', 'sim:sales'],
+  ['qc year', 'sim:qc'],
   ['web build', 'build:web'],
 ];
 

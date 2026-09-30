@@ -1,0 +1,160 @@
+{
+  "id": "scene.qc.borderline_result",
+  "location": "loc.qc_lab",
+  "cast": ["role:lab_tech"],
+  "lines": [
+    {
+      "speaker": "role:lab_tech",
+      "text_key": "scene.qc.borderline_result.l1"
+    },
+    {
+      "speaker": "role:lab_tech",
+      "text_key": "scene.qc.borderline_result.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.qc.borderline_result.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.qc.borderline_result.c1.ok",
+          "effects": [
+            {
+              "delta": "player.rep.qc",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.production",
+              "value": -1
+            },
+            {
+              "fact": "fact.flagged_borderline",
+              "visibility": "witnessed"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.qc.borderline_result.c1.fail",
+          "effects": [
+            {
+              "delta": "player.rep.production",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.flagged_borderline",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.qc.borderline_result.c2",
+      "cost": {
+        "hours": 1
+      },
+      "requires": {
+        "gte": ["skill.analysis", 30]
+      },
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.qc.borderline_result.c2.ok",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.qc.borderline_result.c2.fail",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.qc.borderline_result.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.qc.borderline_result.c3.ok",
+          "effects": [
+            {
+              "delta": "player.stress",
+              "value": -1
+            },
+            {
+              "delta": "player.rep.production",
+              "value": 3
+            },
+            {
+              "fact": "fact.rounded_result",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.qc.borderline_result.c3.fail",
+          "effects": [
+            {
+              "delta": "player.rep.buyer",
+              "value": -10
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.rounded_result",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": ["term.specification_limit"]
+}

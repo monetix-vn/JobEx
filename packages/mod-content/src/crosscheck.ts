@@ -89,6 +89,7 @@ export function crossCheck(
 
   for (const role of items.role.values()) {
     useKey(role.title_key, role.id, 'role');
+    if (role.blurb_key) useKey(role.blurb_key, role.id, 'role');
     if (role.reports_to) requireRef('role', role.id, 'role', role.reports_to, 'reports_to');
     for (const offer of role.dark_offers ?? [])
       requireRef('role', role.id, 'offer', offer, 'dark_offers');
@@ -96,6 +97,7 @@ export function crossCheck(
 
   for (const event of items.event.values()) {
     requireRef('event', event.id, 'scene', event.scene, 'scene');
+    if (event.role) requireRef('event', event.id, 'role', event.role, 'role');
     usedScenes.add(event.scene);
     if (event.when !== undefined) checkExpr('event', event.id, 'when', event.when);
     checkEffects('event', event.id, event.effects, 'effects');

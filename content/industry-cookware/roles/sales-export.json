@@ -39,7 +39,9 @@
       "skill.analysis": 35,
       "skill.read_the_room": 30
     },
-    "dark_offers": ["offer.pad_forecast", "offer.buyer_kickback"]
+    "dark_offers": ["offer.pad_forecast", "offer.buyer_kickback"],
+    "blurb_key": "role.sales.export.specialist.blurb",
+    "overhead_hours": 22
   },
   {
     "id": "role.sales.export.manager",

@@ -117,6 +117,7 @@ export function createModule(host: ModuleHost): ModuleInstance {
         const pool = content
           .all('event')
           .filter((e) => !taken.has(e.id) && (e.weight ?? 1) > 0)
+          .filter((e) => e.role === undefined || e.role === world.get('player.role'))
           .filter((e) => {
             const last = lastFired[e.id];
             return last === undefined || turn - last >= (e.cooldown_weeks ?? defaultCooldown);

@@ -455,6 +455,46 @@ describe('glossary terms, lessons and traces', () => {
   });
 });
 
+describe('roles in events and the job picker', () => {
+  const role = {
+    id: 'role.t.one',
+    department: 'dept.t',
+    level: 1,
+    title_key: 'k.title',
+    blurb_key: 'k.blurb',
+  };
+  const base = (extra: Record<string, string | null> = {}) =>
+    pack({
+      'core/roles/r.json': j(role),
+      'core/events/a.json': j(event({ role: 'role.t.one' })),
+      'core/locale/en.json': j({ ...locale, 'k.title': 'T', 'k.blurb': 'B' }),
+      'core/locale/vi.json': j({ ...locale, 'k.title': 'T', 'k.blurb': 'B' }),
+      ...extra,
+    });
+
+  it('accepts an event limited to a defined role, and a role with a blurb', async () => {
+    const { registry, diagnostics } = await load(base());
+    expect(diagnostics.filter((d) => d.severity !== 'info')).toEqual([]);
+    expect(registry?.get('event', 'event.a')?.role).toBe('role.t.one');
+  });
+
+  it('rejects an event limited to a role nobody defined', async () => {
+    const { diagnostics } = await load(
+      base({ 'core/events/a.json': j(event({ role: 'role.ghost' })) }),
+    );
+    expect(diagnostics.find((d) => d.code === 'ref.missing')?.message).toContain(
+      'role "role.ghost"',
+    );
+  });
+
+  it('needs the blurb text in both languages', async () => {
+    const { diagnostics } = await load(
+      base({ 'core/locale/vi.json': j({ ...locale, 'k.title': 'T' }) }),
+    );
+    expect(diagnostics.find((d) => d.code === 'locale.missing')?.message).toContain('"k.blurb"');
+  });
+});
+
 describe('module and helpers', () => {
   it('mod-content announces loaded content when a run starts', async () => {
     const { registry } = await load(pack());

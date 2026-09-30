@@ -5,15 +5,24 @@ import { join } from 'node:path';
 
 const KEY = /^[a-z][a-z0-9_]*$/;
 
+/** A new scene with one of these prefixes is for that job only, unless `role` says otherwise. */
+const ROLE_BY_PREFIX = { sales: 'role.sales.export.specialist', qc: 'role.qc.specialist' };
+
 const readJson = (path, fallback) =>
   existsSync(path) ? JSON.parse(readFileSync(path, 'utf8')) : fallback;
 const writeJson = (path, value) => writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`);
 
 /**
- * @param {{ root?: string, pack?: string, prefix?: string, key: string }} options
+ * @param {{ root?: string, pack?: string, prefix?: string, role?: string, key: string }} options
  * @returns {string[]} the files created or changed, relative to `root`
  */
-export function scaffoldScene({ root = '.', pack = 'industry-cookware', prefix = 'sales', key }) {
+export function scaffoldScene({
+  root = '.',
+  pack = 'industry-cookware',
+  prefix = 'sales',
+  role,
+  key,
+}) {
   if (!KEY.test(key ?? '')) throw new Error(`key must be lower snake_case, got "${key}"`);
   const base = join(root, 'content', pack);
   if (!existsSync(join(base, 'manifest.json'))) throw new Error(`no pack at ${base}`);
@@ -63,7 +72,15 @@ export function scaffoldScene({ root = '.', pack = 'industry-cookware', prefix =
   writeJson(sceneFile, scene);
   created.push(sceneFile);
 
-  events.push({ id: eventId, tags: ['pressure'], weight: 1, cooldown_weeks: 12, scene: sceneId });
+  const owner = role ?? ROLE_BY_PREFIX[prefix];
+  events.push({
+    id: eventId,
+    ...(owner ? { role: owner } : {}),
+    tags: ['pressure'],
+    weight: 1,
+    cooldown_weeks: 12,
+    scene: sceneId,
+  });
   writeJson(eventsFile, events);
   created.push(eventsFile);
 

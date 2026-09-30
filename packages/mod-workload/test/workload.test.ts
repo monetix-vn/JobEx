@@ -65,6 +65,39 @@ describe('workload: planning', () => {
   });
 });
 
+describe('workload: how busy the job is', () => {
+  const busy = (overhead: number | undefined, configOverhead?: number) => {
+    const r: Role = { ...role, ...(overhead === undefined ? {} : { overhead_hours: overhead }) };
+    const view: ContentView = {
+      ...content,
+      get: ((k: string) => (k === 'role' ? r : undefined)) as never,
+    };
+    const cfg = {
+      content: view,
+      roleId: role.id,
+      ...(configOverhead === undefined ? {} : { overheadHours: configOverhead }),
+    };
+    const out = runFixture(workloadModule, {
+      seed: 'b',
+      config: cfg,
+      given: [tick, phase('plan')],
+      expect: [],
+    });
+    const [plan] = of(out, 'workload.weekPlanned');
+    const tasks = (plan as unknown as { tasks: { hours: number }[] }).tasks.reduce(
+      (n, t) => n + t.hours,
+      0,
+    );
+    return Math.round((plan!.demandHours! - tasks) * 10) / 10;
+  };
+
+  it("uses the job's own overhead, an explicit config over it, and 22 when neither is given", () => {
+    expect(busy(30)).toBe(30);
+    expect(busy(30, 8)).toBe(8);
+    expect(busy(undefined)).toBe(22);
+  });
+});
+
 describe('workload: closing the week', () => {
   const week = (extraHours: number, stress = 30) => [
     state(stress),

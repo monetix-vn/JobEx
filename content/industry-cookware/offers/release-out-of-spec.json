@@ -1,0 +1,25 @@
+{
+  "id": "offer.release_out_of_spec",
+  "from": "archetype.production_lead",
+  "payoff": {
+    "rep.production": 6,
+    "rep.boss": 2
+  },
+  "pressure": {
+    "deadline_weeks": 1,
+    "threat": "missed_shipment"
+  },
+  "justification_key": "offer.release_out_of_spec.why",
+  "traces": [
+    {
+      "type": "record",
+      "visibility": 0.6,
+      "detectors": ["internal_audit", "buyer"]
+    }
+  ],
+  "ratchet": {
+    "leverage_delta": 12,
+    "exit_cost": 18
+  },
+  "educational_note": "kb.quality_release"
+}

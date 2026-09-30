@@ -1,9 +1,18 @@
-import { mount, type ClientHandle, type UiLocale } from '@je/client-web';
+import { mount, mountRolePicker, type ClientHandle, type UiLocale } from '@je/client-web';
 import type { Run } from '@je/kernel';
-import { createInProcessHost, createSalesHost, fastForward } from './host';
+import {
+  QC_ROLE,
+  SALES_ROLE,
+  createGameHost,
+  createInProcessHost,
+  fastForward,
+  listPlayableRoles,
+} from './host';
 
 const TURN_INTERVAL_MS = 1500;
 const STORAGE_KEY = 'jobex.lang';
+/** Short names for ?role= links. */
+const ROLE_SHORTCUTS: Record<string, string> = { sales: SALES_ROLE, qc: QC_ROLE };
 
 const params = new URLSearchParams(window.location.search);
 const seed = params.get('seed') ?? 'demo';
@@ -67,24 +76,56 @@ function pace(run: Run, turns: number, ready: () => boolean): () => void {
 }
 
 interface Session {
+  roleId: string;
   handle: ClientHandle;
   run: Run;
   stop: () => void;
 }
 
 let session: Session | undefined;
+let picker: { dispose(): void } | undefined;
+
+function endSession(): void {
+  session?.stop();
+  session?.handle.dispose();
+  session = undefined;
+}
+
+/** The "choose your job" screen. Picking starts a game; the language can be switched here too. */
+async function showPicker(locale: UiLocale): Promise<void> {
+  endSession();
+  picker?.dispose();
+  const roles = await listPlayableRoles(contentFiles, locale);
+  picker = mountRolePicker(root, roles, {
+    locale,
+    onPick: (roleId) => {
+      picker?.dispose();
+      picker = undefined;
+      void startGame(roleId, locale);
+    },
+    onLocaleChange: (next) => {
+      rememberLocale(next);
+      void showPicker(next);
+    },
+  });
+}
 
 /**
- * Starts the game in a language. When switching, the previous run's recorded choices are replayed
- * into the new run, so the player keeps their week, their stats and their history.
+ * Starts the game for a job in a language. When switching language, the previous run's recorded
+ * choices are replayed into the new run, so the player keeps their week, stats and history.
  */
-async function startSales(locale: UiLocale, carry?: Session): Promise<void> {
+async function startGame(roleId: string, locale: UiLocale, carry?: Session): Promise<void> {
   const inputs = carry ? [...carry.run.inputs] : [];
   const turn = carry ? carry.run.turn : 0;
   carry?.stop();
   carry?.handle.dispose();
 
-  const { run, transport, turns } = await createSalesHost({ files: contentFiles, seed, locale });
+  const { run, transport, turns } = await createGameHost({
+    files: contentFiles,
+    seed,
+    roleId,
+    locale,
+  });
   if (carry) {
     fastForward(run, inputs, turn);
     // The same run ends the same way; a run the pacer finished at the last week needs ending here.
@@ -95,15 +136,16 @@ async function startSales(locale: UiLocale, carry?: Session): Promise<void> {
     locale,
     onLocaleChange: (next) => {
       rememberLocale(next);
-      if (session) void startSales(next, session);
+      if (session) void startGame(session.roleId, next, session);
     },
+    onRestart: () => void showPicker(locale),
   });
   let open = 0;
   run.observe((e) => {
     if (e.type === 'scene.started') open += 1;
     if (e.type === 'scene.ended') open -= 1;
   });
-  session = { handle, run, stop: pace(run, turns, () => open === 0) };
+  session = { roleId, handle, run, stop: pace(run, turns, () => open === 0) };
 }
 
 async function start(): Promise<void> {
@@ -113,7 +155,11 @@ async function start(): Promise<void> {
     pace(run, 52, () => true);
     return;
   }
-  await startSales(initialLocale());
+  const locale = initialLocale();
+  const requested = params.get('role');
+  const roleId = requested ? (ROLE_SHORTCUTS[requested] ?? requested) : undefined;
+  if (roleId) await startGame(roleId, locale);
+  else await showPicker(locale);
 }
 
 void start();

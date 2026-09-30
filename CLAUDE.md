@@ -11,7 +11,7 @@ pnpm check:fast            # only what you changed (and its dependents): format,
 pnpm test -- <path>        # one test file, e.g. packages/mod-risk
 pnpm run ci:quiet          # the full CI, one line per step, output only for failures
 pnpm pin:update            # re-pin golden fingerprints after an intended behaviour change
-pnpm new:scene <key>       # scaffold a scene + event + EN/VI text keys in the sales pack
+pnpm new:scene <key> [--prefix qc]   # scaffold a scene + event + EN/VI keys (prefix binds it to a job)
 pnpm validate:packs        # content validation only
 pnpm build:play            # rebuild JobEx-play.html (one-click game; play.bat opens it)
 ```
@@ -29,6 +29,9 @@ only the file you are editing. Long logs: pipe through `tail`/`grep`, or use the
 - Modules: sim-core (state, only writer), workload, choice (requirements, costs, outcomes), narrative
   (scenes, text, notices), director (what happens this week), knowledge (facts ledger), social (gossip,
   reputation), risk (detection, audits, blame, endings), education (debrief). Stubs: mod-stubs, mod-toy.
+- Jobs are roles with a `blurb_key` (playable); an event with `role` is only for that job. Convention in
+  every scene: c1 by the book, c2 a legitimate compromise, c3 the shortcut (test policies `--policy
+  first|last` rely on it). Per-job busyness is `overhead_hours` on the role.
 - Content is data in `content/<pack>/{roles,events,scenes,offers,facts,terms,locale}`; validated by
   `mod-content`. Every text key must exist in `vi` and `en`. Facts define consequences and traces.
 - Player-facing text is Vietnamese and English; the simulation never reads the locale.

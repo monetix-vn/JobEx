@@ -1,0 +1,151 @@
+{
+  "id": "scene.qc.supplier_gift",
+  "location": "loc.qc_lab",
+  "cast": ["role:supplier_rep"],
+  "lines": [
+    {
+      "speaker": "role:supplier_rep",
+      "text_key": "scene.qc.supplier_gift.l1"
+    },
+    {
+      "speaker": "role:supplier_rep",
+      "text_key": "scene.qc.supplier_gift.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.qc.supplier_gift.c1",
+      "outcomes": [
+        {
+          "p": 0.85,
+          "narration_key": "scene.qc.supplier_gift.c1.ok",
+          "effects": [
+            {
+              "delta": "player.rep.qc",
+              "value": 2
+            },
+            {
+              "fact": "fact.declined_supplier_gift",
+              "visibility": "witnessed"
+            }
+          ]
+        },
+        {
+          "p": 0.15,
+          "result": "fail",
+          "narration_key": "scene.qc.supplier_gift.c1.fail",
+          "effects": [
+            {
+              "delta": "player.rep.production",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.declined_supplier_gift",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.qc.supplier_gift.c2",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.qc.supplier_gift.c2.ok",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": 5
+            },
+            {
+              "delta": "player.rep.production",
+              "value": -2
+            },
+            {
+              "fact": "fact.declined_supplier_gift",
+              "visibility": "witnessed"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.qc.supplier_gift.c2.fail",
+          "effects": [
+            {
+              "delta": "player.rep.production",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.declined_supplier_gift",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.qc.supplier_gift.c3",
+      "outcomes": [
+        {
+          "p": 0.65,
+          "narration_key": "scene.qc.supplier_gift.c3.ok",
+          "effects": [
+            {
+              "delta": "player.cash_vnd",
+              "value": 1500000
+            },
+            {
+              "delta": "player.stress",
+              "value": -2
+            },
+            {
+              "fact": "fact.accepted_supplier_gift",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.35,
+          "result": "fail",
+          "narration_key": "scene.qc.supplier_gift.c3.fail",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.production",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.accepted_supplier_gift",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": ["term.conflict_of_interest"]
+}

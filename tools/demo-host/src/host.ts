@@ -39,17 +39,20 @@ export function createInProcessHost(seed: string): { run: Run; transport: Transp
   return { run, transport: toTransport(run) };
 }
 
-const SALES_ROLE = 'role.sales.export.specialist';
+export const SALES_ROLE = 'role.sales.export.specialist';
+export const QC_ROLE = 'role.qc.specialist';
 
-export interface SalesHostOptions {
+export interface GameHostOptions {
   /** Content pack files by path relative to the content root, e.g. "core/manifest.json". */
   files: Record<string, string>;
   seed: string;
+  /** Which job the player has. Default: the sales specialist. */
+  roleId?: string;
   locale?: Locale;
   turns?: number;
 }
 
-export interface SalesHost {
+export interface GameHost {
   run: Run;
   transport: Transport;
   turns: number;
@@ -58,11 +61,12 @@ export interface SalesHost {
 }
 
 /**
- * Phase 1: the real modules on the real content, for one Sales Specialist. The director draws one
+ * Phase 1: the real modules on the real content, for one job (sales or QC). The director draws one
  * or two events a week from the pool (by season, stress, cooldown and weight) and plays scheduled
  * consequences when they come due. Scenes never time out here: a person plays at their own pace.
  */
-export async function createSalesHost(options: SalesHostOptions): Promise<SalesHost> {
+export async function createGameHost(options: GameHostOptions): Promise<GameHost> {
+  const roleId = options.roleId ?? SALES_ROLE;
   const { registry, diagnostics } = await loadContent(memorySource(options.files));
   if (!registry || hasErrors(diagnostics)) {
     throw new Error(`content is invalid:\n${formatDiagnostics(diagnostics)}`);
@@ -82,8 +86,8 @@ export async function createSalesHost(options: SalesHostOptions): Promise<SalesH
   ];
   const configs = {
     'mod-content': { registry },
-    'sim-core': { content: registry, roleId: SALES_ROLE },
-    workload: { content: registry, roleId: SALES_ROLE },
+    'sim-core': { content: registry, roleId },
+    workload: { content: registry, roleId },
     choice: { content: registry },
     director: { content: registry },
     knowledge: { content: registry },
@@ -121,4 +125,34 @@ export function fastForward(run: Run, inputs: readonly RecordedInput[], turns: n
     run.advanceTurn();
   }
   inject(turns);
+}
+
+/** The sales specialist game; kept for callers that do not choose a job. */
+export const createSalesHost = (options: GameHostOptions): Promise<GameHost> =>
+  createGameHost({ ...options, roleId: options.roleId ?? SALES_ROLE });
+
+export interface PlayableRole {
+  id: string;
+  title: string;
+  blurb: string;
+}
+
+/** The jobs a player can pick: roles that have a blurb, with their text in the given language. */
+export async function listPlayableRoles(
+  files: Record<string, string>,
+  locale: Locale,
+): Promise<PlayableRole[]> {
+  const { registry, diagnostics } = await loadContent(memorySource(files));
+  if (!registry || hasErrors(diagnostics)) {
+    throw new Error(`content is invalid:\n${formatDiagnostics(diagnostics)}`);
+  }
+  return registry
+    .all('role')
+    .filter((r) => r.blurb_key)
+    .sort((a, b) => (a.id < b.id ? -1 : 1))
+    .map((r) => ({
+      id: r.id,
+      title: registry.text(locale, r.title_key) ?? r.id,
+      blurb: registry.text(locale, r.blurb_key!) ?? '',
+    }));
 }

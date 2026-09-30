@@ -1,0 +1,166 @@
+{
+  "id": "scene.qc.complaint_trace",
+  "location": "loc.qc_lab",
+  "cast": ["role:buyer_contact", "role:production_lead"],
+  "lines": [
+    {
+      "speaker": "role:buyer_contact",
+      "text_key": "scene.qc.complaint_trace.l1"
+    },
+    {
+      "speaker": "role:production_lead",
+      "text_key": "scene.qc.complaint_trace.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.qc.complaint_trace.c1",
+      "cost": {
+        "hours": 5,
+        "energy": 5
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.qc.complaint_trace.c1.ok",
+          "effects": [
+            {
+              "delta": "player.rep.buyer",
+              "value": 5
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.production",
+              "value": -5
+            },
+            {
+              "fact": "fact.qc_held_batch",
+              "visibility": "witnessed"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.qc.complaint_trace.c1.fail",
+          "effects": [
+            {
+              "delta": "player.rep.buyer",
+              "value": -2
+            },
+            {
+              "delta": "player.rep.production",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.qc_held_batch",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.qc.complaint_trace.c2",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.qc.complaint_trace.c2.ok",
+          "effects": [
+            {
+              "delta": "player.rep.production",
+              "value": -2
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.qc.complaint_trace.c2.fail",
+          "effects": [
+            {
+              "delta": "player.rep.buyer",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.qc.complaint_trace.c3",
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.qc.complaint_trace.c3.ok",
+          "effects": [
+            {
+              "delta": "player.rep.production",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 1
+            },
+            {
+              "fact": "fact.downplayed_defect",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.qc.complaint_trace.c3.fail",
+          "effects": [
+            {
+              "delta": "player.rep.buyer",
+              "value": -14
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": -8
+            },
+            {
+              "delta": "player.stress",
+              "value": 7
+            },
+            {
+              "fact": "fact.downplayed_defect",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": ["term.traceability", "term.capa", "term.lot"]
+}

@@ -13,6 +13,9 @@ export interface UiStrings {
   reputation: string;
   reps: [path: string, label: string][];
   termsHint: string;
+  pickJob: string;
+  pickHint: string;
+  playAgain: string;
   debrief: { story: string; lessons: string; terms: string; standing: string; week: string };
 }
 
@@ -43,6 +46,9 @@ export const UI_STRINGS: Record<UiLocale, UiStrings> = {
       ['player.rep.cs', 'Service'],
     ],
     termsHint: 'Tap a word to see what it means',
+    pickJob: 'Choose your job',
+    pickHint: 'Same company, different pressures. You can try the others afterwards.',
+    playAgain: 'Choose another job',
     debrief: {
       story: 'What you did, and what came back',
       lessons: 'What this teaches',
@@ -79,6 +85,9 @@ export const UI_STRINGS: Record<UiLocale, UiStrings> = {
       ['player.rep.cs', 'CSKH'],
     ],
     termsHint: 'Chạm vào một từ để xem nghĩa',
+    pickJob: 'Chọn công việc của bạn',
+    pickHint: 'Cùng một công ty, áp lực khác nhau. Sau đó bạn có thể thử các vai trò khác.',
+    playAgain: 'Chọn công việc khác',
     debrief: {
       story: 'Bạn đã làm gì, và điều gì quay lại',
       lessons: 'Bài học rút ra',

@@ -9,7 +9,8 @@ the week closes: hours over capacity (default 45) become stress (0.6 per hour, a
 comfortable week relieves 2, health drops when stress would pass 80, and unfinished hours carry
 over as backlog.
 
-Weekly demand is the role's listed tasks plus `overheadHours` (default 22: meetings, email, admin).
+Weekly demand is the role's listed tasks plus overhead hours: the config's `overheadHours`, else
+the role's `overhead_hours`, else 22 (meetings, email, admin).
 Recovery (-2 stress) only happens in a week at or below 90% of capacity.
 
 Config: `{ content: ContentView, roleId, capacityHours?, overheadHours? }`.

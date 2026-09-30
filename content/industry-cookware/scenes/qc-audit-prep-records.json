@@ -1,0 +1,172 @@
+{
+  "id": "scene.qc.audit_prep_records",
+  "location": "loc.meeting_room",
+  "cast": ["role:boss"],
+  "lines": [
+    {
+      "speaker": "role:boss",
+      "text_key": "scene.qc.audit_prep_records.l1"
+    },
+    {
+      "speaker": "role:boss",
+      "text_key": "scene.qc.audit_prep_records.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.qc.audit_prep_records.c1",
+      "cost": {
+        "hours": 3
+      },
+      "requires": {
+        "gte": ["skill.analysis", 30]
+      },
+      "outcomes": [
+        {
+          "p": 0.65,
+          "narration_key": "scene.qc.audit_prep_records.c1.ok",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -1
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 3
+            },
+            {
+              "fact": "fact.told_the_gap",
+              "visibility": "witnessed"
+            }
+          ]
+        },
+        {
+          "p": 0.35,
+          "result": "fail",
+          "narration_key": "scene.qc.audit_prep_records.c1.fail",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.told_the_gap",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.qc.audit_prep_records.c2",
+      "outcomes": [
+        {
+          "p": 0.5,
+          "narration_key": "scene.qc.audit_prep_records.c2.ok",
+          "effects": [
+            {
+              "delta": "player.rep.buyer",
+              "value": -2
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "p": 0.5,
+          "result": "fail",
+          "narration_key": "scene.qc.audit_prep_records.c2.fail",
+          "effects": [
+            {
+              "delta": "player.rep.buyer",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.qc.audit_prep_records.c3",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.qc.audit_prep_records.c3.ok",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": 4
+            },
+            {
+              "delta": "player.stress",
+              "value": -2
+            },
+            {
+              "fact": "fact.filled_records",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.qc.audit_prep_records.c3.fail",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -10
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -10
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": -8
+            },
+            {
+              "delta": "player.stress",
+              "value": 8
+            },
+            {
+              "fact": "fact.filled_records",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": ["term.capa", "term.non_conformance"]
+}

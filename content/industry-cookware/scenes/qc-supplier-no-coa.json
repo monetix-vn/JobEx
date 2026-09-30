@@ -1,0 +1,165 @@
+{
+  "id": "scene.qc.supplier_no_coa",
+  "location": "loc.qc_lab",
+  "cast": ["role:purchasing", "role:production_lead"],
+  "lines": [
+    {
+      "speaker": "role:purchasing",
+      "text_key": "scene.qc.supplier_no_coa.l1"
+    },
+    {
+      "speaker": "role:production_lead",
+      "text_key": "scene.qc.supplier_no_coa.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.qc.supplier_no_coa.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.qc.supplier_no_coa.c1.ok",
+          "effects": [
+            {
+              "delta": "player.rep.production",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": 3
+            },
+            {
+              "fact": "fact.quarantined_lot",
+              "visibility": "witnessed"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.qc.supplier_no_coa.c1.fail",
+          "effects": [
+            {
+              "delta": "player.rep.production",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.quarantined_lot",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.qc.supplier_no_coa.c2",
+      "cost": {
+        "hours": 4,
+        "energy": 5
+      },
+      "requires": {
+        "gte": ["skill.inspection", 35]
+      },
+      "outcomes": [
+        {
+          "p": 0.65,
+          "narration_key": "scene.qc.supplier_no_coa.c2.ok",
+          "effects": [
+            {
+              "delta": "player.rep.production",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "p": 0.35,
+          "result": "fail",
+          "narration_key": "scene.qc.supplier_no_coa.c2.fail",
+          "effects": [
+            {
+              "delta": "player.rep.production",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.qc.supplier_no_coa.c3",
+      "outcomes": [
+        {
+          "p": 0.65,
+          "narration_key": "scene.qc.supplier_no_coa.c3.ok",
+          "effects": [
+            {
+              "delta": "player.rep.production",
+              "value": 4
+            },
+            {
+              "delta": "player.stress",
+              "value": -2
+            },
+            {
+              "fact": "fact.accepted_on_supplier_word",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.35,
+          "result": "fail",
+          "narration_key": "scene.qc.supplier_no_coa.c3.fail",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.production",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 7
+            },
+            {
+              "fact": "fact.accepted_on_supplier_word",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": ["term.coa", "term.quarantine", "term.lot"]
+}

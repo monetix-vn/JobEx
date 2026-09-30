@@ -1,6 +1,6 @@
 # Status (update this at the end of every block)
 
-Last updated after Phase 1 block C. Repo: github.com/monetix-vn/JobEx.
+Last updated after the QC Specialist role. Repo: github.com/monetix-vn/JobEx.
 
 ## Done
 
@@ -9,16 +9,19 @@ Last updated after Phase 1 block C. Repo: github.com/monetix-vn/JobEx.
 - Phase 1 block A: sim-core, workload, choice, narrative; first Sales Specialist scenes.
 - Phase 1 block B: director, knowledge (facts), social (gossip, reputation), live VI/EN switch.
 - Phase 1 block C: risk (detectors, audits, scapegoating, endings), education (debrief, glossary).
-- Playable in the browser: `play.bat` / `play-vi.bat` (Sales Specialist, 20 events, 21 facts, 24 terms).
+- Second job: QC Specialist (10 pressure events, 2 consequence events, 21 facts, 11 terms), a job picker,
+  per-job events (`role`) and busyness (`overhead_hours`).
+- Playable in the browser: `play.bat` / `play-vi.bat` (pick a job; sales 18 events, QC 12).
 
 ## Branches
 
-`main` (Phase 0) <- `phase-1-block-a` <- `phase-1-block-c` <- `chore/dev-workflow` (this). No PRs
-opened yet. Block B commits are inside `phase-1-block-a`/`c` history.
+`main` (Phase 0) <- `phase-1-block-a` <- `phase-1-block-c` <- `chore/dev-workflow` <-
+`phase-1-qc-role` (this). No PRs opened yet. Block B commits are inside `phase-1-block-a`/`c` history.
 
 ## Next (in order)
 
-1. QC Specialist role pack (integrity under pressure) and Finance role pack; a role picker.
+1. Finance & Accounting role pack (workload and dark temptation), the third job for the Phase 1 gate.
+   QC has 10 pressure events (about 35 to 45 decisions a year); it needs more to match sales (about 65).
 2. Per-person relationship graph (trust, loyalty, favours owed) in mod-social.
 3. Planner and walkable map in the client (block D), persistence (saves), time-scale setting.
 4. `mod-i18n` as a real module (live language switching is currently in `tools/demo-host`).
