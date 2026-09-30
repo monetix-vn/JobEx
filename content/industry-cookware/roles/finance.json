@@ -1,0 +1,61 @@
+[
+  {
+    "id": "role.fin.accountant",
+    "department": "dept.finance",
+    "level": 1,
+    "title_key": "role.fin.accountant.title",
+    "reports_to": "role.fin.chief_accountant",
+    "kpis": [
+      {
+        "id": "kpi.close_on_time",
+        "weight": 0.5
+      },
+      {
+        "id": "kpi.dso_days",
+        "weight": 0.3
+      }
+    ],
+    "weekly_demand": [
+      {
+        "task": "task.ar_followup",
+        "per_week": [3, 6],
+        "effort_h": 1.5
+      },
+      {
+        "task": "task.invoice_check",
+        "per_week": [5, 8],
+        "effort_h": 1.0
+      },
+      {
+        "task": "task.month_end_close",
+        "per_week": [0, 1],
+        "effort_h": 6.0
+      }
+    ],
+    "approval_limits": {
+      "write_off_vnd": 0
+    },
+    "skills": ["accounting", "analysis", "backbone"],
+    "start_state": {
+      "salary_vnd": 14000000,
+      "stress": 25,
+      "skill.accounting": 40,
+      "skill.analysis": 35,
+      "skill.backbone": 30
+    },
+    "overhead_hours": 17
+  },
+  {
+    "id": "role.fin.chief_accountant",
+    "department": "dept.finance",
+    "level": 2,
+    "title_key": "role.fin.chief_accountant.title",
+    "approval_limits": {
+      "write_off_vnd": 5000000
+    },
+    "start_state": {
+      "salary_vnd": 32000000,
+      "stress": 40
+    }
+  }
+]

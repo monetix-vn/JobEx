@@ -53,10 +53,11 @@ source of truth for what scene comes next; update their Status column as you go.
 ## Job 3: Finance and Accounting (`docs/story/finance.md`)
 
 - [x] Bible skeleton (AI)
-- [ ] Expand bible to QC level of detail (owner approves)
+- [x] Bible expanded to QC level of detail: cast, timeline, 4 arcs, dark-side ladder, 40-row episode list (owner approval pending) (needs owner)
+- [ ] Owner approves the Finance bible and episode list (needs owner)
 - [ ] Decide month-end mechanic (needs owner)
-- [ ] Role file (after engine R2), tasks, KPIs
-- [ ] Scenes (about 40), arcs: Month-End Push, Receipt Problem, The Audit
+- [x] Role file `role.fin.accountant` (+ chief accountant) in the pack, not yet playable (no blurb)
+- [ ] Scenes (about 40), arcs: The Cut-off, The Receipt Problem, The Cookie Jar, Thu (after approval)
 - [ ] Balance check and review
 
 ## Later jobs (not yet designed)

@@ -660,5 +660,7 @@
   "scene.qc.year_end_review.c3.ok": "Được đón nhận tốt. Em ra về với điểm cao và một chút nặng nề trong lòng.",
   "scene.qc.year_end_review.c3.fail": "Anh Khoa có sẵn hồ sơ đánh giá trên bàn. Anh lật trang về phía em mà không nói một lời.",
   "fact.polished_year_review": "bạn trình bày năm làm việc sạch sẽ hơn thực tế",
-  "lesson.polished_year_review": "Buổi đánh giá là cơ hội để được tin. Bỏ qua điều bạn biết sẽ lộ ra làm mất nhiều niềm tin hơn việc thừa nhận."
+  "lesson.polished_year_review": "Buổi đánh giá là cơ hội để được tin. Bỏ qua điều bạn biết sẽ lộ ra làm mất nhiều niềm tin hơn việc thừa nhận.",
+  "role.fin.accountant.title": "Chuyên viên Tài chính Kế toán",
+  "role.fin.chief_accountant.title": "Kế toán trưởng"
 }

@@ -31,7 +31,7 @@ describe('pack validator', () => {
     const { registry, diagnostics } = await loadContent(directorySource(contentDir));
     expect(hasErrors(diagnostics)).toBe(false);
     expect(registry?.counts()).toEqual({
-      role: 4,
+      role: 6,
       event: 45,
       scene: 45,
       offer: 3,

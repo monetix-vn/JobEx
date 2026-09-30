@@ -660,5 +660,7 @@
   "scene.qc.year_end_review.c3.ok": "It lands well. You leave with a good rating and a small weight in your chest.",
   "scene.qc.year_end_review.c3.fail": "Khoa has the audit file open on his desk. He turns the page towards you without a word.",
   "fact.polished_year_review": "you presented your year as cleaner than it was",
-  "lesson.polished_year_review": "A review is a chance to be believed. Leaving out what you know will surface costs more trust than admitting it."
+  "lesson.polished_year_review": "A review is a chance to be believed. Leaving out what you know will surface costs more trust than admitting it.",
+  "role.fin.accountant.title": "Finance and Accounting Specialist",
+  "role.fin.chief_accountant.title": "Chief Accountant"
 }

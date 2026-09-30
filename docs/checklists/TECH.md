@@ -43,7 +43,7 @@ Order matters; each item ships with tests and a docs/AUTHORING.md update.
 ## Phase 3: Roles and endings engine support
 
 - [ ] R1 Endings: "promoted" and "walked away" (conditions on facts, relationships, KPIs)
-- [ ] R2 Finance role: pack role file, tasks, KPIs, overhead hours (see finance bible)
+- [~] R2 Finance role: pack role file done (`role.fin.accountant`, not playable: no blurb); remaining: blurb, cast, tune overhead hours with balance runs, `sim-runner` scenario `fin-year`, pins (after the bible is approved)
 - [ ] R3 Month-end close mechanic for Finance if the bible wants it (owner decision)
 - [ ] R4 Shared events across jobs (audit day, compliance) checked for each role
 
