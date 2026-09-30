@@ -149,7 +149,8 @@
     "when": {
       "in": ["world.month_of_year", 1, 2, 8]
     },
-    "role": "role.sales.export.specialist"
+    "role": "role.sales.export.specialist",
+    "arc": "arc.trade_fair_lead"
   },
   {
     "id": "event.sales.finance_inquiry",
@@ -510,5 +511,88 @@
     "weight": 1,
     "cooldown_weeks": 12,
     "scene": "scene.sales.manager_offer"
+  },
+  {
+    "id": "event.sales.tet_bonus_team",
+    "role": "role.sales.export.specialist",
+    "tags": ["pressure", "people"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 3]
+        },
+        {
+          "lte": ["world.turn", 9]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 52,
+    "scene": "scene.sales.tet_bonus_team"
+  },
+  {
+    "id": "event.sales.fair_lead_sample",
+    "role": "role.sales.export.specialist",
+    "tags": ["buyer", "people", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.sales.fair_lead_sample"
+  },
+  {
+    "id": "event.sales.fair_lead_deal",
+    "role": "role.sales.export.specialist",
+    "tags": ["buyer", "contract", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.sales.fair_lead_deal"
+  },
+  {
+    "id": "event.sales.finance_interview",
+    "role": "role.sales.export.specialist",
+    "tags": ["audit", "pressure", "consequence"],
+    "when": {
+      "all": [
+        {
+          "in": ["world.month_of_year", 10, 11, 12]
+        },
+        {
+          "gte": ["world.turn", 38]
+        },
+        {
+          "gte": [
+            {
+              "var": ["fact.buried_discount_in_freight", 0]
+            },
+            1
+          ]
+        }
+      ]
+    },
+    "weight": 6,
+    "cooldown_weeks": 52,
+    "scene": "scene.sales.finance_interview"
+  },
+  {
+    "id": "event.sales.quynh_promotion",
+    "role": "role.sales.export.specialist",
+    "tags": ["people", "reward"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 38]
+        },
+        {
+          "gte": [
+            {
+              "var": ["rel.quynh.trust", 0]
+            },
+            15
+          ]
+        }
+      ]
+    },
+    "weight": 3,
+    "cooldown_weeks": 52,
+    "scene": "scene.sales.quynh_promotion"
   }
 ]

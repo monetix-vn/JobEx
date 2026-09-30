@@ -1,0 +1,161 @@
+{
+  "id": "scene.sales.fair_lead_deal",
+  "location": "loc.meeting_room",
+  "cast": ["char:bao"],
+  "lines": [
+    {
+      "speaker": "char:bao",
+      "text_key": "scene.sales.fair_lead_deal.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sales.fair_lead_deal.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.sales.fair_lead_deal.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.trade_fair_lead",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.sales.fair_lead_deal.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.trade_fair_lead",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sales.fair_lead_deal.c2",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.sales.fair_lead_deal.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.trade_fair_lead",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sales.fair_lead_deal.c3",
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.sales.fair_lead_deal.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 6
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.accepted_unrealistic_terms",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.trade_fair_lead",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.sales.fair_lead_deal.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.accepted_unrealistic_terms",
+              "visibility": "public"
+            },
+            {
+              "arc": "arc.trade_fair_lead",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

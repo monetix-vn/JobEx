@@ -11,9 +11,9 @@ will behave differently.
 
 | Player | Endings | Weeks (min/median/max) | Decisions (min/mean/max) | Final stress | Storylines started |
 | ------ | ------- | ---------------------- | ------------------------ | ------------ | ------------------ |
-| careful | promoted 28, completed 12 | 51 / 51 / 52 | 72 / 76.1 / 82 | 76 | discount_spiral 100%, overdue_account 100%, quynh 100%, the_squeeze 100% |
-| random | fired 28, prosecuted 8, completed 4 | 10 / 25 / 52 | 19 / 47.7 / 95 | 56.2 | discount_spiral 98%, overdue_account 98%, quynh 100%, the_squeeze 90% |
-| reckless | fired 40 | 10 / 15 / 37 | 16 / 32.3 / 65 | 42.8 | discount_spiral 98%, overdue_account 88%, quynh 90%, the_squeeze 73% |
+| careful | promoted 31, completed 9 | 51 / 51 / 52 | 69 / 76.2 / 84 | 83.6 | discount_spiral 100%, overdue_account 100%, quynh 100%, the_squeeze 100%, trade_fair_lead 100% |
+| random | fired 26, prosecuted 13, completed 1 | 11 / 26 / 52 | 18 / 46.2 / 89 | 52.8 | discount_spiral 100%, overdue_account 100%, quynh 98%, the_squeeze 90%, trade_fair_lead 83% |
+| reckless | fired 40 | 10 / 15 / 29 | 17 / 30.1 / 53 | 45.3 | discount_spiral 98%, overdue_account 88%, quynh 93%, the_squeeze 73%, trade_fair_lead 80% |
 
 ### qc-year
 
@@ -27,6 +27,6 @@ will behave differently.
 
 | Player | Endings | Weeks (min/median/max) | Decisions (min/mean/max) | Final stress | Storylines started |
 | ------ | ------- | ---------------------- | ------------------------ | ------------ | ------------------ |
-| careful | promoted 40 | 51 / 51 / 51 | 64 / 71.8 / 79 | 60.3 | the_cookie_jar 85%, the_cutoff 93%, the_receipt_problem 100%, the_squeeze 100%, thu 100% |
-| random | fired 32, completed 6, prosecuted 2 | 20 / 35 / 52 | 32 / 56.3 / 87 | 8.5 | the_cookie_jar 70%, the_cutoff 75%, the_receipt_problem 100%, the_squeeze 100%, thu 100% |
-| reckless | fired 37, prosecuted 3 | 12 / 21 / 38 | 18 / 35.4 / 62 | 3.3 | the_cookie_jar 15%, the_cutoff 63%, the_receipt_problem 85%, the_squeeze 95%, thu 100% |
+| careful | promoted 40 | 51 / 51 / 51 | 68 / 74.1 / 82 | 72.6 | the_cookie_jar 90%, the_cutoff 85%, the_receipt_problem 100%, the_squeeze 100%, thu 93% |
+| random | fired 28, completed 11, prosecuted 1 | 13 / 37 / 52 | 21 / 62.4 / 91 | 11.8 | the_cookie_jar 68%, the_cutoff 78%, the_receipt_problem 98%, the_squeeze 98%, thu 93% |
+| reckless | fired 38, prosecuted 2 | 11 / 19 / 35 | 16 / 33.8 / 62 | 4.3 | the_cookie_jar 10%, the_cutoff 55%, the_receipt_problem 68%, the_squeeze 78%, thu 93% |

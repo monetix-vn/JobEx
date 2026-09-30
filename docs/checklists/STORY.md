@@ -41,7 +41,7 @@ source of truth for what scene comes next; update their Status column as you go.
 - [x] Bible v2 (AI): cast, season timeline, four storylines, dark-side ladder, episode list (owner review pending)
 - [x] 34 scenes imported: the original 19 plus 15 new (premiere, midyear review, big-buyer twist, year-end review, manager offer with the promoted ending, discount spiral x2, overdue pull-in, Quynh x2, factory visit, quota push, credit ask, expense padding, Anders's renewal); 8 new facts; characters Anders and Quynh
 - [x] First-cut balance check: existing sales tests pass with the new scenes; `sales-year.test.ts` has new story-layer tests; pins updated
-- [ ] Remaining Sales scenes (second Tet block, trade-fair follow-up arc, finance interview, more Quynh)
+- [x] Remaining planned Sales scenes (second Tet block, trade-fair lead arc, finance interview, Quynh's promotion); 39 Sales scenes
 - [ ] Practitioner review of the Sales text
 
 ## Job 3: Finance and Accounting (`docs/story/finance.md`)

@@ -96,9 +96,11 @@ All rows below are `imported` unless marked.
 | sales.anders_renewal      | reward, needs his trust     | Anders          | A three-year framework, you set the price           | fair price + review clause / exploit / decline longer | -       |
 | (existing 19 scenes)      | see `pnpm content:list --role sales` |        |                                                     |                                                       |         |
 
-Planned, not yet written: a second Tet block (bonus pressure on the sales team), a trade-fair follow-up
-arc (a buyer met at the fair), a Finance-side interview (`sales.finance_interview`, consequence of
-`buried_discount_in_freight`), and more Quynh scenes (her own promotion).
+Added after this table was written (2026-10-01): `sales.tet_bonus_team` (Tet bonus pressure), the trade-fair
+lead arc (`trade_fair` -> `fair_lead_sample` -> `fair_lead_deal`, with misrepresented samples and
+uncapped penalty clauses), `sales.finance_interview` (consequence of `buried_discount_in_freight`) and
+`sales.quynh_promotion` (her reference). 39 Sales scenes exist now. Still open: a consequence scene for
+`staged_factory_visit`, and more buyers besides Anders.
 
 ## 10. Open questions
 

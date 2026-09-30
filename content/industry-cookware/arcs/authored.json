@@ -213,5 +213,25 @@
         "delay_weeks": [4, 8]
       }
     ]
+  },
+  {
+    "id": "arc.trade_fair_lead",
+    "title_key": "arc.trade_fair_lead.title",
+    "stages": [
+      {
+        "id": "fair",
+        "event": "event.sales.trade_fair"
+      },
+      {
+        "id": "sample",
+        "event": "event.sales.fair_lead_sample",
+        "delay_weeks": [3, 5]
+      },
+      {
+        "id": "deal",
+        "event": "event.sales.fair_lead_deal",
+        "delay_weeks": [4, 8]
+      }
+    ]
   }
 ]

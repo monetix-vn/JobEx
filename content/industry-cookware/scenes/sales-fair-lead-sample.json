@@ -1,0 +1,169 @@
+{
+  "id": "scene.sales.fair_lead_sample",
+  "location": "loc.sales_office",
+  "cast": ["char:anders"],
+  "lines": [
+    {
+      "speaker": "char:anders",
+      "text_key": "scene.sales.fair_lead_sample.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sales.fair_lead_sample.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.sales.fair_lead_sample.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.anders.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.trade_fair_lead",
+              "stage": "deal"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.sales.fair_lead_sample.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.trade_fair_lead",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sales.fair_lead_sample.c2",
+      "outcomes": [
+        {
+          "p": 0.5,
+          "narration_key": "scene.sales.fair_lead_sample.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.trade_fair_lead",
+              "stage": "deal"
+            }
+          ]
+        },
+        {
+          "p": 0.5,
+          "result": "fail",
+          "narration_key": "scene.sales.fair_lead_sample.c2.fail",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": -7
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.trade_fair_lead",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sales.fair_lead_sample.c3",
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.sales.fair_lead_sample.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.misrepresented_sample",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.trade_fair_lead",
+              "stage": "deal"
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.sales.fair_lead_sample.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.misrepresented_sample",
+              "visibility": "public"
+            },
+            {
+              "arc": "arc.trade_fair_lead",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

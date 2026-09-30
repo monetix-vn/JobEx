@@ -30,6 +30,10 @@
             {
               "delta": "player.rep.boss",
               "value": 5
+            },
+            {
+              "arc": "arc.trade_fair_lead",
+              "stage": "sample"
             }
           ]
         },
@@ -45,6 +49,10 @@
             {
               "delta": "player.stress",
               "value": 2
+            },
+            {
+              "arc": "arc.trade_fair_lead",
+              "stage": "sample"
             }
           ]
         }
@@ -61,6 +69,10 @@
             {
               "delta": "player.rep.boss",
               "value": 2
+            },
+            {
+              "arc": "arc.trade_fair_lead",
+              "stage": "sample"
             }
           ]
         },
@@ -72,6 +84,10 @@
             {
               "delta": "player.rep.boss",
               "value": -2
+            },
+            {
+              "arc": "arc.trade_fair_lead",
+              "stage": "sample"
             }
           ]
         }
@@ -88,6 +104,10 @@
             {
               "delta": "player.stress",
               "value": -2
+            },
+            {
+              "arc": "arc.trade_fair_lead",
+              "stage": "end"
             }
           ]
         }

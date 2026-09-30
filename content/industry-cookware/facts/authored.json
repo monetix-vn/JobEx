@@ -1208,5 +1208,74 @@
         "boss": -6
       }
     }
+  },
+  {
+    "id": "fact.misrepresented_sample",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.misrepresented_sample",
+    "lesson_key": "lesson.misrepresented_sample",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.7,
+        "detectors": ["buyer", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -5,
+        "buyer": -8
+      },
+      "public": {
+        "boss": -9,
+        "buyer": -14
+      }
+    }
+  },
+  {
+    "id": "fact.accepted_unrealistic_terms",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.accepted_unrealistic_terms",
+    "lesson_key": "lesson.accepted_unrealistic_terms",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.8,
+        "detectors": ["internal_audit", "finance", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -7,
+        "finance": -5
+      },
+      "public": {
+        "boss": -12
+      }
+    }
+  },
+  {
+    "id": "fact.polished_reference",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.polished_reference",
+    "lesson_key": "lesson.polished_reference",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.5,
+        "detectors": ["boss", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -5
+      },
+      "public": {
+        "boss": -8
+      }
+    }
   }
 ]

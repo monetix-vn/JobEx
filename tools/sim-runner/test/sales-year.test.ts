@@ -333,6 +333,40 @@ describe('Sales: the story layer (beats, storylines, rewards)', () => {
     expect(quynh).toBeGreaterThan(2);
   });
 
+  it('the fair lead storyline goes from the fair to a sample, and skipping the fair ends it', async () => {
+    let led = 0;
+    for (let i = 0; i < 30; i++) {
+      const { log } = await play('sales-year', `sales-fair-${i}`, 'en', undefined, {
+        policy: 'first',
+      });
+      const stages = advanced(log, 'arc.trade_fair_lead');
+      if (stages.length > 0) {
+        led += 1;
+        expect(stages[0]).toBe('sample');
+      }
+    }
+    expect(led).toBeGreaterThan(2);
+  });
+
+  it('the consequence of hiding discounts in freight comes only to someone who did it', async () => {
+    for (let i = 0; i < 40; i++) {
+      const { log } = await play('sales-year', `sales-freight-${i}`);
+      const rank: Record<string, number> = {};
+      for (const e of log.entries) {
+        if (e.type === 'sim.deltaApplied') {
+          const p = e.payload as { path: string; to: number };
+          if (p.path.startsWith('fact.')) rank[p.path] = p.to;
+        }
+        if (
+          e.type === 'director.eventFired' &&
+          (e.payload as { eventId: string }).eventId === 'event.sales.finance_interview'
+        ) {
+          expect(rank['fact.buried_discount_in_freight'] ?? 0).toBeGreaterThanOrEqual(1);
+        }
+      }
+    }
+  });
+
   it('a buyer who has come to trust you offers a reward scene, and only then', async () => {
     let seen = 0;
     for (let i = 0; i < 40; i++) {
