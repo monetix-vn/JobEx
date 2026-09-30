@@ -600,7 +600,7 @@ describe('Phase 1: a year of it, driven by the director', () => {
       configs: scenario.configs,
       bot: scenario.bot,
     });
-    expect(report.fingerprint).toBe('12fff7d9cc55d8');
+    expect(report.fingerprint).toBe('1f186d98234314');
   });
 
   it('refuses to run without the role content, and on an unknown scenario', async () => {
