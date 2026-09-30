@@ -17,6 +17,7 @@ import { riskModule } from '@je/mod-risk';
 import { simCoreModule } from '@je/mod-sim-core';
 import { socialModule } from '@je/mod-social';
 import { relationshipsModule } from '@je/mod-relationships';
+import { closeModule } from '@je/mod-close';
 import { stubModules } from '@je/mod-stubs';
 import { workloadModule } from '@je/mod-workload';
 
@@ -77,6 +78,7 @@ export async function createGameHost(options: GameHostOptions): Promise<GameHost
     contentModule,
     simCoreModule,
     workloadModule,
+    closeModule,
     choiceModule,
     directorModule,
     knowledgeModule,
@@ -90,6 +92,7 @@ export async function createGameHost(options: GameHostOptions): Promise<GameHost
     'mod-content': { registry },
     'sim-core': { content: registry, roleId },
     workload: { content: registry, roleId },
+    close: { content: registry, roleId },
     choice: { content: registry },
     director: { content: registry },
     knowledge: { content: registry },

@@ -1,12 +1,12 @@
 # Series bible: Finance and Accounting Specialist (third job)
 
-Status: DRAFT v1 by AI (full detail), NOT approved by the owner, not reviewed by a practitioner.
-Scenes may only be written after the owner approves this bible and its episode list (see
-`docs/AI-GUIDE.md`). Tone rules: `content/industry-cookware/events/README.md`. Format:
+Status: DRAFT v1 by AI (full detail). The owner answered the open questions on 2026-09-30 (see section 11) and asked to continue; treat the bible as approved in principle and confirm the episode list as scenes are written. Not reviewed by a practitioner.
+Scenes follow `docs/AI-GUIDE.md`. Tone rules: `content/industry-cookware/events/README.md`. Format:
 `docs/AUTHORING.md`. Reference for level of detail: `docs/story/qc.md`.
 
-Engine status: the role file `role.fin.accountant` exists in the pack but has no blurb, so it is not
-yet offered in the job picker. Add the blurb (and the cast, arcs, scenes) when this bible is approved.
+Engine status: the role file `role.fin.accountant` exists in the pack with its month-end close steps
+(`bank_rec`, `ar_aging`, `accruals`, `cutoff`) but has no blurb, so it is not yet offered in the job
+picker. Add the blurb once the first scenes exist.
 
 ## 1. Premise
 
@@ -153,7 +153,17 @@ crushed. Start salary about 14 million VND. Dark offers: a cut-off offer and a r
 defined after approval. A month-end close mini-mechanic (a short checklist the player sees each
 month) is optional; decision needed.
 
-## 11. Open questions for the owner and for a practitioner reviewer
+## 11. Decisions (owner, 2026-09-30) and open questions
+
+Decided:
+
+- Same company as QC and Sales (shared audits, shared cast such as Ms Vy).
+- The month-end close is a visible mini-mechanic: a checklist of four steps each month (bank
+  reconciliation, receivables ageing, accruals, cut-off check). Step scenes appear in the last two
+  weeks of each month; each step can be done properly, rushed, or skipped; the month is scored.
+- A "promoted to chief accountant" ending is wanted (offered by `fin.manager_offer`).
+
+Still open:
 
 - Is Finance in this same company (recommended, shares audits with QC and Sales) or a different one?
 - Should month-end be a visible mini-mechanic, or only a source of scenes?

@@ -143,6 +143,35 @@ describe('playing the QC job through the client', () => {
     }
   });
 
+  it('a job with a month-end close shows the checklist and scores each month (finance, before its scenes exist)', async () => {
+    const { run, transport } = await createGameHost({
+      files: readFiles(),
+      seed: 'fin-close',
+      roleId: 'role.fin.accountant',
+    });
+    const root = document.createElement('div');
+    document.body.append(root);
+    mount(root, transport);
+    for (let i = 0; i < 6; i++) run.advanceTurn();
+    const steps = [...root.querySelectorAll('.je-step')].map((li) => li.textContent);
+    expect(steps).toEqual([
+      'Accruals: open',
+      'Receivables ageing: open',
+      'Bank reconciliation: open',
+      'Cut-off check: open',
+    ]);
+    const closes = run
+      .exportLog()
+      .entries.filter((e) => e.type === 'close.completed')
+      .map((e) => e.payload as CoreEventPayloads['close.completed']);
+    expect(closes[0]).toEqual({
+      month: 1,
+      steps: { accruals: 0, ar_aging: 0, bank_rec: 0, cutoff: 0 },
+      score: 0,
+    });
+    root.remove();
+  });
+
   it('the job is part of the recorded run, so language switching keeps it', async () => {
     const host = await createGameHost({ files: readFiles(), seed: 'qc-keep', roleId: QC_ROLE });
     host.run.advanceTurn();

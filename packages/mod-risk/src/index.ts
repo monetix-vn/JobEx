@@ -3,6 +3,7 @@ import type {
   ContentView,
   CoreEventPayloads,
   Detector,
+  Effect,
   Ending,
   EventDraft,
   Module,
@@ -22,6 +23,7 @@ export const manifest: ModuleManifest = {
     'turn.phaseStarted',
     'fact.learned',
     'fact.escalated',
+    'choice.resolved',
   ],
   emits: [
     'risk.auditStarted',
@@ -204,6 +206,16 @@ export function createModule(host: ModuleHost): ModuleInstance {
           );
         }
         return drafts;
+      },
+
+      'choice.resolved': (env) => {
+        const p = env.payload as CoreEventPayloads['choice.resolved'];
+        if (endRequested) return;
+        // A choice can end the run itself: accepting a promotion, handing in a resignation.
+        const chosen = ((p.effects ?? []) as Effect[]).find((e) => 'ending' in e);
+        if (!chosen || !('ending' in chosen)) return;
+        endRequested = chosen.ending;
+        return [{ type: 'run.endRequested', payload: { ending: chosen.ending, reason: 'choice' } }];
       },
 
       'turn.phaseStarted': (env) => {

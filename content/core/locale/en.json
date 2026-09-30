@@ -26,5 +26,9 @@
   "ending.prosecuted.title": "The case went to the authorities.",
   "ending.prosecuted.body": "What you did crossed a legal line, and the company handed it over. The worst part was not one decision but the ones that came after.",
   "ending.burnout.title": "You burned out.",
-  "ending.burnout.body": "You ran out of health before the year ran out of work. The job did not change; you had nothing left to give it."
+  "ending.burnout.body": "You ran out of health before the year ran out of work. The job did not change; you had nothing left to give it.",
+  "ending.promoted.title": "You were offered the next step up.",
+  "ending.promoted.body": "The company trusted you with more. What you carry into the new seat is everything you did to earn it, and everything you chose not to do.",
+  "ending.walked_away.title": "You walked away.",
+  "ending.walked_away.body": "You chose to leave on your own terms. It was not an easy choice, and it may be the one you remember best."
 }

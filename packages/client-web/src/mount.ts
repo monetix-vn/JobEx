@@ -31,6 +31,10 @@ export const STYLE = `
 .je-stats{border:3px solid #eee;padding:4px 8px;margin-bottom:8px;font-size:.9em}
 .je-cast{border:3px solid #eee;padding:4px 8px;margin-bottom:8px;font-size:.85em}
 .je-cast ul{margin:2px 0 0;padding-left:18px}
+.je-close{border:3px solid #ffd166;padding:4px 8px;margin-bottom:8px;font-size:.85em}
+.je-close ul{margin:2px 0 0;padding-left:18px}
+.je-step[data-state="2"]{color:#8fe388}
+.je-step[data-state="1"]{color:#ffd166}
 .je-map{display:grid;gap:0;border:3px solid #eee;margin-bottom:8px}
 .je-tile{aspect-ratio:1;background:#3a3a55}
 .je-tile[data-tile="#"]{background:#111}
@@ -102,6 +106,29 @@ function feelingOf(trust: number, t: UiStrings): string {
     : trust <= -20
       ? t.debrief.feelings.wary
       : t.debrief.feelings.neutral;
+}
+
+/** The month-end close checklist, for jobs that have one (variables `close.<step>`). */
+function closeView(state: ClientState, t: UiStrings): HTMLElement | undefined {
+  const steps = Object.keys(state.vars)
+    .filter((k) => k.startsWith('close.') && k !== 'close.open')
+    .sort();
+  if (steps.length === 0) return undefined;
+  const box = el('div', 'je-close');
+  const due = state.vars['close.open'] === 1 ? ` (${t.close.due})` : '';
+  box.append(el('b', '', `${t.close.title}${due}: `));
+  const list = el('ul', 'je-close-list');
+  for (const key of steps) {
+    const id = key.slice('close.'.length);
+    const value = state.vars[key];
+    const status = value === 2 ? t.close.done : value === 1 ? t.close.rushed : t.close.open;
+    const item = el('li', 'je-step', `${t.close.steps[id] ?? id}: ${status}`);
+    item.dataset.step = id;
+    item.dataset.state = String(value);
+    list.append(item);
+  }
+  box.append(list);
+  return box;
 }
 
 /** The people met so far and how they feel about the player. */
@@ -241,6 +268,8 @@ function render(
     root.replaceChildren(view);
     return;
   }
+  const close = closeView(state, t);
+  if (close) view.append(close);
   if (state.cast.length > 0) view.append(castView(state, t));
 
   if (state.map) {

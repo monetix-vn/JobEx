@@ -60,7 +60,16 @@ variable name. For something the list cannot say, use `when_raw:` with the JSON 
 ### Effects
 
 `rel khoa trust +5` (trust, loyalty or owed) · `favor khoa +1` (favours they owe you) · `rep.boss +5` · `stress +3` · `cash -800000` · `delta company.audit_readiness -5` ·
-`fact accepted_kickback private` (private, witnessed, rumor, public) · `schedule event.qc.x 4-6`.
+`end promoted` / `end walked_away` (ends the run with that ending: accepting a promotion, resigning) · `close bank_rec +2` (finance month-end close step: 2 done properly, 1 rushed) · `fact accepted_kickback private` (private, witnessed, rumor, public) · `schedule event.qc.x 4-6`.
+
+## The month-end close (finance)
+
+A role with `close_steps` (for example `bank_rec`, `ar_aging`, `accruals`, `cutoff`) gets a visible
+checklist in the game. In the last two weeks of each month the variable `close.open` is 1, so write
+step scenes with `when: [close.open = 1, close.bank_rec = 0]` and effects `close bank_rec +2`
+(proper), `close bank_rec +1` (rushed) or none (skipped). When the month rolls over the close is
+scored: 75% or more of the points gives the boss +2, under 40% costs -3, each open step adds 1 stress,
+then all steps reset. `pnpm author` accepts these lines; the engine is `packages/mod-close`.
 
 ## Beats (the spine of the season)
 

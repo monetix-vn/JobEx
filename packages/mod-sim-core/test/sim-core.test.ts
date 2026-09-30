@@ -102,6 +102,19 @@ describe('sim-core: deltas', () => {
     ]);
   });
 
+  it('keeps feelings about people inside -100..100 and close steps inside 0..2', () => {
+    const out = emit([
+      started,
+      delta('rel.khoa.trust', 500),
+      delta('rel.khoa.loyalty', -500),
+      delta('close.bank_rec', 5),
+      delta('close.accruals', -3),
+      delta('close.open', 5, 'set'),
+    ]);
+    const applied = out.filter((e) => e.type === 'sim.deltaApplied').map((e) => e.payload);
+    expect(applied.map((a) => (a as { to: number }).to)).toEqual([100, -100, 2, 0, 5]);
+  });
+
   it('keeps percentage variables inside 0..100', () => {
     const out = emit([
       started,

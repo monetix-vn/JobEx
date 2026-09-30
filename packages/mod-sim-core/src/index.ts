@@ -27,7 +27,7 @@ export interface SimCoreConfig {
 }
 
 /** Only these namespaces may be created on demand by a delta; anything else is rejected. */
-const OPEN_NAMESPACES = ['player.', 'company.', 'skill.', 'fact.', 'rel.'];
+const OPEN_NAMESPACES = ['player.', 'company.', 'skill.', 'fact.', 'rel.', 'close.'];
 const PERCENT_LIMITS = [
   /^player\.(stress|energy|health)$/,
   /^player\.rep\./,
@@ -35,6 +35,8 @@ const PERCENT_LIMITS = [
 ];
 /** Feelings about a person run from -100 to 100. */
 const SIGNED_LIMITS = [/^rel\.[a-z0-9_]+\.(trust|loyalty|owed)$/];
+/** Month-end close steps: 0 open, 1 rushed, 2 proper. */
+const CLOSE_STEP = /^close\.(?!open$)[a-z0-9_]+$/;
 const WEEKLY_ENERGY = 100;
 
 const DEFAULTS: Record<string, StateValue> = {
@@ -56,6 +58,7 @@ const initialFor = (path: string): number => (path.startsWith('player.rep.') ? 5
 const clamp = (path: string, value: number): number => {
   if (PERCENT_LIMITS.some((re) => re.test(path))) return Math.min(100, Math.max(0, value));
   if (SIGNED_LIMITS.some((re) => re.test(path))) return Math.min(100, Math.max(-100, value));
+  if (CLOSE_STEP.test(path)) return Math.min(2, Math.max(0, value));
   return value;
 };
 

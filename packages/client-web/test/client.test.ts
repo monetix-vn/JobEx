@@ -440,6 +440,34 @@ describe('mount', () => {
     );
   });
 
+  it('shows the month-end close checklist only when the job has one, in both languages', () => {
+    const { root, push } = setup();
+    push(env('sim.stateChanged', { full: true, vars: { 'player.stress': 20 } }));
+    expect(root.querySelector('.je-close')).toBeNull();
+    push(
+      env('sim.stateChanged', {
+        full: false,
+        vars: { 'close.bank_rec': 2, 'close.accruals': 1, 'close.cutoff': 0, 'close.open': 1 },
+      }),
+    );
+    expect(root.querySelector('.je-close b')?.textContent).toBe('Month-end close (due now): ');
+    expect([...root.querySelectorAll('.je-step')].map((li) => li.textContent)).toEqual([
+      'Accruals: rushed',
+      'Bank reconciliation: done properly',
+      'Cut-off check: open',
+    ]);
+    push(env('sim.stateChanged', { full: false, vars: { 'close.open': 0, 'close.other': 2 } }));
+    expect(root.querySelector('.je-close b')?.textContent).toBe('Month-end close: ');
+    expect(root.textContent).toContain('other: done properly');
+    const vi = document.createElement('div');
+    document.body.append(vi);
+    const t = fakeTransport();
+    mount(vi, t.transport, { locale: 'vi' });
+    t.push(env('sim.stateChanged', { full: true, vars: { 'close.bank_rec': 2, 'close.open': 1 } }));
+    expect(vi.querySelector('.je-step')?.textContent).toBe('Đối chiếu ngân hàng: làm đầy đủ');
+    expect(vi.querySelector('.je-close b')?.textContent).toContain('đến hạn');
+  });
+
   it('a line without a speaker shows just its text, with no stray colon', () => {
     const { root, push } = setup();
     push(

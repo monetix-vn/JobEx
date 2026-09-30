@@ -17,6 +17,15 @@ export interface UiStrings {
   pickHint: string;
   playAgain: string;
   cast: string;
+  /** The month-end close checklist (finance). Steps without a label show their id. */
+  close: {
+    title: string;
+    due: string;
+    open: string;
+    rushed: string;
+    done: string;
+    steps: Record<string, string>;
+  };
   debrief: {
     story: string;
     lessons: string;
@@ -66,6 +75,19 @@ export const UI_STRINGS: Record<UiLocale, UiStrings> = {
     pickHint: 'Same company, different pressures. You can try the others afterwards.',
     playAgain: 'Choose another job',
     cast: 'People you know',
+    close: {
+      title: 'Month-end close',
+      due: 'due now',
+      open: 'open',
+      rushed: 'rushed',
+      done: 'done properly',
+      steps: {
+        bank_rec: 'Bank reconciliation',
+        ar_aging: 'Receivables ageing',
+        accruals: 'Accruals',
+        cutoff: 'Cut-off check',
+      },
+    },
     debrief: {
       story: 'What you did, and what came back',
       lessons: 'What this teaches',
@@ -114,6 +136,19 @@ export const UI_STRINGS: Record<UiLocale, UiStrings> = {
     pickHint: 'Cùng một công ty, áp lực khác nhau. Sau đó bạn có thể thử các vai trò khác.',
     playAgain: 'Chọn công việc khác',
     cast: 'Những người bạn quen',
+    close: {
+      title: 'Khóa sổ cuối tháng',
+      due: 'đến hạn',
+      open: 'chưa làm',
+      rushed: 'làm vội',
+      done: 'làm đầy đủ',
+      steps: {
+        bank_rec: 'Đối chiếu ngân hàng',
+        ar_aging: 'Tuổi nợ phải thu',
+        accruals: 'Chi phí trích trước',
+        cutoff: 'Kiểm tra cắt kỳ',
+      },
+    },
     debrief: {
       story: 'Bạn đã làm gì, và điều gì quay lại',
       lessons: 'Bài học rút ra',

@@ -54,8 +54,8 @@ source of truth for what scene comes next; update their Status column as you go.
 
 - [x] Bible skeleton (AI)
 - [x] Bible expanded to QC level of detail: cast, timeline, 4 arcs, dark-side ladder, 40-row episode list (owner approval pending) (needs owner)
-- [ ] Owner approves the Finance bible and episode list (needs owner)
-- [ ] Decide month-end mechanic (needs owner)
+- [x] Owner decisions 2026-09-30: same company, visible month-end close, promoted ending wanted (bible treated as approved in principle)
+- [x] Month-end mechanic built (`mod-close`); step scenes still to write (4 steps, recurring monthly)
 - [x] Role file `role.fin.accountant` (+ chief accountant) in the pack, not yet playable (no blurb)
 - [ ] Scenes (about 40), arcs: The Cut-off, The Receipt Problem, The Cookie Jar, Thu (after approval)
 - [ ] Balance check and review

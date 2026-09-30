@@ -39,7 +39,7 @@ export function resolveVariable(name) {
 
 /** Facts and skills may not exist yet, so conditions on them read 0 until they do. */
 function variable(path) {
-  return /^(fact|skill|rel)\./.test(path) ? { var: [path, 0] } : path;
+  return /^(fact|skill|rel|close)\./.test(path) ? { var: [path, 0] } : path;
 }
 
 /**
@@ -105,6 +105,22 @@ export function compileEffect(line) {
       );
     }
     return { delta: `rel.${who.replace(/^char[.:]/, '')}.${dimension}`, value: num(amount) };
+  }
+  if (head === 'end') {
+    // end promoted | end walked_away   (ends the run with that ending)
+    const [ending] = rest;
+    if (!['promoted', 'walked_away'].includes(ending ?? '')) {
+      throw new Error(`effect "${line}": write it like: end promoted (or: end walked_away)`);
+    }
+    return { ending };
+  }
+  if (head === 'close') {
+    // close bank_rec +2   (2 done properly, 1 done in a hurry; finance month-end close)
+    const [step, amount] = rest;
+    if (!/^[a-z][a-z0-9_]*$/.test(step ?? '') || !NUMBER.test(amount ?? '')) {
+      throw new Error(`effect "${line}": write it like: close bank_rec +2 (2 proper, 1 rushed)`);
+    }
+    return { delta: `close.${step}`, value: num(amount) };
   }
   if (head === 'arc') {
     // arc hamper favour   (move the storyline to a stage; "end" ends it)

@@ -54,7 +54,14 @@ export interface SceneChoice {
 export type StateValue = number | string | boolean;
 
 /** How a run can end. "completed" means the player got through the period. */
-export const ENDINGS = ['completed', 'fired', 'prosecuted', 'burnout'] as const;
+export const ENDINGS = [
+  'completed',
+  'fired',
+  'prosecuted',
+  'burnout',
+  'promoted',
+  'walked_away',
+] as const;
 export type Ending = (typeof ENDINGS)[number];
 
 export interface SceneTerm {
@@ -152,6 +159,8 @@ export interface CoreEventPayloads {
     sceneId?: string;
   };
   'fact.escalated': { factId: string; from: FactVisibility; to: FactVisibility; knownBy: string[] };
+  /** The month-end close for a month is over: how each step was done (0 open, 1 rushed, 2 proper). */
+  'close.completed': { month: number; steps: Record<string, number>; score: number };
   /** A storyline began, because an event tagged with it fired. */
   'arc.started': { arc: string; eventId: string };
   /** A storyline moved to a stage; its event comes due at `due` (a turn number). */
@@ -229,6 +238,7 @@ export const EVENT_VERSIONS: Record<CoreEventType, number> = {
   'fact.learned': 1,
   'fact.escalated': 1,
   'relationship.changed': 1,
+  'close.completed': 1,
   'arc.started': 1,
   'arc.advanced': 1,
   'arc.ended': 1,

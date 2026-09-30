@@ -44,6 +44,12 @@ const effect = {
     },
     {
       type: 'object',
+      required: ['ending'],
+      additionalProperties: false,
+      properties: { ending: { enum: ['promoted', 'walked_away'] } },
+    },
+    {
+      type: 'object',
       required: ['arc', 'stage'],
       additionalProperties: false,
       properties: { arc: idString, stage: { type: 'string', pattern: '^[a-z][a-z0-9_]*$' } },
@@ -89,6 +95,12 @@ export const roleSchema = {
     title_key: { type: 'string' },
     blurb_key: { type: 'string' },
     overhead_hours: { type: 'number', minimum: 0, maximum: 60 },
+    close_steps: {
+      type: 'array',
+      items: { type: 'string', pattern: '^[a-z][a-z0-9_]*$' },
+      minItems: 1,
+      uniqueItems: true,
+    },
     reports_to: idString,
     kpis: {
       type: 'array',

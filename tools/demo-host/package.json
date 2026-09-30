@@ -20,6 +20,7 @@
     "@je/mod-narrative": "workspace:*",
     "@je/mod-risk": "workspace:*",
     "@je/mod-sim-core": "workspace:*",
+    "@je/mod-close": "workspace:*",
     "@je/mod-relationships": "workspace:*",
     "@je/mod-social": "workspace:*",
     "@je/mod-stubs": "workspace:*",

@@ -611,6 +611,47 @@ describe('arcs', () => {
   });
 });
 
+describe('endings and close steps', () => {
+  const ending = (effects: unknown[]) =>
+    pack({
+      'core/scenes/a.json': j(
+        scene({
+          choices: [
+            {
+              id: 'c1',
+              text_key: 'k.line',
+              outcomes: [{ p: 1, narration_key: 'k.line', effects }],
+            },
+          ],
+        }),
+      ),
+    });
+
+  it('accepts the chosen endings and rejects any other', async () => {
+    for (const name of ['promoted', 'walked_away']) {
+      const { diagnostics } = await load(ending([{ ending: name }]));
+      expect(hasErrors(diagnostics), name).toBe(false);
+    }
+    const bad = await load(ending([{ ending: 'fired' }]));
+    expect(codes(bad.diagnostics, 'error')).toContain('schema.invalid');
+  });
+
+  it('accepts close steps on a role and rejects an empty or repeated list', async () => {
+    const role = { id: 'role.t.fin', department: 'dept.t', level: 1, title_key: 'k.t' };
+    const withSteps = (steps: unknown) =>
+      pack({
+        'core/roles/r.json': j({ ...role, close_steps: steps }),
+        'core/locale/en.json': j({ ...locale, 'k.t': 'T' }),
+        'core/locale/vi.json': j({ ...locale, 'k.t': 'T' }),
+      });
+    expect(hasErrors((await load(withSteps(['bank_rec', 'accruals']))).diagnostics)).toBe(false);
+    expect(codes((await load(withSteps([]))).diagnostics, 'error')).toContain('schema.invalid');
+    expect(codes((await load(withSteps(['a', 'a']))).diagnostics, 'error')).toContain(
+      'schema.invalid',
+    );
+  });
+});
+
 describe('beats', () => {
   it('accepts a window, and a beat with no random weight is not flagged unreachable', async () => {
     const { diagnostics } = await load(

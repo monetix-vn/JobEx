@@ -68,6 +68,12 @@ describe('conditions and effects written as plain lines', () => {
     expect(compileEffect('rel khoa trust +5')).toEqual({ delta: 'rel.khoa.trust', value: 5 });
     expect(compileEffect('favor char:lan -1')).toEqual({ delta: 'rel.lan.owed', value: -1 });
     expect(() => compileEffect('rel khoa charm +1')).toThrow(/trust, loyalty or owed/);
+    expect(compileEffect('end promoted')).toEqual({ ending: 'promoted' });
+    expect(compileEffect('end walked_away')).toEqual({ ending: 'walked_away' });
+    expect(() => compileEffect('end fired')).toThrow(/end promoted/);
+    expect(compileEffect('close bank_rec +2')).toEqual({ delta: 'close.bank_rec', value: 2 });
+    expect(() => compileEffect('close bank_rec lots')).toThrow(/close bank_rec \+2/);
+    expect(compileCondition('close.open = 1')).toEqual({ eq: [{ var: ['close.open', 0] }, 1] });
     expect(compileEffect('arc hamper favour')).toEqual({ arc: 'arc.hamper', stage: 'favour' });
     expect(() => compileEffect('arc hamper')).toThrow(/arc hamper favour/);
     expect(compileCondition('rel.khoa.trust >= 20')).toEqual({

@@ -43,7 +43,8 @@
       "skill.analysis": 35,
       "skill.backbone": 30
     },
-    "overhead_hours": 17
+    "overhead_hours": 17,
+    "close_steps": ["bank_rec", "ar_aging", "accruals", "cutoff"]
   },
   {
     "id": "role.fin.chief_accountant",

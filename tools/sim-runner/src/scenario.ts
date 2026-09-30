@@ -9,6 +9,7 @@ import { riskModule } from '@je/mod-risk';
 import { simCoreModule } from '@je/mod-sim-core';
 import { socialModule } from '@je/mod-social';
 import { relationshipsModule } from '@je/mod-relationships';
+import { closeModule } from '@je/mod-close';
 import { workloadModule } from '@je/mod-workload';
 import { directorySource } from '@je/pack-validator';
 import type { BotOptions } from './runner';
@@ -75,6 +76,7 @@ ${formatDiagnostics(diagnostics)}`);
       contentModule,
       simCoreModule,
       workloadModule,
+      closeModule,
       choiceModule,
       ...(shape.directed ? [directorModule] : []),
       knowledgeModule,
@@ -88,6 +90,7 @@ ${formatDiagnostics(diagnostics)}`);
       'mod-content': { registry },
       'sim-core': { content: registry, roleId: shape.roleId },
       workload: { content: registry, roleId: shape.roleId },
+      close: { content: registry, roleId: shape.roleId },
       choice: { content: registry },
       ...(shape.directed ? { director: { content: registry } } : {}),
       knowledge: { content: registry },

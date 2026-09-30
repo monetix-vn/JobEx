@@ -48,7 +48,11 @@ export interface ArcEffect {
   arc: string;
   stage: string;
 }
-export type Effect = ScheduleEffect | DeltaEffect | FactEffect | ArcEffect;
+/** Ends the run now with a chosen ending (a promotion accepted, a resignation). */
+export interface EndingEffect {
+  ending: 'promoted' | 'walked_away';
+}
+export type Effect = ScheduleEffect | DeltaEffect | FactEffect | ArcEffect | EndingEffect;
 
 export interface Role {
   id: string;
@@ -59,6 +63,8 @@ export interface Role {
   blurb_key?: string;
   /** Weekly hours the listed tasks do not cover (meetings, email, admin). Sets how busy the job is. */
   overhead_hours?: number;
+  /** Month-end close steps this job performs each month (finance); leave out for jobs without one. */
+  close_steps?: string[];
   reports_to?: string;
   kpis?: { id: string; weight: number }[];
   weekly_demand?: { task: string; per_week: [number, number]; effort_h: number }[];

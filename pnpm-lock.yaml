@@ -71,6 +71,15 @@ importers:
         specifier: workspace:*
         version: link:../rules
 
+  packages/mod-close:
+    dependencies:
+      '@je/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@je/kernel':
+        specifier: workspace:*
+        version: link:../kernel
+
   packages/mod-content:
     dependencies:
       '@je/contracts':
@@ -222,6 +231,9 @@ importers:
       '@je/mod-choice':
         specifier: workspace:*
         version: link:../../packages/mod-choice
+      '@je/mod-close':
+        specifier: workspace:*
+        version: link:../../packages/mod-close
       '@je/mod-content':
         specifier: workspace:*
         version: link:../../packages/mod-content
@@ -276,6 +288,9 @@ importers:
       '@je/mod-choice':
         specifier: workspace:*
         version: link:../../packages/mod-choice
+      '@je/mod-close':
+        specifier: workspace:*
+        version: link:../../packages/mod-close
       '@je/mod-content':
         specifier: workspace:*
         version: link:../../packages/mod-content

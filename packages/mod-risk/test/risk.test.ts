@@ -195,6 +195,32 @@ describe('risk: detection', () => {
   });
 });
 
+describe('risk: endings chosen in a scene', () => {
+  const resolved = (effects: unknown[]) => ({
+    type: 'choice.resolved',
+    payload: { sceneId: 's', choiceId: 'c', outcome: 'ok', effects },
+  });
+
+  it('a choice that ends the run asks for that ending, once', () => {
+    const out = run([resolved([{ ending: 'promoted' }]), resolved([{ ending: 'walked_away' }])]);
+    expect(kinds(out, 'run.endRequested')).toEqual([{ ending: 'promoted', reason: 'choice' }]);
+  });
+
+  it('ignores choices whose effects do not end the run', () => {
+    expect(run([resolved([{ delta: 'player.stress', value: 1 }]), resolved([])])).toEqual([]);
+  });
+
+  it('does not add a second ending request at the end phase after one was chosen', () => {
+    const out = run([
+      state({ 'player.health': 0 }),
+      resolved([{ ending: 'walked_away' }]),
+      tick(9, 9),
+      endPhase,
+    ]);
+    expect(kinds(out, 'run.endRequested')).toEqual([{ ending: 'walked_away', reason: 'choice' }]);
+  });
+});
+
 describe('risk: scapegoating', () => {
   const blamed = (boss: number, severity: number, seed: string) => {
     const d = driver(
