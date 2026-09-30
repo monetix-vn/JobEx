@@ -1,0 +1,122 @@
+[
+  {
+    "id": "term.po",
+    "term_key": "term.po.term",
+    "definition_key": "term.po.def"
+  },
+  {
+    "id": "term.rfq",
+    "term_key": "term.rfq.term",
+    "definition_key": "term.rfq.def"
+  },
+  {
+    "id": "term.dso",
+    "term_key": "term.dso.term",
+    "definition_key": "term.dso.def"
+  },
+  {
+    "id": "term.early_payment_discount",
+    "term_key": "term.early_payment_discount.term",
+    "definition_key": "term.early_payment_discount.def"
+  },
+  {
+    "id": "term.credit_note",
+    "term_key": "term.credit_note.term",
+    "definition_key": "term.credit_note.def"
+  },
+  {
+    "id": "term.lead_time",
+    "term_key": "term.lead_time.term",
+    "definition_key": "term.lead_time.def"
+  },
+  {
+    "id": "term.split_shipment",
+    "term_key": "term.split_shipment.term",
+    "definition_key": "term.split_shipment.def"
+  },
+  {
+    "id": "term.approval_limit",
+    "term_key": "term.approval_limit.term",
+    "definition_key": "term.approval_limit.def"
+  },
+  {
+    "id": "term.margin",
+    "term_key": "term.margin.term",
+    "definition_key": "term.margin.def"
+  },
+  {
+    "id": "term.forecast",
+    "term_key": "term.forecast.term",
+    "definition_key": "term.forecast.def"
+  },
+  {
+    "id": "term.pipeline",
+    "term_key": "term.pipeline.term",
+    "definition_key": "term.pipeline.def"
+  },
+  {
+    "id": "term.kpi",
+    "term_key": "term.kpi.term",
+    "definition_key": "term.kpi.def"
+  },
+  {
+    "id": "term.claim",
+    "term_key": "term.claim.term",
+    "definition_key": "term.claim.def"
+  },
+  {
+    "id": "term.tolerance",
+    "term_key": "term.tolerance.term",
+    "definition_key": "term.tolerance.def"
+  },
+  {
+    "id": "term.penalty_clause",
+    "term_key": "term.penalty_clause.term",
+    "definition_key": "term.penalty_clause.def"
+  },
+  {
+    "id": "term.kickback",
+    "term_key": "term.kickback.term",
+    "definition_key": "term.kickback.def"
+  },
+  {
+    "id": "term.conflict_of_interest",
+    "term_key": "term.conflict_of_interest.term",
+    "definition_key": "term.conflict_of_interest.def"
+  },
+  {
+    "id": "term.revenue_recognition",
+    "term_key": "term.revenue_recognition.term",
+    "definition_key": "term.revenue_recognition.def"
+  },
+  {
+    "id": "term.internal_audit",
+    "term_key": "term.internal_audit.term",
+    "definition_key": "term.internal_audit.def"
+  },
+  {
+    "id": "term.supplier_audit",
+    "term_key": "term.supplier_audit.term",
+    "definition_key": "term.supplier_audit.def"
+  },
+  {
+    "id": "term.certificate_of_origin",
+    "term_key": "term.certificate_of_origin.term",
+    "definition_key": "term.certificate_of_origin.def"
+  },
+  {
+    "id": "term.forwarder",
+    "term_key": "term.forwarder.term",
+    "definition_key": "term.forwarder.def"
+  },
+  {
+    "id": "term.vessel_cutoff",
+    "term_key": "term.vessel_cutoff.term",
+    "definition_key": "term.vessel_cutoff.def"
+  },
+  {
+    "id": "term.fx_risk",
+    "term_key": "term.fx_risk.term",
+    "definition_key": "term.fx_risk.def"
+  }
+]

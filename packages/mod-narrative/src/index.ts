@@ -23,6 +23,9 @@ export const manifest: ModuleManifest = {
     'director.eventFired',
     'fact.learned',
     'fact.escalated',
+    'risk.auditStarted',
+    'risk.detected',
+    'risk.scapegoated',
     'choice.resolved',
   ],
   emits: ['scene.started', 'scene.ended', 'scene.expired'],
@@ -80,14 +83,32 @@ export function createModule(host: ModuleHost): ModuleInstance {
     }
   };
 
+  let noticeCount = 0;
+  /** Queues a one-line notice scene and starts it if nothing else is on screen. */
+  const queueNotice = (sceneId: string, line: string): EventDraft[] => {
+    notices.set(sceneId, line);
+    state.queue.push(sceneId);
+    return startNext();
+  };
+
   const notice = (factId: string, visibility: 'rumor' | 'public'): EventDraft[] => {
     const fact = content.get('fact', factId);
     if (!fact) return [];
-    const template = text(`ui.notice.${visibility}`);
-    const sceneId = `notice.${factId}.${visibility}`;
-    notices.set(sceneId, template.replace('{fact}', text(fact.text_key)));
-    state.queue.push(sceneId);
-    return startNext();
+    const line = text(`ui.notice.${visibility}`).replace('{fact}', text(fact.text_key));
+    return queueNotice(`notice.${factId}.${visibility}`, line);
+  };
+
+  const riskNotice = (
+    kind: string,
+    template: string,
+    values: Record<string, string>,
+  ): EventDraft[] => {
+    noticeCount += 1;
+    const line = text(template).replace(
+      /\{(\w+)\}/g,
+      (whole, name: string) => values[name] ?? whole,
+    );
+    return queueNotice(`notice.risk.${kind}.${noticeCount}`, line);
   };
 
   const startNext = (): EventDraft[] => {
@@ -113,6 +134,10 @@ export function createModule(host: ModuleHost): ModuleInstance {
     const scene = content.get('scene', sceneId);
     if (!scene) throw new Error(`mod-narrative: unknown scene "${sceneId}"`);
     state.active = { sceneId, startedTurn: host.clock.now().turn };
+    const glossary = (scene.terms ?? []).flatMap((id) => {
+      const term = content.get('term', id);
+      return term ? [{ id, term: text(term.term_key), definition: text(term.definition_key) }] : [];
+    });
     const choices =
       scene.choices && scene.choices.length > 0
         ? scene.choices.map((c, i) => ({
@@ -132,6 +157,7 @@ export function createModule(host: ModuleHost): ModuleInstance {
             text: text(l.text_key),
           })),
           choices,
+          ...(glossary.length > 0 ? { terms: glossary } : {}),
         },
       },
     ];
@@ -174,6 +200,25 @@ export function createModule(host: ModuleHost): ModuleInstance {
       'fact.escalated': (env) => {
         const p = env.payload as CoreEventPayloads['fact.escalated'];
         return p.to === 'rumor' || p.to === 'public' ? notice(p.factId, p.to) : undefined;
+      },
+
+      'risk.auditStarted': () => riskNotice('audit', 'ui.notice.audit', {}),
+
+      'risk.detected': (env) => {
+        const p = env.payload as CoreEventPayloads['risk.detected'];
+        const fact = content.get('fact', p.factId);
+        if (!fact) return;
+        return riskNotice('detected', 'ui.notice.detected', {
+          detector: text(`detector.${p.detector}`),
+          fact: text(fact.text_key),
+        });
+      },
+
+      'risk.scapegoated': (env) => {
+        const p = env.payload as CoreEventPayloads['risk.scapegoated'];
+        const fact = content.get('fact', p.factId);
+        if (!fact) return;
+        return riskNotice('scapegoat', 'ui.notice.scapegoat', { fact: text(fact.text_key) });
       },
 
       'choice.resolved': (env) => {

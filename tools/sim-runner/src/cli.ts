@@ -10,6 +10,7 @@ import {
   modulesForLog,
   runHeadless,
   WEEKS_PER_RUN,
+  type BotOptions,
   type HeadlessOptions,
 } from './runner';
 import { loadScenario } from './scenario';
@@ -19,6 +20,8 @@ const USAGE = `sim-runner: headless simulation runs
   run    --seed <s> [--weeks 52] [--toy] [--out log.json]   run and summarise (stub modules)
   replay <log.json>                                         re-run a log, demand identical output
   check  --seed <s> [--weeks 52] [--toy]                    determinism gate (exit 1 on failure)
+
+  --policy random|first|last   how the test player chooses: random, careful, or reckless
 
   Add --scenario sales-week|sales-year [--content content] [--locale vi|en] to any command to run
   the real Phase 1 modules on the content packs instead of the stubs.`;
@@ -74,7 +77,10 @@ async function options(flags: Map<string, string>): Promise<HeadlessOptions> {
       locale: flags.get('locale') === 'vi' ? 'vi' : 'en',
       ...(flags.has('weeks') ? { turns: Number(flags.get('weeks')) } : {}),
     });
-    return { seed, turns: s.turns, modules: s.modules, configs: s.configs, bot: s.bot };
+    const policy = flags.get('policy');
+    const bot: BotOptions =
+      policy === 'first' || policy === 'last' || policy === 'random' ? { ...s.bot, policy } : s.bot;
+    return { seed, turns: s.turns, modules: s.modules, configs: s.configs, bot };
   }
   return {
     seed,

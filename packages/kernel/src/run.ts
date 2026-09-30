@@ -4,6 +4,7 @@ import {
   EVENT_VERSIONS,
   TURN_PHASES,
   type CoreEventType,
+  type Ending,
   type Envelope,
   type EventDraft,
   type Handler,
@@ -74,6 +75,7 @@ export class Run {
   private started = false;
   private ended = false;
   private turnsRun = 0;
+  private endRequest: { ending: Ending; reason: string } | undefined;
 
   constructor(options: RunOptions) {
     this.seed = options.seed;
@@ -170,10 +172,17 @@ export class Run {
     this.phase = 'idle';
     this.clock.advance();
     this.turnsRun += 1;
+    // A module asked for the run to end (fired, burnout...): honour it once the turn is complete.
+    if (this.endRequest) this.end();
   }
 
+  /** Runs up to `count` turns, stopping early if the run ends. */
   runTurns(count: number, hook?: PhaseHook): void {
-    for (let i = 0; i < count; i++) this.advanceTurn(hook);
+    for (let i = 0; i < count && !this.ended; i++) this.advanceTurn(hook);
+  }
+
+  get isEnded(): boolean {
+    return this.ended;
   }
 
   /** External input (a player command). Recorded, because a run is a seed plus these inputs. */
@@ -190,7 +199,11 @@ export class Run {
   end(): void {
     this.start();
     if (this.ended) return;
-    this.publish('run.ended', { turn: this.turn }, KERNEL_SOURCE);
+    this.publish(
+      'run.ended',
+      { turn: this.turn, ...(this.endRequest ? { ending: this.endRequest.ending } : {}) },
+      KERNEL_SOURCE,
+    );
     this.drain();
     this.ended = true;
   }
@@ -239,6 +252,9 @@ export class Run {
       payload: cloneJson(payload),
     };
     deepFreeze(envelope);
+    if (type === 'run.endRequested' && !this.endRequest) {
+      this.endRequest = envelope.payload as { ending: Ending; reason: string };
+    }
     this.entries.push(envelope);
     this.queue.push(envelope);
     for (const observer of this.observers) observer(envelope);

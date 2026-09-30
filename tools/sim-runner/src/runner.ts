@@ -3,8 +3,10 @@ import { Run, SeededRandom, canonicalize, fingerprint, replay, type PhaseHook } 
 import { choiceModule } from '@je/mod-choice';
 import { contentModule } from '@je/mod-content';
 import { directorModule } from '@je/mod-director';
+import { educationModule } from '@je/mod-education';
 import { knowledgeModule } from '@je/mod-knowledge';
 import { narrativeModule } from '@je/mod-narrative';
+import { riskModule } from '@je/mod-risk';
 import { simCoreModule } from '@je/mod-sim-core';
 import { socialModule } from '@je/mod-social';
 import { stubModules } from '@je/mod-stubs';
@@ -23,7 +25,9 @@ const KNOWN: readonly Module[] = [
   directorModule,
   knowledgeModule,
   socialModule,
+  riskModule,
   narrativeModule,
+  educationModule,
 ];
 
 /** Picks the module set a recorded log was made with, so `replay <file>` needs no flags. */
@@ -40,6 +44,11 @@ export interface BotOptions {
   phases?: readonly TurnPhase[];
   /** Chance of answering each open scene on a pass. */
   answerRate?: number;
+  /**
+   * Which enabled choice to take: `random` (default), `first` (the careful, honest-first player)
+   * or `last` (the reckless player who takes the boldest option every time).
+   */
+  policy?: 'random' | 'first' | 'last';
 }
 
 /**
@@ -53,6 +62,7 @@ export function createBot(
 ): { hook: PhaseHook; observe: (e: Envelope) => void } {
   const phases = options.phases ?? ['consequence'];
   const rate = options.answerRate ?? 0.75;
+  const policy = options.policy ?? 'random';
   const rng = new SeededRandom(seed).stream('sim-runner.bot');
   const pending = new Map<string, string[]>();
   return {
@@ -74,7 +84,13 @@ export function createBot(
         let acted = false;
         for (const [sceneId, choices] of [...pending.entries()].sort()) {
           if (choices.length === 0 || !rng.chance(rate)) continue;
-          run.submit('choice.made', { sceneId, choiceId: rng.pick(choices) });
+          const choiceId =
+            policy === 'first'
+              ? choices[0]!
+              : policy === 'last'
+                ? choices.at(-1)!
+                : rng.pick(choices);
+          run.submit('choice.made', { sceneId, choiceId });
           acted = true;
         }
         if (!acted) break;

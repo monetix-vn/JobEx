@@ -97,7 +97,8 @@ describe('property: correctness', () => {
   it('matches a plain JavaScript reference for arithmetic', () => {
     fc.assert(
       fc.property(tree, ({ expr, value }) => {
-        expect(evaluate(expr, {})).toBe(value);
+        // Adding 0 folds -0 into 0: JavaScript and the evaluator may differ only in the sign of zero.
+        expect((evaluate(expr, {}) as number) + 0).toBe(value + 0);
       }),
       { numRuns: 500 },
     );

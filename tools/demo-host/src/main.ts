@@ -52,6 +52,10 @@ function initialLocale(): UiLocale {
 /** The wall clock only paces the demo; simulation time is the run's own turn counter. */
 function pace(run: Run, turns: number, ready: () => boolean): () => void {
   const timer = window.setInterval(() => {
+    if (run.isEnded) {
+      window.clearInterval(timer);
+      return;
+    }
     if (!ready()) return;
     run.advanceTurn();
     if (run.turn >= turns) {
@@ -81,7 +85,11 @@ async function startSales(locale: UiLocale, carry?: Session): Promise<void> {
   carry?.handle.dispose();
 
   const { run, transport, turns } = await createSalesHost({ files: contentFiles, seed, locale });
-  if (carry) fastForward(run, inputs, turn);
+  if (carry) {
+    fastForward(run, inputs, turn);
+    // The same run ends the same way; a run the pacer finished at the last week needs ending here.
+    if (carry.run.isEnded && !run.isEnded) run.end();
+  }
 
   const handle = mount(root, transport, {
     locale,

@@ -137,5 +137,6 @@
         }
       ]
     }
-  ]
+  ],
+  "terms": ["term.credit_note", "term.approval_limit"]
 }

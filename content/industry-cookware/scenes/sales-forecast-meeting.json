@@ -113,5 +113,6 @@
         }
       ]
     }
-  ]
+  ],
+  "terms": ["term.forecast", "term.pipeline", "term.kpi"]
 }

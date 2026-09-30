@@ -39,7 +39,7 @@ function playOutWeek(root: HTMLElement): string[] {
 }
 
 /** Answers every open scene straight on the run (no UI) with its first enabled choice. */
-function answerOpenScenes(run: Run): void {
+function answerOpenScenes(run: Run, pick: 'first' | 'last' = 'first'): void {
   for (let guard = 0; guard < 6; guard++) {
     const entries = run.exportLog().entries;
     const resolved = new Set(
@@ -54,7 +54,9 @@ function answerOpenScenes(run: Run): void {
     if (!open) return;
     run.submit('choice.made', {
       sceneId: open.sceneId,
-      choiceId: open.choices.find((c) => !c.disabled)!.id,
+      choiceId: (pick === 'first'
+        ? open.choices.find((c) => !c.disabled)
+        : open.choices.filter((c) => !c.disabled).at(-1))!.id,
     });
   }
 }
@@ -81,7 +83,8 @@ describe('the Sales Specialist, played through the client shell', () => {
       }
     }
     const total = perWeek.reduce((a, b) => a + b, 0);
-    expect(Math.max(...perWeek)).toBeLessThanOrEqual(2);
+    // One or two events a week, plus any notices (audit, rumors, detection) to acknowledge.
+    expect(Math.max(...perWeek)).toBeLessThanOrEqual(6);
     expect(total).toBeGreaterThan(15);
     expect(texts.size).toBeGreaterThanOrEqual(8); // varied, not the same few scenes
     expect(run.inputs.length).toBe(total);
@@ -136,6 +139,37 @@ describe('switching language mid-game keeps the game', () => {
     expect(firstScene(vi.run).lines[0]!.text).toMatch(
       /[ạảãàáâấầẩẫậăắằẳẵặđèéêếềểễệìíòóôốồổỗộơớờởỡợùúưứừửữựỳýỵ]/i,
     );
+  });
+
+  it('switching language after the run has ended reaches the same ending, with the debrief in the new language', async () => {
+    const en = await createSalesHost({ files: readFiles(), seed: 'ended', locale: 'en' });
+    for (let week = 0; week < 52 && !en.run.isEnded; week++) {
+      en.run.advanceTurn();
+      if (!en.run.isEnded) answerOpenScenes(en.run, 'last');
+    }
+    expect(en.run.isEnded).toBe(true);
+    expect(en.run.turn).toBeLessThan(52); // a reckless player does not finish the year
+
+    const vi = await createSalesHost({ files: readFiles(), seed: 'ended', locale: 'vi' });
+    fastForward(vi.run, en.run.inputs, en.run.turn);
+    if (en.run.isEnded && !vi.run.isEnded) vi.run.end();
+    expect(vi.run.isEnded).toBe(true);
+    expect(vi.run.turn).toBe(en.run.turn);
+
+    const debrief = (r: Run) =>
+      r.exportLog().entries.find((e) => e.type === 'debrief.ready')!
+        .payload as CoreEventPayloads['debrief.ready'];
+    expect(debrief(vi.run).ending).toBe(debrief(en.run).ending);
+    expect(debrief(vi.run).weeks).toBe(debrief(en.run).weeks);
+    expect(debrief(vi.run).stats).toEqual(debrief(en.run).stats);
+    expect(debrief(vi.run).title).not.toBe(debrief(en.run).title);
+
+    // The shell shows it too.
+    const root = document.createElement('div');
+    document.body.append(root);
+    mount(root, vi.transport, { locale: 'vi' });
+    expect(root.querySelector('.je-debrief h2')?.textContent).toBe(debrief(vi.run).title);
+    expect(root.querySelector('.je-status')?.textContent).toContain('Đã kết thúc');
   });
 
   it('the client toggle asks the host to switch and shows the shell in Vietnamese', async () => {

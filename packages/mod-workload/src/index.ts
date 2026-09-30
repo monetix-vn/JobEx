@@ -28,7 +28,7 @@ export interface WorkloadConfig {
 }
 
 const DEFAULT_CAPACITY = 45;
-const DEFAULT_OVERHEAD = 24;
+const DEFAULT_OVERHEAD = 22;
 /** A week at or below this share of capacity lets the player recover. */
 const RELAXED_SHARE = 0.9;
 const HIGH_STRESS = 80;

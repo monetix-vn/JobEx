@@ -14,6 +14,7 @@ export const PACK_FOLDERS = {
   scenes: 'scene',
   offers: 'offer',
   facts: 'fact',
+  terms: 'term',
 } as const;
 export type PackKind = (typeof PACK_FOLDERS)[keyof typeof PACK_FOLDERS];
 export const LOCALES = ['vi', 'en'] as const;
@@ -86,6 +87,8 @@ export interface Choice {
 export interface Scene {
   id: string;
   location: string;
+  /** Glossary terms the player can tap while reading this scene. */
+  terms?: string[];
   cast?: string[];
   lines: { speaker: string; text_key: string }[];
   choices?: Choice[];
@@ -112,6 +115,25 @@ export type FactVisibility = (typeof FACT_VISIBILITIES)[number];
 export const REPUTATION_GROUPS = ['boss', 'buyer', 'finance', 'production', 'qc', 'cs'] as const;
 export type ReputationGroup = (typeof REPUTATION_GROUPS)[number];
 
+/** Who can notice something the player did, and so uncover it. */
+export const DETECTORS = ['finance', 'internal_audit', 'qc', 'buyer', 'boss'] as const;
+export type Detector = (typeof DETECTORS)[number];
+
+/** Evidence a deed leaves behind, and who might find it. */
+export interface Trace {
+  type: 'document' | 'message' | 'payment' | 'witness' | 'record';
+  /** 0 to 1: how easy it is to find if someone looks. */
+  visibility: number;
+  detectors: Detector[];
+}
+
+/** A glossary entry: a piece of workplace vocabulary the player can tap to understand. */
+export interface Term {
+  id: string;
+  term_key: string;
+  definition_key: string;
+}
+
 /**
  * Something the player did that others may come to know. A fact carries its own consequences:
  * reputation changes applied when it becomes known to witnesses, and again when it becomes public.
@@ -123,6 +145,10 @@ export interface Fact {
   severity: number;
   /** Short noun phrase for notices and the debrief, e.g. "the fee you accepted from a buyer". */
   text_key: string;
+  /** What this teaches, for the debrief. */
+  lesson_key?: string;
+  /** Evidence left behind: what detectors (audits, finance, QC...) can find while it is private. */
+  traces?: Trace[];
   consequences?: {
     witnessed?: Partial<Record<ReputationGroup, number>>;
     public?: Partial<Record<ReputationGroup, number>>;
@@ -135,6 +161,7 @@ export interface ContentTypes {
   scene: Scene;
   offer: Offer;
   fact: Fact;
+  term: Term;
 }
 
 /** Read-only view of validated, merged content. Modules depend on this, never on mod-content. */

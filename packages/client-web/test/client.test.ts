@@ -204,6 +204,102 @@ describe('mount', () => {
     );
   });
 
+  it('shows glossary words as tappable chips that reveal a definition, one at a time', () => {
+    const { root, push } = setup();
+    push(
+      env('scene.started', {
+        sceneId: 's1',
+        location: 'l',
+        lines: [{ speaker: 'Boss', text: 'The PO is late.' }],
+        choices: [{ id: 'a', label: 'Go' }],
+        terms: [
+          { id: 'term.po', term: 'PO', definition: 'Purchase order.' },
+          { id: 'term.dso', term: 'DSO', definition: 'Days sales outstanding.' },
+        ],
+      }),
+    );
+    const chips = () => [...root.querySelectorAll<HTMLButtonElement>('.je-term')];
+    expect(chips().map((c) => c.textContent)).toEqual(['PO', 'DSO']);
+    expect(root.querySelector('.je-definition')).toBeNull();
+    chips()[0]!.click();
+    expect(root.querySelector('.je-definition')?.textContent).toBe('Purchase order.');
+    expect(chips()[0]!.getAttribute('aria-expanded')).toBe('true');
+    chips()[1]!.click();
+    expect(root.querySelector('.je-definition')?.textContent).toBe('Days sales outstanding.');
+    expect(root.querySelectorAll('.je-definition')).toHaveLength(1);
+    chips()[1]!.click();
+    expect(root.querySelector('.je-definition')).toBeNull();
+    // Opening a word never sends anything to the simulation.
+    push(env('scene.started', { sceneId: 's2', location: 'l', lines: [], choices: [] }));
+    expect(root.querySelector('.je-terms')).toBeNull();
+  });
+
+  const debrief = {
+    ending: 'fired',
+    title: 'You were let go.',
+    body: 'The company parted ways with you.',
+    weeks: 31,
+    stats: { 'player.stress': 77, 'player.rep.boss': 4 },
+    timeline: [
+      { turn: 4, kind: 'choice', text: 'You chose: Accept the fee' },
+      { turn: 19, kind: 'spread', text: 'It became public: the fee you took' },
+      { turn: 31, kind: 'ending', text: 'You were let go.' },
+    ],
+    lessons: [
+      {
+        factId: 'fact.fee',
+        fact: 'the fee you took',
+        lesson: 'Gifts from buyers are a conflict of interest.',
+      },
+    ],
+    terms: [{ id: 'term.kickback', term: 'Kickback', definition: 'A payment to win business.' }],
+  };
+
+  it('replaces the game with the debrief when the run is reviewed', () => {
+    const { root, push } = setup();
+    push(env('map.loaded', { width: 2, height: 1, tiles: ['#.'] }));
+    push(scene);
+    expect(root.querySelector('.je-map')).not.toBeNull();
+    push(env('run.ended', { turn: 31, ending: 'fired' }));
+    push(env('debrief.ready', debrief));
+    expect(root.querySelector('.je-map')).toBeNull();
+    expect(root.querySelector('.je-dialogue')).toBeNull();
+    expect(root.querySelector('.je-debrief h2')?.textContent).toBe('You were let go.');
+    expect(root.querySelector('.je-debrief p')?.textContent).toBe(
+      'The company parted ways with you.',
+    );
+    expect([...root.querySelectorAll('.je-timeline li')].map((li) => li.textContent)).toEqual([
+      'Week 5: You chose: Accept the fee',
+      'Week 20: It became public: the fee you took',
+      'Week 32: You were let go.',
+    ]);
+    expect(root.querySelector('.je-lessons li')?.textContent).toBe(
+      'the fee you took: Gifts from buyers are a conflict of interest.',
+    );
+    expect(root.querySelector('.je-glossary li')?.textContent).toBe(
+      'Kickback: A payment to win business.',
+    );
+    expect(root.querySelector('.je-final')?.textContent).toContain('Stress 77');
+    expect(root.querySelector('.je-final')?.textContent).toContain('Boss 4');
+    expect(root.querySelector('.je-status')?.textContent).toContain('Run ended');
+  });
+
+  it('the debrief is shown in the shell language, and leaves out empty sections', () => {
+    const root = document.createElement('div');
+    document.body.append(root);
+    const t = fakeTransport();
+    mount(root, t.transport, { locale: 'vi' });
+    t.push(
+      env('debrief.ready', { ...debrief, lessons: [], terms: [], timeline: [debrief.timeline[0]] }),
+    );
+    expect(root.querySelector('.je-timeline li')?.textContent).toBe(
+      'Tuần 5: You chose: Accept the fee',
+    );
+    expect(root.textContent).toContain('Bạn đã làm gì, và điều gì quay lại');
+    expect(root.querySelector('.je-lessons')).toBeNull();
+    expect(root.querySelector('.je-glossary')).toBeNull();
+  });
+
   it('a line without a speaker shows just its text, with no stray colon', () => {
     const { root, push } = setup();
     push(

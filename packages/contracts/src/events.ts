@@ -1,4 +1,4 @@
-import type { Effect, FactVisibility } from './packs';
+import type { Detector, Effect, FactVisibility } from './packs';
 
 /** Shared message vocabulary. Types and constants only: no logic (plan section 3). */
 
@@ -53,6 +53,22 @@ export interface SceneChoice {
 
 export type StateValue = number | string | boolean;
 
+/** How a run can end. "completed" means the player got through the period. */
+export const ENDINGS = ['completed', 'fired', 'prosecuted', 'burnout'] as const;
+export type Ending = (typeof ENDINGS)[number];
+
+export interface SceneTerm {
+  id: string;
+  term: string;
+  definition: string;
+}
+
+export interface DebriefEntry {
+  turn: number;
+  kind: 'choice' | 'spread' | 'detected' | 'audit' | 'scapegoated' | 'ending';
+  text: string;
+}
+
 export interface SceneLine {
   speaker: string;
   text: string;
@@ -60,7 +76,9 @@ export interface SceneLine {
 
 export interface CoreEventPayloads {
   'run.started': { seed: string; modules: { id: string; version: string }[] };
-  'run.ended': { turn: number };
+  /** A module asks for the run to end (after the current turn). The kernel does it. */
+  'run.endRequested': { ending: Ending; reason: string };
+  'run.ended': { turn: number; ending?: Ending };
   'clock.ticked': ClockSnapshot;
   'turn.phaseStarted': { phase: TurnPhase };
   'content.loaded': { packs: { id: string; version: string }[]; counts: Record<string, number> };
@@ -72,6 +90,8 @@ export interface CoreEventPayloads {
     location: string;
     lines: SceneLine[];
     choices: SceneChoice[];
+    /** Glossary terms the player can tap, with their definitions already in the player's language. */
+    terms?: SceneTerm[];
   };
   /** Command from the player (client). */
   'choice.made': { sceneId: string; choiceId: string };
@@ -107,6 +127,21 @@ export interface CoreEventPayloads {
     sceneId?: string;
   };
   'fact.escalated': { factId: string; from: FactVisibility; to: FactVisibility; knownBy: string[] };
+  'risk.auditStarted': { turn: number };
+  /** `audit` is true when the internal audit itself found it (not just someone during an audit week). */
+  'risk.detected': { factId: string; detector: Detector; trace: string; audit: boolean };
+  'risk.scapegoated': { factId: string };
+  /** The end-of-run review: what you did, what came back, and what it teaches. */
+  'debrief.ready': {
+    ending: Ending;
+    title: string;
+    body: string;
+    weeks: number;
+    stats: Record<string, number>;
+    timeline: DebriefEntry[];
+    lessons: { factId: string; fact: string; lesson: string }[];
+    terms: SceneTerm[];
+  };
   'workload.weekPlanned': {
     turn: number;
     demandHours: number;
@@ -131,6 +166,7 @@ export type CoreEventType = keyof CoreEventPayloads;
 export const EVENT_VERSIONS: Record<CoreEventType, number> = {
   'run.started': 1,
   'run.ended': 1,
+  'run.endRequested': 1,
   'clock.ticked': 1,
   'turn.phaseStarted': 1,
   'content.loaded': 1,
@@ -150,6 +186,10 @@ export const EVENT_VERSIONS: Record<CoreEventType, number> = {
   'knowledge.escalate': 1,
   'fact.learned': 1,
   'fact.escalated': 1,
+  'risk.auditStarted': 1,
+  'risk.detected': 1,
+  'risk.scapegoated': 1,
+  'debrief.ready': 1,
   'workload.weekPlanned': 1,
   'workload.weekClosed': 1,
 };

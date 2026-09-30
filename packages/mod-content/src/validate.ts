@@ -25,7 +25,7 @@ export interface BuildResult {
 }
 
 const VAR_PATH = /^[a-z][a-z0-9_]*(\.[a-z0-9_]+)*$/;
-const KINDS: PackKind[] = ['role', 'event', 'scene', 'offer', 'fact'];
+const KINDS: PackKind[] = ['role', 'event', 'scene', 'offer', 'fact', 'term'];
 
 interface Origin {
   pack: string;
@@ -162,6 +162,7 @@ export function buildRegistry(raw: RawContent, engineVersion = ENGINE_VERSION): 
     scene: new Map(),
     offer: new Map(),
     fact: new Map(),
+    term: new Map(),
   } as RegistryData['items'];
   const origins = new Map<string, Origin>();
   const owner = new Map<string, { pack: string; rank: number }>();
@@ -353,6 +354,7 @@ function crossCheck(
   const scheduled = new Set<string>();
   const usedScenes = new Set<string>();
   const producedFacts = new Set<string>();
+  const usedTerms = new Set<string>();
 
   for (const role of items.role.values()) {
     useKey(role.title_key, role.id, 'role');
@@ -371,6 +373,10 @@ function crossCheck(
 
   for (const scene of items.scene.values()) {
     scene.lines.forEach((line) => useKey(line.text_key, scene.id, 'scene'));
+    for (const termId of scene.terms ?? []) {
+      requireRef('scene', scene.id, 'term', termId, 'terms');
+      usedTerms.add(termId);
+    }
     const choiceIds = new Set<string>();
     for (const choice of scene.choices ?? []) {
       if (choiceIds.has(choice.id)) {
@@ -403,7 +409,14 @@ function crossCheck(
   }
 
   for (const offer of items.offer.values()) useKey(offer.justification_key, offer.id, 'offer');
-  for (const fact of items.fact.values()) useKey(fact.text_key, fact.id, 'fact');
+  for (const fact of items.fact.values()) {
+    useKey(fact.text_key, fact.id, 'fact');
+    if (fact.lesson_key) useKey(fact.lesson_key, fact.id, 'fact');
+  }
+  for (const term of items.term.values()) {
+    useKey(term.term_key, term.id, 'term');
+    useKey(term.definition_key, term.id, 'term');
+  }
 
   for (const { key, by, kind } of textKeys) {
     for (const locale of LOCALES) {
@@ -437,6 +450,16 @@ function crossCheck(
         code: 'fact.unused',
         message: `fact "${fact.id}" is never produced by any effect`,
         ...at('fact', fact.id),
+      });
+    }
+  }
+  for (const term of items.term.values()) {
+    if (!usedTerms.has(term.id)) {
+      push({
+        severity: 'warning',
+        code: 'term.unused',
+        message: `glossary term "${term.id}" is not used by any scene`,
+        ...at('term', term.id),
       });
     }
   }

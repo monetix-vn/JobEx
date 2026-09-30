@@ -20,6 +20,12 @@ const A: Scene = {
     },
   ],
 };
+const T: Scene = {
+  id: 'scene.t',
+  location: 'loc.room',
+  terms: ['term.po', 'term.ghost'],
+  lines: [{ speaker: 'role:boss', text_key: 'b.l1' }],
+};
 const B: Scene = {
   id: 'scene.b',
   location: 'loc.hall',
@@ -32,7 +38,8 @@ const kickback = {
   severity: 8,
   text_key: 'fact.fee',
 } as const;
-const scenes = new Map([A, B].map((s) => [s.id, s]));
+const scenes = new Map([A, B, T].map((s) => [s.id, s]));
+const po = { id: 'term.po', term_key: 'po.t', definition_key: 'po.d' };
 const strings: Record<Locale, Record<string, string>> = {
   en: {
     'a.l1': 'Hello',
@@ -44,6 +51,12 @@ const strings: Record<Locale, Record<string, string>> = {
     'ui.continue': 'Continue',
     'n.done': 'It is done.',
     'fact.fee': 'the fee you took',
+    'po.t': 'PO',
+    'po.d': 'Purchase order: the formal request to buy.',
+    'detector.finance': 'Finance',
+    'ui.notice.audit': 'Internal audit is in the building this week.',
+    'ui.notice.detected': '{detector} found out about {fact}.',
+    'ui.notice.scapegoat': 'Your boss points at you over {fact}.',
     'ui.notice.rumor': 'People are talking about {fact}.',
     'ui.notice.public': 'Everyone knows now: {fact}.',
   },
@@ -57,7 +70,9 @@ const content: ContentView = {
         ? event
         : kind === 'fact' && id === kickback.id
           ? kickback
-          : undefined) as never,
+          : kind === 'term' && id === po.id
+            ? po
+            : undefined) as never,
   all: (() => []) as never,
   text: (locale, key) => strings[locale][key],
 };
@@ -252,6 +267,87 @@ describe('narrative: notices when word gets around', () => {
       payload: { factId: 'fact.ghost', from: 'private', to: 'public', knownBy: [] },
     };
     expect(play([ghost], { script: {} })).toEqual([]);
+  });
+});
+
+describe('narrative: glossary terms and risk notices', () => {
+  const shown = (out: EventDraft[]) =>
+    out
+      .filter((e) => e.type === 'scene.started')
+      .map(
+        (e) =>
+          e.payload as never as {
+            sceneId: string;
+            lines: { text: string }[];
+            terms?: { id: string; term: string; definition: string }[];
+          },
+      );
+
+  it('sends the glossary terms of a scene with their definitions, skipping unknown ones', () => {
+    const [scene] = shown(play([plan], { script: { '0': ['scene.t'] } }));
+    expect(scene!.terms).toEqual([
+      { id: 'term.po', term: 'PO', definition: 'Purchase order: the formal request to buy.' },
+    ]);
+  });
+
+  it('a scene without terms carries none', () => {
+    expect(shown(play([plan]))[0]!.terms).toBeUndefined();
+  });
+
+  it('plays a notice when an audit starts, something is detected, or the boss blames the player', () => {
+    const line = (event: { type: string; payload: unknown }) =>
+      shown(play([event], { script: {} }))[0]!.lines[0]!.text;
+    expect(line({ type: 'risk.auditStarted', payload: { turn: 12 } })).toBe(
+      'Internal audit is in the building this week.',
+    );
+    expect(
+      line({
+        type: 'risk.detected',
+        payload: { factId: 'fact.fee', detector: 'finance', trace: 'payment', audit: false },
+      }),
+    ).toBe('Finance found out about the fee you took.');
+    expect(line({ type: 'risk.scapegoated', payload: { factId: 'fact.fee' } })).toBe(
+      'Your boss points at you over the fee you took.',
+    );
+  });
+
+  it('two audits in a year are two separate notices, and unknown facts are ignored', () => {
+    const out = play(
+      [
+        { type: 'risk.auditStarted', payload: { turn: 12 } },
+        { type: 'risk.auditStarted', payload: { turn: 25 } },
+      ],
+      { script: {} },
+    );
+    expect(shown(out)).toHaveLength(1); // the second waits behind the first
+    const both = play(
+      [
+        { type: 'risk.auditStarted', payload: { turn: 12 } },
+        { type: 'risk.auditStarted', payload: { turn: 25 } },
+        {
+          type: 'choice.resolved',
+          payload: { sceneId: 'notice.risk.audit.1', choiceId: '__continue', outcome: 'ok' },
+        },
+      ],
+      { script: {} },
+    );
+    expect(shown(both).map((s) => s.sceneId)).toEqual([
+      'notice.risk.audit.1',
+      'notice.risk.audit.2',
+    ]);
+    expect(
+      play(
+        [
+          {
+            type: 'risk.detected',
+            payload: { factId: 'fact.nope', detector: 'qc', trace: 'x', audit: false },
+          },
+        ],
+        {
+          script: {},
+        },
+      ),
+    ).toEqual([]);
   });
 });
 

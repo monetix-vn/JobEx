@@ -142,5 +142,6 @@
         }
       ]
     }
-  ]
+  ],
+  "terms": ["term.tolerance", "term.credit_note", "term.claim"]
 }

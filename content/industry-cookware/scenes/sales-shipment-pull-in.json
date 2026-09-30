@@ -136,5 +136,6 @@
         }
       ]
     }
-  ]
+  ],
+  "terms": ["term.po", "term.lead_time", "term.split_shipment"]
 }

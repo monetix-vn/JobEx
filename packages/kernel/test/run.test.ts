@@ -195,3 +195,67 @@ describe('Run: determinism', () => {
     expect(() => run.submit('x', {})).toThrow(/ended/);
   });
 });
+
+describe('Run: modules can end the run', () => {
+  const quitter = (atTurn: number) =>
+    makeModule('quitter', {
+      consumes: ['turn.phaseStarted', 'clock.ticked'],
+      emits: ['run.endRequested'],
+      handlers: (host) => ({
+        'turn.phaseStarted': (e) => {
+          const phase = (e.payload as { phase: string }).phase;
+          return phase === 'end' && host.clock.now().turn === atTurn
+            ? [{ type: 'run.endRequested', payload: { ending: 'fired', reason: 'test' } }]
+            : undefined;
+        },
+      }),
+    });
+
+  it('finishes the turn it was asked in, then ends with the requested ending', () => {
+    const run = new Run({ seed: 's', modules: [quitter(3)] });
+    run.runTurns(10);
+    expect(run.isEnded).toBe(true);
+    expect(run.turn).toBe(4);
+    const ended = run.entries.filter((e) => e.type === 'run.ended');
+    expect(ended).toHaveLength(1);
+    expect(ended[0]!.payload).toEqual({ turn: 4, ending: 'fired' });
+    expect(run.exportLog().turns).toBe(4);
+    expect(() => run.advanceTurn()).toThrow(/ended/);
+  });
+
+  it('a run nobody ends has no ending on run.ended, and end() stays idempotent', () => {
+    const run = new Run({ seed: 's', modules: [] });
+    run.runTurns(2);
+    run.end();
+    run.end();
+    const ended = run.entries.filter((e) => e.type === 'run.ended');
+    expect(ended).toHaveLength(1);
+    expect(ended[0]!.payload).toEqual({ turn: 2 });
+  });
+
+  it('only the first request counts', () => {
+    const twice = makeModule('twice', {
+      consumes: ['clock.ticked'],
+      emits: ['run.endRequested'],
+      handlers: () => ({
+        'clock.ticked': () => [
+          { type: 'run.endRequested', payload: { ending: 'burnout', reason: 'a' } },
+          { type: 'run.endRequested', payload: { ending: 'fired', reason: 'b' } },
+        ],
+      }),
+    });
+    const run = new Run({ seed: 's', modules: [twice] });
+    run.runTurns(3);
+    expect(run.entries.find((e) => e.type === 'run.ended')!.payload).toEqual({
+      turn: 1,
+      ending: 'burnout',
+    });
+  });
+
+  it('an ended run replays identically', async () => {
+    const { replay } = await import('../src');
+    const run = new Run({ seed: 's', modules: [quitter(2)] });
+    run.runTurns(10);
+    expect(replay(run.exportLog(), [quitter(2)]).ok).toBe(true);
+  });
+});

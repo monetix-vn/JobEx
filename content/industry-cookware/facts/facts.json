@@ -12,7 +12,15 @@
         "buyer": -8,
         "boss": -4
       }
-    }
+    },
+    "lesson_key": "lesson.promised_unrealistic_date",
+    "traces": [
+      {
+        "type": "message",
+        "visibility": 0.6,
+        "detectors": ["buyer", "boss"]
+      }
+    ]
   },
   {
     "id": "fact.discount_above_limit",
@@ -28,7 +36,15 @@
         "boss": -8,
         "finance": -8
       }
-    }
+    },
+    "lesson_key": "lesson.discount_above_limit",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.5,
+        "detectors": ["finance", "internal_audit"]
+      }
+    ]
   },
   {
     "id": "fact.forecast_honest",
@@ -39,7 +55,8 @@
       "public": {
         "boss": 3
       }
-    }
+    },
+    "lesson_key": "lesson.forecast_honest"
   },
   {
     "id": "fact.forecast_padded",
@@ -54,7 +71,15 @@
         "boss": -6,
         "finance": -10
       }
-    }
+    },
+    "lesson_key": "lesson.forecast_padded",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.4,
+        "detectors": ["finance", "internal_audit"]
+      }
+    ]
   },
   {
     "id": "fact.records_prepared_honestly",
@@ -69,7 +94,8 @@
         "qc": 5,
         "boss": 3
       }
-    }
+    },
+    "lesson_key": "lesson.records_prepared_honestly"
   },
   {
     "id": "fact.reserve_stock_taken",
@@ -84,7 +110,15 @@
         "qc": -10,
         "boss": -4
       }
-    }
+    },
+    "lesson_key": "lesson.reserve_stock_taken",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.6,
+        "detectors": ["qc", "internal_audit"]
+      }
+    ]
   },
   {
     "id": "fact.credit_above_limit",
@@ -100,7 +134,15 @@
         "boss": -8,
         "finance": -8
       }
-    }
+    },
+    "lesson_key": "lesson.credit_above_limit",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.6,
+        "detectors": ["finance", "internal_audit"]
+      }
+    ]
   },
   {
     "id": "fact.blamed_forwarder",
@@ -115,7 +157,15 @@
         "buyer": -8,
         "boss": -5
       }
-    }
+    },
+    "lesson_key": "lesson.blamed_forwarder",
+    "traces": [
+      {
+        "type": "message",
+        "visibility": 0.5,
+        "detectors": ["buyer"]
+      }
+    ]
   },
   {
     "id": "fact.declined_kickback",
@@ -126,7 +176,8 @@
       "public": {
         "boss": 4
       }
-    }
+    },
+    "lesson_key": "lesson.declined_kickback"
   },
   {
     "id": "fact.accepted_kickback",
@@ -143,7 +194,20 @@
         "buyer": -10,
         "finance": -12
       }
-    }
+    },
+    "lesson_key": "lesson.accepted_kickback",
+    "traces": [
+      {
+        "type": "payment",
+        "visibility": 0.5,
+        "detectors": ["finance", "internal_audit"]
+      },
+      {
+        "type": "witness",
+        "visibility": 0.3,
+        "detectors": ["buyer"]
+      }
+    ]
   },
   {
     "id": "fact.reported_kickback",
@@ -158,7 +222,8 @@
         "boss": 6,
         "finance": 4
       }
-    }
+    },
+    "lesson_key": "lesson.reported_kickback"
   },
   {
     "id": "fact.refused_backdating",
@@ -172,7 +237,8 @@
       "public": {
         "finance": 6
       }
-    }
+    },
+    "lesson_key": "lesson.refused_backdating"
   },
   {
     "id": "fact.backdated_documents",
@@ -187,7 +253,15 @@
         "boss": -12,
         "finance": -14
       }
-    }
+    },
+    "lesson_key": "lesson.backdated_documents",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.7,
+        "detectors": ["finance", "internal_audit"]
+      }
+    ]
   },
   {
     "id": "fact.shipped_wrong_certificate",
@@ -203,7 +277,15 @@
         "boss": -10,
         "buyer": -6
       }
-    }
+    },
+    "lesson_key": "lesson.shipped_wrong_certificate",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.6,
+        "detectors": ["buyer", "internal_audit"]
+      }
+    ]
   },
   {
     "id": "fact.paid_for_document",
@@ -218,7 +300,15 @@
         "boss": -14,
         "finance": -8
       }
-    }
+    },
+    "lesson_key": "lesson.paid_for_document",
+    "traces": [
+      {
+        "type": "payment",
+        "visibility": 0.5,
+        "detectors": ["internal_audit", "finance"]
+      }
+    ]
   },
   {
     "id": "fact.silent_spec_change",
@@ -234,7 +324,15 @@
         "qc": -8,
         "boss": -8
       }
-    }
+    },
+    "lesson_key": "lesson.silent_spec_change",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.6,
+        "detectors": ["qc", "buyer"]
+      }
+    ]
   },
   {
     "id": "fact.taught_shortcuts",
@@ -248,7 +346,15 @@
       "public": {
         "boss": -5
       }
-    }
+    },
+    "lesson_key": "lesson.taught_shortcuts",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.3,
+        "detectors": ["boss"]
+      }
+    ]
   },
   {
     "id": "fact.came_clean",
@@ -263,7 +369,8 @@
       "public": {
         "boss": 3
       }
-    }
+    },
+    "lesson_key": "lesson.came_clean"
   },
   {
     "id": "fact.lied_to_finance",
@@ -278,7 +385,8 @@
         "finance": -10,
         "boss": -6
       }
-    }
+    },
+    "lesson_key": "lesson.lied_to_finance"
   },
   {
     "id": "fact.lied_to_compliance",
@@ -293,7 +401,8 @@
         "boss": -15,
         "finance": -8
       }
-    }
+    },
+    "lesson_key": "lesson.lied_to_compliance"
   },
   {
     "id": "fact.confessed",
@@ -308,6 +417,7 @@
         "boss": -4,
         "finance": 2
       }
-    }
+    },
+    "lesson_key": "lesson.confessed"
   }
 ]

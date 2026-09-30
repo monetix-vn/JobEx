@@ -44,7 +44,7 @@ seed.
   a UI hint.
 - **Facts and schedule effects** are passed through `choice.resolved.effects` for `mod-knowledge`
   and `mod-director` (block B); nothing consumes them yet.
-- **Workload includes `overheadHours`** (default 24) for meetings and admin the role's task list does
+- **Workload includes `overheadHours`** (default 22) for meetings and admin the role's task list does
   not cover; without it a role never overloads. Balance numbers are first-cut.
 - The browser build bundles Ajv, which compiles schemas with `new Function`; it would need
   `unsafe-eval` under a strict CSP. Pack validation could move to build time if that matters.
@@ -71,6 +71,28 @@ seed.
   with a continue choice, so the same queue, resolver and client handle it.
 - The per-person relationship graph (trust, loyalty, favours owed) is deferred; reputation is
   tracked per group for now.
+
+## Phase 1 block C additions
+
+- **Runs can end themselves.** A module sends `run.endRequested`; the kernel finishes the current
+  turn, then ends the run and puts the ending on `run.ended`. Only the first request counts, `end()`
+  stays idempotent, and `runTurns` stops early. Replay handles an early end unchanged.
+- **Evidence is content.** A fact lists its `traces` (type, visibility, who could find it). `mod-risk`
+  rolls detectors against private facts: everyday detectors weekly, the internal audit only in audit
+  weeks. A finding makes the fact `witnessed` through the ledger, so all the existing consequences
+  (reputation, notices, follow-up events) apply without special cases. `mod-social`'s stand-in leak
+  is switched off in scenarios that include risk.
+- **Endings are data-light rules in risk.** Burnout at zero health; prosecuted when a grave fact is
+  public and the boss will not cover; fired when a scandal is out and standing is very low, or two
+  serious public facts. Low standing alone is a bad year, not a firing. Apart from burnout a
+  condition must hold two weeks. Thresholds were tuned with three kinds of test player (`--policy
+  first|random|last`), and a test guards that a careful player finishes and a reckless one does not.
+- **The debrief is written by `mod-education` from the event stream,** in the player's language, at
+  `run.ended`. It needs no special access: it notes choices that left a mark, how facts spread,
+  detections and blame, and reads lessons from the facts and vocabulary from the scenes shown.
+- **Glossary words are content** (`term` pack kind, referenced by `scene.terms`); their text rides
+  along in `scene.started` so the client only draws. The validator checks references, translations
+  and unused terms.
 
 ## Consequences
 

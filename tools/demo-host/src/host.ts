@@ -10,8 +10,10 @@ import {
   memorySource,
 } from '@je/mod-content';
 import { directorModule } from '@je/mod-director';
+import { educationModule } from '@je/mod-education';
 import { knowledgeModule } from '@je/mod-knowledge';
 import { narrativeModule } from '@je/mod-narrative';
+import { riskModule } from '@je/mod-risk';
 import { simCoreModule } from '@je/mod-sim-core';
 import { socialModule } from '@je/mod-social';
 import { stubModules } from '@je/mod-stubs';
@@ -74,7 +76,9 @@ export async function createSalesHost(options: SalesHostOptions): Promise<SalesH
     directorModule,
     knowledgeModule,
     socialModule,
+    riskModule,
     narrativeModule,
+    educationModule,
   ];
   const configs = {
     'mod-content': { registry },
@@ -83,7 +87,9 @@ export async function createSalesHost(options: SalesHostOptions): Promise<SalesH
     choice: { content: registry },
     director: { content: registry },
     knowledge: { content: registry },
-    social: { content: registry },
+    social: { content: registry, leakPerSeverity: 0 },
+    risk: { content: registry },
+    education: { content: registry, locale: options.locale ?? 'en' },
     narrative: {
       content: registry,
       locale: options.locale ?? 'en',

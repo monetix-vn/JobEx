@@ -2,5 +2,11 @@
   "id": "scene.audit_day",
   "location": "loc.factory_floor",
   "cast": ["role:qc_lead"],
-  "lines": [{ "speaker": "role:qc_lead", "text_key": "scene.audit_day.l1" }]
+  "lines": [
+    {
+      "speaker": "role:qc_lead",
+      "text_key": "scene.audit_day.l1"
+    }
+  ],
+  "terms": ["term.supplier_audit"]
 }

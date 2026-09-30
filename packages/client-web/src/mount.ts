@@ -35,6 +35,17 @@ const STYLE = `
 .je-dialogue{border:3px solid #eee;background:#0d0d1a;padding:8px;min-height:96px}
 .je-previous{border-left:3px solid #ffd166;padding-left:8px;margin-bottom:8px;color:#bbb;font-style:italic}
 .je-line b{color:#ffd166}
+.je-terms{margin-top:8px;font-size:.9em}
+.je-terms-hint{color:#999;margin-right:6px}
+.je-term{font:inherit;color:#9ad1ff;background:none;border:0;border-bottom:1px dashed #9ad1ff;margin-right:8px;padding:0;cursor:pointer}
+.je-term[aria-expanded="true"]{color:#111;background:#9ad1ff}
+.je-definition{margin-top:6px;padding:6px;border:2px solid #9ad1ff;background:#13233a}
+.je-debrief{border:3px solid #eee;background:#0d0d1a;padding:10px}
+.je-debrief h2,.je-debrief h3{margin:10px 0 6px;font-size:1em;color:#ffd166}
+.je-debrief h2{font-size:1.15em;margin-top:0}
+.je-debrief ol,.je-debrief ul{margin:0;padding-left:20px}
+.je-debrief li{margin-bottom:4px}
+.je-entry-ending{color:#ffd166}
 .je-choice{display:block;width:100%;text-align:left;margin-top:6px;padding:6px;font:inherit;color:#eee;background:#33335a;border:2px solid #eee;cursor:pointer}
 .je-choice:hover,.je-choice:focus{background:#4a4a80}
 .je-choice:disabled{opacity:.45;cursor:not-allowed}
@@ -69,6 +80,50 @@ function repsLine(vars: ClientState['vars'], t: UiStrings): string {
   return parts.length > 0 ? `${t.reputation}: ${parts.join('  |  ')}` : '';
 }
 
+/** Shell-only interaction state: which glossary word is open. It is never sent to the simulation. */
+interface Ui {
+  openTerm: string | undefined;
+  toggleTerm(key: string): void;
+}
+
+/** The end-of-run review, replacing the map and dialogue. */
+function debriefView(d: NonNullable<ClientState['debrief']>, t: UiStrings): HTMLElement {
+  const box = el('div', 'je-debrief');
+  box.append(el('h2', '', d.title), el('p', '', d.body));
+
+  if (d.timeline.length > 0) {
+    box.append(el('h3', '', t.debrief.story));
+    const list = el('ol', 'je-timeline');
+    for (const entry of d.timeline) {
+      const item = el(
+        'li',
+        `je-entry je-entry-${entry.kind}`,
+        `${t.debrief.week} ${entry.turn + 1}: ${entry.text}`,
+      );
+      list.append(item);
+    }
+    box.append(list);
+  }
+  if (d.lessons.length > 0) {
+    box.append(el('h3', '', t.debrief.lessons));
+    const list = el('ul', 'je-lessons');
+    for (const lesson of d.lessons) list.append(el('li', '', `${lesson.fact}: ${lesson.lesson}`));
+    box.append(list);
+  }
+  if (d.terms.length > 0) {
+    box.append(el('h3', '', t.debrief.terms));
+    const list = el('ul', 'je-glossary');
+    for (const term of d.terms) list.append(el('li', '', `${term.term}: ${term.definition}`));
+    box.append(list);
+  }
+  const standing = [...statsLine(d.stats, t).split('  |  '), repsLine(d.stats, t)].filter(Boolean);
+  if (standing.length > 0) {
+    box.append(el('h3', '', t.debrief.standing));
+    box.append(el('p', 'je-final', standing.join('  |  ')));
+  }
+  return box;
+}
+
 /** Draws the state. Text goes in through textContent only, never innerHTML. */
 function render(
   root: HTMLElement,
@@ -76,6 +131,7 @@ function render(
   send: Transport['send'],
   locale: UiLocale,
   onLocaleChange: MountOptions['onLocaleChange'],
+  ui: Ui,
 ): void {
   const t = UI_STRINGS[locale];
   const view = el('div', 'je');
@@ -110,6 +166,12 @@ function render(
   const reps = repsLine(state.vars, t);
   if (reps) view.append(el('div', 'je-stats je-reps', reps));
 
+  if (state.debrief) {
+    view.append(debriefView(state.debrief, t));
+    root.replaceChildren(view);
+    return;
+  }
+
   if (state.map) {
     const map = el('div', 'je-map');
     map.setAttribute('role', 'img');
@@ -138,6 +200,24 @@ function render(
       if (line.speaker) row.append(el('b', '', `${line.speaker}: `));
       row.append(document.createTextNode(line.text));
       dialogue.append(row);
+    }
+    if (scene.terms && scene.terms.length > 0) {
+      const box = el('div', 'je-terms');
+      box.append(el('span', 'je-terms-hint', t.termsHint));
+      let open: (typeof scene.terms)[number] | undefined;
+      for (const term of scene.terms) {
+        const key = `${scene.sceneId}:${term.id}`;
+        const isOpen = ui.openTerm === key;
+        if (isOpen) open = term;
+        const chip = el('button', 'je-term', term.term);
+        chip.type = 'button';
+        chip.dataset.term = term.id;
+        chip.setAttribute('aria-expanded', String(isOpen));
+        chip.addEventListener('click', () => ui.toggleTerm(key));
+        box.append(chip);
+      }
+      if (open) box.append(el('div', 'je-definition', open.definition));
+      dialogue.append(box);
     }
     if (scene.outcome) {
       dialogue.append(el('div', 'je-outcome', scene.narration ?? t.outcome[scene.outcome]));
@@ -170,6 +250,13 @@ export function mount(
   document.head.append(style);
 
   let state = initialState;
+  const ui: Ui = {
+    openTerm: undefined,
+    toggleTerm(key) {
+      ui.openTerm = ui.openTerm === key ? undefined : key;
+      draw();
+    },
+  };
   const draw = (): void =>
     render(
       root,
@@ -177,6 +264,7 @@ export function mount(
       (type, payload) => transport.send(type, payload),
       locale,
       options.onLocaleChange,
+      ui,
     );
   draw();
   const unsubscribe = transport.subscribe((envelope) => {

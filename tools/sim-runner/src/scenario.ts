@@ -2,8 +2,10 @@ import type { Locale, Module } from '@je/contracts';
 import { choiceModule } from '@je/mod-choice';
 import { contentModule, formatDiagnostics, hasErrors, loadContent } from '@je/mod-content';
 import { directorModule } from '@je/mod-director';
+import { educationModule } from '@je/mod-education';
 import { knowledgeModule } from '@je/mod-knowledge';
 import { narrativeModule } from '@je/mod-narrative';
+import { riskModule } from '@je/mod-risk';
 import { simCoreModule } from '@je/mod-sim-core';
 import { socialModule } from '@je/mod-social';
 import { workloadModule } from '@je/mod-workload';
@@ -42,7 +44,8 @@ function salesScript(): Record<string, string[]> {
  * Real Phase 1 modules on real content, for one Sales Specialist.
  *   sales-week: the three pressure scenes scripted into week 0, then quiet weeks (4 weeks).
  *   sales-year: the director draws one or two events a week from the whole pool for a year.
- * Both track what the player did as facts, and let word get around (knowledge and social).
+ * Both track what the player did as facts, let word get around (knowledge and social), run real
+ * detection, audits and endings (risk), and end with a debrief (education).
  */
 export async function loadScenario(name: string, options: ScenarioOptions): Promise<Scenario> {
   const shape =
@@ -71,7 +74,9 @@ ${formatDiagnostics(diagnostics)}`);
       ...(shape.directed ? [directorModule] : []),
       knowledgeModule,
       socialModule,
+      riskModule,
       narrativeModule,
+      educationModule,
     ],
     configs: {
       'mod-content': { registry },
@@ -80,7 +85,10 @@ ${formatDiagnostics(diagnostics)}`);
       choice: { content: registry },
       ...(shape.directed ? { director: { content: registry } } : {}),
       knowledge: { content: registry },
-      social: { content: registry },
+      // Real detectors (risk) replace social's stand-in leak.
+      social: { content: registry, leakPerSeverity: 0 },
+      risk: { content: registry },
+      education: { content: registry, locale: options.locale ?? 'en' },
       narrative: {
         content: registry,
         locale: options.locale ?? 'en',

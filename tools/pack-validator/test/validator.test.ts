@@ -30,7 +30,14 @@ describe('pack validator', () => {
   it('reads packs from disk and validates the shipped content cleanly', async () => {
     const { registry, diagnostics } = await loadContent(directorySource(contentDir));
     expect(hasErrors(diagnostics)).toBe(false);
-    expect(registry?.counts()).toEqual({ role: 2, event: 21, scene: 21, offer: 2, fact: 21 });
+    expect(registry?.counts()).toEqual({
+      role: 2,
+      event: 21,
+      scene: 21,
+      offer: 2,
+      fact: 21,
+      term: 24,
+    });
   });
 
   it('CLI exits 0 on the shipped content, even with --strict', () => {

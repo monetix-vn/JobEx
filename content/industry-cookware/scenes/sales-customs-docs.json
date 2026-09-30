@@ -154,5 +154,6 @@
         }
       ]
     }
-  ]
+  ],
+  "terms": ["term.certificate_of_origin", "term.forwarder", "term.vessel_cutoff"]
 }

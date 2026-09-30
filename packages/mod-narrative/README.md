@@ -12,9 +12,14 @@ about balance or outcomes.
 - When a fact becomes a rumor or public (`fact.escalated`, or `fact.learned` at public), it plays a
   one-line notice scene (`ui.notice.rumor` / `ui.notice.public` with the fact's text) that the
   player acknowledges with the continue choice.
+- Risk notices: the audit starting, something being detected, and the boss blaming the player
+  (`ui.notice.audit`, `ui.notice.detected`, `ui.notice.scapegoat`) play the same way.
+- Scenes can list glossary `terms`; their text and definitions ride along in `scene.started` so
+  the client can show them as tappable words.
 - A scene unanswered for `patienceTurns` (default 1) turns emits `scene.expired`.
 - When `choice.resolved` arrives, it emits `scene.ended` with the resolved narration and starts
   the next queued scene.
 
 Config: `{ content: ContentView, locale?, script?, patienceTurns? }`.
-Consumes `sim.stateChanged`, `clock.ticked`, `turn.phaseStarted`, `director.eventFired`, `fact.learned`, `fact.escalated`, `choice.resolved`; emits `scene.started`, `scene.ended`, `scene.expired`.
+Consumes `sim.stateChanged`, `clock.ticked`, `turn.phaseStarted`, `director.eventFired`, `fact.learned`, `fact.escalated`, `risk.auditStarted`, `risk.detected`, `risk.scapegoated`,
+`choice.resolved`; emits `scene.started`, `scene.ended`, `scene.expired`.

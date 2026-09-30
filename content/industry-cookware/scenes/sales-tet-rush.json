@@ -156,5 +156,6 @@
         }
       ]
     }
-  ]
+  ],
+  "terms": ["term.penalty_clause", "term.lead_time"]
 }

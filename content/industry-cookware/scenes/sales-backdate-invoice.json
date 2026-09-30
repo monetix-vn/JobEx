@@ -144,5 +144,6 @@
         }
       ]
     }
-  ]
+  ],
+  "terms": ["term.revenue_recognition", "term.internal_audit"]
 }

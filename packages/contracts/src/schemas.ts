@@ -136,6 +136,7 @@ export const sceneSchema = {
   properties: {
     id: idString,
     location: idString,
+    terms: { type: 'array', items: idString },
     cast: { type: 'array', items: { type: 'string' } },
     lines: {
       type: 'array',
@@ -229,6 +230,20 @@ const repDeltas = {
   ),
 };
 
+const DETECTOR_IDS = ['finance', 'internal_audit', 'qc', 'buyer', 'boss'];
+
+export const termSchema = {
+  $id: `${BASE}term.json`,
+  type: 'object',
+  required: ['id', 'term_key', 'definition_key'],
+  additionalProperties: false,
+  properties: {
+    id: idString,
+    term_key: { type: 'string' },
+    definition_key: { type: 'string' },
+  },
+};
+
 export const factSchema = {
   $id: `${BASE}fact.json`,
   type: 'object',
@@ -239,6 +254,20 @@ export const factSchema = {
     category: { enum: ['integrity', 'favor', 'conflict', 'performance', 'other'] },
     severity: { type: 'integer', minimum: 1, maximum: 10 },
     text_key: { type: 'string' },
+    lesson_key: { type: 'string' },
+    traces: {
+      type: 'array',
+      items: {
+        type: 'object',
+        required: ['type', 'visibility', 'detectors'],
+        additionalProperties: false,
+        properties: {
+          type: { enum: ['document', 'message', 'payment', 'witness', 'record'] },
+          visibility: { type: 'number', minimum: 0, maximum: 1 },
+          detectors: { type: 'array', minItems: 1, items: { enum: DETECTOR_IDS } },
+        },
+      },
+    },
     consequences: {
       type: 'object',
       additionalProperties: false,
@@ -259,6 +288,7 @@ export const PACK_SCHEMAS: Record<PackKind, object> = {
   scene: sceneSchema,
   offer: offerSchema,
   fact: factSchema,
+  term: termSchema,
 };
 
 export const ALL_SCHEMAS: object[] = [
@@ -270,6 +300,7 @@ export const ALL_SCHEMAS: object[] = [
   sceneSchema,
   offerSchema,
   factSchema,
+  termSchema,
 ];
 
 export const SCHEMA_IDS = {
@@ -280,4 +311,5 @@ export const SCHEMA_IDS = {
   scene: sceneSchema.$id,
   offer: offerSchema.$id,
   fact: factSchema.$id,
+  term: termSchema.$id,
 } as const;

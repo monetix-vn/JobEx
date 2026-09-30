@@ -1,4 +1,10 @@
-import type { ClockSnapshot, CoreEventPayloads, Envelope, StateValue } from '@je/contracts';
+import type {
+  ClockSnapshot,
+  CoreEventPayloads,
+  Envelope,
+  SceneTerm,
+  StateValue,
+} from '@je/contracts';
 
 export interface ClientScene {
   sceneId: string;
@@ -10,6 +16,8 @@ export interface ClientScene {
   chosen?: string;
   /** Resolved narration text, shown once the scene has ended. */
   narration?: string;
+  /** Glossary words in this scene, tappable, with their definitions. */
+  terms?: SceneTerm[];
   /** Narration of the scene just before this one, so the outcome stays readable. */
   previousNarration?: string;
 }
@@ -20,6 +28,8 @@ export interface ClientState {
   scene?: ClientScene;
   /** Mirror of sim-core's variables, for the status strip. */
   vars: Record<string, StateValue>;
+  /** The end-of-run review, once the run has ended. */
+  debrief?: CoreEventPayloads['debrief.ready'];
   ended: boolean;
 }
 
@@ -41,6 +51,7 @@ export function reduce(state: ClientState, envelope: Envelope): ClientState {
           location: p.location,
           lines: p.lines,
           choices: p.choices,
+          ...(p.terms && p.terms.length > 0 ? { terms: p.terms } : {}),
           ...(state.scene?.narration ? { previousNarration: state.scene.narration } : {}),
         },
       };
@@ -59,6 +70,8 @@ export function reduce(state: ClientState, envelope: Envelope): ClientState {
       if (state.scene?.sceneId !== p.sceneId || p.narration === undefined) return state;
       return { ...state, scene: { ...state.scene, narration: p.narration } };
     }
+    case 'debrief.ready':
+      return { ...state, debrief: envelope.payload as CoreEventPayloads['debrief.ready'] };
     case 'run.ended':
       return { ...state, ended: true };
     default:

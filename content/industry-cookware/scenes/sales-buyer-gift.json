@@ -138,5 +138,6 @@
         }
       ]
     }
-  ]
+  ],
+  "terms": ["term.kickback", "term.conflict_of_interest"]
 }

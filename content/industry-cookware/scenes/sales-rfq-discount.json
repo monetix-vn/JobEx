@@ -135,5 +135,6 @@
         }
       ]
     }
-  ]
+  ],
+  "terms": ["term.rfq", "term.approval_limit", "term.margin"]
 }

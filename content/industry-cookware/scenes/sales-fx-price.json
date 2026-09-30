@@ -129,5 +129,6 @@
         }
       ]
     }
-  ]
+  ],
+  "terms": ["term.fx_risk", "term.margin"]
 }

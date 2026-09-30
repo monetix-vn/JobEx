@@ -18,6 +18,8 @@ packages/
   mod-director/  event pool and scheduler: what happens this week (season, stress, cooldown, weight)
   mod-knowledge/ ledger of facts: what you did and who knows (private, witnessed, rumor, public)
   mod-social/    gossip and reputation consequences when facts get around
+  mod-risk/      detectors, quarterly audits, scapegoating, and how a run can end
+  mod-education/ glossary words and the end-of-run debrief
   mod-narrative/ scene queue and runtime, locale text resolution
   mod-stubs/     Phase 0 stand-ins (economy, director, choice), kept for the kernel tests
   mod-toy/       tiny module that proves a new module needs no edits elsewhere
@@ -84,22 +86,30 @@ remembered for next time.
 
 ## Phase 1 so far: one Sales Specialist, text only
 
-Seven modules run on the `industry-cookware` pack: `mod-sim-core`, `mod-workload`, `mod-choice`,
-`mod-narrative`, `mod-director`, `mod-knowledge` and `mod-social`.
+Nine modules run on the `industry-cookware` pack: `mod-sim-core`, `mod-workload`, `mod-choice`,
+`mod-narrative`, `mod-director`, `mod-knowledge`, `mod-social`, `mod-risk` and `mod-education`.
 
 - **Decisions:** each week the director draws one or two of 20 pressure events (shipments pulled
   forward, discount requests, overdue payments, quality complaints, Tet rush, kickback offers,
   backdated invoices, and more) by season, stress, cooldown and weight, and plays scheduled
-  consequences when they come due (an audit notice brings the audit day four to six weeks later).
-  Honest, risky and dark options are all on the table, each with costs, requirements and outcome
-  tables.
+  consequences when they come due.
 - **Consequences:** what you do becomes a *fact* (21 are defined in content) with a visibility:
-  private, witnessed, rumor or public. Witnessed facts cost reputation with the people who saw.
-  Word spreads week by week, faster the more serious the fact; something you got away with can also
-  leak. When it becomes a rumor or public you see a notice, reputation drops for everyone who now
-  knows, and new events react to what is known: Finance asks about a discount you gave above your
-  limit, a buyer confronts you about a broken promise, Compliance interviews you about a fee.
-  Owning up early stops the follow-ups; lying to them makes it worse.
+  private, witnessed, rumor or public. Word spreads week by week, faster the more serious the fact.
+  Witnessed and public facts cost reputation with the people who now know, and new events react to
+  what is known: Finance asks about a discount you gave above your limit, a buyer confronts you
+  about a broken promise, Compliance interviews you about a fee. Owning up early stops the
+  follow-ups; lying to them makes it worse.
+- **Getting caught:** deeds leave traces. Finance, QC, the buyer and your boss may notice something
+  any week, and the internal audit looks hard in the audit weeks at each quarter end (you see a
+  notice when it is in the building). The boss may pin a serious matter on you, more likely when
+  they think little of you.
+- **Endings:** a run can end early: *fired* (a scandal is out and your boss has written you off),
+  *prosecuted* (a grave offence is public), or *burnout*. A careful player finishes the year; a
+  reckless one is usually gone within a few months. A bad year alone is never a firing.
+- **Debrief:** every run ends with a review: how it ended, the chain from what you did to what came
+  back, what each thing teaches, and the workplace vocabulary you met. Glossary words (24 so far)
+  are tappable inside the scenes where they appear.
 
 Run it headless with `pnpm exec tsx tools/sim-runner/src/cli.ts run --scenario sales-year --seed 7`
-(`sales-week` scripts just the first three scenes), or play it in the browser.
+(`--policy first` plays carefully, `--policy last` recklessly; `sales-week` scripts just the first
+three scenes), or play it in the browser.
