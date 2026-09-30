@@ -65,6 +65,8 @@ export interface Role {
   overhead_hours?: number;
   /** Month-end close steps this job performs each month (finance); leave out for jobs without one. */
   close_steps?: string[];
+  /** How many events the random pool supplies each week, inclusive (default 1 to 2). Sets how eventful the job feels. */
+  events_per_week?: [number, number];
   reports_to?: string;
   kpis?: { id: string; weight: number }[];
   weekly_demand?: { task: string; per_week: [number, number]; effort_h: number }[];

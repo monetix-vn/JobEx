@@ -95,6 +95,12 @@ export const roleSchema = {
     title_key: { type: 'string' },
     blurb_key: { type: 'string' },
     overhead_hours: { type: 'number', minimum: 0, maximum: 60 },
+    events_per_week: {
+      type: 'array',
+      items: { type: 'integer', minimum: 0, maximum: 4 },
+      minItems: 2,
+      maxItems: 2,
+    },
     close_steps: {
       type: 'array',
       items: { type: 'string', pattern: '^[a-z][a-z0-9_]*$' },

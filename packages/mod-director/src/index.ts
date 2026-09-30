@@ -179,7 +179,10 @@ export function createModule(host: ModuleHost): ModuleInstance {
         }
 
         // 3. Fill the rest of the week from the pool, by weight, without replacement.
-        const wanted = host.rng.int(minPerWeek, maxPerWeek);
+        // A job can set its own pace (`events_per_week` on the role); otherwise the director's setting.
+        const role = content.get('role', String(world.get('player.role') ?? ''));
+        const [lo, hi] = role?.events_per_week ?? [minPerWeek, maxPerWeek];
+        const wanted = host.rng.int(lo, hi);
         const pool = content
           .all('event')
           .filter((e) => !taken.has(e.id) && !e.beat && (e.weight ?? 1) > 0)

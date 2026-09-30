@@ -16,7 +16,7 @@ describe('Phase 1 block C: detection, endings and the debrief', () => {
       const { log } = await play('sales-year', `${policy}-${i}`, 'en', undefined, { policy });
       const ending = endingOf(log);
       counts[ending] = (counts[ending] ?? 0) + 1;
-      if (ending !== 'completed') early.push(log.turns);
+      if (ending !== 'completed' && ending !== 'promoted') early.push(log.turns);
     }
     early.sort((a, b) => a - b);
     return { counts, early, median: early[Math.floor(early.length / 2)] };
@@ -24,7 +24,9 @@ describe('Phase 1 block C: detection, endings and the debrief', () => {
 
   it('a careful player finishes the year; a reckless one does not (first-cut balance guard)', async () => {
     const careful = await batch('first', 20);
-    expect(careful.counts.completed).toBeGreaterThanOrEqual(19);
+    expect((careful.counts.completed ?? 0) + (careful.counts.promoted ?? 0)).toBeGreaterThanOrEqual(
+      19,
+    );
     const reckless = await batch('last', 20);
     expect(reckless.early.length).toBeGreaterThanOrEqual(19);
     expect(reckless.median).toBeGreaterThan(8);
@@ -142,11 +144,13 @@ describe('Phase 1 block C: detection, endings and the debrief', () => {
   it('audit weeks come at the quarter ends and each one shows the player a notice', async () => {
     const { log } = await play('sales-year', 'first-0', 'en', undefined, { policy: 'first' });
     const weeks = of(log, 'risk.auditStarted').map((e) => snapshotForTurn(e.turn).week_of_year);
-    expect(weeks).toEqual([12, 25, 38, 51]);
+    // A careful player may be promoted in week 51, before the last audit week comes round.
+    expect(weeks.slice(0, 3)).toEqual([12, 25, 38]);
+    expect(weeks.length).toBeGreaterThanOrEqual(3);
     const notices = of(log, 'scene.started').filter((e) =>
       (e.payload as { sceneId: string }).sceneId.startsWith('notice.risk.audit'),
     );
-    expect(notices).toHaveLength(4);
+    expect(notices).toHaveLength(weeks.length);
   });
 
   it('glossary words ride along with scenes that have them, and every term resolves', async () => {

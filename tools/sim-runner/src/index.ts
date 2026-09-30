@@ -8,6 +8,7 @@ export {
   type CheckReport,
   type HeadlessOptions,
 } from './runner';
+export { balanceMarkdown, balanceStats, type PolicyStats } from './balance';
 export {
   FIN_ROLE,
   QC_ROLE,

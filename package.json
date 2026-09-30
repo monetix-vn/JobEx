@@ -31,6 +31,7 @@
     "new:scene": "node scripts/new-scene.mjs",
     "prepare": "node scripts/install-hooks.mjs",
     "sim:qc": "tsx tools/sim-runner/src/cli.ts check --seed 2026 --scenario qc-year --content content",
+    "balance:report": "node scripts/balance-report.mjs",
     "sim:fin": "tsx tools/sim-runner/src/cli.ts check --seed 2026 --scenario fin-year --content content"
   },
   "devDependencies": {

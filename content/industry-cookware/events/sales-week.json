@@ -479,18 +479,27 @@
     "when": {
       "all": [
         {
-          "gte": [
+          "gte": ["player.rep.boss", 55]
+        },
+        {
+          "any": [
             {
-              "var": ["rel.bao.trust", 0]
+              "gte": [
+                {
+                  "var": ["rel.bao.trust", 0]
+                },
+                10
+              ]
             },
-            20
+            {
+              "gte": [
+                {
+                  "var": ["rel.anders.trust", 0]
+                },
+                15
+              ]
+            }
           ]
-        },
-        {
-          "gte": ["player.rep.boss", 58]
-        },
-        {
-          "gte": ["player.rep.buyer", 55]
         }
       ]
     },

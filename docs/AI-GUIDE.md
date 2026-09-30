@@ -74,6 +74,7 @@ pnpm content:list [--role qc] [--facts]
 pnpm author <file.yml> [--dry-run] # import scenes/facts/terms (EN+VI) and validate
 pnpm new:scene <key> [--prefix qc] # scaffold a scene by hand instead
 pnpm pin:update                    # after intended behaviour changes
+pnpm balance:report                # regenerate docs/BALANCE.md (how test players fare in each job)
 pnpm build:play                    # rebuild JobEx-play.html
 ```
 

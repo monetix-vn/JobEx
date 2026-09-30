@@ -17,6 +17,7 @@ pnpm new:scene <key> [--prefix qc]   # scaffold a scene + event + EN/VI keys (pr
 pnpm author <file.yml> [--dry-run]   # import YAML scenes/facts/terms (EN+VI), then validate; see docs/AUTHORING.md
 pnpm content:list [--role qc] [--facts]   # the event library at a glance
 pnpm validate:packs        # content validation only
+pnpm balance:report        # docs/BALANCE.md: endings, decisions, stress per job for careful/random/reckless bots
 pnpm build:play            # rebuild JobEx-play.html (one-click game; play.bat opens it)
 ```
 

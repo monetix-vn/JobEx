@@ -769,7 +769,8 @@ scene: sales.manager_offer
 place: meeting_room
 tags: [people, promotion, beat]
 beat: 51-52
-when: [rel.bao.trust >= 20, rep.boss >= 58, rep.buyer >= 55]
+when: [rep.boss >= 55]
+when_any: [rel.bao.trust >= 10, rel.anders.trust >= 15]
 lines:
   - who: char:bao
     en: 'I am being moved up to regional director at the end of the year. The directors asked who should run export sales. I named you. One condition: you will be asked, every quarter, to reach numbers that are not quite reachable. I need to know what you will do.'

@@ -58,7 +58,7 @@ Order matters; each item ships with tests and a docs/AUTHORING.md update.
 
 ## Phase 5: Quality and scale
 
-- [ ] Q1 Balance reports at scale (bulk runs per policy, stress/ending distributions per job)
+- [x] Q1 Balance reports at scale: `pnpm balance:report [--runs 40]` writes `docs/BALANCE.md` (endings, weeks, decisions, stress, storylines per job and test player); role field `events_per_week` sets a job's pace
 - [ ] Q2 Content lint in CI: decisions per year per job within target, every fact has a lesson, every arc reachable
 - [ ] Q3 Performance check for long runs
 - [ ] Q4 Practitioner review workflow (export a job's text to a reviewable document)

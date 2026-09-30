@@ -13,6 +13,7 @@ import {
   type BotOptions,
   type HeadlessOptions,
 } from './runner';
+import { balanceMarkdown } from './balance';
 import { loadScenario } from './scenario';
 
 const USAGE = `sim-runner: headless simulation runs
@@ -20,6 +21,7 @@ const USAGE = `sim-runner: headless simulation runs
   run    --seed <s> [--weeks 52] [--toy] [--out log.json]   run and summarise (stub modules)
   replay <log.json>                                         re-run a log, demand identical output
   check  --seed <s> [--weeks 52] [--toy]                    determinism gate (exit 1 on failure)
+  balance --scenario <name> [--runs 40] [--content content]  how careful, random and reckless players fare (markdown)
 
   --policy random|first|last   how the test player chooses: random, careful, or reckless
 
@@ -128,6 +130,15 @@ async function main(argv: string[]): Promise<number> {
       }
       for (const problem of report.problems) console.error(`FAIL: ${problem}`);
       return 1;
+    }
+    case 'balance': {
+      const scenario = flags.get('scenario');
+      if (!scenario) break;
+      const runs = Number(flags.get('runs') ?? 40);
+      console.log(
+        await balanceMarkdown(scenario, runs, resolve(flags.get('content') ?? 'content')),
+      );
+      return 0;
     }
     default:
   }

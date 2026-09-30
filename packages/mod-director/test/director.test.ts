@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { Arc, ContentView, Effect, EventDraft, GameEvent } from '@je/contracts';
+import type { Arc, ContentView, Effect, EventDraft, GameEvent, Role } from '@je/contracts';
 import { SeededRandom, runFixture } from '@je/kernel';
 import { directorModule, manifest, type DirectorConfig } from '../src';
 
@@ -8,13 +8,15 @@ const ev = (id: string, extra: Partial<GameEvent> = {}): GameEvent => ({
   scene: `scene.${id}`,
   ...extra,
 });
-const viewOf = (events: GameEvent[], arcs: Arc[] = []): ContentView => ({
+const viewOf = (events: GameEvent[], arcs: Arc[] = [], roles: Role[] = []): ContentView => ({
   get: ((kind: string, id: string) =>
     kind === 'event'
       ? events.find((e) => e.id === id)
       : kind === 'arc'
         ? arcs.find((a) => a.id === id)
-        : undefined) as never,
+        : kind === 'role'
+          ? roles.find((r) => r.id === id)
+          : undefined) as never,
   all: ((kind: string) => (kind === 'event' ? events : kind === 'arc' ? arcs : [])) as never,
   text: () => undefined,
 });
@@ -52,6 +54,7 @@ function driver(
   cfg: Partial<DirectorConfig> = {},
   seed = 'drv',
   arcs: Arc[] = [],
+  roles: Role[] = [],
 ) {
   let turn = 0;
   const instance = directorModule.createModule({
@@ -59,7 +62,7 @@ function driver(
     rng: new SeededRandom(seed).stream('director'),
     clock: { now: () => ({ turn, year: 0, week_of_year: 0, month_of_year: 1, quarter: 1 }) },
     ports: {} as never,
-    config: { content: viewOf(events, arcs), ...cfg },
+    config: { content: viewOf(events, arcs, roles), ...cfg },
   });
   const envelope = (type: string, payload: unknown) => ({
     id: 'e',
@@ -76,7 +79,7 @@ function driver(
       return ids(this.planAll(at));
     },
     /** Tells the director what the world looks like now. */
-    state(vars: Record<string, number>): void {
+    state(vars: Record<string, number | string>): void {
       instance.handlers['sim.stateChanged']!(envelope('sim.stateChanged', { full: false, vars }));
     },
     /** Like plan, but returns every draft (arc events included). */
@@ -228,6 +231,32 @@ describe('director: scheduled consequences', () => {
     });
     d.resolve(0, [{ schedule: 'event.later', delay_weeks: [1, 1] }]);
     expect(d.plan(1)).toEqual(['event.later']);
+  });
+});
+
+describe('director: a job sets its own pace', () => {
+  const pool = ['a', 'b', 'c', 'd', 'e'].map((x) => ev(`event.${x}`));
+  const role = (events_per_week?: [number, number]): Role => ({
+    id: 'role.x',
+    department: 'd',
+    level: 1,
+    title_key: 't',
+    ...(events_per_week ? { events_per_week } : {}),
+  });
+  const counts = (roles: Role[], cfg: Partial<DirectorConfig> = {}) => {
+    const d = driver(pool, { defaultCooldownWeeks: 0, ...cfg }, 'pace', [], roles);
+    d.state({ 'player.role': 'role.x' });
+    return Array.from({ length: 30 }, (_, i) => d.plan(i).length);
+  };
+
+  it('uses the role setting over the director setting', () => {
+    expect(new Set(counts([role([1, 1])], { eventsPerWeek: [2, 2] }))).toEqual(new Set([1]));
+    expect(new Set(counts([role([3, 3])]))).toEqual(new Set([3]));
+  });
+
+  it('falls back to the director setting when the role has none or is unknown', () => {
+    expect(new Set(counts([role()], { eventsPerWeek: [2, 2] }))).toEqual(new Set([2]));
+    expect(new Set(counts([], { eventsPerWeek: [2, 2] }))).toEqual(new Set([2]));
   });
 });
 
