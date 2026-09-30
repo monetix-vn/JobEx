@@ -1,6 +1,6 @@
 # Status (update this at the end of every block)
 
-Last updated after the QC Specialist role. Repo: github.com/monetix-vn/JobEx.
+Last updated after the authoring toolchain. Repo: github.com/monetix-vn/JobEx.
 
 ## Done
 
@@ -11,12 +11,14 @@ Last updated after the QC Specialist role. Repo: github.com/monetix-vn/JobEx.
 - Phase 1 block C: risk (detectors, audits, scapegoating, endings), education (debrief, glossary).
 - Second job: QC Specialist (10 pressure events, 2 consequence events, 21 facts, 11 terms), a job picker,
   per-job events (`role`) and busyness (`overhead_hours`).
+- Authoring: write scenes/facts/terms in YAML (EN+VI together), `pnpm author` imports + validates,
+  `pnpm content:list` is the event library (docs/AUTHORING.md, example in `content-src/examples/`).
 - Playable in the browser: `play.bat` / `play-vi.bat` (pick a job; sales 18 events, QC 12).
 
 ## Branches
 
 `main` (Phase 0) <- `phase-1-block-a` <- `phase-1-block-c` <- `chore/dev-workflow` <-
-`phase-1-qc-role` (this). No PRs opened yet. Block B commits are inside `phase-1-block-a`/`c` history.
+`phase-1-qc-role` <- `feature/authoring` (this). No PRs opened yet. Block B commits are inside `phase-1-block-a`/`c` history.
 
 ## Next (in order)
 

@@ -1,0 +1,363 @@
+// Writer-friendly authoring: one YAML entry per scene (English and Vietnamese side by side) becomes
+// the scene, its event and its text keys in the content pack. Facts and glossary terms work the same
+// way. Importing the same entry again updates it in place. Pure compile functions plus one writer.
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
+import YAML from 'yaml';
+
+const ROLE_BY_PREFIX = { sales: 'role.sales.export.specialist', qc: 'role.qc.specialist' };
+const ROLE_SHORTCUTS = { ...ROLE_BY_PREFIX };
+const VARIABLE_ALIASES = {
+  stress: 'player.stress',
+  energy: 'player.energy',
+  health: 'player.health',
+  cash: 'player.cash_vnd',
+  month: 'world.month_of_year',
+  quarter: 'world.quarter',
+  week: 'world.week_of_year',
+  turn: 'world.turn',
+};
+const COMPARE = {
+  '>=': 'gte',
+  '>': 'gt',
+  '<=': 'lte',
+  '<': 'lt',
+  '=': 'eq',
+  '==': 'eq',
+  '!=': 'neq',
+};
+
+const NUMBER = /^[+-]?\d+(\.\d+)?$/;
+const num = (text) => Number(String(text).replace(/^\+/, ''));
+
+/** "rep.boss" -> "player.rep.boss", "stress" -> "player.stress"; dotted engine paths pass through. */
+export function resolveVariable(name) {
+  if (VARIABLE_ALIASES[name]) return VARIABLE_ALIASES[name];
+  if (name.startsWith('rep.')) return `player.${name}`;
+  return name;
+}
+
+/** Facts and skills may not exist yet, so conditions on them read 0 until they do. */
+function variable(path) {
+  return path.startsWith('fact.') || path.startsWith('skill.') ? { var: [path, 0] } : path;
+}
+
+/**
+ * One condition line: "stress >= 40", "month in 3 6 9 12", "fact.came_clean < 2", "rep.boss <= 10".
+ * Returns an expression tree for the rules engine.
+ */
+export function compileCondition(line) {
+  const text = String(line).trim();
+  const inMatch = /^(\S+)\s+in\s+(.+)$/.exec(text);
+  if (inMatch) {
+    const values = inMatch[2].split(/[\s,]+/).filter(Boolean);
+    if (values.length === 0 || !values.every((v) => NUMBER.test(v))) {
+      throw new Error(`condition "${text}": "in" needs numbers, like: month in 3 6 9 12`);
+    }
+    return { in: [variable(resolveVariable(inMatch[1])), ...values.map(num)] };
+  }
+  const match = /^(\S+)\s*(>=|<=|!=|==|>|<|=)\s*(\S+)$/.exec(text);
+  if (!match) {
+    throw new Error(`condition "${text}" is not understood; write it like: stress >= 40`);
+  }
+  const [, name, op, value] = match;
+  if (!NUMBER.test(value)) {
+    throw new Error(`condition "${text}": the value must be a number`);
+  }
+  return { [COMPARE[op]]: [variable(resolveVariable(name)), num(value)] };
+}
+
+function compileConditions(all, any) {
+  const parts = (all ?? []).map(compileCondition);
+  if (any && any.length > 0) parts.push({ any: any.map(compileCondition) });
+  if (parts.length === 0) return undefined;
+  return parts.length === 1 ? parts[0] : { all: parts };
+}
+
+/**
+ * One effect line: "rep.boss +5", "stress -3", "cash +3000000", "delta company.audit_readiness -5",
+ * "fact accepted_kickback private", "schedule event.qc.recall_review 4-6".
+ */
+export function compileEffect(line) {
+  const words = String(line).trim().split(/\s+/);
+  const [head, ...rest] = words;
+  if (head === 'fact') {
+    const [name, visibility] = rest;
+    if (!name || !['private', 'witnessed', 'rumor', 'public'].includes(visibility ?? '')) {
+      throw new Error(
+        `effect "${line}": write it like: fact accepted_kickback private (private, witnessed, rumor or public)`,
+      );
+    }
+    return { fact: name.startsWith('fact.') ? name : `fact.${name}`, visibility };
+  }
+  if (head === 'schedule') {
+    const [target, range] = rest;
+    const match = /^(\d+)-(\d+)$/.exec(range ?? '');
+    if (!target || !match)
+      throw new Error(`effect "${line}": write it like: schedule event.qc.x 4-6`);
+    return { schedule: target, delay_weeks: [Number(match[1]), Number(match[2])] };
+  }
+  const path = head === 'delta' ? rest[0] : head;
+  const amount = head === 'delta' ? rest[1] : rest[0];
+  if (!path || amount === undefined || !NUMBER.test(amount)) {
+    throw new Error(`effect "${line}" is not understood; write it like: rep.boss +5`);
+  }
+  return { delta: resolveVariable(path), value: num(amount) };
+}
+
+function need(problems, where, value, what) {
+  if (typeof value !== 'string' || value.trim() === '') problems.push(`${where}: missing ${what}`);
+}
+
+/** Compiles a `scene:` entry into { scene, event, en, vi }. Throws one error listing every problem. */
+export function compileScene(entry) {
+  const problems = [];
+  const match = /^([a-z]+)\.([a-z][a-z0-9_]*)$/.exec(entry.scene ?? '');
+  if (!match)
+    throw new Error(`scene id "${entry.scene}" must look like sales.new_thing or qc.new_thing`);
+  const [, prefix, key] = match;
+  const sid = `scene.${prefix}.${key}`;
+  const here = `scene ${entry.scene}`;
+  const en = {};
+  const vi = {};
+  const both = (textKey, where, source) => {
+    need(problems, where, source?.en, 'English text (en)');
+    need(problems, where, source?.vi, 'Vietnamese text (vi)');
+    en[textKey] = String(source?.en ?? '').trim();
+    vi[textKey] = String(source?.vi ?? '').trim();
+  };
+
+  const lines = entry.lines ?? [];
+  if (lines.length === 0) problems.push(`${here}: needs at least one line`);
+  const speakers = [];
+  const sceneLines = lines.map((line, i) => {
+    need(problems, `${here} line ${i + 1}`, line.who, 'who (the speaker, e.g. boss)');
+    both(`${sid}.l${i + 1}`, `${here} line ${i + 1}`, line);
+    speakers.push(line.who);
+    return { speaker: `role:${line.who}`, text_key: `${sid}.l${i + 1}` };
+  });
+
+  const choices = entry.choices ?? [];
+  if (choices.length === 0) problems.push(`${here}: needs at least one choice`);
+  const sceneChoices = choices.map((choice, ci) => {
+    const cid = `c${ci + 1}`;
+    const cwhere = `${here} choice ${ci + 1}`;
+    both(`${sid}.${cid}`, cwhere, choice);
+    const outcomes = choice.outcomes ?? [];
+    if (outcomes.length === 0) problems.push(`${cwhere}: needs at least one outcome`);
+    const results = outcomes.map((o) => (o.ok === false || o.result === 'fail' ? 'fail' : 'ok'));
+    const total = outcomes.reduce((sum, o) => sum + Number(o.p ?? 0), 0);
+    if (outcomes.length > 0 && Math.abs(total - 1) > 0.001) {
+      problems.push(
+        `${cwhere}: outcome probabilities add up to ${Math.round(total * 1000) / 1000}, they must add up to 1`,
+      );
+    }
+    const compiled = outcomes.map((o, oi) => {
+      const owhere = `${cwhere} outcome ${oi + 1}`;
+      const dupes = results.filter((r) => r === results[oi]).length > 1;
+      const name = dupes ? `${results[oi]}${oi + 1}` : results[oi];
+      both(`${sid}.${cid}.${name}`, owhere, o);
+      let effects;
+      try {
+        effects = (o.effects ?? []).map(compileEffect);
+      } catch (error) {
+        problems.push(`${owhere}: ${error.message}`);
+      }
+      return {
+        p: Number(o.p),
+        ...(results[oi] === 'fail' ? { result: 'fail' } : {}),
+        narration_key: `${sid}.${cid}.${name}`,
+        ...(effects && effects.length > 0 ? { effects } : {}),
+      };
+    });
+    let requires;
+    try {
+      requires = compileConditions(choice.requires, undefined);
+    } catch (error) {
+      problems.push(`${cwhere}: ${error.message}`);
+    }
+    return {
+      id: cid,
+      text_key: `${sid}.${cid}`,
+      ...(choice.cost ? { cost: choice.cost } : {}),
+      ...(requires ? { requires } : {}),
+      outcomes: compiled,
+    };
+  });
+
+  let when;
+  try {
+    when = entry.when_raw ?? compileConditions(entry.when, entry.when_any);
+  } catch (error) {
+    problems.push(`${here}: ${error.message}`);
+  }
+  const terms = (entry.terms ?? []).map((t) => (String(t).startsWith('term.') ? t : `term.${t}`));
+  const role =
+    entry.role === 'any'
+      ? undefined
+      : (ROLE_SHORTCUTS[entry.role] ?? entry.role ?? ROLE_BY_PREFIX[prefix]);
+
+  if (problems.length > 0) throw new Error(problems.join('\n'));
+  return {
+    file: `${prefix}-${key.replace(/_/g, '-')}.json`,
+    prefix,
+    scene: {
+      id: sid,
+      location: `loc.${entry.place ?? 'meeting_room'}`,
+      cast: [...new Set(speakers)].map((s) => `role:${s}`),
+      lines: sceneLines,
+      choices: sceneChoices,
+      ...(terms.length > 0 ? { terms } : {}),
+    },
+    event: {
+      id: `event.${prefix}.${key}`,
+      ...(role ? { role } : {}),
+      tags: entry.tags ?? ['pressure'],
+      ...(when ? { when } : {}),
+      weight: entry.weight ?? 1,
+      cooldown_weeks: entry.cooldown ?? 12,
+      scene: sid,
+    },
+    en,
+    vi,
+  };
+}
+
+/** Compiles a `fact:` entry into { fact, en, vi }. */
+export function compileFact(entry) {
+  const problems = [];
+  const name = String(entry.fact ?? '').replace(/^fact\./, '');
+  if (!/^[a-z][a-z0-9_]*$/.test(name))
+    throw new Error(`fact name "${entry.fact}" must be lower snake_case`);
+  const id = `fact.${name}`;
+  const en = {};
+  const vi = {};
+  need(problems, `fact ${name}`, entry.en, 'English label (en)');
+  need(problems, `fact ${name}`, entry.vi, 'Vietnamese label (vi)');
+  en[id] = String(entry.en ?? '');
+  vi[id] = String(entry.vi ?? '');
+  const fact = {
+    id,
+    category: entry.category ?? 'integrity',
+    severity: entry.severity,
+    text_key: id,
+  };
+  if (entry.lesson) {
+    need(problems, `fact ${name} lesson`, entry.lesson.en, 'English lesson');
+    need(problems, `fact ${name} lesson`, entry.lesson.vi, 'Vietnamese lesson');
+    fact.lesson_key = `lesson.${name}`;
+    en[fact.lesson_key] = String(entry.lesson.en ?? '');
+    vi[fact.lesson_key] = String(entry.lesson.vi ?? '');
+  }
+  if (entry.traces) fact.traces = entry.traces;
+  const consequences = {};
+  if (entry.witnessed) consequences.witnessed = entry.witnessed;
+  if (entry.public) consequences.public = entry.public;
+  if (Object.keys(consequences).length > 0) fact.consequences = consequences;
+  if (problems.length > 0) throw new Error(problems.join('\n'));
+  return { fact, en, vi };
+}
+
+/** Compiles a `term:` entry into { term, en, vi }. */
+export function compileTerm(entry) {
+  const problems = [];
+  const name = String(entry.term ?? '').replace(/^term\./, '');
+  if (!/^[a-z][a-z0-9_]*$/.test(name))
+    throw new Error(`term name "${entry.term}" must be lower snake_case`);
+  for (const lang of ['en', 'vi']) {
+    need(problems, `term ${name} (${lang})`, entry[lang]?.term, 'term');
+    need(problems, `term ${name} (${lang})`, entry[lang]?.definition, 'definition');
+  }
+  if (problems.length > 0) throw new Error(problems.join('\n'));
+  const id = `term.${name}`;
+  return {
+    term: { id, term_key: `${id}.term`, definition_key: `${id}.def` },
+    en: { [`${id}.term`]: entry.en.term, [`${id}.def`]: entry.en.definition },
+    vi: { [`${id}.term`]: entry.vi.term, [`${id}.def`]: entry.vi.definition },
+  };
+}
+
+const readJson = (path, fallback) =>
+  existsSync(path) ? JSON.parse(readFileSync(path, 'utf8')) : fallback;
+const writeJson = (path, value) => {
+  writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`);
+};
+const upsert = (list, item) => {
+  const i = list.findIndex((x) => x.id === item.id);
+  if (i >= 0) list[i] = item;
+  else list.push(item);
+  return i >= 0 ? 'updated' : 'added';
+};
+
+/** Parses YAML text (one or more documents) into entries. */
+export function parseEntries(text, source = 'input') {
+  return YAML.parseAllDocuments(text).flatMap((doc, i) => {
+    if (doc.errors.length > 0)
+      throw new Error(`${source}, document ${i + 1}: ${doc.errors[0].message}`);
+    const value = doc.toJS();
+    return value ? [value] : [];
+  });
+}
+
+/**
+ * Compiles every entry first (so a mistake in any of them changes nothing), then writes the content
+ * files. Returns one report line per entry.
+ */
+export function applyEntries(entries, { root = '.', pack = 'industry-cookware' } = {}) {
+  const base = join(root, 'content', pack);
+  if (!existsSync(join(base, 'manifest.json'))) throw new Error(`no pack at ${base}`);
+
+  const compiled = entries.map((entry, i) => {
+    try {
+      if (entry.scene) return { kind: 'scene', ...compileScene(entry), name: entry.scene };
+      if (entry.fact) return { kind: 'fact', ...compileFact(entry), name: entry.fact };
+      if (entry.term) return { kind: 'term', ...compileTerm(entry), name: entry.term };
+      throw new Error('an entry needs one of: scene, fact, term');
+    } catch (error) {
+      throw new Error(`entry ${i + 1}:\n${error.message}`);
+    }
+  });
+
+  const locales = {
+    en: readJson(join(base, 'locale', 'en.json'), {}),
+    vi: readJson(join(base, 'locale', 'vi.json'), {}),
+  };
+  const report = [];
+  for (const dir of ['scenes', 'events', 'facts', 'terms', 'locale'])
+    mkdirSync(join(base, dir), { recursive: true });
+
+  for (const item of compiled) {
+    for (const lang of ['en', 'vi']) {
+      if (item.kind === 'scene') {
+        // Drop the scene's old text first, so a removed line or choice does not leave stale keys.
+        for (const k of Object.keys(locales[lang]))
+          if (k.startsWith(`${item.scene.id}.`)) delete locales[lang][k];
+      }
+      Object.assign(locales[lang], item[lang]);
+    }
+    let how;
+    if (item.kind === 'scene') {
+      const sceneFile = join(base, 'scenes', item.file);
+      how = existsSync(sceneFile) ? 'updated' : 'added';
+      writeJson(sceneFile, item.scene);
+      const eventsFile = join(base, 'events', `${item.prefix}-week.json`);
+      const events = readJson(eventsFile, []);
+      upsert(events, item.event);
+      writeJson(eventsFile, events);
+    } else if (item.kind === 'fact') {
+      const file = join(base, 'facts', 'authored.json');
+      const facts = readJson(file, []);
+      how = upsert(facts, item.fact);
+      writeJson(file, facts);
+    } else {
+      const file = join(base, 'terms', 'authored.json');
+      const terms = readJson(file, []);
+      how = upsert(terms, item.term);
+      writeJson(file, terms);
+    }
+    report.push(`${how} ${item.kind} ${item.name}`);
+  }
+  writeJson(join(base, 'locale', 'en.json'), locales.en);
+  writeJson(join(base, 'locale', 'vi.json'), locales.vi);
+  return report;
+}

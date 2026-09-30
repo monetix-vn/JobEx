@@ -1,0 +1,62 @@
+# Template: copy this file, edit it, then run:  pnpm author content-src/my-scenes.yml
+# Every text needs both en and vi. See docs/AUTHORING.md for the full list of options.
+scene: qc.rush_release
+role: qc
+place: qc_lab
+tags: [quality, release, pressure]
+weight: 1
+cooldown: 12
+when:
+  - turn >= 6
+  - stress < 90
+terms: [coa]
+lines:
+  - who: production_lead
+    en: 'We ship this lot tonight. The CoA is a formality, sign it off.'
+    vi: 'Tối nay lô này phải xuất. Giấy CoA chỉ là thủ tục, anh ký đi.'
+  - who: qc_lead
+    en: 'Your call. Whatever you sign, your name is on it.'
+    vi: 'Anh tự quyết. Anh ký gì thì tên anh nằm trên đó.'
+choices:
+  # c1 by the book, c2 a legitimate compromise, c3 the shortcut (the order the bots rely on)
+  - en: 'Refuse to sign until the retest is done.'
+    vi: 'Từ chối ký cho đến khi có kết quả kiểm lại.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.8
+        en: 'The retest passes. Production grumbles but ships the next morning.'
+        vi: 'Kiểm lại đạt. Bên sản xuất càu nhàu nhưng sáng hôm sau vẫn xuất hàng.'
+        effects: [rep.qc +2, rep.production -2]
+      - p: 0.2
+        ok: false
+        en: 'The retest fails. The lot is held and everyone is angry.'
+        vi: 'Kiểm lại không đạt. Lô hàng bị giữ và ai cũng bực.'
+        effects: [rep.production -4, stress +3]
+  - en: 'Sign for the tested samples only, and note the gap.'
+    vi: 'Chỉ ký cho các mẫu đã kiểm và ghi chú phần còn thiếu.'
+    outcomes:
+      - p: 1
+        en: 'The note keeps you covered, and the boss appreciates the paper trail.'
+        vi: 'Ghi chú giúp anh được bảo vệ, sếp đánh giá cao việc có giấy tờ.'
+        effects: [rep.boss +3, rep.production -1]
+  - en: 'Sign it as asked.'
+    vi: 'Ký như được yêu cầu.'
+    outcomes:
+      - p: 1
+        en: 'Shipped on time. You hope nobody ever asks for the test records.'
+        vi: 'Xuất đúng hạn. Anh mong sẽ không ai đòi hồ sơ kiểm nghiệm.'
+        effects: [rep.production +4, fact signed_untested_coa private]
+---
+fact: signed_untested_coa
+severity: 4
+category: integrity
+en: 'You signed a certificate of analysis for a lot that was not fully tested.'
+vi: 'Bạn đã ký giấy chứng nhận phân tích cho lô hàng chưa được kiểm nghiệm đầy đủ.'
+lesson:
+  en: 'A signature on a CoA is a personal statement that the testing was done.'
+  vi: 'Chữ ký trên CoA là lời xác nhận cá nhân rằng việc kiểm nghiệm đã được thực hiện.'
+witnessed:
+  production: -2
+public:
+  boss: -6
+  buyer: -8

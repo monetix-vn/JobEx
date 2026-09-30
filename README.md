@@ -48,6 +48,8 @@ pnpm run ci            # the same, with full output
 pnpm format            # format only changed files (a pre-commit hook does this too)
 pnpm pin:update        # re-pin golden fingerprints after an intended behaviour change
 pnpm new:scene <key>   # scaffold a scene, its event and EN/VI text keys
+pnpm author <file.yml>   # add scenes/facts/terms written in YAML (docs/AUTHORING.md)
+pnpm content:list       # list every event, its job and trigger
 pnpm test              # unit, property and fixture tests
 pnpm check:boundaries  # dependency rules
 pnpm validate:packs    # validate ./content

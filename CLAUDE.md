@@ -12,6 +12,8 @@ pnpm test -- <path>        # one test file, e.g. packages/mod-risk
 pnpm run ci:quiet          # the full CI, one line per step, output only for failures
 pnpm pin:update            # re-pin golden fingerprints after an intended behaviour change
 pnpm new:scene <key> [--prefix qc]   # scaffold a scene + event + EN/VI keys (prefix binds it to a job)
+pnpm author <file.yml> [--dry-run]   # import YAML scenes/facts/terms (EN+VI), then validate; see docs/AUTHORING.md
+pnpm content:list [--role qc] [--facts]   # the event library at a glance
 pnpm validate:packs        # content validation only
 pnpm build:play            # rebuild JobEx-play.html (one-click game; play.bat opens it)
 ```
