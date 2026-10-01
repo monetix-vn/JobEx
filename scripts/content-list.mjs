@@ -10,7 +10,12 @@ const opt = (name) => {
   return i >= 0 ? args[i + 1] : undefined;
 };
 const root = opt('dir') ?? 'content';
-const SHORT = { 'role.sales.export.specialist': 'sales', 'role.qc.specialist': 'qc' };
+const SHORT = {
+  'role.sales.export.specialist': 'sales',
+  'role.qc.specialist': 'qc',
+  'role.fin.accountant': 'fin',
+  'role.prod.planner': 'prod',
+};
 const ALIAS = {
   'player.stress': 'stress',
   'player.energy': 'energy',

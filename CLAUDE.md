@@ -18,6 +18,7 @@ pnpm author <file.yml> [--dry-run]   # import YAML scenes/facts/terms (EN+VI), t
 pnpm content:list [--role qc] [--facts]   # the event library at a glance
 pnpm validate:packs        # content validation only
 pnpm balance:report        # docs/BALANCE.md: endings, decisions, stress per job for careful/random/reckless bots
+pnpm review:export         # docs/review/<job>.md: every scene EN+VI for a practitioner to review
 pnpm build:play            # rebuild JobEx-play.html (one-click game; play.bat opens it)
 ```
 
