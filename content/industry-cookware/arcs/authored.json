@@ -233,5 +233,85 @@
         "delay_weeks": [4, 8]
       }
     ]
+  },
+  {
+    "id": "arc.the_promise",
+    "title_key": "arc.the_promise.title",
+    "stages": [
+      {
+        "id": "request",
+        "event": "event.prod.impossible_date"
+      },
+      {
+        "id": "shifts",
+        "event": "event.prod.extra_shifts",
+        "delay_weeks": [1, 2]
+      },
+      {
+        "id": "guard",
+        "event": "event.prod.guard_off_today",
+        "delay_weeks": [1, 2]
+      },
+      {
+        "id": "nearmiss",
+        "event": "event.prod.near_miss",
+        "delay_weeks": [1, 2]
+      }
+    ]
+  },
+  {
+    "id": "arc.deferred_maintenance",
+    "title_key": "arc.deferred_maintenance.title",
+    "stages": [
+      {
+        "id": "request",
+        "event": "event.prod.maintenance_request"
+      },
+      {
+        "id": "defer",
+        "event": "event.prod.maintenance_defer",
+        "delay_weeks": [2, 3]
+      },
+      {
+        "id": "breakdown",
+        "event": "event.prod.breakdown",
+        "delay_weeks": [6, 10]
+      }
+    ]
+  },
+  {
+    "id": "arc.phuc",
+    "title_key": "arc.phuc.title",
+    "stages": [
+      {
+        "id": "training",
+        "event": "event.prod.phuc_training"
+      },
+      {
+        "id": "alone",
+        "event": "event.prod.phuc_unsupervised",
+        "delay_weeks": [8, 14]
+      },
+      {
+        "id": "incident",
+        "event": "event.prod.phuc_incident",
+        "delay_weeks": [1, 3]
+      }
+    ]
+  },
+  {
+    "id": "arc.materials",
+    "title_key": "arc.materials.title",
+    "stages": [
+      {
+        "id": "late",
+        "event": "event.prod.material_late"
+      },
+      {
+        "id": "cover",
+        "event": "event.prod.stockout_cover",
+        "delay_weeks": [1, 2]
+      }
+    ]
   }
 ]

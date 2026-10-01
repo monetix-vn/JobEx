@@ -43,6 +43,7 @@ jobs:
       # 6c. The second job (QC Specialist) on the same engine
       - run: pnpm sim:qc
       - run: pnpm sim:fin
+      - run: pnpm sim:prod
 
       # 7. Build the web client shell
       - run: pnpm build:web

@@ -1,0 +1,189 @@
+{
+  "id": "scene.prod.impossible_date",
+  "location": "loc.meeting_room",
+  "cast": ["char:bao", "char:lan"],
+  "lines": [
+    {
+      "speaker": "char:bao",
+      "text_key": "scene.prod.impossible_date.l1"
+    },
+    {
+      "speaker": "char:lan",
+      "text_key": "scene.prod.impossible_date.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.prod.impossible_date.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.prod.impossible_date.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.kiet.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.the_promise",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.prod.impossible_date.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.kiet.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.the_promise",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.prod.impossible_date.c2",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.prod.impossible_date.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.kiet.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.the_promise",
+              "stage": "shifts"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.prod.impossible_date.c3",
+      "outcomes": [
+        {
+          "p": 0.85,
+          "narration_key": "scene.prod.impossible_date.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 6
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.kiet.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.planned_unrealistic_shifts",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_promise",
+              "stage": "shifts"
+            }
+          ]
+        },
+        {
+          "p": 0.15,
+          "result": "fail",
+          "narration_key": "scene.prod.impossible_date.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.kiet.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.planned_unrealistic_shifts",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_promise",
+              "stage": "shifts"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "id": "scene.prod.pre_tet_crunch",
+  "location": "loc.meeting_room",
+  "cast": ["char:bao"],
+  "lines": [
+    {
+      "speaker": "char:bao",
+      "text_key": "scene.prod.pre_tet_crunch.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.prod.pre_tet_crunch.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.75,
+          "narration_key": "scene.prod.pre_tet_crunch.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.kiet.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "p": 0.25,
+          "result": "fail",
+          "narration_key": "scene.prod.pre_tet_crunch.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.kiet.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.prod.pre_tet_crunch.c2",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.prod.pre_tet_crunch.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": -1
+            },
+            {
+              "delta": "rel.kiet.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.prod.pre_tet_crunch.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.prod.pre_tet_crunch.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 6
+            },
+            {
+              "delta": "rel.kiet.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.exceeded_overtime_limit",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.prod.pre_tet_crunch.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.kiet.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.exceeded_overtime_limit",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

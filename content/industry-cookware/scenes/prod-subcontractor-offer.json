@@ -1,0 +1,145 @@
+{
+  "id": "scene.prod.subcontractor_offer",
+  "location": "loc.sales_office",
+  "cast": ["char:bao"],
+  "lines": [
+    {
+      "speaker": "char:bao",
+      "text_key": "scene.prod.subcontractor_offer.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.prod.subcontractor_offer.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.prod.subcontractor_offer.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.prod.subcontractor_offer.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.prod.subcontractor_offer.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.prod.subcontractor_offer.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 0
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.prod.subcontractor_offer.c3",
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.prod.subcontractor_offer.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 6
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": -1
+            },
+            {
+              "fact": "fact.used_unapproved_subcontractor",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.prod.subcontractor_offer.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": -10
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.used_unapproved_subcontractor",
+              "visibility": "public"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

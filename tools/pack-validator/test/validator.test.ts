@@ -31,14 +31,14 @@ describe('pack validator', () => {
     const { registry, diagnostics } = await loadContent(directorySource(contentDir));
     expect(hasErrors(diagnostics)).toBe(false);
     expect(registry?.counts()).toEqual({
-      role: 6,
-      event: 129,
-      scene: 129,
+      role: 8,
+      event: 160,
+      scene: 160,
       offer: 3,
-      fact: 100,
+      fact: 125,
       term: 38,
-      character: 14,
-      arc: 13,
+      character: 18,
+      arc: 17,
     });
   });
 

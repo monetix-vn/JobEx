@@ -1,0 +1,163 @@
+{
+  "id": "scene.prod.breakdown",
+  "location": "loc.factory_floor",
+  "cast": ["char:mai", "char:lan"],
+  "lines": [
+    {
+      "speaker": "char:mai",
+      "text_key": "scene.prod.breakdown.l1"
+    },
+    {
+      "speaker": "char:lan",
+      "text_key": "scene.prod.breakdown.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.prod.breakdown.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.prod.breakdown.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.mai.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.kiet.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.owned_deferral",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.deferred_maintenance",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.prod.breakdown.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.prod.breakdown.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.mai.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.deferred_maintenance",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.prod.breakdown.c3",
+      "outcomes": [
+        {
+          "p": 0.4,
+          "narration_key": "scene.prod.breakdown.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.mai.trust",
+              "value": -20
+            },
+            {
+              "delta": "rel.mai.loyalty",
+              "value": -15
+            },
+            {
+              "delta": "rel.kiet.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.blamed_maintenance",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.deferred_maintenance",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.6,
+          "result": "fail",
+          "narration_key": "scene.prod.breakdown.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.mai.trust",
+              "value": -20
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -10
+            },
+            {
+              "delta": "rel.kiet.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -9
+            },
+            {
+              "delta": "player.stress",
+              "value": 8
+            },
+            {
+              "fact": "fact.blamed_maintenance",
+              "visibility": "public"
+            },
+            {
+              "arc": "arc.deferred_maintenance",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

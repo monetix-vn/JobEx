@@ -1,0 +1,110 @@
+{
+  "id": "scene.prod.first_week",
+  "location": "loc.factory_floor",
+  "cast": ["char:lan", "char:kiet"],
+  "lines": [
+    {
+      "speaker": "char:lan",
+      "text_key": "scene.prod.first_week.l1"
+    },
+    {
+      "speaker": "char:kiet",
+      "text_key": "scene.prod.first_week.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.prod.first_week.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.prod.first_week.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.prod.first_week.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.prod.first_week.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.prod.first_week.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.prod.first_week.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.prod.first_week.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

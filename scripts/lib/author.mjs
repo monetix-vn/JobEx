@@ -9,6 +9,7 @@ const ROLE_BY_PREFIX = {
   sales: 'role.sales.export.specialist',
   qc: 'role.qc.specialist',
   fin: 'role.fin.accountant',
+  prod: 'role.prod.planner',
 };
 const ROLE_SHORTCUTS = { ...ROLE_BY_PREFIX };
 const VARIABLE_ALIASES = {

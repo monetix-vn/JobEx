@@ -1,0 +1,130 @@
+{
+  "id": "scene.prod.maintenance_request",
+  "location": "loc.factory_floor",
+  "cast": ["char:mai"],
+  "lines": [
+    {
+      "speaker": "char:mai",
+      "text_key": "scene.prod.maintenance_request.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.prod.maintenance_request.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.prod.maintenance_request.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.mai.trust",
+              "value": 6
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.deferred_maintenance",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.prod.maintenance_request.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.mai.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.deferred_maintenance",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.prod.maintenance_request.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.prod.maintenance_request.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.mai.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "arc": "arc.deferred_maintenance",
+              "stage": "defer"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.prod.maintenance_request.c3",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.prod.maintenance_request.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.mai.trust",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": -1
+            },
+            {
+              "fact": "fact.deferred_maintenance",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.deferred_maintenance",
+              "stage": "defer"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

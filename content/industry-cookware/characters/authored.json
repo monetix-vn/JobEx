@@ -129,5 +129,46 @@
     "start": {
       "trust": 10
     }
+  },
+  {
+    "id": "char.kiet",
+    "name_key": "char.kiet.name",
+    "title_key": "char.kiet.title",
+    "department": "production",
+    "home_group": "production",
+    "traits": ["practical", "protective_of_crew", "blunt"],
+    "start": {
+      "trust": 10
+    }
+  },
+  {
+    "id": "char.mai",
+    "name_key": "char.mai.name",
+    "title_key": "char.mai.title",
+    "department": "maintenance",
+    "home_group": "production",
+    "traits": ["meticulous", "records_everything", "tired_of_being_ignored"],
+    "start": {
+      "trust": 10
+    }
+  },
+  {
+    "id": "char.phuc",
+    "name_key": "char.phuc.name",
+    "title_key": "char.phuc.title",
+    "department": "production",
+    "home_group": "production",
+    "traits": ["eager", "proud", "never_asks_for_help"],
+    "start": {
+      "trust": 10,
+      "loyalty": 5
+    }
+  },
+  {
+    "id": "char.sang",
+    "name_key": "char.sang.name",
+    "title_key": "char.sang.title",
+    "department": "labour_inspection",
+    "traits": ["dry", "looks_at_the_floor_first"]
   }
 ]

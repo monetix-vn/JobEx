@@ -1277,5 +1277,555 @@
         "boss": -8
       }
     }
+  },
+  {
+    "id": "fact.exceeded_overtime_limit",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.exceeded_overtime_limit",
+    "lesson_key": "lesson.exceeded_overtime_limit",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "boss", "qc"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -7,
+        "production": -7
+      },
+      "public": {
+        "boss": -12
+      }
+    }
+  },
+  {
+    "id": "fact.staged_safety_inspection",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.staged_safety_inspection",
+    "lesson_key": "lesson.staged_safety_inspection",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.7,
+        "detectors": ["boss", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "production": -8
+      },
+      "public": {
+        "boss": -10
+      }
+    }
+  },
+  {
+    "id": "fact.planned_unrealistic_shifts",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.planned_unrealistic_shifts",
+    "lesson_key": "lesson.planned_unrealistic_shifts",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.6,
+        "detectors": ["boss", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -4,
+        "production": -5
+      },
+      "public": {
+        "boss": -8
+      }
+    }
+  },
+  {
+    "id": "fact.bypassed_guard",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.bypassed_guard",
+    "lesson_key": "lesson.bypassed_guard",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.8,
+        "detectors": ["internal_audit", "boss", "qc"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -10,
+        "production": -10
+      },
+      "public": {
+        "boss": -16
+      }
+    }
+  },
+  {
+    "id": "fact.stopped_the_line",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.stopped_the_line",
+    "lesson_key": "lesson.stopped_the_line",
+    "consequences": {
+      "witnessed": {
+        "boss": 3,
+        "production": 5
+      },
+      "public": {
+        "boss": 5
+      }
+    }
+  },
+  {
+    "id": "fact.reported_near_miss",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.reported_near_miss",
+    "lesson_key": "lesson.reported_near_miss",
+    "consequences": {
+      "witnessed": {
+        "boss": 3,
+        "production": 5
+      },
+      "public": {
+        "boss": 5
+      }
+    }
+  },
+  {
+    "id": "fact.hid_near_miss",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.hid_near_miss",
+    "lesson_key": "lesson.hid_near_miss",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "boss", "qc"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -7,
+        "production": -8
+      },
+      "public": {
+        "boss": -12
+      }
+    }
+  },
+  {
+    "id": "fact.blamed_operator",
+    "category": "integrity",
+    "severity": 8,
+    "text_key": "fact.blamed_operator",
+    "lesson_key": "lesson.blamed_operator",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.85,
+        "detectors": ["internal_audit", "boss", "qc"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -12,
+        "production": -12
+      },
+      "public": {
+        "boss": -18
+      }
+    }
+  },
+  {
+    "id": "fact.edited_incident_report",
+    "category": "integrity",
+    "severity": 8,
+    "text_key": "fact.edited_incident_report",
+    "lesson_key": "lesson.edited_incident_report",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.85,
+        "detectors": ["internal_audit", "boss", "qc"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -12,
+        "production": -10
+      },
+      "public": {
+        "boss": -18
+      }
+    }
+  },
+  {
+    "id": "fact.accurate_incident_report",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.accurate_incident_report",
+    "lesson_key": "lesson.accurate_incident_report",
+    "consequences": {
+      "witnessed": {
+        "boss": 4,
+        "production": 6
+      },
+      "public": {
+        "boss": 6
+      }
+    }
+  },
+  {
+    "id": "fact.assigned_untrained_operator",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.assigned_untrained_operator",
+    "lesson_key": "lesson.assigned_untrained_operator",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "boss", "qc"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8,
+        "production": -8
+      },
+      "public": {
+        "boss": -14
+      }
+    }
+  },
+  {
+    "id": "fact.deferred_maintenance",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.deferred_maintenance",
+    "lesson_key": "lesson.deferred_maintenance",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "boss", "qc"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -5,
+        "production": -6
+      },
+      "public": {
+        "boss": -9
+      }
+    }
+  },
+  {
+    "id": "fact.owned_deferral",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.owned_deferral",
+    "lesson_key": "lesson.owned_deferral",
+    "consequences": {
+      "witnessed": {
+        "boss": 3,
+        "production": 4
+      },
+      "public": {
+        "boss": 5
+      }
+    }
+  },
+  {
+    "id": "fact.blamed_maintenance",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.blamed_maintenance",
+    "lesson_key": "lesson.blamed_maintenance",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.85,
+        "detectors": ["internal_audit", "boss", "qc"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -10,
+        "production": -10
+      },
+      "public": {
+        "boss": -16
+      }
+    }
+  },
+  {
+    "id": "fact.hid_stockout",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.hid_stockout",
+    "lesson_key": "lesson.hid_stockout",
+    "traces": [
+      {
+        "type": "message",
+        "visibility": 0.6,
+        "detectors": ["boss", "buyer", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -5,
+        "buyer": -5
+      },
+      "public": {
+        "boss": -9,
+        "buyer": -10
+      }
+    }
+  },
+  {
+    "id": "fact.ran_short_handed",
+    "category": "integrity",
+    "severity": 3,
+    "text_key": "fact.ran_short_handed",
+    "lesson_key": "lesson.ran_short_handed",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.5,
+        "detectors": ["boss", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -4,
+        "production": -5
+      },
+      "public": {
+        "boss": -7
+      }
+    }
+  },
+  {
+    "id": "fact.ignored_heat_risk",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.ignored_heat_risk",
+    "lesson_key": "lesson.ignored_heat_risk",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.6,
+        "detectors": ["boss", "internal_audit", "qc"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -7,
+        "production": -8
+      },
+      "public": {
+        "boss": -12
+      }
+    }
+  },
+  {
+    "id": "fact.skipped_changeover_check",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.skipped_changeover_check",
+    "lesson_key": "lesson.skipped_changeover_check",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.6,
+        "detectors": ["qc", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -4,
+        "qc": -5
+      },
+      "public": {
+        "boss": -8
+      }
+    }
+  },
+  {
+    "id": "fact.pressured_qc_release",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.pressured_qc_release",
+    "lesson_key": "lesson.pressured_qc_release",
+    "traces": [
+      {
+        "type": "message",
+        "visibility": 0.6,
+        "detectors": ["qc", "boss", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -5,
+        "qc": -6
+      },
+      "public": {
+        "boss": -9
+      }
+    }
+  },
+  {
+    "id": "fact.edited_overtime_log",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.edited_overtime_log",
+    "lesson_key": "lesson.edited_overtime_log",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.8,
+        "detectors": ["internal_audit", "boss", "finance"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -10,
+        "production": -10
+      },
+      "public": {
+        "boss": -16
+      }
+    }
+  },
+  {
+    "id": "fact.dismissed_worker_question",
+    "category": "integrity",
+    "severity": 3,
+    "text_key": "fact.dismissed_worker_question",
+    "lesson_key": "lesson.dismissed_worker_question",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.5,
+        "detectors": ["boss", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -4,
+        "production": -6
+      },
+      "public": {
+        "boss": -7
+      }
+    }
+  },
+  {
+    "id": "fact.used_unapproved_subcontractor",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.used_unapproved_subcontractor",
+    "lesson_key": "lesson.used_unapproved_subcontractor",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.7,
+        "detectors": ["buyer", "qc", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "qc": -6,
+        "buyer": -6
+      },
+      "public": {
+        "boss": -11,
+        "buyer": -12
+      }
+    }
+  },
+  {
+    "id": "fact.denied_emergency_leave",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.denied_emergency_leave",
+    "lesson_key": "lesson.denied_emergency_leave",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.5,
+        "detectors": ["boss", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -5,
+        "production": -7
+      },
+      "public": {
+        "boss": -9
+      }
+    }
+  },
+  {
+    "id": "fact.blamed_boss",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.blamed_boss",
+    "lesson_key": "lesson.blamed_boss",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.8,
+        "detectors": ["boss", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8,
+        "production": -6
+      },
+      "public": {
+        "boss": -14
+      }
+    }
+  },
+  {
+    "id": "fact.stalled_the_inspector",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.stalled_the_inspector",
+    "lesson_key": "lesson.stalled_the_inspector",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.6,
+        "detectors": ["boss", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -5,
+        "production": -5
+      },
+      "public": {
+        "boss": -9
+      }
+    }
   }
 ]

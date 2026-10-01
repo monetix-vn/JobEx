@@ -1,0 +1,823 @@
+# Production Planner random incidents and crisis consequences (docs/story/production.md).
+scene: prod.pre_tet_crunch
+place: meeting_room
+tags: [pressure, sales]
+weight: 3
+cooldown: 52
+when: [turn >= 3, turn <= 9]
+lines:
+  - who: char:bao
+    en: 'Before Tet every buyer wants everything shipped. I have seven orders promised for the last week before the holiday, twice the normal volume. I told them yes. You have the plan, so just make it work.'
+    vi: 'Trước Tết khách nào cũng muốn giao hết. Anh đã hứa bảy đơn cho tuần cuối trước kỳ nghỉ, gấp đôi khối lượng bình thường. Anh nói có. Em nắm kế hoạch, cứ làm cho được.'
+choices:
+  - en: 'Build the honest plan: what ships before Tet, what ships after, and ask Bao to tell the buyers now.'
+    vi: 'Lập kế hoạch trung thực: phần nào giao trước Tết, phần nào sau Tết và nhờ anh Bảo báo khách ngay.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.75
+        en: 'Four of the seven ship before Tet. Bao tells the buyers early. Two accept January. One grumbles, and stays.'
+        vi: 'Bốn trong bảy đơn giao trước Tết. Anh Bảo báo khách sớm. Hai khách chấp nhận tháng Giêng. Một khách càu nhàu và vẫn ở lại.'
+        effects: [rel bao trust -3, rel lan trust +3, rel kiet trust +3, stress +3]
+      - p: 0.25
+        ok: false
+        en: 'Two buyers will not wait for January and cancel. Bao is furious, and Lan is quiet. The crews have a calm last week.'
+        vi: 'Hai khách không chờ tháng Giêng và hủy. Anh Bảo giận dữ, chị Lan im lặng. Các tổ có một tuần cuối bình yên.'
+        effects: [rel bao trust -6, rel lan trust +1, rel kiet trust +4, rep.buyer -2, stress +4]
+  - en: 'Prioritise by margin and buyer importance, squeeze a third shift inside the limit, and let Bao argue the rest.'
+    vi: 'Ưu tiên theo biên lợi nhuận và tầm quan trọng của khách, nén một ca ba trong giới hạn và để anh Bảo tranh luận phần còn lại.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: 'Five of seven ship. Everyone is tired, nobody breaks a rule, and Kiet gives the crews the Saturday off after.'
+        vi: 'Năm trong bảy đơn giao. Ai cũng mệt, không ai phá quy tắc nào và anh Kiệt cho các tổ nghỉ thứ Bảy sau đó.'
+        effects: [rel bao trust -1, rel kiet trust +2, stress +4]
+  - en: 'Promise all seven, and work out how later.'
+    vi: 'Hứa cả bảy đơn và tính cách làm sau.'
+    outcomes:
+      - p: 0.7
+        en: 'Bao hugs you. The crews run six days a week for three weeks. Six orders ship, one does not, and the sheet shows forty-hour weeks.'
+        vi: 'Anh Bảo ôm anh/chị. Các tổ chạy sáu ngày mỗi tuần suốt ba tuần. Sáu đơn giao, một đơn không, và bảng ghi các tuần bốn mươi giờ.'
+        effects:
+          [rel bao trust +6, rel kiet trust -6, stress +2, fact exceeded_overtime_limit private]
+      - p: 0.3
+        ok: false
+        en: 'In the last week two operators make costly errors from fatigue, and a pallet of pots is scrapped. The overtime sheet is checked by Lan.'
+        vi: 'Tuần cuối hai công nhân mắc lỗi tốn kém vì mệt và một pallet nồi bị loại. Bảng giờ làm thêm được chị Lan kiểm tra.'
+        effects:
+          [
+            rel bao trust +3,
+            rel kiet trust -8,
+            rel lan trust -6,
+            rep.boss -4,
+            stress +5,
+            fact exceeded_overtime_limit witnessed,
+          ]
+---
+scene: prod.tet_restart
+place: factory_floor
+tags: [people, pressure]
+weight: 3
+cooldown: 52
+when: [turn >= 6, turn <= 11]
+lines:
+  - who: char:kiet
+    en: 'Two weeks after Tet and a third of the crew has not come back. Some are still in their home provinces, a few have found other jobs. The orders have not gone away. With respect, what is the plan?'
+    vi: 'Hai tuần sau Tết mà một phần ba tổ chưa quay lại. Có người vẫn ở quê, vài người đã tìm được việc khác. Đơn hàng thì không biến mất. Xin phép hỏi, kế hoạch là gì?'
+choices:
+  - en: 'Re-plan for the crew you actually have, ask HR for proper temps with training, and tell sales what is realistic.'
+    vi: 'Lập lại kế hoạch theo tổ thực sự có, nhờ nhân sự tuyển người tạm có huấn luyện và nói với kinh doanh điều thực tế.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.8
+        en: 'The first two weeks run at seventy percent. By week four the temps are trained and the lines recover. Kiet says it is the first time a planner asked him what the crew could do.'
+        vi: 'Hai tuần đầu chạy bảy mươi phần trăm. Đến tuần bốn người tạm đã được huấn luyện và các chuyền phục hồi. Anh Kiệt nói đây là lần đầu người lập kế hoạch hỏi anh tổ làm được gì.'
+        effects: [rel kiet trust +6, rel lan trust +2, rel bao trust -3, stress +3]
+      - p: 0.2
+        ok: false
+        en: 'HR is slow and two of the temps leave in week three. You re-plan again, and Kiet does not reproach you, which helps a little.'
+        vi: 'Nhân sự chậm và hai người tạm bỏ đi ở tuần ba. Anh/chị lập lại kế hoạch lần nữa, và anh Kiệt không trách, điều đó giúp được một chút.'
+        effects: [rel kiet trust +3, rel lan trust +1, stress +5]
+  - en: 'Run short-handed at the normal speed for a month, and ask the crews to cover.'
+    vi: 'Chạy thiếu người ở tốc độ bình thường một tháng và nhờ các tổ gánh.'
+    outcomes:
+      - p: 0.6
+        en: "The crews cover, grumbling. Output holds. By the end of the month three more have left. Kiet does not say 'I told you so'."
+        vi: "Các tổ gánh, càu nhàu. Sản lượng giữ được. Cuối tháng có thêm ba người nghỉ. Anh Kiệt không nói 'anh đã bảo rồi'."
+        effects: [rel kiet trust -5, rel bao trust +2, stress +3, fact ran_short_handed private]
+      - p: 0.4
+        ok: false
+        en: 'A tired operator makes a mistake on line 2 in week three. The crew blames the plan. The plan is yours.'
+        vi: 'Một công nhân mệt mắc lỗi ở chuyền 2 vào tuần ba. Tổ đổ lỗi cho kế hoạch. Kế hoạch là của anh/chị.'
+        effects:
+          [
+            rel kiet trust -8,
+            rel lan trust -3,
+            rep.boss -2,
+            stress +4,
+            fact ran_short_handed witnessed,
+          ]
+  - en: 'Ask the remaining crews to work longer shifts to cover the gap, without formal overtime.'
+    vi: 'Nhờ các tổ còn lại làm ca dài hơn để bù, không tính làm thêm chính thức.'
+    outcomes:
+      - p: 0.6
+        en: 'They agree, because Tet bonuses were good. The gap closes. Nobody asks whether it is legal, and nobody writes it down.'
+        vi: 'Họ đồng ý vì thưởng Tết tốt. Khoảng trống được bù. Không ai hỏi có hợp pháp không, và không ai viết ra.'
+        effects:
+          [rel kiet trust -6, rel bao trust +3, stress +2, fact exceeded_overtime_limit private]
+      - p: 0.4
+        ok: false
+        en: 'One operator asks a neighbour at another factory what the law says. By Friday, three people are asking about their overtime pay.'
+        vi: 'Một công nhân hỏi người quen ở nhà máy khác luật nói gì. Đến thứ Sáu, ba người hỏi về tiền làm thêm của họ.'
+        effects:
+          [
+            rel kiet trust -8,
+            rel lan trust -5,
+            rep.boss -4,
+            stress +4,
+            fact exceeded_overtime_limit witnessed,
+          ]
+---
+scene: prod.heat_fatigue
+place: factory_floor
+tags: [safety, people, pressure]
+weight: 2
+cooldown: 30
+when: [turn >= 26, turn <= 38]
+lines:
+  - who: char:kiet
+    en: 'It is thirty-eight degrees on the floor by two in the afternoon. Mistakes are up. Two people have been dizzy. With respect, the shift plan was written for a cooler season. What do we change?'
+    vi: 'Xưởng ba mươi tám độ vào hai giờ chiều. Lỗi tăng lên. Hai người bị chóng mặt. Xin phép nói thẳng, kế hoạch ca được viết cho mùa mát hơn. Mình đổi gì?'
+choices:
+  - en: 'Move the hardest work to early morning and evening, add water breaks, and accept the lower output.'
+    vi: 'Chuyển việc nặng nhất sang sáng sớm và tối, thêm nghỉ uống nước và chấp nhận sản lượng thấp hơn.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.8
+        en: "Output falls eight percent and errors fall faster. Kiet moves the line fans himself. Lan says: 'Good call.'"
+        vi: "Sản lượng giảm tám phần trăm và lỗi giảm nhanh hơn. Anh Kiệt tự chuyển các quạt chuyền. Chị Lan nói: 'Quyết định tốt.'"
+        effects: [rel kiet trust +5, rel lan trust +3, rel bao trust -2, stress +2]
+      - p: 0.2
+        ok: false
+        en: 'The new shifts clash with transport for half the crew. Attendance drops, and the plan needs another round.'
+        vi: 'Các ca mới trùng giờ xe đưa đón của một nửa tổ. Chuyên cần giảm, và kế hoạch cần thêm một vòng nữa.'
+        effects: [rel kiet trust +2, stress +4]
+  - en: 'Add ten-minute breaks and two fans, and keep the hours as they are.'
+    vi: 'Thêm nghỉ mười phút và hai quạt, giữ nguyên giờ làm.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'It helps a little. Kiet says it is better than nothing. Nobody collapses this week.'
+        vi: 'Có giúp chút ít. Anh Kiệt nói còn hơn không. Tuần này không ai ngã quỵ.'
+        effects: [rel kiet trust +1, stress +1]
+  - en: 'Push on: the crews have worked in heat before, and the orders will not wait.'
+    vi: 'Cứ làm tiếp: các tổ từng làm trong nóng rồi, và đơn hàng không chờ.'
+    outcomes:
+      - p: 0.6
+        en: 'The week passes. Two more people go home sick. Output holds. Kiet does not speak to you on Friday.'
+        vi: 'Tuần trôi qua. Thêm hai người về nhà vì ốm. Sản lượng giữ được. Thứ Sáu anh Kiệt không nói chuyện với anh/chị.'
+        effects: [rel kiet trust -6, rel bao trust +2, stress +1, fact ignored_heat_risk private]
+      - p: 0.4
+        ok: false
+        en: 'A worker collapses at the press on Thursday afternoon. The ambulance is called. The shift log shows no breaks that day.'
+        vi: 'Một công nhân ngã quỵ ở máy ép chiều thứ Năm. Xe cấp cứu được gọi. Nhật ký ca không ghi lần nghỉ nào hôm đó.'
+        effects:
+          [
+            rel kiet trust -10,
+            rel lan trust -7,
+            rep.boss -6,
+            stress +6,
+            fact ignored_heat_risk witnessed,
+          ]
+---
+scene: prod.changeover_shortcut
+place: factory_floor
+tags: [quality, pressure, dark]
+weight: 1.5
+cooldown: 16
+when: [turn >= 8, turn <= 46]
+lines:
+  - who: char:kiet
+    en: 'Changeover on line 2 takes seventy-five minutes because of the die check and the first-article test. We are an hour behind. I have been asked, by someone I will not name, whether we can skip the first-article test just this once.'
+    vi: 'Đổi khuôn chuyền 2 mất bảy mươi lăm phút vì kiểm khuôn và kiểm sản phẩm đầu tiên. Mình trễ một giờ. Anh được một người anh không nêu tên hỏi liệu mình bỏ kiểm sản phẩm đầu tiên một lần này được không.'
+choices:
+  - en: 'Keep the first-article test, and move something else to recover the hour.'
+    vi: 'Giữ kiểm sản phẩm đầu tiên và dời việc khác để bù một giờ.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.8
+        en: 'The test finds a die offset of half a millimetre. Kiet fixes it in ten minutes. Without the test, the whole batch would have been scrap.'
+        vi: 'Phép kiểm phát hiện khuôn lệch nửa milimét. Anh Kiệt sửa trong mười phút. Không có phép kiểm, cả lô đã thành phế phẩm.'
+        effects: [rel kiet trust +4, rel khoa trust +2, stress +2]
+      - p: 0.2
+        ok: false
+        en: 'The test passes, and the hour is lost for nothing, or so it seems. Bao complains about the delay and does not hear the point.'
+        vi: 'Phép kiểm đạt và một giờ mất vô ích, hay có vẻ thế. Anh Bảo phàn nàn về việc trễ và không nghe ra ý chính.'
+        effects: [rel kiet trust +3, rel bao trust -3, stress +2]
+  - en: 'Do the test on the first three pieces only, log the reduced check, and tell QC.'
+    vi: 'Chỉ kiểm ba chiếc đầu tiên, ghi lại việc kiểm rút gọn và báo QC.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'Khoa reads the note and approves a reduced check for this run. It is a documented, approved compromise, and Kiet relaxes.'
+        vi: 'Anh Khoa đọc ghi chú và duyệt kiểm rút gọn cho đợt chạy này. Một thỏa hiệp có ghi chép và được duyệt, và anh Kiệt thả lỏng.'
+        effects: [rel kiet trust +1, rel khoa trust +2, stress +1]
+  - en: 'Skip it. The die was fine yesterday.'
+    vi: 'Bỏ qua. Hôm qua khuôn vẫn ổn.'
+    outcomes:
+      - p: 0.7
+        en: 'The line starts on time and the batch is fine. Nobody notices that there is no first-article record.'
+        vi: 'Chuyền khởi động đúng giờ và lô hàng ổn. Không ai để ý là không có hồ sơ sản phẩm đầu tiên.'
+        effects:
+          [rel kiet trust -4, rel bao trust +2, stress -1, fact skipped_changeover_check private]
+      - p: 0.3
+        ok: false
+        en: 'The die has shifted. Six hundred pots are scrapped before anyone notices, and QC asks for the first-article record.'
+        vi: 'Khuôn đã lệch. Sáu trăm chiếc nồi bị loại trước khi ai để ý, và QC hỏi hồ sơ sản phẩm đầu tiên.'
+        effects:
+          [
+            rel kiet trust -6,
+            rel khoa trust -6,
+            rep.qc -3,
+            stress +4,
+            fact skipped_changeover_check witnessed,
+          ]
+---
+scene: prod.qc_hold_conflict
+place: meeting_room
+tags: [quality, pressure, people]
+weight: 1.5
+cooldown: 20
+when: [turn >= 10, turn <= 46]
+lines:
+  - who: char:khoa
+    en: 'I have put a hold on the lot from line 3. The reading is on the edge and I want it retested. It will take a day. I know you need it for Friday.'
+    vi: 'Anh đã giữ lô từ chuyền 3. Chỉ số ở ngưỡng biên và anh muốn kiểm lại. Mất một ngày. Anh biết em cần nó cho thứ Sáu.'
+  - who: char:bao
+    en: 'It is fine. QC is being overcautious again. Release it, and let us ship.'
+    vi: 'Ổn mà. QC lại quá thận trọng. Cho xuất đi và mình giao hàng.'
+choices:
+  - en: "Support the hold: replan Friday around a day's delay, and tell Bao what the retest is for."
+    vi: 'Ủng hộ việc giữ: lập lại thứ Sáu theo trễ một ngày và nói với anh Bảo phép kiểm lại để làm gì.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.85
+        en: 'The retest passes on Thursday. Friday is tight and meets the date. Khoa thanks you, which he rarely does. Bao shrugs.'
+        vi: 'Phép kiểm lại đạt vào thứ Năm. Thứ Sáu sát nhưng kịp ngày. Anh Khoa cảm ơn, điều anh hiếm khi làm. Anh Bảo nhún vai.'
+        effects: [rel khoa trust +5, rel bao trust -2, stress +2]
+      - p: 0.15
+        ok: false
+        en: 'The retest fails. The lot is scrapped and Friday is lost. You were right to hold it, and Bao never lets you forget it.'
+        vi: 'Phép kiểm lại không đạt. Lô bị loại và thứ Sáu mất. Anh/chị đúng khi giữ, và anh Bảo không bao giờ để anh/chị quên.'
+        effects: [rel khoa trust +6, rel bao trust -5, rep.buyer -2, stress +4]
+  - en: 'Ask Khoa whether a partial retest on a sample can be done this afternoon, and plan around that.'
+    vi: 'Hỏi anh Khoa có thể kiểm lại một phần trên mẫu chiều nay không và lập kế hoạch theo đó.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'Khoa agrees to a sample retest by four. It passes, and the lot releases. Everyone gets a little of what they wanted.'
+        vi: 'Anh Khoa đồng ý kiểm lại mẫu trước bốn giờ. Đạt, và lô được xuất. Ai cũng có một chút điều họ muốn.'
+        effects: [rel khoa trust +2, rel bao trust +1, stress +1]
+  - en: 'Side with Bao and lean on Khoa to release it.'
+    vi: 'Đứng về phía anh Bảo và ép anh Khoa cho xuất.'
+    outcomes:
+      - p: 0.5
+        en: "Khoa releases it with a note: 'Released under production pressure.' The date is met. The note is in the file."
+        vi: "Anh Khoa cho xuất kèm ghi chú: 'Xuất dưới áp lực sản xuất.' Kịp ngày. Ghi chú nằm trong hồ sơ."
+        effects: [rel khoa trust -8, rel bao trust +4, stress +1, fact pressured_qc_release private]
+      - p: 0.5
+        ok: false
+        en: 'Khoa refuses, and goes to Lan. Lan asks why the planner was leaning on the quality manager.'
+        vi: 'Anh Khoa từ chối và sang gặp chị Lan. Chị Lan hỏi vì sao người lập kế hoạch lại ép quản lý chất lượng.'
+        effects:
+          [
+            rel khoa trust -10,
+            rel lan trust -6,
+            rel bao trust +2,
+            rep.boss -4,
+            stress +4,
+            fact pressured_qc_release witnessed,
+          ]
+---
+scene: prod.overtime_log
+place: factory_floor
+tags: [people, compliance, dark]
+weight: 1.5
+cooldown: 24
+when: [turn >= 16, turn <= 46]
+lines:
+  - who: char:kiet
+    en: 'The overtime sheet for last month does not match the gate logs. The gate log shows my crew worked 61 hours more than the sheet. The auditors look at the two side by side. Tell me how you want it handled.'
+    vi: 'Bảng giờ làm thêm tháng trước không khớp nhật ký cổng. Nhật ký cổng cho thấy tổ anh làm nhiều hơn bảng sáu mươi mốt giờ. Kiểm toán sẽ xem hai cái cạnh nhau. Em nói anh biết muốn xử lý thế nào.'
+choices:
+  - en: 'Correct the sheet to match the gate log, pay the crew for every hour, and tell Lan.'
+    vi: 'Sửa bảng cho khớp nhật ký cổng, trả lương cho tổ mọi giờ và báo chị Lan.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.85
+        en: 'Payroll is surprised, then pays. The crew hears about it within an hour and the canteen is warmer towards you the next day.'
+        vi: 'Bộ phận lương ngạc nhiên rồi trả. Tổ biết chuyện trong vòng một giờ và hôm sau căng tin ấm áp với anh/chị hơn.'
+        effects: [rel kiet trust +6, rel lan trust +1, stress +3]
+      - p: 0.15
+        ok: false
+        en: 'Lan is unhappy about the cost and says so. She also says she would rather know than not. You are not sure that is a comfort.'
+        vi: 'Chị Lan không vui về chi phí và nói thẳng. Chị cũng nói chị thà biết còn hơn không. Anh/chị không chắc đó là điều an ủi.'
+        effects: [rel kiet trust +6, rel lan trust -2, stress +4]
+  - en: 'Explain the gap as breaks and clock-in delays, and adjust half the difference.'
+    vi: 'Giải thích khoảng chênh là giờ nghỉ và trễ chấm công và điều chỉnh một nửa phần chênh.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'It is a partial fix. The crew is paid for half the hours, and you know the other half will come back.'
+        vi: 'Một sửa chữa một phần. Tổ được trả một nửa số giờ, và anh/chị biết nửa còn lại sẽ quay lại.'
+        effects: [rel kiet trust -1, stress +2]
+  - en: 'Edit the gate log entries so the two records agree.'
+    vi: 'Sửa các dòng nhật ký cổng để hai hồ sơ khớp nhau.'
+    outcomes:
+      - p: 0.6
+        en: 'The records agree. The crew is paid for the hours on the sheet and nobody questions it. Kiet looks at you for a long time.'
+        vi: 'Các hồ sơ khớp nhau. Tổ được trả theo giờ trên bảng và không ai thắc mắc. Anh Kiệt nhìn anh/chị rất lâu.'
+        effects: [rel kiet trust -10, stress +1, fact edited_overtime_log private]
+      - p: 0.4
+        ok: false
+        en: "The security company keeps its own copy of the gate logs. The two versions are compared in the inspector's file."
+        vi: 'Công ty bảo vệ giữ bản sao nhật ký cổng riêng. Hai phiên bản được so sánh trong hồ sơ của thanh tra.'
+        effects:
+          [
+            rel kiet trust -12,
+            rel lan trust -8,
+            rep.boss -8,
+            stress +7,
+            fact edited_overtime_log public,
+          ]
+---
+scene: prod.union_question
+place: factory_floor
+tags: [people, compliance]
+weight: 1.2
+cooldown: 30
+when: [turn >= 20, turn <= 44]
+lines:
+  - who: char:kiet
+    en: "A few of the crew asked me about overtime pay rates. They heard a neighbour's factory pays more on Sundays. They want to know what we pay and why. It is a fair question. Will you answer it, or should I?"
+    vi: 'Vài người trong tổ hỏi anh về mức lương làm thêm. Họ nghe nhà máy hàng xóm trả cao hơn vào Chủ nhật. Họ muốn biết mình trả bao nhiêu và vì sao. Câu hỏi chính đáng. Em trả lời hay để anh?'
+choices:
+  - en: 'Get the actual rates from HR, explain them plainly to the crew, and say what you do not know.'
+    vi: 'Lấy mức thực tế từ nhân sự, giải thích rõ với tổ và nói điều anh/chị chưa biết.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: 'You read the rates out in the canteen. One is lower than the crew expected, and you say so. The answers are accepted. Nobody complains, and several thank you.'
+        vi: 'Anh/chị đọc các mức ở căng tin. Một mức thấp hơn tổ mong đợi và anh/chị nói thẳng. Các câu trả lời được chấp nhận. Không ai phàn nàn, và vài người cảm ơn.'
+        effects: [rel kiet trust +4, rep.boss +1, stress +1]
+  - en: 'Tell them to ask HR, and offer to take the question to HR yourself.'
+    vi: 'Bảo họ hỏi nhân sự và đề nghị tự mang câu hỏi đến nhân sự.'
+    outcomes:
+      - p: 1
+        en: 'It is correct and a little slow. HR replies in a week. The crew waits, and the question stays on the table.'
+        vi: 'Đúng và hơi chậm. Nhân sự trả lời trong một tuần. Tổ chờ, và câu hỏi vẫn nằm đó.'
+        effects: [rel kiet trust +1]
+  - en: 'Tell them it is not their concern, and that rates are fixed by the company.'
+    vi: 'Bảo họ đó không phải việc của họ và mức do công ty quy định.'
+    outcomes:
+      - p: 0.6
+        en: 'The questions stop. The mood on line 2 does not improve. Kiet says nothing and looks at the floor.'
+        vi: 'Những câu hỏi dừng. Không khí ở chuyền 2 không khá hơn. Anh Kiệt không nói gì và nhìn xuống sàn.'
+        effects: [rel kiet trust -6, stress +1, fact dismissed_worker_question private]
+      - p: 0.4
+        ok: false
+        en: "Two workers write to the labour office. The inspector's first question on the next visit is about overtime pay."
+        vi: 'Hai công nhân viết thư cho phòng lao động. Câu hỏi đầu tiên của thanh tra ở lần tới là về tiền làm thêm.'
+        effects:
+          [
+            rel kiet trust -8,
+            rel lan trust -5,
+            rep.boss -4,
+            stress +4,
+            fact dismissed_worker_question witnessed,
+          ]
+---
+scene: prod.subcontractor_offer
+place: sales_office
+tags: [pressure, quality, dark]
+weight: 1.2
+cooldown: 30
+when: [turn >= 14, turn <= 46]
+lines:
+  - who: char:bao
+    en: 'A small workshop across town has offered to make two thousand of the basic pots for us at a good price, this week. They are not on our approved list. They have done work for a competitor. It would save a lot of pressure on line 4.'
+    vi: 'Một xưởng nhỏ bên kia thành phố đề nghị làm hai nghìn chiếc nồi cơ bản cho mình với giá tốt, ngay tuần này. Họ không có trong danh sách được duyệt. Họ từng làm cho một đối thủ. Nó sẽ giảm nhiều áp lực cho chuyền 4.'
+choices:
+  - en: 'Decline the workshop for now, propose a qualification audit, and plan line 4 honestly meanwhile.'
+    vi: 'Từ chối xưởng lúc này, đề xuất đánh giá đủ điều kiện và lập kế hoạch chuyền 4 trung thực trong thời gian đó.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.8
+        en: 'The audit takes three weeks and finds the workshop is decent but has no traceability. Khoa adds it to the approved list with conditions.'
+        vi: 'Đánh giá mất ba tuần và thấy xưởng khá nhưng không có truy xuất nguồn gốc. Anh Khoa đưa vào danh sách được duyệt kèm điều kiện.'
+        effects: [rel khoa trust +3, rel bao trust -2, stress +2]
+      - p: 0.2
+        ok: false
+        en: 'The workshop finds other work in the meantime. Bao is annoyed. The pressure on line 4 is unchanged.'
+        vi: 'Xưởng tìm được việc khác trong lúc chờ. Anh Bảo bực. Áp lực chuyền 4 không đổi.'
+        effects: [rel khoa trust +2, rel bao trust -4, stress +3]
+  - en: 'Use the workshop for one batch, with QC inspecting every incoming lot, and log it as a trial.'
+    vi: 'Dùng xưởng cho một lô, QC kiểm mọi lô đầu vào và ghi đó là thử nghiệm.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'The batch is acceptable. Khoa gets extra work and says so. The trial is documented, and Bao gets his relief.'
+        vi: 'Lô hàng chấp nhận được. Anh Khoa có thêm việc và nói thẳng. Thử nghiệm có ghi chép, và anh Bảo được giải tỏa.'
+        effects: [rel khoa trust +0, rel bao trust +2, stress +2]
+  - en: 'Use them without telling QC, and mark the pots as made in-house.'
+    vi: 'Dùng họ mà không báo QC và đánh dấu nồi là sản xuất tại nhà máy.'
+    outcomes:
+      - p: 0.6
+        en: 'Two thousand pots ship on time. Line 4 breathes. The labels say what they should not.'
+        vi: 'Hai nghìn chiếc nồi giao đúng hạn. Chuyền 4 thở được. Nhãn ghi điều không nên ghi.'
+        effects:
+          [
+            rel bao trust +6,
+            rel khoa trust -4,
+            stress -1,
+            fact used_unapproved_subcontractor private,
+          ]
+      - p: 0.4
+        ok: false
+        en: "The buyer's auditor finds pots without the factory's weld marks in a shipment. Khoa is asked where they came from."
+        vi: 'Kiểm toán của khách thấy nồi không có dấu hàn của nhà máy trong một lô hàng. Anh Khoa bị hỏi chúng từ đâu ra.'
+        effects:
+          [
+            rel bao trust +3,
+            rel khoa trust -10,
+            rep.buyer -8,
+            rep.boss -6,
+            stress +6,
+            fact used_unapproved_subcontractor public,
+          ]
+---
+scene: prod.family_emergency
+place: factory_floor
+tags: [people, pressure]
+weight: 1
+cooldown: 40
+when: [turn >= 10, turn <= 46]
+lines:
+  - who: char:kiet
+    en: 'One of my best operators got a call from home this morning: his father is in hospital, two hundred kilometres away. He wants to leave now. The shift is already short, and the order is due tomorrow.'
+    vi: 'Một trong những công nhân giỏi nhất của anh vừa nhận điện thoại từ nhà sáng nay: bố em ấy nhập viện cách hai trăm cây số. Em ấy muốn đi ngay. Ca đã thiếu người, và đơn giao ngày mai.'
+choices:
+  - en: 'Let him go now, re-plan the shift around the gap, and tell Lan the order may slip.'
+    vi: 'Cho em ấy đi ngay, lập lại ca theo khoảng thiếu và báo chị Lan đơn có thể trễ.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.75
+        en: "The order ships six hours late. The operator's father recovers. The crew remembers that the planner let him go."
+        vi: 'Đơn giao trễ sáu giờ. Bố của công nhân hồi phục. Cả tổ nhớ rằng người lập kế hoạch đã cho em ấy đi.'
+        effects: [rel kiet trust +5, rel lan trust +1, rep.production +2, stress +2]
+      - p: 0.25
+        ok: false
+        en: 'The order is a day late and the buyer complains. Lan says nothing about it, which is itself a kind of answer.'
+        vi: 'Đơn trễ một ngày và khách phàn nàn. Chị Lan không nói gì về chuyện đó, mà đó cũng là một câu trả lời.'
+        effects: [rel kiet trust +4, rep.buyer -2, stress +3]
+  - en: 'Let him go at the end of his shift, and arrange a driver for him so he is not alone on the road.'
+    vi: 'Cho em ấy đi sau ca và sắp xếp tài xế để em không phải đi một mình trên đường.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'It is a fair compromise. The operator arrives at midnight and his family is grateful. The order ships on time.'
+        vi: 'Một thỏa hiệp công bằng. Công nhân đến nơi lúc nửa đêm và gia đình biết ơn. Đơn giao đúng hạn.'
+        effects: [rel kiet trust +2, stress +2]
+  - en: 'Tell him the order comes first, and that he can go on Friday.'
+    vi: 'Bảo em ấy đơn hàng trước, và em có thể đi vào thứ Sáu.'
+    outcomes:
+      - p: 0.7
+        en: 'He stays, silent, and works the shift. The order ships on time. He does not look at you again.'
+        vi: 'Em ở lại, im lặng, làm hết ca. Đơn giao đúng hạn. Em không nhìn anh/chị nữa.'
+        effects: [rel kiet trust -8, stress +1, fact denied_emergency_leave private]
+      - p: 0.3
+        ok: false
+        en: 'He leaves anyway at noon. The shift is thinner, and the crew talks about it on the canteen wall.'
+        vi: 'Em vẫn đi lúc trưa. Ca mỏng hơn, và cả tổ bàn tán trên bảng tin căng tin.'
+        effects:
+          [
+            rel kiet trust -10,
+            rel lan trust -4,
+            rep.boss -4,
+            stress +4,
+            fact denied_emergency_leave witnessed,
+          ]
+---
+scene: prod.year_end_peak
+place: meeting_room
+tags: [pressure, sales, dark]
+weight: 4
+cooldown: 40
+when: [turn >= 44, turn <= 50]
+lines:
+  - who: char:lan
+    en: 'Year-end. The directors want the annual output record broken. Every line, every shift, for six weeks. I will back what you plan, but I want you to tell me honestly what is possible.'
+    vi: 'Cuối năm. Ban giám đốc muốn phá kỷ lục sản lượng cả năm. Mọi chuyền, mọi ca, sáu tuần liền. Chị sẽ ủng hộ những gì em lập, nhưng chị muốn em nói thật điều gì khả thi.'
+choices:
+  - en: 'Plan the real maximum within the limits, with rotation and rest days, and show Lan what it yields.'
+    vi: 'Lập mức tối đa thực sự trong giới hạn, có luân phiên và ngày nghỉ, và cho chị Lan xem nó cho ra bao nhiêu.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.8
+        en: "It is eight percent under the target and a new record anyway. Lan takes it to the directors: 'This is what we can do without breaking anyone.' They accept."
+        vi: "Thấp hơn chỉ tiêu tám phần trăm nhưng vẫn là kỷ lục mới. Chị Lan mang lên ban giám đốc: 'Đây là điều mình làm được mà không làm ai gãy.' Họ chấp nhận."
+        effects: [rel lan trust +4, rel kiet trust +4, rep.boss +3, stress +3]
+      - p: 0.2
+        ok: false
+        en: 'The directors want the full target. Lan holds your plan up against the pressure, and it costs her some standing.'
+        vi: 'Ban giám đốc muốn đủ chỉ tiêu. Chị Lan giữ kế hoạch của em chống lại áp lực, và điều đó làm chị mất chút uy tín.'
+        effects: [rel lan trust +3, rel kiet trust +3, rep.boss -2, stress +5]
+  - en: 'Stretch: use every legal hour and ask the crews to volunteer for more, and record it all.'
+    vi: 'Căng: dùng mọi giờ hợp pháp và nhờ các tổ tình nguyện thêm, ghi lại tất cả.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: 'Nearly the target. The crews are exhausted but paid fairly, and the record is clean. You are proud of it, and worried for January.'
+        vi: 'Gần đủ chỉ tiêu. Các tổ kiệt sức nhưng được trả công bằng, và hồ sơ sạch. Anh/chị tự hào về điều đó, và lo cho tháng Giêng.'
+        effects: [rel lan trust +1, rel kiet trust -1, stress +4]
+  - en: 'Commit to the full target and work out the hours later, however many it takes.'
+    vi: 'Cam kết đủ chỉ tiêu và tính giờ sau, bao nhiêu cũng được.'
+    outcomes:
+      - p: 0.6
+        en: 'The target is hit on the last day of the year. The directors toast. The sheet shows a normal week. Kiet does not come to the toast.'
+        vi: 'Chỉ tiêu đạt vào ngày cuối năm. Ban giám đốc nâng ly. Bảng ghi một tuần bình thường. Anh Kiệt không đến buổi nâng ly.'
+        effects:
+          [
+            rel lan trust +5,
+            rel kiet trust -8,
+            rep.boss +4,
+            stress +2,
+            fact exceeded_overtime_limit private,
+          ]
+      - p: 0.4
+        ok: false
+        en: 'In week five a fatigued operator loses two fingers to a die. The ambulance takes him. The overtime sheet and the gate log tell two stories.'
+        vi: 'Tuần thứ năm một công nhân mệt mất hai ngón tay vào khuôn. Xe cấp cứu đưa em đi. Bảng giờ làm thêm và nhật ký cổng kể hai câu chuyện khác nhau.'
+        effects:
+          [
+            rel lan trust -6,
+            rel kiet trust -14,
+            rep.boss -10,
+            stress +9,
+            fact exceeded_overtime_limit public,
+          ]
+---
+scene: prod.sang_asks_records
+place: meeting_room
+tags: [audit, safety, dark, consequence]
+weight: 6
+cooldown: 52
+when: [month in 10 11, turn >= 40, fact.bypassed_guard >= 1]
+lines:
+  - who: char:sang
+    en: 'I have interviewed the crew on press 3. Three of them independently said the guard was taken off for a week in the summer. I would like to see the planning records for that week, and hear from the planner what happened.'
+    vi: 'Tôi đã phỏng vấn tổ máy ép 3. Ba người độc lập nói tấm chắn bị tháo một tuần hồi mùa hè. Tôi muốn xem hồ sơ kế hoạch tuần đó và nghe người lập kế hoạch nói điều gì đã xảy ra.'
+choices:
+  - en: 'Tell him what happened: who asked, what you agreed, and what you should have done. Give him the records.'
+    vi: 'Kể cho ông ấy nghe chuyện gì đã xảy ra: ai nhờ, anh/chị đã đồng ý gì và lẽ ra nên làm gì. Đưa ông hồ sơ.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Sang writes it all down. The finding is serious, but it is recorded as 'self-reported and corrected'. The guard procedure is rewritten, and you are given a formal warning."
+        vi: "Ông Sáng ghi lại tất cả. Phát hiện nghiêm trọng, nhưng được ghi nhận là 'tự báo cáo và đã sửa'. Quy trình tấm chắn được viết lại, và anh/chị nhận cảnh cáo chính thức."
+        effects:
+          [
+            rel sang trust +2,
+            rel lan trust -2,
+            rel kiet trust +3,
+            rep.boss -5,
+            stress +6,
+            fact came_clean_to_auditor witnessed,
+          ]
+  - en: "Give him the planning records, and say the guard removal was a supervisor's decision on the floor."
+    vi: 'Đưa ông hồ sơ kế hoạch và nói việc tháo tấm chắn là quyết định của giám sát ở xưởng.'
+    outcomes:
+      - p: 0.35
+        en: 'Sang looks at the records and notes that the plan for that week required the speed the guard prevented. He writes it down, carefully.'
+        vi: 'Ông Sáng xem hồ sơ và ghi rằng kế hoạch tuần đó đòi hỏi tốc độ mà tấm chắn ngăn cản. Ông ghi lại, cẩn thận.'
+        effects: [rel sang trust -5, rel kiet trust -8, rep.boss -4, stress +4]
+      - p: 0.65
+        ok: false
+        en: 'Kiet is called in and says, quietly, that he asked for the guard to stay on and was told no. He has a message on his phone.'
+        vi: 'Anh Kiệt được gọi vào và khẽ nói rằng anh đã xin giữ tấm chắn và bị bảo không. Anh có tin nhắn trên điện thoại.'
+        effects: [rel sang trust -10, rel kiet trust -12, rel lan trust -8, rep.boss -10, stress +8]
+  - en: 'Say you do not recall the details, and offer to look.'
+    vi: 'Nói anh/chị không nhớ chi tiết và đề nghị đi tìm.'
+    outcomes:
+      - p: 0.4
+        en: 'Sang gives you a week. You find the plan and hand it over. It is not the whole truth, but it is something.'
+        vi: 'Ông Sáng cho anh/chị một tuần. Anh/chị tìm thấy kế hoạch và nộp. Không phải toàn bộ sự thật, nhưng là một phần.'
+        effects: [rel sang trust -4, stress +4, fact stalled_the_inspector private]
+      - p: 0.6
+        ok: false
+        en: "The crew gives Sang the shift records, which show the plan's original numbers and your name. He has them on the table next to your notes."
+        vi: 'Tổ đưa ông Sáng các hồ sơ ca, cho thấy số liệu gốc của kế hoạch và tên anh/chị. Ông để chúng trên bàn cạnh ghi chú của anh/chị.'
+        effects:
+          [
+            rel sang trust -10,
+            rel kiet trust -6,
+            rel lan trust -6,
+            rep.boss -8,
+            stress +7,
+            fact stalled_the_inspector witnessed,
+          ]
+---
+scene: prod.scapegoat_meeting
+place: meeting_room
+tags: [safety, pressure, consequence]
+weight: 6
+cooldown: 52
+when: [month in 11 12, turn >= 44, fact.blamed_operator >= 2]
+lines:
+  - who: char:lan
+    en: 'The inspection report names the near-miss on press 3 and an incident report that does not match the shift records. The directors want to know who is responsible. They will decide tomorrow. I want to hear it from you first.'
+    vi: 'Báo cáo thanh tra nêu vụ suýt tai nạn ở máy ép 3 và một báo cáo sự cố không khớp hồ sơ ca. Ban giám đốc muốn biết ai chịu trách nhiệm. Ngày mai họ quyết. Chị muốn nghe từ em trước.'
+choices:
+  - en: "Tell her the real account, including the operator's part, which was none, and your own."
+    vi: 'Nói với chị bản tường trình thật, kể cả phần của công nhân, tức là không có, và phần của anh/chị.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: 'Lan listens, and takes your account to the directors with her own signature beside it. You are demoted to assistant planner, and you keep your job and, eventually, your name.'
+        vi: 'Chị Lan lắng nghe và mang bản tường trình của anh/chị lên ban giám đốc kèm chữ ký của chính chị. Anh/chị bị hạ xuống trợ lý kế hoạch, và giữ được việc và về sau là cả danh tiếng.'
+        effects:
+          [
+            rel lan trust +2,
+            rel phuc trust +5,
+            rel kiet trust +3,
+            rep.boss -8,
+            stress +7,
+            fact came_clean_to_auditor witnessed,
+          ]
+  - en: 'Say the operator was also responsible for not refusing an unsafe instruction.'
+    vi: 'Nói công nhân cũng có trách nhiệm vì không từ chối một chỉ dẫn không an toàn.'
+    outcomes:
+      - p: 0.4
+        en: 'The directors treat it as shared fault. Phuc is moved to another line, and everyone knows why.'
+        vi: 'Ban giám đốc coi đó là lỗi chung. Phúc được chuyển sang chuyền khác, và ai cũng biết vì sao.'
+        effects: [rel phuc trust -10, rel kiet trust -6, rep.boss -4, stress +4]
+      - p: 0.6
+        ok: false
+        en: "Phuc has kept his own notes, and Kiet confirms them. The 'shared fault' argument does not survive the room."
+        vi: "Phúc giữ ghi chú riêng và anh Kiệt xác nhận chúng. Lập luận 'lỗi chung' không sống sót trong căn phòng."
+        effects: [rel phuc trust -12, rel kiet trust -10, rel lan trust -8, rep.boss -10, stress +8]
+  - en: "Say the incident report was Lan's to sign, and she approved it."
+    vi: 'Nói báo cáo sự cố do chị Lan ký và chị đã duyệt.'
+    outcomes:
+      - p: 0.3
+        en: "Lan says, quietly, 'That is true.' She takes her own share. She also never trusts you with a plan again."
+        vi: "Chị Lan khẽ nói: 'Đúng vậy.' Chị nhận phần của mình. Chị cũng không bao giờ tin em với một kế hoạch nữa."
+        effects:
+          [rel lan trust -20, rel lan loyalty -15, rep.boss -6, stress +5, fact blamed_boss private]
+      - p: 0.7
+        ok: false
+        en: 'Lan has the original draft you sent her, with the line about who decided the staffing in it. She reads it aloud.'
+        vi: 'Chị Lan có bản nháp gốc anh/chị gửi, trong đó có dòng về ai quyết định nhân sự. Chị đọc to lên.'
+        effects:
+          [rel lan trust -20, rel kiet trust -8, rep.boss -14, stress +9, fact blamed_boss public]
+---
+fact: ran_short_handed
+severity: 3
+category: integrity
+en: 'you ran the lines short-handed and pushed the gap onto the crews'
+vi: 'bạn cho các chuyền chạy thiếu người và đẩy khoảng thiếu sang các tổ'
+lesson:
+  en: 'A crew that is asked to cover a gap covers it with tiredness. Running short-handed at full speed is overtime that is not counted.'
+  vi: 'Một tổ được nhờ gánh một khoảng thiếu sẽ gánh bằng sự mệt mỏi. Chạy thiếu người hết tốc độ là làm thêm giờ không được tính.'
+traces:
+  - { type: record, visibility: 0.5, detectors: [boss, internal_audit] }
+witnessed:
+  boss: -4
+  production: -5
+public:
+  boss: -7
+---
+fact: ignored_heat_risk
+severity: 5
+category: integrity
+en: 'you kept crews working through dangerous heat without changing the plan'
+vi: 'bạn cho các tổ làm việc dưới trời nóng nguy hiểm mà không đổi kế hoạch'
+lesson:
+  en: 'Heat is a safety condition, not a mood. A plan that ignores it pushes the risk onto whoever is weakest that afternoon.'
+  vi: 'Nóng là điều kiện an toàn, không phải tâm trạng. Kế hoạch bỏ qua nó đẩy rủi ro sang người yếu nhất chiều hôm đó.'
+traces:
+  - { type: record, visibility: 0.6, detectors: [boss, internal_audit, qc] }
+witnessed:
+  boss: -7
+  production: -8
+public:
+  boss: -12
+---
+fact: skipped_changeover_check
+severity: 4
+category: integrity
+en: 'you skipped the first-article check after a changeover to save an hour'
+vi: 'bạn bỏ kiểm sản phẩm đầu tiên sau đổi khuôn để tiết kiệm một giờ'
+lesson:
+  en: 'The first-article check is cheap insurance against a whole batch going wrong. Skipping it saves an hour and risks the day.'
+  vi: 'Kiểm sản phẩm đầu tiên là bảo hiểm rẻ chống cả một lô bị sai. Bỏ nó tiết kiệm một giờ và đặt cược cả ngày.'
+traces:
+  - { type: record, visibility: 0.6, detectors: [qc, internal_audit] }
+witnessed:
+  boss: -4
+  qc: -5
+public:
+  boss: -8
+---
+fact: pressured_qc_release
+severity: 4
+category: integrity
+en: 'you leaned on quality control to release a lot it had held'
+vi: 'bạn ép bộ phận kiểm soát chất lượng cho xuất một lô họ đã giữ'
+lesson:
+  en: "A hold is the quality manager's job. Pressuring someone to release it moves the risk from the lot to the person who signs."
+  vi: 'Việc giữ hàng là việc của quản lý chất lượng. Ép họ cho xuất chuyển rủi ro từ lô hàng sang người ký.'
+traces:
+  - { type: message, visibility: 0.6, detectors: [qc, boss, internal_audit] }
+witnessed:
+  boss: -5
+  qc: -6
+public:
+  boss: -9
+---
+fact: edited_overtime_log
+severity: 7
+category: integrity
+en: 'you edited the gate log so it agreed with the overtime sheet'
+vi: 'bạn sửa nhật ký cổng cho khớp với bảng giờ làm thêm'
+lesson:
+  en: "Changing a record so two documents agree is falsification, however tidy it looks. The second copy, in the security company's files, rarely agrees."
+  vi: 'Sửa hồ sơ để hai tài liệu khớp nhau là làm giả, dù trông gọn gàng đến đâu. Bản sao thứ hai, trong hồ sơ công ty bảo vệ, hiếm khi khớp.'
+traces:
+  - { type: record, visibility: 0.8, detectors: [internal_audit, boss, finance] }
+witnessed:
+  boss: -10
+  production: -10
+public:
+  boss: -16
+---
+fact: dismissed_worker_question
+severity: 3
+category: integrity
+en: 'you dismissed a fair question from the crew about their pay'
+vi: 'bạn gạt đi một câu hỏi chính đáng của tổ về tiền lương của họ'
+lesson:
+  en: 'A question about pay is a question about fairness. Refusing to answer turns a question into a grievance.'
+  vi: 'Câu hỏi về lương là câu hỏi về sự công bằng. Từ chối trả lời biến câu hỏi thành khiếu nại.'
+traces:
+  - { type: witness, visibility: 0.5, detectors: [boss, internal_audit] }
+witnessed:
+  boss: -4
+  production: -6
+public:
+  boss: -7
+---
+fact: used_unapproved_subcontractor
+severity: 5
+category: integrity
+en: 'you used an unapproved subcontractor and labelled the goods as made in-house'
+vi: 'bạn dùng nhà thầu phụ chưa được duyệt và ghi nhãn hàng là tự sản xuất'
+lesson:
+  en: 'An approved supplier list exists so that every pot can be traced. A subcontractor outside it, with a false label, breaks the trace and the trust.'
+  vi: 'Danh sách nhà cung cấp được duyệt tồn tại để mọi chiếc nồi truy xuất được. Nhà thầu ngoài danh sách với nhãn sai phá đứt truy xuất và lòng tin.'
+traces:
+  - { type: document, visibility: 0.7, detectors: [buyer, qc, internal_audit] }
+witnessed:
+  boss: -6
+  qc: -6
+  buyer: -6
+public:
+  boss: -11
+  buyer: -12
+---
+fact: denied_emergency_leave
+severity: 4
+category: integrity
+en: 'you refused a worker leave for a family emergency'
+vi: 'bạn từ chối cho một công nhân nghỉ vì việc khẩn cấp của gia đình'
+lesson:
+  en: 'An order will be shipped eventually. A refused emergency is remembered by a whole crew for years.'
+  vi: 'Một đơn hàng rồi sẽ được giao. Một việc khẩn cấp bị từ chối được cả tổ nhớ nhiều năm.'
+traces:
+  - { type: witness, visibility: 0.5, detectors: [boss, internal_audit] }
+witnessed:
+  boss: -5
+  production: -7
+public:
+  boss: -9
+---
+fact: blamed_boss
+severity: 5
+category: integrity
+en: 'you told the directors your manager was responsible for a decision you made'
+vi: 'bạn nói với ban giám đốc rằng quản lý chịu trách nhiệm về một quyết định do bạn đưa ra'
+lesson:
+  en: "Signing is not the same as deciding. Pointing at your boss's signature when you made the decision turns her support into your exposure."
+  vi: 'Ký không đồng nghĩa với quyết định. Chỉ vào chữ ký của sếp khi chính bạn đã quyết biến sự ủng hộ của chị thành rủi ro của bạn.'
+traces:
+  - { type: document, visibility: 0.8, detectors: [boss, internal_audit] }
+witnessed:
+  boss: -8
+  production: -6
+public:
+  boss: -14
+---
+fact: stalled_the_inspector
+severity: 4
+category: integrity
+en: 'you told an inspector you did not remember what you did remember'
+vi: 'bạn nói với thanh tra rằng bạn không nhớ điều mà bạn vẫn nhớ'
+lesson:
+  en: 'Claiming not to remember buys a week and spends your credibility. An inspector who has to find the records himself reads everything else with suspicion.'
+  vi: 'Nói không nhớ mua được một tuần và tiêu mất uy tín của bạn. Một thanh tra phải tự tìm hồ sơ sẽ đọc mọi thứ còn lại với sự nghi ngờ.'
+traces:
+  - { type: witness, visibility: 0.6, detectors: [boss, internal_audit] }
+witnessed:
+  boss: -5
+  production: -5
+public:
+  boss: -9

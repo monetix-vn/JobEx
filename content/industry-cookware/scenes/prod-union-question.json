@@ -1,0 +1,107 @@
+{
+  "id": "scene.prod.union_question",
+  "location": "loc.factory_floor",
+  "cast": ["char:kiet"],
+  "lines": [
+    {
+      "speaker": "char:kiet",
+      "text_key": "scene.prod.union_question.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.prod.union_question.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.prod.union_question.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.prod.union_question.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.prod.union_question.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.prod.union_question.c3",
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.prod.union_question.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.dismissed_worker_question",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.prod.union_question.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.dismissed_worker_question",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

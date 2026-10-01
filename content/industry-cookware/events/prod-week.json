@@ -1,0 +1,479 @@
+[
+  {
+    "id": "event.prod.first_week",
+    "role": "role.prod.planner",
+    "tags": ["onboarding", "people", "beat"],
+    "beat": {
+      "from_week": 1,
+      "to_week": 3
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.prod.first_week"
+  },
+  {
+    "id": "event.prod.midyear_review",
+    "role": "role.prod.planner",
+    "tags": ["people", "review", "beat"],
+    "beat": {
+      "from_week": 24,
+      "to_week": 28
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.prod.midyear_review"
+  },
+  {
+    "id": "event.prod.big_breakdown_twist",
+    "role": "role.prod.planner",
+    "tags": ["pressure", "breakdown", "beat"],
+    "beat": {
+      "from_week": 29,
+      "to_week": 32
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.prod.big_breakdown_twist"
+  },
+  {
+    "id": "event.prod.sang_inspection",
+    "role": "role.prod.planner",
+    "tags": ["audit", "safety", "beat"],
+    "beat": {
+      "from_week": 41,
+      "to_week": 44
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.prod.sang_inspection"
+  },
+  {
+    "id": "event.prod.year_end_review",
+    "role": "role.prod.planner",
+    "tags": ["people", "review", "beat"],
+    "beat": {
+      "from_week": 49,
+      "to_week": 50
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.prod.year_end_review"
+  },
+  {
+    "id": "event.prod.manager_offer",
+    "role": "role.prod.planner",
+    "tags": ["people", "promotion", "beat"],
+    "when": {
+      "all": [
+        {
+          "gte": [
+            {
+              "var": ["rel.lan.trust", 0]
+            },
+            25
+          ]
+        },
+        {
+          "gte": ["player.rep.boss", 58]
+        }
+      ]
+    },
+    "beat": {
+      "from_week": 51,
+      "to_week": 52
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.prod.manager_offer"
+  },
+  {
+    "id": "event.prod.resignation_thought",
+    "role": "role.prod.planner",
+    "tags": ["people", "pressure"],
+    "when": {
+      "all": [
+        {
+          "gte": ["player.stress", 75]
+        },
+        {
+          "gte": ["world.turn", 12]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 9,
+    "scene": "scene.prod.resignation_thought"
+  },
+  {
+    "id": "event.prod.impossible_date",
+    "role": "role.prod.planner",
+    "arc": "arc.the_promise",
+    "tags": ["pressure", "sales", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 10]
+        },
+        {
+          "lte": ["world.turn", 40]
+        }
+      ]
+    },
+    "weight": 3,
+    "cooldown_weeks": 9,
+    "scene": "scene.prod.impossible_date"
+  },
+  {
+    "id": "event.prod.extra_shifts",
+    "role": "role.prod.planner",
+    "tags": ["pressure", "people", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.prod.extra_shifts"
+  },
+  {
+    "id": "event.prod.guard_off_today",
+    "role": "role.prod.planner",
+    "tags": ["safety", "pressure", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.prod.guard_off_today"
+  },
+  {
+    "id": "event.prod.near_miss",
+    "role": "role.prod.planner",
+    "tags": ["safety", "dark", "consequence", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.prod.near_miss"
+  },
+  {
+    "id": "event.prod.maintenance_request",
+    "role": "role.prod.planner",
+    "arc": "arc.deferred_maintenance",
+    "tags": ["maintenance", "pressure"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 14]
+        },
+        {
+          "lte": ["world.turn", 30]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 9,
+    "scene": "scene.prod.maintenance_request"
+  },
+  {
+    "id": "event.prod.maintenance_defer",
+    "role": "role.prod.planner",
+    "tags": ["maintenance", "pressure", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.prod.maintenance_defer"
+  },
+  {
+    "id": "event.prod.breakdown",
+    "role": "role.prod.planner",
+    "tags": ["maintenance", "pressure", "consequence", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.prod.breakdown"
+  },
+  {
+    "id": "event.prod.phuc_training",
+    "role": "role.prod.planner",
+    "arc": "arc.phuc",
+    "tags": ["people", "safety", "onboarding"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 3]
+        },
+        {
+          "lte": ["world.turn", 18]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 9,
+    "scene": "scene.prod.phuc_training"
+  },
+  {
+    "id": "event.prod.phuc_unsupervised",
+    "role": "role.prod.planner",
+    "tags": ["people", "safety", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.prod.phuc_unsupervised"
+  },
+  {
+    "id": "event.prod.phuc_incident",
+    "role": "role.prod.planner",
+    "tags": ["people", "safety", "dark", "consequence", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.prod.phuc_incident"
+  },
+  {
+    "id": "event.prod.material_late",
+    "role": "role.prod.planner",
+    "arc": "arc.materials",
+    "tags": ["materials", "pressure"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 12]
+        },
+        {
+          "lte": ["world.turn", 44]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 9,
+    "scene": "scene.prod.material_late"
+  },
+  {
+    "id": "event.prod.stockout_cover",
+    "role": "role.prod.planner",
+    "tags": ["materials", "pressure", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.prod.stockout_cover"
+  },
+  {
+    "id": "event.prod.pre_tet_crunch",
+    "role": "role.prod.planner",
+    "tags": ["pressure", "sales"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 3]
+        },
+        {
+          "lte": ["world.turn", 9]
+        }
+      ]
+    },
+    "weight": 3,
+    "cooldown_weeks": 52,
+    "scene": "scene.prod.pre_tet_crunch"
+  },
+  {
+    "id": "event.prod.tet_restart",
+    "role": "role.prod.planner",
+    "tags": ["people", "pressure"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 6]
+        },
+        {
+          "lte": ["world.turn", 11]
+        }
+      ]
+    },
+    "weight": 3,
+    "cooldown_weeks": 52,
+    "scene": "scene.prod.tet_restart"
+  },
+  {
+    "id": "event.prod.heat_fatigue",
+    "role": "role.prod.planner",
+    "tags": ["safety", "people", "pressure"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 26]
+        },
+        {
+          "lte": ["world.turn", 38]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 30,
+    "scene": "scene.prod.heat_fatigue"
+  },
+  {
+    "id": "event.prod.changeover_shortcut",
+    "role": "role.prod.planner",
+    "tags": ["quality", "pressure", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 8]
+        },
+        {
+          "lte": ["world.turn", 46]
+        }
+      ]
+    },
+    "weight": 1.5,
+    "cooldown_weeks": 16,
+    "scene": "scene.prod.changeover_shortcut"
+  },
+  {
+    "id": "event.prod.qc_hold_conflict",
+    "role": "role.prod.planner",
+    "tags": ["quality", "pressure", "people"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 10]
+        },
+        {
+          "lte": ["world.turn", 46]
+        }
+      ]
+    },
+    "weight": 1.5,
+    "cooldown_weeks": 20,
+    "scene": "scene.prod.qc_hold_conflict"
+  },
+  {
+    "id": "event.prod.overtime_log",
+    "role": "role.prod.planner",
+    "tags": ["people", "compliance", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 16]
+        },
+        {
+          "lte": ["world.turn", 46]
+        }
+      ]
+    },
+    "weight": 1.5,
+    "cooldown_weeks": 24,
+    "scene": "scene.prod.overtime_log"
+  },
+  {
+    "id": "event.prod.union_question",
+    "role": "role.prod.planner",
+    "tags": ["people", "compliance"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 20]
+        },
+        {
+          "lte": ["world.turn", 44]
+        }
+      ]
+    },
+    "weight": 1.2,
+    "cooldown_weeks": 30,
+    "scene": "scene.prod.union_question"
+  },
+  {
+    "id": "event.prod.subcontractor_offer",
+    "role": "role.prod.planner",
+    "tags": ["pressure", "quality", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 14]
+        },
+        {
+          "lte": ["world.turn", 46]
+        }
+      ]
+    },
+    "weight": 1.2,
+    "cooldown_weeks": 30,
+    "scene": "scene.prod.subcontractor_offer"
+  },
+  {
+    "id": "event.prod.family_emergency",
+    "role": "role.prod.planner",
+    "tags": ["people", "pressure"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 10]
+        },
+        {
+          "lte": ["world.turn", 46]
+        }
+      ]
+    },
+    "weight": 1,
+    "cooldown_weeks": 40,
+    "scene": "scene.prod.family_emergency"
+  },
+  {
+    "id": "event.prod.year_end_peak",
+    "role": "role.prod.planner",
+    "tags": ["pressure", "sales", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 44]
+        },
+        {
+          "lte": ["world.turn", 50]
+        }
+      ]
+    },
+    "weight": 4,
+    "cooldown_weeks": 40,
+    "scene": "scene.prod.year_end_peak"
+  },
+  {
+    "id": "event.prod.sang_asks_records",
+    "role": "role.prod.planner",
+    "tags": ["audit", "safety", "dark", "consequence"],
+    "when": {
+      "all": [
+        {
+          "in": ["world.month_of_year", 10, 11]
+        },
+        {
+          "gte": ["world.turn", 40]
+        },
+        {
+          "gte": [
+            {
+              "var": ["fact.bypassed_guard", 0]
+            },
+            1
+          ]
+        }
+      ]
+    },
+    "weight": 6,
+    "cooldown_weeks": 52,
+    "scene": "scene.prod.sang_asks_records"
+  },
+  {
+    "id": "event.prod.scapegoat_meeting",
+    "role": "role.prod.planner",
+    "tags": ["safety", "pressure", "consequence"],
+    "when": {
+      "all": [
+        {
+          "in": ["world.month_of_year", 11, 12]
+        },
+        {
+          "gte": ["world.turn", 44]
+        },
+        {
+          "gte": [
+            {
+              "var": ["fact.blamed_operator", 0]
+            },
+            2
+          ]
+        }
+      ]
+    },
+    "weight": 6,
+    "cooldown_weeks": 52,
+    "scene": "scene.prod.scapegoat_meeting"
+  }
+]

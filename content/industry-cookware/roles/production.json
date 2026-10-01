@@ -1,0 +1,62 @@
+[
+  {
+    "id": "role.prod.planner",
+    "department": "dept.production",
+    "level": 1,
+    "title_key": "role.prod.planner.title",
+    "blurb_key": "role.prod.planner.blurb",
+    "reports_to": "role.prod.manager",
+    "kpis": [
+      {
+        "id": "kpi.on_time_delivery",
+        "weight": 0.5
+      },
+      {
+        "id": "kpi.line_utilisation",
+        "weight": 0.3
+      }
+    ],
+    "weekly_demand": [
+      {
+        "task": "task.schedule_orders",
+        "per_week": [4, 6],
+        "effort_h": 2.0
+      },
+      {
+        "task": "task.material_check",
+        "per_week": [3, 5],
+        "effort_h": 1.5
+      },
+      {
+        "task": "task.line_changeover",
+        "per_week": [1, 3],
+        "effort_h": 2.5
+      }
+    ],
+    "approval_limits": {
+      "overtime_hours_week": 0
+    },
+    "skills": ["planning", "analysis", "backbone"],
+    "start_state": {
+      "salary_vnd": 15000000,
+      "stress": 25,
+      "skill.planning": 40,
+      "skill.analysis": 35,
+      "skill.backbone": 30
+    },
+    "overhead_hours": 15
+  },
+  {
+    "id": "role.prod.manager",
+    "department": "dept.production",
+    "level": 2,
+    "title_key": "role.prod.manager.title",
+    "approval_limits": {
+      "overtime_hours_week": 6
+    },
+    "start_state": {
+      "salary_vnd": 34000000,
+      "stress": 40
+    }
+  }
+]

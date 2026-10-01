@@ -1,0 +1,190 @@
+{
+  "id": "scene.prod.near_miss",
+  "location": "loc.factory_floor",
+  "cast": ["char:kiet"],
+  "lines": [
+    {
+      "speaker": "char:kiet",
+      "text_key": "scene.prod.near_miss.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.prod.near_miss.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.prod.near_miss.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.kiet.trust",
+              "value": 6
+            },
+            {
+              "delta": "rel.phuc.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.reported_near_miss",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_promise",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.prod.near_miss.c2",
+      "outcomes": [
+        {
+          "p": 0.55,
+          "narration_key": "scene.prod.near_miss.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.phuc.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.kiet.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.blamed_operator",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_promise",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.45,
+          "result": "fail",
+          "narration_key": "scene.prod.near_miss.c2.fail",
+          "effects": [
+            {
+              "delta": "rel.phuc.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.kiet.trust",
+              "value": -10
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -7
+            },
+            {
+              "delta": "player.stress",
+              "value": 7
+            },
+            {
+              "fact": "fact.blamed_operator",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_promise",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.prod.near_miss.c3",
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.prod.near_miss.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.phuc.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.kiet.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.hid_near_miss",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_promise",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.prod.near_miss.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.phuc.trust",
+              "value": -5
+            },
+            {
+              "delta": "rel.kiet.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.hid_near_miss",
+              "visibility": "public"
+            },
+            {
+              "arc": "arc.the_promise",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

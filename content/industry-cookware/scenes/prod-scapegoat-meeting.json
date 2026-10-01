@@ -1,0 +1,166 @@
+{
+  "id": "scene.prod.scapegoat_meeting",
+  "location": "loc.meeting_room",
+  "cast": ["char:lan"],
+  "lines": [
+    {
+      "speaker": "char:lan",
+      "text_key": "scene.prod.scapegoat_meeting.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.prod.scapegoat_meeting.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.prod.scapegoat_meeting.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.phuc.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.kiet.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -8
+            },
+            {
+              "delta": "player.stress",
+              "value": 7
+            },
+            {
+              "fact": "fact.came_clean_to_auditor",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.prod.scapegoat_meeting.c2",
+      "outcomes": [
+        {
+          "p": 0.4,
+          "narration_key": "scene.prod.scapegoat_meeting.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.phuc.trust",
+              "value": -10
+            },
+            {
+              "delta": "rel.kiet.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        },
+        {
+          "p": 0.6,
+          "result": "fail",
+          "narration_key": "scene.prod.scapegoat_meeting.c2.fail",
+          "effects": [
+            {
+              "delta": "rel.phuc.trust",
+              "value": -12
+            },
+            {
+              "delta": "rel.kiet.trust",
+              "value": -10
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -10
+            },
+            {
+              "delta": "player.stress",
+              "value": 8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.prod.scapegoat_meeting.c3",
+      "outcomes": [
+        {
+          "p": 0.3,
+          "narration_key": "scene.prod.scapegoat_meeting.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": -20
+            },
+            {
+              "delta": "rel.lan.loyalty",
+              "value": -15
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.blamed_boss",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.7,
+          "result": "fail",
+          "narration_key": "scene.prod.scapegoat_meeting.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": -20
+            },
+            {
+              "delta": "rel.kiet.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -14
+            },
+            {
+              "delta": "player.stress",
+              "value": 9
+            },
+            {
+              "fact": "fact.blamed_boss",
+              "visibility": "public"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

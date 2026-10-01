@@ -1,0 +1,169 @@
+{
+  "id": "scene.prod.guard_off_today",
+  "location": "loc.factory_floor",
+  "cast": ["char:kiet"],
+  "lines": [
+    {
+      "speaker": "char:kiet",
+      "text_key": "scene.prod.guard_off_today.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.prod.guard_off_today.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.85,
+          "narration_key": "scene.prod.guard_off_today.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": 8
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.stopped_the_line",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_promise",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.15,
+          "result": "fail",
+          "narration_key": "scene.prod.guard_off_today.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": 6
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "arc": "arc.the_promise",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.prod.guard_off_today.c2",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.prod.guard_off_today.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.the_promise",
+              "stage": "nearmiss"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.prod.guard_off_today.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.prod.guard_off_today.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": -5
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": -1
+            },
+            {
+              "fact": "fact.bypassed_guard",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_promise",
+              "stage": "nearmiss"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.prod.guard_off_today.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.phuc.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.bypassed_guard",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_promise",
+              "stage": "nearmiss"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

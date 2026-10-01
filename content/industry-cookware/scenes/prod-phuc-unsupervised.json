@@ -1,0 +1,181 @@
+{
+  "id": "scene.prod.phuc_unsupervised",
+  "location": "loc.factory_floor",
+  "cast": ["char:kiet"],
+  "lines": [
+    {
+      "speaker": "char:kiet",
+      "text_key": "scene.prod.phuc_unsupervised.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.prod.phuc_unsupervised.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.85,
+          "narration_key": "scene.prod.phuc_unsupervised.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": 6
+            },
+            {
+              "delta": "rel.phuc.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.phuc",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.15,
+          "result": "fail",
+          "narration_key": "scene.prod.phuc_unsupervised.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.phuc.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.phuc",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.prod.phuc_unsupervised.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.prod.phuc_unsupervised.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.phuc.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.phuc",
+              "stage": "incident"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.prod.phuc_unsupervised.c3",
+      "outcomes": [
+        {
+          "p": 0.65,
+          "narration_key": "scene.prod.phuc_unsupervised.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.phuc.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": -1
+            },
+            {
+              "fact": "fact.assigned_untrained_operator",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.phuc",
+              "stage": "incident"
+            }
+          ]
+        },
+        {
+          "p": 0.35,
+          "result": "fail",
+          "narration_key": "scene.prod.phuc_unsupervised.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": -10
+            },
+            {
+              "delta": "rel.phuc.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 8
+            },
+            {
+              "fact": "fact.assigned_untrained_operator",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.phuc",
+              "stage": "incident"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

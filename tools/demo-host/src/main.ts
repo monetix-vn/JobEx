@@ -2,6 +2,7 @@ import { mount, mountRolePicker, type ClientHandle, type UiLocale } from '@je/cl
 import type { Run } from '@je/kernel';
 import {
   FIN_ROLE,
+  PROD_ROLE,
   QC_ROLE,
   SALES_ROLE,
   createGameHost,
@@ -17,6 +18,7 @@ const ROLE_SHORTCUTS: Record<string, string> = {
   sales: SALES_ROLE,
   qc: QC_ROLE,
   fin: FIN_ROLE,
+  prod: PROD_ROLE,
 };
 
 const params = new URLSearchParams(window.location.search);

@@ -56,9 +56,17 @@ source of truth for what scene comes next; update their Status column as you go.
 - [x] Remaining planned Finance scenes and a third close-step variant for quarter ends (46 Finance scenes)
 - [ ] Practitioner review of the Finance text
 
+## Job 4: Production Planner (`docs/story/production.md`)
+
+- [x] Bible v1 (AI): cast, season timeline, four storylines, dark-side ladder, episode list (owner review pending)
+- [x] Role `role.prod.planner` playable (overhead 15 hours), `prod-year` scenario, CI step `sim:prod`
+- [x] 31 scenes: beats (first week, midyear review, big-breakdown twist, labour inspection, year-end review, manager offer), arcs The Promise, The Deferred Maintenance, Phuc, The late steel, random incidents, crisis consequences, resignation; 4 new characters, 26 facts
+- [x] First-cut balance check (`prod-year.test.ts`)
+- [ ] More Production scenes (the rows still planned in the bible) and practitioner review
+
 ## Later jobs (not yet designed)
 
-- [ ] Choose the next jobs (Production Planner? Purchasing? HR? Logistics?) (needs owner)
+- [ ] Choose the next jobs (Purchasing? HR? Logistics? Warehouse?) (needs owner)
 - [ ] For each: bible, then scenes (same steps as above)
 
 ## Story-writing loop (each session)

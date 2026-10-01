@@ -30,3 +30,11 @@ will behave differently.
 | careful | promoted 40 | 51 / 51 / 51 | 68 / 74.1 / 82 | 72.6 | the_cookie_jar 90%, the_cutoff 85%, the_receipt_problem 100%, the_squeeze 100%, thu 93% |
 | random | fired 28, completed 11, prosecuted 1 | 13 / 37 / 52 | 21 / 62.4 / 91 | 11.8 | the_cookie_jar 68%, the_cutoff 78%, the_receipt_problem 98%, the_squeeze 98%, thu 93% |
 | reckless | fired 38, prosecuted 2 | 11 / 19 / 35 | 16 / 33.8 / 62 | 4.3 | the_cookie_jar 10%, the_cutoff 55%, the_receipt_problem 68%, the_squeeze 78%, thu 93% |
+
+### prod-year
+
+| Player | Endings | Weeks (min/median/max) | Decisions (min/mean/max) | Final stress | Storylines started |
+| ------ | ------- | ---------------------- | ------------------------ | ------------ | ------------------ |
+| careful | promoted 40 | 51 / 51 / 51 | 40 / 41.3 / 43 | 30.1 | deferred_maintenance 100%, materials 100%, phuc 100%, the_promise 100%, the_squeeze 100% |
+| random | fired 32, completed 8 | 15 / 34 / 52 | 17 / 38.4 / 56 | 29.8 | deferred_maintenance 90%, materials 93%, phuc 100%, the_promise 100%, the_squeeze 100% |
+| reckless | fired 40 | 13 / 17 / 27 | 14 / 23.4 / 35 | 28.6 | deferred_maintenance 57%, materials 70%, phuc 100%, the_promise 98%, the_squeeze 100% |

@@ -1,0 +1,135 @@
+{
+  "id": "scene.prod.stockout_cover",
+  "location": "loc.sales_office",
+  "cast": ["char:bao"],
+  "lines": [
+    {
+      "speaker": "char:bao",
+      "text_key": "scene.prod.stockout_cover.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.prod.stockout_cover.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.prod.stockout_cover.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": -1
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.materials",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.prod.stockout_cover.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.prod.stockout_cover.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 0
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.materials",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.prod.stockout_cover.c3",
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.prod.stockout_cover.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 5
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.hid_stockout",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.materials",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.prod.stockout_cover.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.hid_stockout",
+              "visibility": "public"
+            },
+            {
+              "arc": "arc.materials",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

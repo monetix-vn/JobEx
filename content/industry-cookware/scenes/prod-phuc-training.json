@@ -1,0 +1,95 @@
+{
+  "id": "scene.prod.phuc_training",
+  "location": "loc.factory_floor",
+  "cast": ["char:phuc"],
+  "lines": [
+    {
+      "speaker": "char:phuc",
+      "text_key": "scene.prod.phuc_training.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.prod.phuc_training.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.prod.phuc_training.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.phuc.trust",
+              "value": 7
+            },
+            {
+              "delta": "rel.phuc.loyalty",
+              "value": 5
+            },
+            {
+              "delta": "rel.kiet.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.phuc",
+              "stage": "alone"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.prod.phuc_training.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.prod.phuc_training.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.phuc.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.kiet.trust",
+              "value": 1
+            },
+            {
+              "arc": "arc.phuc",
+              "stage": "alone"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.prod.phuc_training.c3",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.prod.phuc_training.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.phuc.trust",
+              "value": -4
+            },
+            {
+              "arc": "arc.phuc",
+              "stage": "alone"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

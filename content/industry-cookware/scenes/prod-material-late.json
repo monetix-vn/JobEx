@@ -1,0 +1,165 @@
+{
+  "id": "scene.prod.material_late",
+  "location": "loc.sales_office",
+  "cast": ["char:tam"],
+  "lines": [
+    {
+      "speaker": "char:tam",
+      "text_key": "scene.prod.material_late.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.prod.material_late.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.prod.material_late.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -2
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.materials",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.prod.material_late.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -5
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.materials",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.prod.material_late.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.prod.material_late.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.materials",
+              "stage": "cover"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.prod.material_late.c3",
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.prod.material_late.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.tam.owed",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "arc": "arc.materials",
+              "stage": "cover"
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.prod.material_late.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "arc": "arc.materials",
+              "stage": "cover"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
