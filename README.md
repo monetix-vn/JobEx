@@ -62,9 +62,10 @@ pnpm dev:web           # play the Sales Specialist's week: http://localhost:5173
 
 ## Play it (one click)
 
-Double-click `play.bat` (or `play-vi.bat` to start in Vietnamese). The first run builds two
-self-contained files, `JobEx-play.html` and `JobEx-play-vi.html` (needs Node 20+); after that it
-just opens in your browser. They have no server and no dependencies, so you can copy them anywhere.
+Double-click `play.bat` (or `play-vi.bat` to start in Vietnamese). Each launch rebuilds two
+self-contained files, `JobEx-play.html` and `JobEx-play-vi.html`, from the current content (a few
+seconds, needs Node 20+), then opens them in your browser; `play.bat fast` skips the rebuild.
+New jobs and scenes live on the branch `feature/story-engine` until it is merged into `main`. They have no server and no dependencies, so you can copy them anywhere.
 Rebuild after code or content changes with `pnpm build:play`.
 
 Use the **EN | VI** buttons at the top to switch language at any time. The game keeps your week,
