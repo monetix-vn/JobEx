@@ -1,0 +1,170 @@
+{
+  "id": "scene.it.quoc_asks_access",
+  "location": "loc.it_room",
+  "cast": ["char:quoc"],
+  "lines": [
+    {
+      "speaker": "char:quoc",
+      "text_key": "scene.it.quoc_asks_access.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.it.quoc_asks_access.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.it.quoc_asks_access.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.quoc.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": -2
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.came_clean_to_auditor",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.it.quoc_asks_access.c2",
+      "outcomes": [
+        {
+          "p": 0.4,
+          "narration_key": "scene.it.quoc_asks_access.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.quoc.trust",
+              "value": -5
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        },
+        {
+          "p": 0.6,
+          "result": "fail",
+          "narration_key": "scene.it.quoc_asks_access.c2.fail",
+          "effects": [
+            {
+              "delta": "rel.quoc.trust",
+              "value": -10
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.thu.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -10
+            },
+            {
+              "delta": "player.stress",
+              "value": 8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.it.quoc_asks_access.c3",
+      "outcomes": [
+        {
+          "p": 0.4,
+          "narration_key": "scene.it.quoc_asks_access.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.quoc.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.stalled_the_auditor",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.6,
+          "result": "fail",
+          "narration_key": "scene.it.quoc_asks_access.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.quoc.trust",
+              "value": -10
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 7
+            },
+            {
+              "fact": "fact.stalled_the_auditor",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

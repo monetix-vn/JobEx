@@ -1,0 +1,429 @@
+[
+  {
+    "id": "event.it.first_week",
+    "role": "role.it.admin",
+    "tags": ["onboarding", "people", "beat"],
+    "beat": {
+      "from_week": 1,
+      "to_week": 3
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.it.first_week"
+  },
+  {
+    "id": "event.it.midyear_review",
+    "role": "role.it.admin",
+    "tags": ["people", "review", "beat"],
+    "beat": {
+      "from_week": 24,
+      "to_week": 28
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.it.midyear_review"
+  },
+  {
+    "id": "event.it.phishing_click",
+    "role": "role.it.admin",
+    "arc": "arc.the_ransom",
+    "tags": ["security", "incident", "beat"],
+    "beat": {
+      "from_week": 29,
+      "to_week": 32
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.it.phishing_click"
+  },
+  {
+    "id": "event.it.security_review",
+    "role": "role.it.admin",
+    "tags": ["audit", "security", "beat"],
+    "beat": {
+      "from_week": 41,
+      "to_week": 44
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.it.security_review"
+  },
+  {
+    "id": "event.it.year_end_review",
+    "role": "role.it.admin",
+    "tags": ["people", "review", "beat"],
+    "beat": {
+      "from_week": 49,
+      "to_week": 50
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.it.year_end_review"
+  },
+  {
+    "id": "event.it.manager_offer",
+    "role": "role.it.admin",
+    "tags": ["people", "promotion", "beat"],
+    "when": {
+      "all": [
+        {
+          "gte": [
+            {
+              "var": ["rel.kien.trust", 0]
+            },
+            12
+          ]
+        },
+        {
+          "gte": ["player.rep.boss", 58]
+        }
+      ]
+    },
+    "beat": {
+      "from_week": 51,
+      "to_week": 52
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.it.manager_offer"
+  },
+  {
+    "id": "event.it.resignation_thought",
+    "role": "role.it.admin",
+    "tags": ["people", "pressure"],
+    "when": {
+      "all": [
+        {
+          "gte": ["player.stress", 75]
+        },
+        {
+          "gte": ["world.turn", 12]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 26,
+    "scene": "scene.it.resignation_thought"
+  },
+  {
+    "id": "event.it.read_their_mail",
+    "role": "role.it.admin",
+    "arc": "arc.the_email",
+    "tags": ["privacy", "surveillance", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 14]
+        },
+        {
+          "lte": ["world.turn", 40]
+        }
+      ]
+    },
+    "weight": 3,
+    "cooldown_weeks": 52,
+    "scene": "scene.it.read_their_mail"
+  },
+  {
+    "id": "event.it.what_you_found",
+    "role": "role.it.admin",
+    "tags": ["privacy", "surveillance", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.it.what_you_found"
+  },
+  {
+    "id": "event.it.the_gossip",
+    "role": "role.it.admin",
+    "tags": ["privacy", "consequence", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.it.the_gossip"
+  },
+  {
+    "id": "event.it.shared_login",
+    "role": "role.it.admin",
+    "arc": "arc.the_keys",
+    "tags": ["access", "passwords", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 10]
+        },
+        {
+          "lte": ["world.turn", 40]
+        }
+      ]
+    },
+    "weight": 3,
+    "cooldown_weeks": 40,
+    "scene": "scene.it.shared_login"
+  },
+  {
+    "id": "event.it.erp_rights",
+    "role": "role.it.admin",
+    "tags": ["access", "erp", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.it.erp_rights"
+  },
+  {
+    "id": "event.it.leaver_account",
+    "role": "role.it.admin",
+    "tags": ["access", "leaver", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.it.leaver_account"
+  },
+  {
+    "id": "event.it.files_locked",
+    "role": "role.it.admin",
+    "tags": ["security", "incident", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.it.files_locked"
+  },
+  {
+    "id": "event.it.pay_or_restore",
+    "role": "role.it.admin",
+    "tags": ["security", "ransom", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.it.pay_or_restore"
+  },
+  {
+    "id": "event.it.tell_the_customers",
+    "role": "role.it.admin",
+    "tags": ["security", "disclosure", "consequence", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.it.tell_the_customers"
+  },
+  {
+    "id": "event.it.boss_password",
+    "role": "role.it.admin",
+    "tags": ["passwords", "executives", "dark"],
+    "when": {
+      "gte": ["world.turn", 8]
+    },
+    "weight": 3,
+    "cooldown_weeks": 30,
+    "scene": "scene.it.boss_password"
+  },
+  {
+    "id": "event.it.pirated_software",
+    "role": "role.it.admin",
+    "tags": ["licences", "audit", "dark"],
+    "when": {
+      "gte": ["world.turn", 10]
+    },
+    "weight": 3,
+    "cooldown_weeks": 40,
+    "scene": "scene.it.pirated_software"
+  },
+  {
+    "id": "event.it.shadow_cloud",
+    "role": "role.it.admin",
+    "tags": ["data", "shadow_it", "dark"],
+    "when": {
+      "gte": ["world.turn", 12]
+    },
+    "weight": 3,
+    "cooldown_weeks": 40,
+    "scene": "scene.it.shadow_cloud"
+  },
+  {
+    "id": "event.it.direct_edit",
+    "role": "role.it.admin",
+    "tags": ["erp", "records", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 12]
+        },
+        {
+          "in": ["world.month_of_year", 3, 6, 9, 12]
+        }
+      ]
+    },
+    "weight": 3,
+    "cooldown_weeks": 30,
+    "scene": "scene.it.direct_edit"
+  },
+  {
+    "id": "event.it.patch_downtime",
+    "role": "role.it.admin",
+    "tags": ["security", "patching", "dark"],
+    "when": {
+      "gte": ["world.turn", 10]
+    },
+    "weight": 3,
+    "cooldown_weeks": 30,
+    "scene": "scene.it.patch_downtime"
+  },
+  {
+    "id": "event.it.keylogger_ask",
+    "role": "role.it.admin",
+    "tags": ["privacy", "surveillance", "dark"],
+    "when": {
+      "gte": ["world.turn", 14]
+    },
+    "weight": 2,
+    "cooldown_weeks": 40,
+    "scene": "scene.it.keylogger_ask"
+  },
+  {
+    "id": "event.it.vendor_gift",
+    "role": "role.it.admin",
+    "tags": ["vendor", "gifts", "dark"],
+    "when": {
+      "gte": ["world.turn", 12]
+    },
+    "weight": 2,
+    "cooldown_weeks": 40,
+    "scene": "scene.it.vendor_gift"
+  },
+  {
+    "id": "event.it.usb_found",
+    "role": "role.it.admin",
+    "tags": ["security", "physical", "dark"],
+    "when": {
+      "gte": ["world.turn", 10]
+    },
+    "weight": 2,
+    "cooldown_weeks": 40,
+    "scene": "scene.it.usb_found"
+  },
+  {
+    "id": "event.it.quoc_asks_access",
+    "role": "role.it.admin",
+    "tags": ["audit", "access", "dark", "consequence"],
+    "when": {
+      "all": [
+        {
+          "in": ["world.month_of_year", 10, 11]
+        },
+        {
+          "gte": ["world.turn", 40]
+        },
+        {
+          "any": [
+            {
+              "gte": [
+                {
+                  "var": ["fact.shared_admin_login", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.granted_conflicting_erp_rights", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.left_leaver_account_active", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.edited_posted_records_directly", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.shared_boss_password", 0]
+                },
+                1
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "weight": 6,
+    "cooldown_weeks": 52,
+    "scene": "scene.it.quoc_asks_access"
+  },
+  {
+    "id": "event.it.blame_meeting",
+    "role": "role.it.admin",
+    "tags": ["pressure", "consequence"],
+    "when": {
+      "all": [
+        {
+          "in": ["world.month_of_year", 11, 12]
+        },
+        {
+          "gte": ["world.turn", 44]
+        },
+        {
+          "any": [
+            {
+              "gte": [
+                {
+                  "var": ["fact.hid_security_incident", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.paid_ransom_secretly", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.read_mailbox_without_authorisation", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.shared_personal_findings", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.installed_keylogger", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.deleted_security_logs", 0]
+                },
+                1
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "weight": 6,
+    "cooldown_weeks": 52,
+    "scene": "scene.it.blame_meeting"
+  }
+]

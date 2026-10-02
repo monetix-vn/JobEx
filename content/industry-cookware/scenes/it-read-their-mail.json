@@ -1,0 +1,181 @@
+{
+  "id": "scene.it.read_their_mail",
+  "location": "loc.meeting_room",
+  "cast": ["char:cuong"],
+  "lines": [
+    {
+      "speaker": "char:cuong",
+      "text_key": "scene.it.read_their_mail.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.it.read_their_mail.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.it.read_their_mail.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.refused_unauthorised_access",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_email",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.it.read_their_mail.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": -5
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.refused_unauthorised_access",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_email",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.it.read_their_mail.c2",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.it.read_their_mail.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.the_email",
+              "stage": "found"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.it.read_their_mail.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.it.read_their_mail.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.read_mailbox_without_authorisation",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_email",
+              "stage": "found"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.it.read_their_mail.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": -7
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.read_mailbox_without_authorisation",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_email",
+              "stage": "found"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,245 @@
+{
+  "id": "scene.it.tell_the_customers",
+  "location": "loc.meeting_room",
+  "cast": ["char:quoc"],
+  "lines": [
+    {
+      "speaker": "char:quoc",
+      "text_key": "scene.it.tell_the_customers.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.it.tell_the_customers.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.it.tell_the_customers.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.quoc.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.disclosed_breach",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_ransom",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.it.tell_the_customers.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.quoc.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 1
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -2
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 7
+            },
+            {
+              "fact": "fact.disclosed_breach",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_ransom",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.it.tell_the_customers.c2",
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.it.tell_the_customers.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.quoc.trust",
+              "value": -2
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.the_ransom",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.it.tell_the_customers.c2.fail",
+          "effects": [
+            {
+              "delta": "rel.quoc.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "arc": "arc.the_ransom",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.it.tell_the_customers.c3",
+      "outcomes": [
+        {
+          "p": 0.4,
+          "narration_key": "scene.it.tell_the_customers.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.quoc.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.deleted_security_logs",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_ransom",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.6,
+          "result": "fail",
+          "narration_key": "scene.it.tell_the_customers.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.quoc.trust",
+              "value": -12
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": -10
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -12
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 9
+            },
+            {
+              "fact": "fact.deleted_security_logs",
+              "visibility": "public"
+            },
+            {
+              "arc": "arc.the_ransom",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

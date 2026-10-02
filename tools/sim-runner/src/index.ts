@@ -14,6 +14,7 @@ export {
   PROD_ROLE,
   PURCH_ROLE,
   INV_ROLE,
+  IT_ROLE,
   MKT_ROLE,
   FPA_ROLE,
   SUP_ROLE,

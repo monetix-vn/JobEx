@@ -1,0 +1,182 @@
+{
+  "id": "scene.it.the_gossip",
+  "location": "loc.meeting_room",
+  "cast": ["char:oanh"],
+  "lines": [
+    {
+      "speaker": "char:oanh",
+      "text_key": "scene.it.the_gossip.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.it.the_gossip.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.it.the_gossip.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.oanh.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.ngoc.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "arc": "arc.the_email",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.it.the_gossip.c2",
+      "outcomes": [
+        {
+          "p": 0.5,
+          "narration_key": "scene.it.the_gossip.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.oanh.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.cuong.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.the_email",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.5,
+          "result": "fail",
+          "narration_key": "scene.it.the_gossip.c2.fail",
+          "effects": [
+            {
+              "delta": "rel.oanh.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "arc": "arc.the_email",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.it.the_gossip.c3",
+      "outcomes": [
+        {
+          "p": 0.4,
+          "narration_key": "scene.it.the_gossip.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.oanh.trust",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.lied_about_mailbox_access",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_email",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.6,
+          "result": "fail",
+          "narration_key": "scene.it.the_gossip.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.oanh.trust",
+              "value": -10
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": -9
+            },
+            {
+              "delta": "rel.ngoc.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -10
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": -8
+            },
+            {
+              "delta": "player.stress",
+              "value": 8
+            },
+            {
+              "fact": "fact.lied_about_mailbox_access",
+              "visibility": "public"
+            },
+            {
+              "arc": "arc.the_email",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

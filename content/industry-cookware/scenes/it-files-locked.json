@@ -1,0 +1,143 @@
+{
+  "id": "scene.it.files_locked",
+  "location": "loc.it_room",
+  "cast": ["char:duc"],
+  "lines": [
+    {
+      "speaker": "char:duc",
+      "text_key": "scene.it.files_locked.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.it.files_locked.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.it.files_locked.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.quoc.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "arc": "arc.the_ransom",
+              "stage": "decision"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.it.files_locked.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.it.files_locked.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "arc": "arc.the_ransom",
+              "stage": "decision"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.it.files_locked.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.it.files_locked.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.hid_security_incident",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_ransom",
+              "stage": "decision"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.it.files_locked.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": -9
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.hid_security_incident",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_ransom",
+              "stage": "decision"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

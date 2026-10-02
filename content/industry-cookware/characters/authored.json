@@ -410,5 +410,47 @@
     "start": {
       "trust": 0
     }
+  },
+  {
+    "id": "char.kien",
+    "name_key": "char.kien.name",
+    "title_key": "char.kien.title",
+    "department": "it",
+    "home_group": "boss",
+    "traits": ["calm", "overstretched", "believes_in_logs"],
+    "start": {
+      "trust": 10
+    }
+  },
+  {
+    "id": "char.bin",
+    "name_key": "char.bin.name",
+    "title_key": "char.bin.title",
+    "department": "it",
+    "home_group": "staff",
+    "traits": ["eager", "young", "clicks_first"],
+    "start": {
+      "trust": 10
+    }
+  },
+  {
+    "id": "char.son",
+    "name_key": "char.son.name",
+    "title_key": "char.son.title",
+    "department": "vendor",
+    "traits": ["friendly", "persistent", "sells_everything"],
+    "start": {
+      "trust": 5
+    }
+  },
+  {
+    "id": "char.yen",
+    "name_key": "char.yen.name",
+    "title_key": "char.yen.title",
+    "department": "audit",
+    "traits": ["courteous", "patient", "counts_licences"],
+    "start": {
+      "trust": 0
+    }
   }
 ]

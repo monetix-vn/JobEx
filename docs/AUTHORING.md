@@ -20,7 +20,7 @@ Importing an entry again updates it in place.
 
 ```yaml
 scene: qc.rush_release # <job prefix>.<name>; prefix qc or sales picks the job
-role: qc # optional: qc | sales | fin | prod | purch | inv | any, or a full role id
+role: qc # optional: qc | sales | fin | prod | purch | inv | hr | sup | fpa | mkt | it | any, or a full role id
 place: qc_lab # qc_lab, meeting_room, sales_office, factory_floor, finance_office
 tags: [quality, pressure]
 weight: 1 # how likely, relative to other events
@@ -149,3 +149,12 @@ vi: { term: Số lô, definition: "..." }
 Unknown terms, scenes, roles or facts; missing text; bad expressions; unreachable events. Import
 reports them and exits non-zero. Then run `pnpm check:fast`, and `pnpm pin:update` if you changed
 what a simulated year does (new events shift the pinned fingerprints; that is expected).
+
+## Several jobs in one company (departments, the picker, and importing one job at a time)
+
+Roles carry a `department` (for example `dept.hr`); the job picker groups playable roles (those with a
+`blurb_key`) under the department's `dept.<name>.title` text, so each department needs that key in both
+languages. A job's scenes, characters and facts reference each other, and `pnpm author` validates the whole
+pack after writing, so import a job's files together (concatenate them with `---` between files, then run
+`pnpm author` on the combined file once or twice) rather than one file at a time. Reputation groups and
+detectors include `staff` (the rank and file) for the people-heavy jobs.

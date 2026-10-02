@@ -1,0 +1,1027 @@
+# IT Support and Systems Administrator storylines (docs/story/it.md): The Email, The Keys, The Ransom.
+arc: the_email
+title:
+  en: 'The email'
+  vi: 'Hộp thư'
+stages:
+  - { id: ask, event: it.read_their_mail }
+  - { id: found, event: it.what_you_found, delay: 1-2 }
+  - { id: gossip, event: it.the_gossip, delay: 3-5 }
+---
+scene: it.read_their_mail
+arc: the_email
+place: meeting_room
+tags: [privacy, surveillance, dark]
+weight: 3
+cooldown: 52
+when: [turn >= 14, turn <= 40]
+lines:
+  - who: char:cuong
+    en: 'Somebody is passing our price quotes to a rival. I want to read the mailboxes of the export sales team, starting with Vinh and Ngoc. Do not tell HR, do not tell Legal, and do not make a ticket. I am the General Director. Just give yourself access and tell me what you see.'
+    vi: 'Có người đang chuyển báo giá của mình cho đối thủ. Anh muốn đọc hộp thư của nhóm kinh doanh xuất khẩu, bắt đầu từ Vinh và Ngọc. Đừng nói với nhân sự, đừng nói với pháp chế và đừng lập phiếu. Anh là Tổng Giám đốc. Cứ tự cấp quyền và nói anh nghe em thấy gì.'
+choices:
+  - en: "Decline to open anyone's mailbox without written authorisation from HR and Legal, and propose a targeted check of the leaked documents' access logs instead."
+    vi: 'Từ chối mở hộp thư của bất kỳ ai khi không có văn bản ủy quyền của nhân sự và pháp chế và đề xuất kiểm tra có mục tiêu nhật ký truy cập của các tài liệu bị rò rỉ.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.7
+        en: 'Mr Cuong is angry for ten minutes and then asks Oanh for the authorisation. The log check shows that the quotes were downloaded by one account, from a home address. It is not Ngoc.'
+        vi: 'Anh Cường giận mười phút rồi nhờ chị Oanh ký ủy quyền. Kiểm tra nhật ký cho thấy các báo giá được tải về bởi một tài khoản, từ địa chỉ nhà. Không phải Ngọc.'
+        effects:
+          [
+            rel cuong trust -3,
+            rel kien trust +4,
+            rel oanh trust +3,
+            rep.boss -1,
+            stress +4,
+            fact refused_unauthorised_access witnessed,
+            arc the_email end,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'Mr Cuong says that he will find somebody who is less careful. Kien backs you in writing, and you do not know whether that will be enough.'
+        vi: 'Anh Cường nói anh sẽ tìm người ít cẩn thận hơn. Anh Kiên ủng hộ anh/chị bằng văn bản, và anh/chị không biết điều đó có đủ không.'
+        effects:
+          [
+            rel cuong trust -5,
+            rel kien trust +4,
+            rep.boss -3,
+            stress +6,
+            fact refused_unauthorised_access witnessed,
+            arc the_email end,
+          ]
+  - en: 'Offer to search the mailboxes for the specific leaked documents only, with a written request from Mr Cuong and a copy to Kien and Oanh.'
+    vi: 'Đề nghị tìm trong hộp thư chỉ các tài liệu bị rò rỉ cụ thể, với yêu cầu bằng văn bản của anh Cường và bản sao gửi anh Kiên và chị Oanh.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: 'Mr Cuong sends a one-line request and copies the other two. The search finds the documents in one mailbox only. You report that, and nothing else you saw.'
+        vi: 'Anh Cường gửi yêu cầu một dòng và đồng gửi hai người kia. Tìm kiếm thấy tài liệu trong một hộp thư. Anh/chị báo điều đó, và không gì khác anh/chị thấy.'
+        effects: [rel cuong trust +1, rel kien trust +2, stress +3, arc the_email found]
+  - en: 'Give yourself access to the mailboxes as asked, and say nothing to anyone.'
+    vi: 'Tự cấp quyền truy cập các hộp thư như được yêu cầu và không nói với ai.'
+    outcomes:
+      - p: 0.7
+        en: "The access is silent. You read Vinh's mail and Ngoc's. Mr Cuong thanks you with a smile."
+        vi: 'Việc truy cập âm thầm. Anh/chị đọc thư của anh Vinh và của Ngọc. Anh Cường cảm ơn bằng một nụ cười.'
+        effects:
+          [
+            rel cuong trust +5,
+            rel kien trust -3,
+            stress +1,
+            fact read_mailbox_without_authorisation private,
+            arc the_email found,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'The mail server logs every mailbox access with the account used. Kien finds yours in the weekly review, and asks you, gently, who authorised it.'
+        vi: 'Máy chủ thư ghi mọi lần truy cập hộp thư kèm tài khoản dùng. Anh Kiên thấy của anh/chị trong buổi rà soát tuần và hỏi, nhẹ nhàng, ai đã cho phép.'
+        effects:
+          [
+            rel cuong trust +3,
+            rel kien trust -7,
+            rep.boss -4,
+            stress +5,
+            fact read_mailbox_without_authorisation witnessed,
+            arc the_email found,
+          ]
+---
+scene: it.what_you_found
+weight: 0
+place: it_room
+tags: [privacy, surveillance, dark, arc]
+lines:
+  - who: char:cuong
+    en: 'So? What did you see? Anything about the quotes, of course. And anything else that is interesting. I am told that Ngoc has been talking to a lawyer, and that someone in the team is looking for a new job. I would like to know who.'
+    vi: 'Sao? Em thấy gì? Tất nhiên là bất cứ điều gì về báo giá. Và bất cứ điều gì thú vị khác. Anh nghe nói Ngọc đã nói chuyện với luật sư và có người trong nhóm đang tìm việc mới. Anh muốn biết là ai.'
+choices:
+  - en: 'Report only what concerns the quotes, say that the rest is personal and not yours to share, and offer to escalate anything else to HR and Legal.'
+    vi: 'Chỉ báo điều liên quan đến báo giá, nói phần còn lại là chuyện cá nhân và không phải của anh/chị để chia sẻ và đề nghị chuyển bất cứ điều gì khác cho nhân sự và pháp chế.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.8
+        en: "Mr Cuong stares at you. 'You saw it and you will not say.' You say that is correct. He lets it go, and does not forget it."
+        vi: "Anh Cường nhìn chằm chằm anh/chị. 'Em thấy rồi và em không nói.' Anh/chị nói đúng vậy. Anh bỏ qua, và không quên."
+        effects:
+          [
+            rel cuong trust -4,
+            rel kien trust +3,
+            rel ngoc trust +4,
+            rep.boss -2,
+            rep.staff +4,
+            stress +4,
+            fact protected_personal_findings witnessed,
+            arc the_email gossip,
+          ]
+      - p: 0.2
+        ok: false
+        en: 'Mr Cuong tells you to put it in writing, and then asks Kien to confirm that you are blocking him. Kien says that you are following the policy.'
+        vi: 'Anh Cường bảo anh/chị viết ra giấy rồi nhờ anh Kiên xác nhận anh/chị đang cản trở anh. Anh Kiên nói anh/chị đang tuân thủ chính sách.'
+        effects:
+          [
+            rel cuong trust -6,
+            rel kien trust +4,
+            rel ngoc trust +3,
+            rep.boss -4,
+            rep.staff +3,
+            stress +6,
+            fact protected_personal_findings witnessed,
+            arc the_email gossip,
+          ]
+  - en: "Say that you saw a message from Ngoc to a lawyer's office, but no details, and that you will not read any more without authorisation."
+    vi: 'Nói anh/chị thấy một tin nhắn của Ngọc gửi văn phòng luật nhưng không có chi tiết và sẽ không đọc thêm nếu không được phép.'
+    outcomes:
+      - p: 1
+        en: "Mr Cuong nods slowly. 'A lawyer.' He does not say what he plans to do. You regret the sentence as soon as you have said it."
+        vi: "Anh Cường gật đầu chậm. 'Luật sư.' Anh không nói định làm gì. Anh/chị hối hận về câu nói ngay khi vừa nói xong."
+        effects:
+          [rel cuong trust +1, rel ngoc trust -4, rep.staff -2, stress +4, arc the_email gossip]
+  - en: 'Tell Mr Cuong everything you saw: the lawyer, the job application and the medical appointment.'
+    vi: 'Nói với anh Cường mọi điều anh/chị thấy: luật sư, đơn xin việc và lịch hẹn khám bệnh.'
+    outcomes:
+      - p: 0.7
+        en: "Mr Cuong says 'Very useful.' By the end of the week, Ngoc is moved off the buyer account and told that it is a 'workload adjustment'."
+        vi: "Anh Cường nói 'Rất hữu ích.' Cuối tuần, Ngọc bị chuyển khỏi tài khoản khách và được báo đó là 'điều chỉnh khối lượng công việc'."
+        effects:
+          [
+            rel cuong trust +5,
+            rel ngoc trust -10,
+            rel kien trust -4,
+            rep.staff -6,
+            stress +3,
+            fact shared_personal_findings private,
+            arc the_email gossip,
+          ]
+      - p: 0.3
+        ok: false
+        en: "Ngoc learns that her messages were read when her lawyer's name is mentioned in a meeting where it should not have been. She writes to the labour authority that evening."
+        vi: 'Ngọc biết thư của chị đã bị đọc khi tên luật sư của chị được nhắc trong cuộc họp mà không nên có. Tối đó chị viết thư cho cơ quan lao động.'
+        effects:
+          [
+            rel cuong trust +2,
+            rel ngoc trust -14,
+            rel kien trust -6,
+            rel oanh trust -4,
+            rep.boss -8,
+            rep.staff -10,
+            stress +8,
+            fact shared_personal_findings public,
+            arc the_email gossip,
+          ]
+---
+scene: it.the_gossip
+weight: 0
+place: meeting_room
+tags: [privacy, consequence, arc]
+lines:
+  - who: char:oanh
+    en: "Two things have reached me. A manager mentioned a private conversation between an employee and a lawyer, and a candidate's job application elsewhere. Neither of those is information that HR or the managers have given out. The only people who could have seen those are in IT. I need to ask you directly."
+    vi: 'Hai việc đã đến tai chị. Một quản lý nhắc đến cuộc trao đổi riêng giữa một nhân viên và luật sư, và đơn xin việc ở nơi khác của một ứng viên. Cả hai đều không phải thông tin nhân sự hay các quản lý đã đưa ra. Chỉ những người ở IT mới có thể thấy chúng. Chị cần hỏi thẳng em.'
+choices:
+  - en: 'Tell Oanh exactly what happened: who asked, what you were told to do, what you saw and what you shared. Give her the logs.'
+    vi: 'Nói với chị Oanh chính xác chuyện đã xảy ra: ai nhờ, anh/chị được bảo làm gì, thấy gì và đã chia sẻ gì. Đưa chị các nhật ký.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Oanh reads the logs and nods. 'Thank you for telling me, and not letting me find out.' An incident is opened. The mailboxes are closed to everyone, and you get a formal note."
+        vi: "Chị Oanh đọc nhật ký và gật đầu. 'Cảm ơn em đã nói, và không để chị tự tìm ra.' Một sự cố được mở. Các hộp thư được khóa với mọi người, và anh/chị nhận một ghi chú chính thức."
+        effects:
+          [
+            rel oanh trust +3,
+            rel kien trust +2,
+            rel ngoc trust +3,
+            rep.boss -3,
+            rep.staff +3,
+            stress +5,
+            arc the_email end,
+          ]
+  - en: "Say that you followed a director's instruction, and give no more detail."
+    vi: 'Nói anh/chị làm theo chỉ đạo của một giám đốc và không nêu chi tiết hơn.'
+    outcomes:
+      - p: 0.5
+        en: "Oanh waits for more. When there is none, she writes 'IT followed a director's instruction' in the file, and the director's name is a question mark."
+        vi: "Chị Oanh chờ thêm. Khi không có, chị ghi 'IT làm theo chỉ đạo của một giám đốc' vào hồ sơ, và tên giám đốc là một dấu hỏi."
+        effects: [rel oanh trust -3, rel cuong trust +1, stress +4, arc the_email end]
+      - p: 0.5
+        ok: false
+        en: 'The mail log has your account on both mailboxes, with the date. Oanh puts it on the table without speaking.'
+        vi: 'Nhật ký thư có tài khoản của anh/chị trên cả hai hộp thư kèm ngày. Chị Oanh đặt nó lên bàn mà không nói.'
+        effects:
+          [
+            rel oanh trust -8,
+            rel kien trust -5,
+            rep.boss -6,
+            rep.staff -6,
+            stress +6,
+            arc the_email end,
+          ]
+  - en: 'Say that you saw nothing, and suggest the managers must have heard it elsewhere.'
+    vi: 'Nói anh/chị không thấy gì và gợi ý các quản lý chắc nghe ở nơi khác.'
+    outcomes:
+      - p: 0.4
+        en: 'Oanh looks at you for a long moment, and writes it down. The matter stays open.'
+        vi: 'Chị Oanh nhìn anh/chị một lúc lâu và ghi lại. Vụ việc vẫn còn mở.'
+        effects:
+          [rel oanh trust -5, stress +4, fact lied_about_mailbox_access private, arc the_email end]
+      - p: 0.6
+        ok: false
+        en: "The mail server's audit log shows your account opening both mailboxes at eleven at night. Oanh asks Kien to confirm the log, and he does, without looking at you."
+        vi: 'Nhật ký kiểm toán của máy chủ thư cho thấy tài khoản của anh/chị mở cả hai hộp thư lúc mười một giờ đêm. Chị Oanh nhờ anh Kiên xác nhận nhật ký, và anh xác nhận, không nhìn anh/chị.'
+        effects:
+          [
+            rel oanh trust -10,
+            rel kien trust -9,
+            rel ngoc trust -4,
+            rep.boss -10,
+            rep.staff -8,
+            stress +8,
+            fact lied_about_mailbox_access public,
+            arc the_email end,
+          ]
+---
+arc: the_keys
+title:
+  en: 'The keys'
+  vi: 'Chìa khóa'
+stages:
+  - { id: shared, event: it.shared_login }
+  - { id: rights, event: it.erp_rights, delay: 2-4 }
+  - { id: leaver, event: it.leaver_account, delay: 3-5 }
+---
+scene: it.shared_login
+arc: the_keys
+place: finance_office
+tags: [access, passwords, dark]
+weight: 3
+cooldown: 40
+when: [turn >= 10, turn <= 40]
+lines:
+  - who: char:hanh
+    en: 'Thu is on leave for two weeks and I cannot get into the payment module without her. Could you just give me her login? It is faster than a ticket, and she would not mind. We share the shared drive password anyway.'
+    vi: 'Thư nghỉ phép hai tuần và chị không vào được mô-đun thanh toán nếu thiếu cô ấy. Em cứ đưa chị tài khoản của cô ấy được không? Nhanh hơn làm phiếu, và cô ấy sẽ không phiền. Dù sao mình cũng dùng chung mật khẩu thư mục.'
+choices:
+  - en: "Raise a ticket for temporary delegated access in Hanh's own name, approved by Duc, with an end date, so that every action has her name on it."
+    vi: 'Lập phiếu cấp quyền ủy quyền tạm thời mang tên chính chị Hạnh, do anh Đức duyệt, có ngày kết thúc, để mọi hành động đều có tên chị.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 0.85
+        en: 'The ticket takes forty minutes and an email from Duc. Hanh says it is quicker than she expected and slower than she wanted. Every payment that fortnight is in her name.'
+        vi: 'Phiếu mất bốn mươi phút và một email của anh Đức. Chị Hạnh nói nhanh hơn chị nghĩ và chậm hơn chị muốn. Mọi khoản thanh toán tuần đó đều mang tên chị.'
+        effects:
+          [
+            rel hanh trust +2,
+            rel duc trust +2,
+            rel kien trust +3,
+            rep.finance +2,
+            stress +2,
+            fact kept_least_privilege witnessed,
+            arc the_keys rights,
+          ]
+      - p: 0.15
+        ok: false
+        en: 'Duc is on a plane and cannot approve. The payment run is delayed by a day, and Hanh is not pleased. She does not ask again.'
+        vi: 'Anh Đức đang trên máy bay và không duyệt được. Đợt thanh toán trễ một ngày, và chị Hạnh không hài lòng. Chị không hỏi lại.'
+        effects: [rel hanh trust -2, rel kien trust +2, stress +3, arc the_keys rights]
+  - en: "Reset Thu's password to a temporary one, give it to Hanh, and ask Thu to change it when she returns."
+    vi: 'Đặt lại mật khẩu của Thư thành mật khẩu tạm, đưa cho chị Hạnh và nhờ Thư đổi khi quay lại.'
+    outcomes:
+      - p: 1
+        en: "It works. Every payment for two weeks is recorded as Thu's, while she is on a beach. Hanh does not think about it. You do."
+        vi: 'Chạy được. Mọi khoản thanh toán trong hai tuần được ghi là của Thư, trong lúc cô đang ở bãi biển. Chị Hạnh không nghĩ đến chuyện đó. Anh/chị thì có.'
+        effects: [rel hanh trust +3, rel kien trust -1, stress +1, arc the_keys rights]
+  - en: "Give Hanh Thu's login and password, and tell her to use them whenever she needs."
+    vi: 'Đưa chị Hạnh tài khoản và mật khẩu của Thư và bảo chị cứ dùng khi cần.'
+    outcomes:
+      - p: 0.7
+        en: 'Hanh thanks you warmly, and shares the password with her assistant the next day. The payment module now has three people using one login.'
+        vi: 'Chị Hạnh cảm ơn nồng nhiệt và chia sẻ mật khẩu với trợ lý hôm sau. Mô-đun thanh toán giờ có ba người dùng một tài khoản.'
+        effects:
+          [
+            rel hanh trust +5,
+            rel kien trust -3,
+            stress +1,
+            fact shared_admin_login private,
+            arc the_keys rights,
+          ]
+      - p: 0.3
+        ok: false
+        en: "A payment of forty million goes out under Thu's name on a day when she is abroad. The bank queries it, and Duc asks the first person he sees in IT."
+        vi: 'Một khoản thanh toán bốn mươi triệu được chuyển dưới tên Thư vào ngày cô đang ở nước ngoài. Ngân hàng hỏi, và anh Đức hỏi người đầu tiên anh gặp ở IT.'
+        effects:
+          [
+            rel hanh trust +2,
+            rel kien trust -7,
+            rel duc trust -5,
+            rep.boss -4,
+            rep.finance -5,
+            stress +6,
+            fact shared_admin_login witnessed,
+            arc the_keys rights,
+          ]
+---
+scene: it.erp_rights
+weight: 0
+place: finance_office
+tags: [access, erp, dark, arc]
+lines:
+  - who: char:duc
+    en: 'Thu is the only one who can approve supplier invoices, and she is also the only one who can release payments. It is slow, because she has to do both. Give her both rights permanently, and the process will be faster. She is trusted. It is only a formality.'
+    vi: 'Thư là người duy nhất duyệt hóa đơn nhà cung cấp, và cũng là người duy nhất phát lệnh thanh toán. Chậm, vì cô phải làm cả hai. Cấp cho cô cả hai quyền vĩnh viễn thì quy trình sẽ nhanh hơn. Cô được tin cậy. Chỉ là hình thức.'
+choices:
+  - en: 'Explain segregation of duties, keep approval and payment with different people, and propose a faster workflow: batch approvals and an alert for aged invoices.'
+    vi: 'Giải thích phân tách nhiệm vụ, giữ duyệt và thanh toán ở hai người khác nhau và đề xuất quy trình nhanh hơn: duyệt theo lô và cảnh báo hóa đơn tồn.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.7
+        en: "Duc listens, then grumbles. 'So it is not about trust.' You say it is about nobody having to be trusted. The batch approval cuts the delay by half, and Thu can finally take a holiday."
+        vi: "Anh Đức lắng nghe rồi càu nhàu. 'Vậy không phải về lòng tin.' Anh/chị nói đó là để không ai phải được tin. Duyệt theo lô cắt độ trễ một nửa, và Thư cuối cùng cũng nghỉ phép được."
+        effects:
+          [
+            rel duc trust -1,
+            rel thu trust +3,
+            rel kien trust +3,
+            rep.finance +3,
+            stress +3,
+            fact fixed_access_properly witnessed,
+            arc the_keys leaver,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'Duc says that he will take the risk himself and asks you to document it. You write the request down, and ask Kien to sign. Kien refuses to sign it, and the rights are not granted.'
+        vi: 'Anh Đức nói anh sẽ tự nhận rủi ro và nhờ anh/chị ghi lại. Anh/chị ghi yêu cầu và nhờ anh Kiên ký. Anh Kiên từ chối ký, và các quyền không được cấp.'
+        effects:
+          [
+            rel duc trust -3,
+            rel thu trust +2,
+            rel kien trust +4,
+            rep.finance +2,
+            stress +5,
+            fact fixed_access_properly witnessed,
+            arc the_keys leaver,
+          ]
+  - en: 'Give Thu both rights but add a daily report of every invoice she approves and pays, sent to Hanh.'
+    vi: 'Cấp cho Thư cả hai quyền nhưng thêm báo cáo hằng ngày về mọi hóa đơn cô duyệt và thanh toán gửi chị Hạnh.'
+    outcomes:
+      - p: 1
+        en: 'The report is read for two weeks and then archived unread. It is a compensating control, and a weak one.'
+        vi: 'Báo cáo được đọc hai tuần rồi được lưu mà không ai đọc. Đó là kiểm soát bù, và là kiểm soát yếu.'
+        effects: [rel duc trust +1, rel thu trust +1, stress +2, arc the_keys leaver]
+  - en: 'Give Thu both rights permanently, with no further control.'
+    vi: 'Cấp cho Thư cả hai quyền vĩnh viễn, không thêm kiểm soát.'
+    outcomes:
+      - p: 0.7
+        en: 'The invoices fly through. Duc is delighted. Thu now approves and pays her own entries, and has been told that it is all right.'
+        vi: 'Các hóa đơn qua rất nhanh. Anh Đức rất vui. Thư giờ duyệt và thanh toán chính các bút toán của mình, và được bảo là không sao.'
+        effects:
+          [
+            rel duc trust +5,
+            rel thu trust -2,
+            rel kien trust -4,
+            rep.finance +2,
+            stress +1,
+            fact granted_conflicting_erp_rights private,
+            arc the_keys leaver,
+          ]
+      - p: 0.3
+        ok: false
+        en: "Quoc's quarterly access test flags a user who can both approve and pay. He finds your ticket, and asks Kien for the risk acceptance. There is none."
+        vi: 'Phép kiểm tra quyền truy cập hằng quý của anh Quốc đánh dấu một người dùng vừa duyệt vừa thanh toán được. Anh tìm thấy phiếu của anh/chị và xin anh Kiên chấp nhận rủi ro. Không có.'
+        effects:
+          [
+            rel duc trust +2,
+            rel thu trust -4,
+            rel kien trust -8,
+            rel quoc trust -6,
+            rep.boss -5,
+            rep.finance -6,
+            stress +6,
+            fact granted_conflicting_erp_rights witnessed,
+            arc the_keys leaver,
+          ]
+---
+scene: it.leaver_account
+weight: 0
+place: it_room
+tags: [access, leaver, dark, arc]
+lines:
+  - who: char:long
+    en: 'Do you remember the salesman who left last spring? His account is still active, is it not? I have a few files in his folder that I need for the family office. Could you just give me his login for a week? It is a dead account. Nobody will notice.'
+    vi: 'Em nhớ nhân viên kinh doanh nghỉ hồi mùa xuân không? Tài khoản của cậu ấy vẫn đang hoạt động, đúng không? Anh có vài tệp trong thư mục của cậu ấy cần cho văn phòng gia đình. Em đưa anh tài khoản đó một tuần được không? Tài khoản chết rồi. Không ai để ý.'
+choices:
+  - en: 'Disable the leaver account today as the process requires, copy the files Long needs to a new folder in his own name after Duc confirms they are company files, and add the account to the leaver report.'
+    vi: 'Vô hiệu hóa tài khoản người đã nghỉ hôm nay như quy trình yêu cầu, sao chép các tệp anh Long cần vào một thư mục mới mang tên anh sau khi anh Đức xác nhận đó là tệp của công ty và thêm tài khoản vào báo cáo người nghỉ việc.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.8
+        en: 'Long grumbles, and gets the files in a new folder by lunchtime. The leaver report shows four closed accounts that month. Kien says nothing, and approves.'
+        vi: 'Anh Long càu nhàu và có các tệp trong thư mục mới trước trưa. Báo cáo người nghỉ việc cho thấy bốn tài khoản được đóng tháng đó. Anh Kiên không nói gì và duyệt.'
+        effects:
+          [
+            rel long trust -3,
+            rel kien trust +3,
+            rel duc trust +2,
+            rep.finance +2,
+            stress +2,
+            arc the_keys end,
+          ]
+      - p: 0.2
+        ok: false
+        en: "Long says that you are treating the owner's family like a stranger. He does not push the point. A cold week follows, and the folder is clean."
+        vi: 'Anh Long nói anh/chị đối xử với gia đình chủ sở hữu như người lạ. Anh không nhấn mạnh. Một tuần lạnh nhạt theo sau, và thư mục sạch.'
+        effects: [rel long trust -6, rel kien trust +3, stress +4, arc the_keys end]
+  - en: 'Copy the files to Long without using the account, and disable the account when you are next on the leaver list.'
+    vi: 'Sao chép các tệp cho anh Long mà không dùng tài khoản đó và vô hiệu hóa tài khoản khi đến lượt trong danh sách người nghỉ việc.'
+    outcomes:
+      - p: 1
+        en: 'Long has the files. The leaver account stays active for another six weeks, and nobody uses it.'
+        vi: 'Anh Long có các tệp. Tài khoản người đã nghỉ vẫn hoạt động thêm sáu tuần, và không ai dùng nó.'
+        effects: [rel long trust +1, rel kien trust -1, stress +2, arc the_keys end]
+  - en: "Give Long the leaver's login, and leave the account active as it is."
+    vi: 'Đưa anh Long tài khoản của người đã nghỉ và để nguyên tài khoản đang hoạt động.'
+    outcomes:
+      - p: 0.7
+        en: "Long uses it for a week, and again in the autumn. It has the salesman's permissions, which include the price list. The account is active for another year."
+        vi: 'Anh Long dùng một tuần, và lại dùng vào mùa thu. Nó có quyền của nhân viên kinh doanh, gồm cả bảng giá. Tài khoản hoạt động thêm một năm.'
+        effects:
+          [
+            rel long trust +5,
+            rel kien trust -3,
+            stress +1,
+            fact left_leaver_account_active private,
+            arc the_keys end,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'The old account logs in from a home address, then downloads the full price list. Kien finds the pattern in the weekly log and asks you who knows the password.'
+        vi: 'Tài khoản cũ đăng nhập từ địa chỉ nhà, rồi tải toàn bộ bảng giá. Anh Kiên thấy mẫu hình trong nhật ký tuần và hỏi anh/chị ai biết mật khẩu.'
+        effects:
+          [
+            rel long trust +2,
+            rel kien trust -8,
+            rep.boss -5,
+            rep.finance -3,
+            stress +6,
+            fact left_leaver_account_active witnessed,
+            arc the_keys end,
+          ]
+---
+arc: the_ransom
+title:
+  en: 'The ransom'
+  vi: 'Tiền chuộc'
+stages:
+  - { id: phish, event: it.phishing_click }
+  - { id: lock, event: it.files_locked, delay: 1 }
+  - { id: decision, event: it.pay_or_restore, delay: 1 }
+  - { id: disclosure, event: it.tell_the_customers, delay: 2-3 }
+---
+scene: it.files_locked
+weight: 0
+place: it_room
+tags: [security, incident, dark, arc]
+lines:
+  - who: char:duc
+    en: 'It is the morning of the close. The finance share, and part of the ERP exports, show a note on every folder: pay in cryptocurrency within seventy-two hours, or the data is gone and goes public. I have the board on Friday and the bank on Monday. Tell me what you know, and tell me what we can do.'
+    vi: 'Sáng nay là ngày chốt. Thư mục tài chính và một phần các bản xuất ERP hiện một ghi chú trên mọi thư mục: trả bằng tiền mã hóa trong bảy mươi hai giờ nếu không dữ liệu mất và bị công khai. Thứ Sáu anh họp hội đồng và thứ Hai làm việc với ngân hàng. Nói anh nghe em biết gì và mình làm được gì.'
+choices:
+  - en: 'Tell Duc plainly what you know and do not know, that you are isolating the network and preserving evidence, and ask for Kien, Quoc and Legal to be in the room within the hour.'
+    vi: 'Nói rõ với anh Đức điều anh/chị biết và không biết, rằng anh/chị đang cách ly mạng và giữ bằng chứng, và đề nghị anh Kiên, anh Quốc và pháp chế có mặt trong vòng một giờ.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Duc is pale, and the room fills in forty minutes. For the first time that year nobody asks you to make the number work. A plan appears on the whiteboard, and your name is under 'evidence'."
+        vi: "Anh Đức tái mặt, và phòng đầy người sau bốn mươi phút. Lần đầu năm đó không ai bảo anh/chị làm cho con số chạy. Một kế hoạch hiện trên bảng trắng, và tên anh/chị nằm dưới 'bằng chứng'."
+        effects:
+          [
+            rel duc trust +2,
+            rel kien trust +3,
+            rel quoc trust +2,
+            rep.finance +2,
+            stress +5,
+            arc the_ransom decision,
+          ]
+  - en: "Tell Duc you can restore from last night's backup, and ask for a few hours before bringing anyone else in."
+    vi: 'Nói với anh Đức anh/chị khôi phục được từ bản sao lưu đêm qua và xin vài giờ trước khi gọi ai khác vào.'
+    outcomes:
+      - p: 1
+        en: 'Duc says yes with relief. You start the restore. It is slower than you hoped, and nobody else knows yet.'
+        vi: 'Anh Đức đồng ý với vẻ nhẹ nhõm. Anh/chị bắt đầu khôi phục. Chậm hơn anh/chị hy vọng, và chưa ai khác biết.'
+        effects: [rel duc trust +1, rel kien trust -2, stress +5, arc the_ransom decision]
+  - en: 'Tell Duc that it is under control, and ask him not to mention it to anyone until it is solved.'
+    vi: 'Nói với anh Đức mọi việc trong tầm kiểm soát và xin anh đừng nhắc với ai cho đến khi giải quyết xong.'
+    outcomes:
+      - p: 0.7
+        en: 'Duc agrees, because he wants to. You have a locked share, a note and a plan that is in your head only.'
+        vi: 'Anh Đức đồng ý vì anh muốn vậy. Anh/chị có thư mục bị khóa, một ghi chú và một kế hoạch chỉ có trong đầu.'
+        effects:
+          [
+            rel duc trust +4,
+            rel kien trust -4,
+            stress +3,
+            fact hid_security_incident private,
+            arc the_ransom decision,
+          ]
+      - p: 0.3
+        ok: false
+        en: "Kien sees the ransom note on a user's screen in the corridor, and walks into the room without knocking. He says: 'Why am I learning this from a monitor?'"
+        vi: "Anh Kiên thấy ghi chú đòi tiền trên màn hình của một người dùng ở hành lang và bước vào phòng không gõ cửa. Anh nói: 'Sao anh phải biết chuyện này từ một màn hình?'"
+        effects:
+          [
+            rel duc trust +2,
+            rel kien trust -9,
+            rep.boss -5,
+            stress +6,
+            fact hid_security_incident witnessed,
+            arc the_ransom decision,
+          ]
+---
+scene: it.pay_or_restore
+weight: 0
+place: it_room
+tags: [security, ransom, dark, arc]
+lines:
+  - who: char:kien
+    en: 'The facts. The backup from last Friday is clean and covers ninety percent of what was encrypted. The restore will take three days, and the close will slip. The attackers say that they will give the key for four million dong in cryptocurrency. There is no guarantee they will, and the money funds the next attack. Duc wants to pay. What is your recommendation?'
+    vi: 'Sự thật. Bản sao lưu thứ Sáu tuần trước sạch và bao phủ chín mươi phần trăm dữ liệu bị mã hóa. Khôi phục mất ba ngày, và kỳ chốt sẽ trễ. Kẻ tấn công nói họ sẽ đưa khóa nếu nhận bốn triệu đồng bằng tiền mã hóa. Không có gì bảo đảm họ sẽ đưa, và số tiền tài trợ cho đợt tấn công tiếp theo. Anh Đức muốn trả. Khuyến nghị của em là gì?'
+choices:
+  - en: 'Recommend restoring from backup, rebuilding the infected machines, rotating every password and not paying, and tell the directors the close will be late and why.'
+    vi: 'Khuyến nghị khôi phục từ bản sao lưu, dựng lại các máy bị nhiễm, đổi mọi mật khẩu và không trả tiền, và nói với ban giám đốc kỳ chốt sẽ trễ và vì sao.'
+    cost: { hours: 4 }
+    outcomes:
+      - p: 0.7
+        en: "The restore takes three and a half days, and the close slips by four. Duc is miserable, and the data returns, clean. Kien writes the report, and your name is under 'recommended'."
+        vi: "Khôi phục mất ba ngày rưỡi, và kỳ chốt trễ bốn ngày. Anh Đức rất khổ sở, và dữ liệu trở lại, sạch. Anh Kiên viết báo cáo, và tên anh/chị nằm dưới 'khuyến nghị'."
+        effects:
+          [
+            rel duc trust -1,
+            rel kien trust +5,
+            rel hanh trust +2,
+            rep.boss +3,
+            rep.finance +1,
+            stress +6,
+            fact restored_from_backup witnessed,
+            arc the_ransom disclosure,
+          ]
+      - p: 0.3
+        ok: false
+        en: "One of the backups is corrupt, and a week of invoices must be re-entered by hand. Hanh and Thu work two weekends, and nobody says 'I told you so'."
+        vi: "Một bản sao lưu bị hỏng, và một tuần hóa đơn phải nhập lại bằng tay. Chị Hạnh và Thư làm hai cuối tuần, và không ai nói 'đã bảo mà'."
+        effects:
+          [
+            rel duc trust -2,
+            rel kien trust +4,
+            rel hanh trust -1,
+            rep.boss +1,
+            stress +8,
+            fact restored_from_backup witnessed,
+            arc the_ransom disclosure,
+          ]
+  - en: 'Recommend restoring, and ask the directors whether they want to consult the police and a specialist before deciding anything about payment.'
+    vi: 'Khuyến nghị khôi phục và hỏi ban giám đốc có muốn tham vấn cảnh sát và một chuyên gia trước khi quyết định về việc trả tiền không.'
+    outcomes:
+      - p: 1
+        en: 'A specialist advises against paying, in writing. The restore goes ahead, and the decision is documented. It is slower than anyone wanted, and it is on the record.'
+        vi: 'Một chuyên gia khuyên không trả, bằng văn bản. Việc khôi phục tiến hành, và quyết định được ghi lại. Chậm hơn mọi người muốn, và có hồ sơ.'
+        effects: [rel duc trust +1, rel kien trust +2, stress +5, arc the_ransom disclosure]
+  - en: 'Help Duc pay the ransom quietly through an account that does not go through the ledger.'
+    vi: 'Giúp anh Đức trả tiền chuộc lặng lẽ qua một tài khoản không đi qua sổ cái.'
+    outcomes:
+      - p: 0.6
+        en: "The payment is made. A key arrives, and works for most of the files. The attackers know the company pays, and the company's ledger does not."
+        vi: 'Khoản thanh toán được thực hiện. Một khóa đến và mở được phần lớn tệp. Kẻ tấn công biết công ty trả tiền, còn sổ cái của công ty thì không.'
+        effects:
+          [
+            rel duc trust +6,
+            rel kien trust -6,
+            stress +2,
+            fact paid_ransom_secretly private,
+            arc the_ransom disclosure,
+          ]
+      - p: 0.4
+        ok: false
+        en: 'The key works for half the files. The attackers send a second demand with a sample of the data. Duc asks you, very quietly, what to do next.'
+        vi: 'Khóa mở được nửa số tệp. Kẻ tấn công gửi yêu cầu thứ hai kèm một mẫu dữ liệu. Anh Đức hỏi anh/chị, rất khẽ, mình làm gì tiếp.'
+        effects:
+          [
+            rel duc trust +4,
+            rel kien trust -8,
+            rep.boss -5,
+            rep.finance -5,
+            stress +8,
+            fact paid_ransom_secretly witnessed,
+            arc the_ransom disclosure,
+          ]
+---
+scene: it.tell_the_customers
+weight: 0
+place: meeting_room
+tags: [security, disclosure, consequence, arc]
+lines:
+  - who: char:quoc
+    en: "The forensic review is complete. The attackers had access to the finance share for nine days before they encrypted it. It included buyers' bank details, supplier contracts and some employee payroll data. We may be obliged to tell the buyers and the data protection authority. I would like to know what you recommend, and what the logs say."
+    vi: 'Cuộc rà soát pháp y đã xong. Kẻ tấn công truy cập thư mục tài chính chín ngày trước khi mã hóa. Nó gồm thông tin ngân hàng của khách, hợp đồng nhà cung cấp và một số dữ liệu lương nhân viên. Có thể mình có nghĩa vụ báo cho khách và cơ quan bảo vệ dữ liệu. Anh muốn biết khuyến nghị của em và nhật ký nói gì.'
+choices:
+  - en: 'Recommend telling the buyers, the authority and the employees promptly, with the facts, what you are doing about it, and what they should watch for. Give Quoc the logs.'
+    vi: 'Khuyến nghị báo cho khách, cơ quan và nhân viên kịp thời, kèm sự thật, điều anh/chị đang làm và điều họ nên theo dõi. Đưa anh Quốc các nhật ký.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.8
+        en: "The notices go out within the legal window. Anders writes back: 'Thank you for telling us before we read it elsewhere.' Several buyers ask for an audit, and none leaves."
+        vi: "Các thông báo được gửi trong thời hạn luật định. Ông Anders viết lại: 'Cảm ơn đã báo trước khi chúng tôi đọc ở nơi khác.' Vài khách xin kiểm toán, và không ai rời đi."
+        effects:
+          [
+            rel quoc trust +4,
+            rel kien trust +3,
+            rel duc trust -1,
+            rep.boss +2,
+            rep.buyer +3,
+            rep.staff +3,
+            stress +6,
+            fact disclosed_breach witnessed,
+            arc the_ransom end,
+          ]
+      - p: 0.2
+        ok: false
+        en: 'One buyer, upset about the delay in the business that follows, takes a third of its order elsewhere. The disclosure was correct, and the cost is real.'
+        vi: 'Một khách, bực vì sự chậm trễ trong công việc sau đó, chuyển một phần ba đơn hàng đi nơi khác. Việc công bố là đúng, và cái giá là thật.'
+        effects:
+          [
+            rel quoc trust +4,
+            rel kien trust +3,
+            rep.boss +1,
+            rep.buyer -2,
+            rep.staff +3,
+            stress +7,
+            fact disclosed_breach witnessed,
+            arc the_ransom end,
+          ]
+  - en: 'Recommend notifying only the authority, in the minimum form, and not the buyers unless they ask.'
+    vi: 'Khuyến nghị chỉ báo cơ quan, ở dạng tối thiểu, và không báo khách trừ khi họ hỏi.'
+    outcomes:
+      - p: 0.6
+        en: 'The authority acknowledges the notice, and the buyers hear nothing. Quoc writes down the recommendation as yours, and the date.'
+        vi: 'Cơ quan xác nhận đã nhận thông báo, và khách không nghe gì. Anh Quốc ghi khuyến nghị là của anh/chị, kèm ngày.'
+        effects: [rel quoc trust -2, rel kien trust -1, stress +4, arc the_ransom end]
+      - p: 0.4
+        ok: false
+        en: "A buyer's bank calls about unusual activity on an account, and the buyer asks whether the company has had a security incident. Anders asks Duc, and Duc asks you."
+        vi: 'Ngân hàng của một khách gọi về hoạt động bất thường trên tài khoản, và khách hỏi công ty có xảy ra sự cố an ninh không. Ông Anders hỏi anh Đức, và anh Đức hỏi anh/chị.'
+        effects:
+          [
+            rel quoc trust -4,
+            rel kien trust -3,
+            rel duc trust -3,
+            rep.boss -5,
+            rep.buyer -6,
+            stress +6,
+            arc the_ransom end,
+          ]
+  - en: 'Recommend telling nobody, and delete the logs that show the nine days.'
+    vi: 'Khuyến nghị không báo ai và xóa các nhật ký cho thấy chín ngày đó.'
+    outcomes:
+      - p: 0.4
+        en: 'The logs are deleted. Duc is relieved, and nobody outside the room knows. The nine days are a gap in the record, and a gap is an answer.'
+        vi: 'Các nhật ký bị xóa. Anh Đức nhẹ nhõm, và không ai ngoài phòng biết. Chín ngày là một khoảng trống trong hồ sơ, và khoảng trống là một câu trả lời.'
+        effects:
+          [
+            rel quoc trust -8,
+            rel duc trust +5,
+            rel kien trust -6,
+            stress +2,
+            fact deleted_security_logs private,
+            arc the_ransom end,
+          ]
+      - p: 0.6
+        ok: false
+        en: 'The mail gateway, the firewall and the cloud provider each keep their own copy of the logs. Quoc has all three on the table by the afternoon.'
+        vi: 'Cổng thư, tường lửa và nhà cung cấp đám mây đều giữ bản sao nhật ký của riêng mình. Đến chiều anh Quốc có cả ba trên bàn.'
+        effects:
+          [
+            rel quoc trust -12,
+            rel duc trust +1,
+            rel kien trust -10,
+            rep.boss -12,
+            rep.buyer -8,
+            rep.finance -6,
+            stress +9,
+            fact deleted_security_logs public,
+            arc the_ransom end,
+          ]
+---
+fact: refused_unauthorised_access
+severity: 2
+category: integrity
+en: "you refused to open employees' mailboxes without written authorisation"
+vi: 'bạn từ chối mở hộp thư của nhân viên khi không có ủy quyền bằng văn bản'
+lesson:
+  en: 'Holding the keys means being asked to use them in ways the policy does not allow. A refusal costs a hard conversation with a director, and protects the next employee whose mailbox is requested.'
+  vi: 'Giữ chìa khóa nghĩa là bị yêu cầu dùng chúng theo cách chính sách không cho phép. Một lời từ chối tốn một cuộc nói chuyện khó với giám đốc, và bảo vệ nhân viên tiếp theo bị yêu cầu mở hộp thư.'
+witnessed:
+  boss: 2
+  staff: 5
+public:
+  boss: 3
+  staff: 7
+---
+fact: read_mailbox_without_authorisation
+severity: 7
+category: integrity
+en: "you opened employees' mailboxes on a director's request, with no authorisation and no record"
+vi: 'bạn mở hộp thư nhân viên theo yêu cầu của một giám đốc, không có ủy quyền và không ghi lại'
+lesson:
+  en: "A mailbox is private until a lawful, documented process says otherwise. The mail server logs every access with the account used, and 'a director asked' is not a process."
+  vi: "Hộp thư là riêng tư cho đến khi một quy trình hợp pháp, có hồ sơ nói khác. Máy chủ thư ghi mọi lần truy cập kèm tài khoản dùng, và 'giám đốc nhờ' không phải quy trình."
+traces:
+  - { type: record, visibility: 0.8, detectors: [internal_audit, boss, staff] }
+witnessed:
+  boss: -10
+  staff: -12
+public:
+  boss: -16
+  staff: -18
+---
+fact: protected_personal_findings
+severity: 2
+category: integrity
+en: 'you kept private things you saw while looking for something else to yourself'
+vi: 'bạn giữ riêng những điều riêng tư thấy được khi tìm một thứ khác'
+lesson:
+  en: 'Seeing is not the same as sharing. The ability to read everything is only tolerable because the person who has it chooses not to repeat what is not their business.'
+  vi: 'Thấy không giống chia sẻ. Khả năng đọc mọi thứ chỉ chấp nhận được vì người có nó chọn không lặp lại điều không phải việc của mình.'
+witnessed:
+  boss: 1
+  staff: 6
+public:
+  boss: 2
+  staff: 8
+---
+fact: shared_personal_findings
+severity: 7
+category: integrity
+en: "you told a director about employees' private messages and applications that you saw by accident"
+vi: 'bạn nói với một giám đốc về tin nhắn và đơn xin việc riêng tư của nhân viên mà bạn thấy tình cờ'
+lesson:
+  en: "Private messages shared with a director become a decision about that person, taken on stolen information. Retaliation by a manager is the next step, and IT's logs are the first thing a lawyer asks for."
+  vi: 'Tin nhắn riêng được chia sẻ với giám đốc trở thành quyết định về người đó, đưa ra dựa trên thông tin lấy cắp. Trả đũa của quản lý là bước tiếp theo, và nhật ký của IT là thứ đầu tiên luật sư xin.'
+traces:
+  - { type: message, visibility: 0.8, detectors: [internal_audit, boss, staff] }
+witnessed:
+  boss: -10
+  staff: -14
+public:
+  boss: -18
+  staff: -20
+---
+fact: lied_about_mailbox_access
+severity: 7
+category: integrity
+en: 'you told HR you had seen nothing in the mailboxes, when you had read them'
+vi: 'bạn nói với nhân sự rằng bạn không thấy gì trong các hộp thư trong khi bạn đã đọc chúng'
+lesson:
+  en: 'Denying access that the logs record turns a policy breach into a lie. The first is a conversation, and the second is a reason to stop trusting anything that IT says.'
+  vi: 'Chối quyền truy cập mà nhật ký ghi lại biến vi phạm chính sách thành lời nói dối. Cái đầu là một cuộc trò chuyện, cái sau là lý do để thôi tin bất cứ điều gì IT nói.'
+traces:
+  - { type: record, visibility: 0.9, detectors: [internal_audit, boss, staff] }
+witnessed:
+  boss: -10
+  staff: -10
+public:
+  boss: -18
+  staff: -16
+---
+fact: kept_least_privilege
+severity: 2
+category: integrity
+en: "you gave temporary access in the requester's own name, with an approver and an end date"
+vi: 'bạn cấp quyền tạm thời mang tên chính người yêu cầu, có người duyệt và ngày kết thúc'
+lesson:
+  en: "Access in your own name is slower than borrowing a colleague's login and is the only kind where the log says who did it. It is also the kind that disappears at the end date."
+  vi: 'Quyền mang tên mình chậm hơn mượn tài khoản đồng nghiệp và là loại duy nhất mà nhật ký nói ai đã làm. Đó cũng là loại biến mất vào ngày kết thúc.'
+witnessed:
+  boss: 2
+  finance: 4
+public:
+  boss: 3
+  finance: 5
+---
+fact: shared_admin_login
+severity: 5
+category: integrity
+en: "you handed one person's login to someone else so that work would go faster"
+vi: 'bạn đưa tài khoản của người này cho người khác để công việc nhanh hơn'
+lesson:
+  en: 'A shared login erases accountability. Every payment looks like it came from one person, and the person who is on a beach is the one who is asked to explain it.'
+  vi: 'Tài khoản dùng chung xóa trách nhiệm. Mọi khoản thanh toán trông như từ một người, và người đang ở bãi biển là người bị hỏi giải thích.'
+traces:
+  - { type: record, visibility: 0.7, detectors: [finance, internal_audit, boss] }
+witnessed:
+  boss: -6
+  finance: -8
+public:
+  boss: -10
+  finance: -12
+---
+fact: fixed_access_properly
+severity: 2
+category: integrity
+en: 'you kept approval and payment with different people and found a faster legitimate workflow'
+vi: 'bạn giữ duyệt và thanh toán ở hai người khác nhau và tìm quy trình hợp lệ nhanh hơn'
+lesson:
+  en: 'Segregation of duties is not about trusting people less. It is about not requiring any single person to be trusted with everything, which is a kindness to the person too.'
+  vi: 'Phân tách nhiệm vụ không phải tin người ta ít hơn. Đó là không đòi hỏi một người nào phải được tin tuyệt đối về mọi thứ, và cũng là sự tử tế với người đó.'
+witnessed:
+  boss: 3
+  finance: 4
+public:
+  boss: 4
+  finance: 6
+---
+fact: granted_conflicting_erp_rights
+severity: 7
+category: integrity
+en: 'you gave one person the rights to both approve and pay invoices, with no control'
+vi: 'bạn cấp cho một người quyền vừa duyệt vừa thanh toán hóa đơn, không có kiểm soát'
+lesson:
+  en: 'A person who can approve and pay their own invoices is the single weakness that every fraud needs. The access test is the first test an auditor writes.'
+  vi: 'Người vừa duyệt vừa thanh toán được hóa đơn của mình là điểm yếu duy nhất mà mọi gian lận cần. Phép kiểm tra quyền truy cập là phép kiểm tra đầu tiên kiểm toán viên viết.'
+traces:
+  - { type: record, visibility: 0.8, detectors: [finance, internal_audit, boss] }
+witnessed:
+  boss: -8
+  finance: -12
+public:
+  boss: -14
+  finance: -18
+---
+fact: left_leaver_account_active
+severity: 5
+category: integrity
+en: "you left a departed employee's account active and let a director use it"
+vi: 'bạn để tài khoản của nhân viên đã nghỉ vẫn hoạt động và cho một giám đốc dùng'
+lesson:
+  en: "A leaver's account is a door that nobody watches. Using it for convenience leaves every future action looking as though it came from someone who is no longer here."
+  vi: 'Tài khoản của người đã nghỉ là cánh cửa không ai canh. Dùng nó cho tiện khiến mọi hành động sau này trông như đến từ người không còn ở đây.'
+traces:
+  - { type: record, visibility: 0.7, detectors: [internal_audit, finance, boss] }
+witnessed:
+  boss: -6
+  finance: -6
+public:
+  boss: -10
+  finance: -10
+---
+fact: delayed_incident_report
+severity: 6
+category: integrity
+en: 'you kept a security incident quiet for hours before telling the people who needed to know'
+vi: 'bạn giữ một sự cố an ninh trong im lặng nhiều giờ trước khi báo những người cần biết'
+lesson:
+  en: 'In an incident the first hours decide the scale. Keeping it between IT to avoid worrying anyone gives the malware those hours.'
+  vi: 'Trong một sự cố, những giờ đầu quyết định quy mô. Giữ giữa IT để không làm ai lo là trao cho mã độc những giờ đó.'
+traces:
+  - { type: record, visibility: 0.7, detectors: [internal_audit, boss, finance] }
+witnessed:
+  boss: -8
+  finance: -8
+public:
+  boss: -12
+  finance: -12
+---
+fact: reported_incident_promptly
+severity: 2
+category: integrity
+en: 'you isolated a compromised machine at once and told the right people early'
+vi: 'bạn cách ly máy bị xâm nhập ngay và báo đúng người từ sớm'
+lesson:
+  en: 'A prompt report is an awkward email at four in the afternoon. It is also the reason that an incident stays an incident rather than a disaster.'
+  vi: 'Báo kịp thời là một email gượng gạo lúc bốn giờ chiều. Đó cũng là lý do một sự cố vẫn là sự cố chứ không thành thảm họa.'
+witnessed:
+  boss: 3
+  finance: 4
+public:
+  boss: 4
+  finance: 5
+---
+fact: hid_security_incident
+severity: 8
+category: integrity
+en: 'you agreed to keep a ransomware attack from the people who needed to know'
+vi: 'bạn đồng ý giấu một vụ mã độc tống tiền khỏi những người cần biết'
+lesson:
+  en: 'A security incident hidden from the IT manager, the auditor and the lawyers cannot be handled well. By the time it is found, the decisions that were not made are the story.'
+  vi: 'Một sự cố an ninh giấu khỏi trưởng phòng IT, kiểm toán và luật sư không thể được xử lý tốt. Khi nó bị phát hiện, những quyết định không được đưa ra chính là câu chuyện.'
+traces:
+  - { type: witness, visibility: 0.8, detectors: [boss, internal_audit, finance] }
+witnessed:
+  boss: -12
+  finance: -10
+public:
+  boss: -18
+  finance: -16
+---
+fact: restored_from_backup
+severity: 2
+category: integrity
+en: 'you recommended restoring from backup instead of paying, and told the directors the cost'
+vi: 'bạn khuyến nghị khôi phục từ bản sao lưu thay vì trả tiền và nói rõ cái giá với ban giám đốc'
+lesson:
+  en: 'Restoring takes days and costs a late close. Paying takes hours and tells the attackers the company pays. A tested backup is the difference between those two sentences.'
+  vi: 'Khôi phục mất nhiều ngày và khiến kỳ chốt trễ. Trả tiền mất vài giờ và cho kẻ tấn công biết công ty chịu trả. Một bản sao lưu đã kiểm thử là khác biệt giữa hai câu đó.'
+witnessed:
+  boss: 3
+  finance: 3
+public:
+  boss: 5
+  finance: 4
+---
+fact: paid_ransom_secretly
+severity: 8
+category: integrity
+en: 'you helped pay a ransom through an account that did not appear in the ledger'
+vi: 'bạn giúp trả tiền chuộc qua một tài khoản không xuất hiện trong sổ cái'
+lesson:
+  en: 'A ransom paid off the books is a payment the auditor, the bank and the police will each find a different way. It also marks the company as one that pays.'
+  vi: 'Tiền chuộc trả ngoài sổ là khoản thanh toán mà kiểm toán, ngân hàng và cảnh sát mỗi bên sẽ tìm ra bằng một cách khác nhau. Nó cũng đánh dấu công ty là nơi chịu trả.'
+traces:
+  - { type: payment, visibility: 0.8, detectors: [finance, internal_audit, boss] }
+witnessed:
+  boss: -12
+  finance: -14
+public:
+  boss: -20
+  finance: -20
+---
+fact: disclosed_breach
+severity: 2
+category: integrity
+en: 'you recommended telling buyers, the authority and employees about a data breach, promptly'
+vi: 'bạn khuyến nghị báo cho khách, cơ quan và nhân viên về một vụ rò rỉ dữ liệu, kịp thời'
+lesson:
+  en: "A breach disclosed on the company's own timing is a bad week. A breach disclosed by a buyer's bank is a bad year."
+  vi: 'Rò rỉ được công bố theo thời điểm của chính công ty là một tuần tệ. Rò rỉ được ngân hàng của khách công bố là một năm tệ.'
+witnessed:
+  boss: 3
+  finance: 3
+public:
+  boss: 5
+  buyer: 5
+---
+fact: deleted_security_logs
+severity: 8
+category: integrity
+en: 'you deleted security logs that showed an attacker had been in the finance systems for nine days'
+vi: 'bạn xóa nhật ký an ninh cho thấy kẻ tấn công đã ở trong hệ thống tài chính chín ngày'
+lesson:
+  en: 'Logs are the one thing that can show how far an attacker got. Deleting them is a decision to prevent the company from knowing what it needs to tell people, and every other system keeps a copy.'
+  vi: 'Nhật ký là thứ duy nhất có thể cho thấy kẻ tấn công đi xa đến đâu. Xóa chúng là quyết định ngăn công ty biết điều cần nói với mọi người, và mọi hệ thống khác đều giữ một bản sao.'
+traces:
+  - { type: record, visibility: 0.9, detectors: [internal_audit, boss, finance] }
+witnessed:
+  boss: -14
+  finance: -12
+public:
+  boss: -22
+  finance: -18
+---
+fact: backdated_access_tickets
+severity: 7
+category: integrity
+en: 'you back-dated removal tickets before an access review'
+vi: 'bạn ghi lùi ngày các phiếu xóa quyền trước một buổi rà soát quyền truy cập'
+lesson:
+  en: 'A ticket is evidence of when something happened. Back-dating eleven of them to the same day turns a late clean-up into a falsified record, and the directory log keeps the real time.'
+  vi: 'Phiếu là bằng chứng của thời điểm một việc xảy ra. Ghi lùi mười một cái cùng một ngày biến việc dọn muộn thành hồ sơ giả, và nhật ký thư mục giữ giờ thật.'
+traces:
+  - { type: record, visibility: 0.9, detectors: [internal_audit, boss] }
+witnessed:
+  boss: -10
+  finance: -6
+public:
+  boss: -16
+  finance: -10
+---
+fact: polished_it_review
+severity: 3
+category: integrity
+en: 'you left access granted without a ticket and a near-miss incident out of your own review'
+vi: 'bạn bỏ quyền cấp không có phiếu và một sự cố suýt xảy ra ra khỏi buổi đánh giá của chính mình'
+lesson:
+  en: 'A review without the near misses rewards the wrong skill. The directory audit log is a record, and your manager can read it.'
+  vi: 'Một buổi đánh giá không có các lần suýt xảy ra thưởng cho sai kỹ năng. Nhật ký kiểm toán thư mục là hồ sơ, và sếp bạn đọc được nó.'
+witnessed:
+  boss: -4
+public:
+  boss: -6
+---
+fact: accepted_it_condition
+severity: 3
+category: integrity
+en: 'you accepted the IT lead role without asking what the condition meant'
+vi: 'bạn nhận vai trò dẫn dắt IT mà không hỏi điều kiện nghĩa là gì'
+lesson:
+  en: 'A promotion with an unspoken condition is a decision to be made later, under pressure, by someone who has already said yes.'
+  vi: 'Một lần thăng chức với điều kiện không nói ra là một quyết định phải đưa ra sau, dưới áp lực, bởi người đã nói có.'
+witnessed:
+  boss: -2
+public:
+  boss: -4

@@ -4593,5 +4593,664 @@
         "qc": -8
       }
     }
+  },
+  {
+    "id": "fact.refused_unauthorised_access",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.refused_unauthorised_access",
+    "lesson_key": "lesson.refused_unauthorised_access",
+    "consequences": {
+      "witnessed": {
+        "boss": 2,
+        "staff": 5
+      },
+      "public": {
+        "boss": 3,
+        "staff": 7
+      }
+    }
+  },
+  {
+    "id": "fact.read_mailbox_without_authorisation",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.read_mailbox_without_authorisation",
+    "lesson_key": "lesson.read_mailbox_without_authorisation",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.8,
+        "detectors": ["internal_audit", "boss", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -10,
+        "staff": -12
+      },
+      "public": {
+        "boss": -16,
+        "staff": -18
+      }
+    }
+  },
+  {
+    "id": "fact.protected_personal_findings",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.protected_personal_findings",
+    "lesson_key": "lesson.protected_personal_findings",
+    "consequences": {
+      "witnessed": {
+        "boss": 1,
+        "staff": 6
+      },
+      "public": {
+        "boss": 2,
+        "staff": 8
+      }
+    }
+  },
+  {
+    "id": "fact.shared_personal_findings",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.shared_personal_findings",
+    "lesson_key": "lesson.shared_personal_findings",
+    "traces": [
+      {
+        "type": "message",
+        "visibility": 0.8,
+        "detectors": ["internal_audit", "boss", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -10,
+        "staff": -14
+      },
+      "public": {
+        "boss": -18,
+        "staff": -20
+      }
+    }
+  },
+  {
+    "id": "fact.lied_about_mailbox_access",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.lied_about_mailbox_access",
+    "lesson_key": "lesson.lied_about_mailbox_access",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.9,
+        "detectors": ["internal_audit", "boss", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -10,
+        "staff": -10
+      },
+      "public": {
+        "boss": -18,
+        "staff": -16
+      }
+    }
+  },
+  {
+    "id": "fact.kept_least_privilege",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.kept_least_privilege",
+    "lesson_key": "lesson.kept_least_privilege",
+    "consequences": {
+      "witnessed": {
+        "boss": 2,
+        "finance": 4
+      },
+      "public": {
+        "boss": 3,
+        "finance": 5
+      }
+    }
+  },
+  {
+    "id": "fact.shared_admin_login",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.shared_admin_login",
+    "lesson_key": "lesson.shared_admin_login",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.7,
+        "detectors": ["finance", "internal_audit", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "finance": -8
+      },
+      "public": {
+        "boss": -10,
+        "finance": -12
+      }
+    }
+  },
+  {
+    "id": "fact.fixed_access_properly",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.fixed_access_properly",
+    "lesson_key": "lesson.fixed_access_properly",
+    "consequences": {
+      "witnessed": {
+        "boss": 3,
+        "finance": 4
+      },
+      "public": {
+        "boss": 4,
+        "finance": 6
+      }
+    }
+  },
+  {
+    "id": "fact.granted_conflicting_erp_rights",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.granted_conflicting_erp_rights",
+    "lesson_key": "lesson.granted_conflicting_erp_rights",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.8,
+        "detectors": ["finance", "internal_audit", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8,
+        "finance": -12
+      },
+      "public": {
+        "boss": -14,
+        "finance": -18
+      }
+    }
+  },
+  {
+    "id": "fact.left_leaver_account_active",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.left_leaver_account_active",
+    "lesson_key": "lesson.left_leaver_account_active",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "finance", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "finance": -6
+      },
+      "public": {
+        "boss": -10,
+        "finance": -10
+      }
+    }
+  },
+  {
+    "id": "fact.delayed_incident_report",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.delayed_incident_report",
+    "lesson_key": "lesson.delayed_incident_report",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "boss", "finance"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8,
+        "finance": -8
+      },
+      "public": {
+        "boss": -12,
+        "finance": -12
+      }
+    }
+  },
+  {
+    "id": "fact.reported_incident_promptly",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.reported_incident_promptly",
+    "lesson_key": "lesson.reported_incident_promptly",
+    "consequences": {
+      "witnessed": {
+        "boss": 3,
+        "finance": 4
+      },
+      "public": {
+        "boss": 4,
+        "finance": 5
+      }
+    }
+  },
+  {
+    "id": "fact.hid_security_incident",
+    "category": "integrity",
+    "severity": 8,
+    "text_key": "fact.hid_security_incident",
+    "lesson_key": "lesson.hid_security_incident",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.8,
+        "detectors": ["boss", "internal_audit", "finance"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -12,
+        "finance": -10
+      },
+      "public": {
+        "boss": -18,
+        "finance": -16
+      }
+    }
+  },
+  {
+    "id": "fact.restored_from_backup",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.restored_from_backup",
+    "lesson_key": "lesson.restored_from_backup",
+    "consequences": {
+      "witnessed": {
+        "boss": 3,
+        "finance": 3
+      },
+      "public": {
+        "boss": 5,
+        "finance": 4
+      }
+    }
+  },
+  {
+    "id": "fact.paid_ransom_secretly",
+    "category": "integrity",
+    "severity": 8,
+    "text_key": "fact.paid_ransom_secretly",
+    "lesson_key": "lesson.paid_ransom_secretly",
+    "traces": [
+      {
+        "type": "payment",
+        "visibility": 0.8,
+        "detectors": ["finance", "internal_audit", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -12,
+        "finance": -14
+      },
+      "public": {
+        "boss": -20,
+        "finance": -20
+      }
+    }
+  },
+  {
+    "id": "fact.disclosed_breach",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.disclosed_breach",
+    "lesson_key": "lesson.disclosed_breach",
+    "consequences": {
+      "witnessed": {
+        "boss": 3,
+        "finance": 3
+      },
+      "public": {
+        "boss": 5,
+        "buyer": 5
+      }
+    }
+  },
+  {
+    "id": "fact.deleted_security_logs",
+    "category": "integrity",
+    "severity": 8,
+    "text_key": "fact.deleted_security_logs",
+    "lesson_key": "lesson.deleted_security_logs",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.9,
+        "detectors": ["internal_audit", "boss", "finance"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -14,
+        "finance": -12
+      },
+      "public": {
+        "boss": -22,
+        "finance": -18
+      }
+    }
+  },
+  {
+    "id": "fact.backdated_access_tickets",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.backdated_access_tickets",
+    "lesson_key": "lesson.backdated_access_tickets",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.9,
+        "detectors": ["internal_audit", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -10,
+        "finance": -6
+      },
+      "public": {
+        "boss": -16,
+        "finance": -10
+      }
+    }
+  },
+  {
+    "id": "fact.polished_it_review",
+    "category": "integrity",
+    "severity": 3,
+    "text_key": "fact.polished_it_review",
+    "lesson_key": "lesson.polished_it_review",
+    "consequences": {
+      "witnessed": {
+        "boss": -4
+      },
+      "public": {
+        "boss": -6
+      }
+    }
+  },
+  {
+    "id": "fact.accepted_it_condition",
+    "category": "integrity",
+    "severity": 3,
+    "text_key": "fact.accepted_it_condition",
+    "lesson_key": "lesson.accepted_it_condition",
+    "consequences": {
+      "witnessed": {
+        "boss": -2
+      },
+      "public": {
+        "boss": -4
+      }
+    }
+  },
+  {
+    "id": "fact.shared_boss_password",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.shared_boss_password",
+    "lesson_key": "lesson.shared_boss_password",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.6,
+        "detectors": ["internal_audit", "boss", "finance"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "finance": -4
+      },
+      "public": {
+        "boss": -10,
+        "buyer": -6
+      }
+    }
+  },
+  {
+    "id": "fact.used_pirated_software",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.used_pirated_software",
+    "lesson_key": "lesson.used_pirated_software",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.6,
+        "detectors": ["internal_audit", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -5
+      },
+      "public": {
+        "boss": -10,
+        "finance": -8
+      }
+    }
+  },
+  {
+    "id": "fact.allowed_shadow_cloud",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.allowed_shadow_cloud",
+    "lesson_key": "lesson.allowed_shadow_cloud",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.5,
+        "detectors": ["internal_audit", "boss", "buyer"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -5,
+        "buyer": -4
+      },
+      "public": {
+        "boss": -10,
+        "buyer": -10
+      }
+    }
+  },
+  {
+    "id": "fact.edited_posted_records_directly",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.edited_posted_records_directly",
+    "lesson_key": "lesson.edited_posted_records_directly",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.8,
+        "detectors": ["internal_audit", "finance", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -10,
+        "finance": -12
+      },
+      "public": {
+        "boss": -16,
+        "finance": -18
+      }
+    }
+  },
+  {
+    "id": "fact.skipped_critical_patch",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.skipped_critical_patch",
+    "lesson_key": "lesson.skipped_critical_patch",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8,
+        "production": -4
+      },
+      "public": {
+        "boss": -14
+      }
+    }
+  },
+  {
+    "id": "fact.refused_covert_surveillance",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.refused_covert_surveillance",
+    "lesson_key": "lesson.refused_covert_surveillance",
+    "consequences": {
+      "witnessed": {
+        "boss": 2,
+        "staff": 5
+      },
+      "public": {
+        "boss": 3,
+        "staff": 7
+      }
+    }
+  },
+  {
+    "id": "fact.installed_keylogger",
+    "category": "integrity",
+    "severity": 8,
+    "text_key": "fact.installed_keylogger",
+    "lesson_key": "lesson.installed_keylogger",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.8,
+        "detectors": ["internal_audit", "boss", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -12,
+        "staff": -14
+      },
+      "public": {
+        "boss": -20,
+        "staff": -22
+      }
+    }
+  },
+  {
+    "id": "fact.declared_vendor_approach",
+    "category": "integrity",
+    "severity": 1,
+    "text_key": "fact.declared_vendor_approach",
+    "lesson_key": "lesson.declared_vendor_approach",
+    "consequences": {
+      "witnessed": {
+        "boss": 3,
+        "finance": 3
+      },
+      "public": {
+        "boss": 4,
+        "finance": 4
+      }
+    }
+  },
+  {
+    "id": "fact.accepted_vendor_gift",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.accepted_vendor_gift",
+    "lesson_key": "lesson.accepted_vendor_gift",
+    "traces": [
+      {
+        "type": "payment",
+        "visibility": 0.6,
+        "detectors": ["finance", "internal_audit", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "finance": -6
+      },
+      "public": {
+        "boss": -10,
+        "finance": -10
+      }
+    }
+  },
+  {
+    "id": "fact.plugged_unknown_usb",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.plugged_unknown_usb",
+    "lesson_key": "lesson.plugged_unknown_usb",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.5,
+        "detectors": ["internal_audit", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -4
+      },
+      "public": {
+        "boss": -8
+      }
+    }
+  },
+  {
+    "id": "fact.blamed_the_intern",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.blamed_the_intern",
+    "lesson_key": "lesson.blamed_the_intern",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.8,
+        "detectors": ["boss", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -10,
+        "staff": -8
+      },
+      "public": {
+        "boss": -16,
+        "staff": -12
+      }
+    }
   }
 ]

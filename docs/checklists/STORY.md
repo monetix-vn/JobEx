@@ -112,6 +112,14 @@ source of truth for what scene comes next; update their Status column as you go.
 - [x] First-cut balance check (`mkt-year.test.ts`)
 - [ ] More Marketing scenes and practitioner review (advertising substantiation and review practice especially)
 
+## Job 11: IT Support and Systems Administrator (`docs/story/it.md`)
+
+- [x] Bible v1 (AI) written with the scenes (owner review pending); same company; access, mailboxes, ransomware
+- [x] Role `role.it.admin` playable (overhead 23 hours), `it-year` scenario, CI step `sim:it`
+- [x] 26 scenes: beats (first week, midyear review, phishing click, security review, year-end review, manager offer), arcs The Email, The Keys, The Ransom, incidents (boss password, pirated software, shadow cloud, direct database edit, patch downtime, keylogger request, vendor gift, found USB), consequences (auditor asks, blame meeting), resignation; 4 new characters, 31 facts
+- [x] First-cut balance check (`it-year.test.ts`)
+- [ ] More IT scenes and practitioner review (incident response and disclosure practice especially)
+
 ## Later jobs (not yet designed)
 
 - [x] Owner decision 2026-10-02: add HR (HRBP), Production (Line Supervisor), FP&A, Marketing and IT in that order, grouped by department in the picker (`docs/story/JOB-PROPOSALS.md`)

@@ -1,8 +1,10 @@
 # Proposed departments and jobs: FP&A, Marketing, Production, IT, HR
 
-Status: PROPOSAL (2026-10-02), asked for by the owner ("you suggest the department and the job/role in
-each department first"). Nothing here is built. Pick one job per department (or tell me to change a
-suggestion) and I will write the bible and scenes.
+Status: BUILT (2026-10-02). The owner chose the recommended option (A) in every department, all in the
+cookware company, in the order HR, Production, FP&A, Marketing, IT, grouped by department in the job
+picker: see `docs/story/{hr,supervisor,fpa,marketing,it}.md`. Original proposal text follows (the
+supervisor supervises Line 3, not Line 2, because Kiet already runs Line 2). The mini-mechanics suggested
+below (budget table, claims register, ticket queue, case list) are not built.
 
 All five fit the existing cookware company, so they share its world, characters and audits. Production
 already has a job (Production Planner, `docs/story/production.md`); the rest are new.

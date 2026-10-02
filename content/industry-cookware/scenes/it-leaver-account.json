@@ -1,0 +1,170 @@
+{
+  "id": "scene.it.leaver_account",
+  "location": "loc.it_room",
+  "cast": ["char:long"],
+  "lines": [
+    {
+      "speaker": "char:long",
+      "text_key": "scene.it.leaver_account.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.it.leaver_account.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.it.leaver_account.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.long.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.the_keys",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.it.leaver_account.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.long.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.the_keys",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.it.leaver_account.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.it.leaver_account.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.long.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.the_keys",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.it.leaver_account.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.it.leaver_account.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.long.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.left_leaver_account_active",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_keys",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.it.leaver_account.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.long.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.left_leaver_account_active",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_keys",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

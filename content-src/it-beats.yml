@@ -1,0 +1,352 @@
+# IT Support and Systems Administrator (docs/story/it.md): cast and beats. Shared from the cookware world: Cuong, Long, Hanh, Thu, Duc, Quoc, Oanh, Ngoc, Lan.
+char: kien
+department: it
+group: boss
+traits: [calm, overstretched, believes_in_logs]
+start: { trust: 10 }
+en: { name: 'Mr Kien', title: 'IT Manager' }
+vi: { name: 'Anh Kiên', title: 'Trưởng phòng IT' }
+---
+char: bin
+department: it
+group: staff
+traits: [eager, young, clicks_first]
+start: { trust: 10 }
+en: { name: 'Bin', title: 'IT intern' }
+vi: { name: 'Bin', title: 'Thực tập sinh IT' }
+---
+char: son
+department: vendor
+traits: [friendly, persistent, sells_everything]
+start: { trust: 5 }
+en: { name: 'Mr Son', title: 'Software and cloud vendor representative' }
+vi: { name: 'Anh Sơn', title: 'Đại diện nhà cung cấp phần mềm và đám mây' }
+---
+char: yen
+department: audit
+traits: [courteous, patient, counts_licences]
+start: { trust: 0 }
+en: { name: 'Ms Yen', title: 'Software licence auditor' }
+vi: { name: 'Chị Yến', title: 'Kiểm toán viên bản quyền phần mềm' }
+---
+scene: it.first_week
+place: it_room
+tags: [onboarding, people, beat]
+beat: 1-3
+lines:
+  - who: char:kien
+    en: 'Welcome to IT. We are two people and an intern for four hundred staff, one ERP and a server room that is also a cupboard. Tickets first, projects when there are no tickets, which is never. One rule: nobody gets access to anything without a ticket, an approver and a date. It sounds slow. It is what saves us in an audit.'
+    vi: 'Chào mừng em đến IT. Mình có hai người và một thực tập sinh cho bốn trăm nhân viên, một ERP và một phòng máy chủ đồng thời là cái tủ. Phiếu hỗ trợ trước, dự án khi hết phiếu, mà không bao giờ hết. Một quy tắc: không ai được cấp quyền truy cập gì nếu không có phiếu, người duyệt và ngày tháng. Nghe chậm. Nhưng đó là điều cứu mình khi bị kiểm toán.'
+  - who: char:bin
+    en: 'I have the admin password for the server saved in my browser, if you need it. Everyone in IT has it. It has been the same since the system was installed.'
+    vi: 'Em có mật khẩu quản trị máy chủ lưu trong trình duyệt, nếu anh/chị cần. Ai trong IT cũng có. Nó không đổi từ khi cài hệ thống.'
+choices:
+  - en: 'Spend the first days making an inventory: who has admin, who has ERP access, which accounts belong to people who left, and what backups really exist. Write it down.'
+    vi: 'Dành những ngày đầu lập bản kê: ai có quyền quản trị, ai có quyền ERP, tài khoản nào thuộc về người đã nghỉ và thực sự có những bản sao lưu nào. Ghi lại.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Eleven people have admin rights, four accounts belong to people who left last year, and the last backup that anyone has tested restored in March. Kien reads your list and says: 'Good. Now we know what we do not know.' The password is changed by Friday."
+        vi: "Mười một người có quyền quản trị, bốn tài khoản thuộc về người đã nghỉ năm ngoái và bản sao lưu cuối cùng có người thử khôi phục là hồi tháng Ba. Anh Kiên đọc danh sách và nói: 'Tốt. Giờ mình biết điều mình chưa biết.' Mật khẩu được đổi trước thứ Sáu."
+        effects: [rel kien trust +5, rel bin trust +2, rep.boss +2, stress +1]
+  - en: 'Start on the open tickets, and look at accounts and backups when there is a quiet week.'
+    vi: 'Bắt đầu với các phiếu đang mở và xem tài khoản và sao lưu khi có một tuần yên.'
+    outcomes:
+      - p: 1
+        en: 'You close thirty tickets in the first fortnight. Nobody tells you that the one about the printer is on the machine that has the shared admin password.'
+        vi: 'Anh/chị đóng ba mươi phiếu trong hai tuần đầu. Không ai nói với anh/chị rằng phiếu về máy in nằm trên chiếc máy có mật khẩu quản trị dùng chung.'
+        effects: [rel kien trust +1, stress +1]
+  - en: 'Use the shared admin password as everyone does, since it is faster and you have tickets to close.'
+    vi: 'Dùng mật khẩu quản trị dùng chung như mọi người vì nhanh hơn và anh/chị có phiếu cần đóng.'
+    outcomes:
+      - p: 0.7
+        en: "The tickets close fast. The server log shows every action as 'admin', with no name beside it."
+        vi: "Các phiếu đóng nhanh. Nhật ký máy chủ ghi mọi hành động là 'admin', không có tên bên cạnh."
+        effects: [rel kien trust -1, rel bin trust +1, stress +1]
+      - p: 0.3
+        ok: false
+        en: "A file goes missing from the finance share. The log says 'admin', and four people could have done it. Kien asks, mildly, who was in the server that morning."
+        vi: "Một tệp biến mất khỏi thư mục dùng chung của tài chính. Nhật ký ghi 'admin' và bốn người có thể đã làm. Anh Kiên hỏi, nhẹ nhàng, sáng đó ai vào máy chủ."
+        effects: [rel kien trust -4, rep.finance -2, stress +3]
+---
+scene: it.midyear_review
+place: meeting_room
+tags: [people, review, beat]
+beat: 24-28
+lines:
+  - who: char:kien
+    en: 'Half a year. Your ticket resolution time is slower than the target, but there have been no repeat incidents and the access list is the cleanest it has ever been. The directors only look at resolution time. How do you want to handle that?'
+    vi: 'Nửa năm rồi. Thời gian xử lý phiếu của em chậm hơn chỉ tiêu, nhưng không có sự cố lặp lại và danh sách quyền truy cập sạch nhất từ trước đến nay. Ban giám đốc chỉ nhìn thời gian xử lý. Em muốn xử lý chuyện đó thế nào?'
+choices:
+  - en: 'Show the full picture: tickets, repeat incidents, accounts reviewed and risks closed, and propose that repeat incidents, not raw speed, are the measure.'
+    vi: 'Cho xem bức tranh đầy đủ: phiếu, sự cố lặp lại, tài khoản đã rà soát và rủi ro đã đóng, và đề xuất lấy sự cố lặp lại, không phải tốc độ thô, làm thước đo.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.7
+        en: "Kien takes the page to Mr Cuong. 'Repeat incidents' is added to the review next to resolution time. A small change, and it changes what IT is rewarded for."
+        vi: "Anh Kiên mang trang giấy lên anh Cường. 'Sự cố lặp lại' được thêm vào đánh giá cạnh thời gian xử lý. Một thay đổi nhỏ, và nó đổi điều IT được thưởng."
+        effects: [rel kien trust +4, rep.boss +3, stress +1]
+      - p: 0.3
+        ok: false
+        en: "Mr Cuong says that nobody notices IT unless something is broken. Kien shrugs: 'I tried.' Your resolution time stays modest."
+        vi: "Anh Cường nói không ai để ý IT trừ khi có gì hỏng. Anh Kiên nhún vai: 'Anh đã thử.' Thời gian xử lý của em vẫn khiêm tốn."
+        effects: [rel kien trust +2, stress +2]
+  - en: 'Say you will clear the older tickets with a focused fortnight, and ask Kien to hold new project requests for two weeks.'
+    vi: 'Nói anh/chị sẽ dọn các phiếu cũ trong hai tuần tập trung và xin anh Kiên giữ các yêu cầu dự án mới hai tuần.'
+    outcomes:
+      - p: 1
+        en: 'Kien agrees, and writes the rule next to the request. You clear the backlog and the resolution time improves, and a project slips a fortnight.'
+        vi: 'Anh Kiên đồng ý và ghi quy tắc bên cạnh yêu cầu. Anh/chị dọn hết các phiếu tồn và thời gian xử lý cải thiện, và một dự án trễ hai tuần.'
+        effects: [rel kien trust +2, stress +2]
+  - en: 'Say you will hit the resolution target whatever it takes.'
+    vi: 'Nói anh/chị sẽ đạt chỉ tiêu xử lý bằng mọi giá.'
+    outcomes:
+      - p: 0.6
+        en: "Kien smiles. 'Good attitude.' A week later you notice that the quickest way to close a ticket is to close it, and to reopen it as a new one if the user complains."
+        vi: "Anh Kiên cười. 'Thái độ tốt.' Một tuần sau anh/chị nhận ra cách nhanh nhất để đóng phiếu là đóng nó và mở lại thành phiếu mới nếu người dùng phàn nàn."
+        effects: [rel kien trust +3, stress +3]
+      - p: 0.4
+        ok: false
+        en: 'Bin notices that your closed tickets are being reopened, and says so in the team meeting, innocently. Kien looks at the chart for a long moment.'
+        vi: 'Bin nhận ra các phiếu anh/chị đóng đang bị mở lại và nói vô tư trong cuộc họp nhóm. Anh Kiên nhìn biểu đồ một lúc lâu.'
+        effects: [rel kien trust -3, rel bin trust +1, rep.boss -2, stress +3]
+---
+scene: it.phishing_click
+arc: the_ransom
+place: it_room
+tags: [security, incident, beat]
+beat: 29-32
+lines:
+  - who: char:thu
+    en: 'I clicked on an email that said it was from the bank, and a document opened and asked me to enable macros. I enabled them. Then the screen flickered. It is the day before the month-end close, and I need the finance share. I am so sorry.'
+    vi: 'Em bấm vào một email nói là của ngân hàng, một tài liệu mở ra và yêu cầu bật macro. Em đã bật. Rồi màn hình nháy. Mai là ngày trước chốt tháng và em cần thư mục tài chính. Em xin lỗi lắm.'
+  - who: char:bin
+    en: 'I can see three machines talking to an address I do not know. Should I just turn them off?'
+    vi: 'Em thấy ba máy đang nói chuyện với một địa chỉ em không biết. Em tắt chúng luôn nhé?'
+choices:
+  - en: 'Isolate the three machines from the network, preserve the logs, call Kien, and tell Duc that the finance share may be affected before the close.'
+    vi: 'Cách ly ba máy khỏi mạng, giữ nhật ký, gọi anh Kiên và báo anh Đức thư mục tài chính có thể bị ảnh hưởng trước kỳ chốt.'
+    cost: { hours: 4 }
+    outcomes:
+      - p: 0.7
+        en: "Two machines are infected, and the share is intact. You find the malware before it spreads, and the logs show where it started. Kien says: 'This is what an incident should look like.' Thu cries a little and is thanked."
+        vi: "Hai máy bị nhiễm và thư mục dùng chung còn nguyên. Anh/chị tìm ra mã độc trước khi nó lan và nhật ký cho thấy nó bắt đầu từ đâu. Anh Kiên nói: 'Một sự cố phải trông như thế này.' Thư khóc một chút và được cảm ơn."
+        effects:
+          [
+            rel kien trust +4,
+            rel thu trust +3,
+            rel duc trust +1,
+            rep.finance +2,
+            stress +5,
+            fact reported_incident_promptly witnessed,
+            arc the_ransom lock,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'The malware has already encrypted part of the finance share. You have isolated the rest, and the logs are intact. It is a bad night, and it is a night with a record.'
+        vi: 'Mã độc đã mã hóa một phần thư mục tài chính. Anh/chị đã cách ly phần còn lại và nhật ký còn nguyên. Một đêm tồi tệ, và là đêm có hồ sơ.'
+        effects:
+          [
+            rel kien trust +3,
+            rel thu trust +3,
+            rel duc trust -2,
+            rep.finance -1,
+            stress +7,
+            fact reported_incident_promptly witnessed,
+            arc the_ransom lock,
+          ]
+  - en: 'Tell Bin to turn the machines off, scan the rest of the network, and keep it between IT until you know what happened.'
+    vi: 'Bảo Bin tắt các máy, quét phần còn lại của mạng và giữ giữa IT cho đến khi biết chuyện gì xảy ra.'
+    outcomes:
+      - p: 1
+        en: 'The machines go dark, and so do the volatile logs. You scan through the night. By morning you have a clean network and an incomplete story.'
+        vi: 'Các máy tắt, và nhật ký tạm thời cũng mất. Anh/chị quét suốt đêm. Đến sáng có một mạng sạch và một câu chuyện không đầy đủ.'
+        effects: [rel kien trust +1, rel thu trust +1, stress +5, arc the_ransom lock]
+  - en: 'Reassure Thu it is probably nothing, tell Bin to scan quietly, and avoid worrying Duc before the close.'
+    vi: 'Trấn an Thư là chắc không sao, bảo Bin quét lặng lẽ và tránh làm anh Đức lo trước kỳ chốt.'
+    outcomes:
+      - p: 0.7
+        en: 'The scan finds nothing obvious. Overnight, the malware sits and waits. At six in the morning, the finance share starts to encrypt itself.'
+        vi: 'Quét không thấy gì rõ ràng. Qua đêm, mã độc nằm chờ. Sáu giờ sáng, thư mục tài chính bắt đầu tự mã hóa.'
+        effects:
+          [
+            rel kien trust -3,
+            rel thu trust -1,
+            rel duc trust -1,
+            stress +2,
+            fact delayed_incident_report private,
+            arc the_ransom lock,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'By midnight, the encryption spreads to the file server, the backup share and the ERP export folder. Duc phones at one in the morning, and asks why nobody told him at four.'
+        vi: 'Đến nửa đêm, mã hóa lan sang máy chủ tệp, thư mục sao lưu và thư mục xuất của ERP. Anh Đức gọi lúc một giờ sáng và hỏi vì sao bốn giờ chiều không ai báo.'
+        effects:
+          [
+            rel kien trust -6,
+            rel thu trust -2,
+            rel duc trust -8,
+            rep.boss -5,
+            rep.finance -6,
+            stress +8,
+            fact delayed_incident_report witnessed,
+            arc the_ransom lock,
+          ]
+---
+scene: it.security_review
+place: it_room
+tags: [audit, security, beat]
+beat: 41-44
+lines:
+  - who: char:quoc
+    en: 'I am the internal auditor for IT general controls. I would like to see the list of people with administrator rights, the ERP user list with their roles, the leaver process, the backup test records and the incident log for the year. I start with the access list, not with the firewall.'
+    vi: 'Tôi là kiểm toán nội bộ cho kiểm soát chung về IT. Tôi muốn xem danh sách người có quyền quản trị, danh sách người dùng ERP kèm vai trò, quy trình người nghỉ việc, hồ sơ kiểm thử sao lưu và nhật ký sự cố cả năm. Tôi bắt đầu từ danh sách quyền truy cập, không phải tường lửa.'
+  - who: char:kien
+    en: 'Give him what he asks for. Do not explain more than you are asked, and do not guess.'
+    vi: 'Đưa ông ấy những gì ông ấy yêu cầu. Đừng giải thích nhiều hơn điều được hỏi và đừng đoán.'
+choices:
+  - en: 'Give him the real lists: who has what, the leavers whose accounts were late to close, the backup tests and the incident log, with what you fixed and what remains open.'
+    vi: 'Đưa ông các danh sách thật: ai có gì, những người nghỉ việc có tài khoản đóng muộn, các lần kiểm thử sao lưu và nhật ký sự cố, kèm điều đã sửa và điều còn mở.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Quoc reads for three hours and writes five observations. None is serious. 'An access list that matches the people. I wish that were less unusual.' Kien nods at you across the room."
+        vi: "Anh Quốc đọc ba giờ và ghi năm nhận xét. Không cái nào nghiêm trọng. 'Một danh sách quyền khớp với con người. Tôi ước điều đó bớt hiếm.' Anh Kiên gật đầu với anh/chị từ phía bên kia phòng."
+        effects: [rel quoc trust +5, rel kien trust +4, rep.finance +2, rep.boss +3, stress +2]
+  - en: 'Answer his questions and give him the lists he asks for, without volunteering anything.'
+    vi: 'Trả lời câu hỏi và đưa các danh sách ông yêu cầu, không chủ động nói thêm gì.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "A routine review. Quoc notes two items, both already on Kien's list. You come out with nothing to hide and no credit either."
+        vi: 'Một buổi rà soát thường lệ. Anh Quốc ghi hai mục, cả hai đã có trong danh sách của anh Kiên. Anh/chị ra về không có gì phải giấu và cũng không được tiếng khen.'
+        effects: [rel quoc trust +1, rel kien trust +1]
+  - en: 'Tidy the access list before the review: remove the leaver accounts and the shared logins, and back-date the removal tickets so that the history looks clean.'
+    vi: 'Dọn danh sách quyền trước buổi rà soát: xóa tài khoản người nghỉ việc và đăng nhập dùng chung và ghi lùi ngày các phiếu xóa để lịch sử trông sạch.'
+    outcomes:
+      - p: 0.45
+        en: 'Quoc sees a clean list. He asks why the removal tickets for eleven accounts were all created on the same day, and accepts the explanation.'
+        vi: 'Anh Quốc thấy một danh sách sạch. Anh hỏi vì sao phiếu xóa của mười một tài khoản đều được tạo cùng một ngày và chấp nhận lời giải thích.'
+        effects:
+          [rel quoc trust -2, rel kien trust -5, stress -1, fact backdated_access_tickets private]
+      - p: 0.55
+        ok: false
+        en: 'The directory log records the real deletion times, and the ticket system records the real creation times. Quoc places the two exports side by side and says nothing for a long time.'
+        vi: 'Nhật ký thư mục ghi giờ xóa thật, và hệ thống phiếu ghi giờ tạo thật. Anh Quốc đặt hai bản xuất cạnh nhau và im lặng rất lâu.'
+        effects:
+          [
+            rel quoc trust -10,
+            rel kien trust -8,
+            rep.boss -6,
+            rep.finance -4,
+            stress +6,
+            fact backdated_access_tickets public,
+          ]
+---
+scene: it.year_end_review
+place: meeting_room
+tags: [people, review, beat]
+beat: 49-50
+lines:
+  - who: char:kien
+    en: 'Annual review. Before I give you my view, tell me how you would rate your own year, and what you would handle differently on access and incidents.'
+    vi: 'Đánh giá cuối năm. Trước khi anh cho ý kiến, em hãy tự chấm năm của mình và nói em sẽ xử lý khác đi điều gì về quyền truy cập và sự cố.'
+choices:
+  - en: 'Give an honest account, including the shortcuts you took on access, the incident you reported late, and what it would have cost to say no earlier.'
+    vi: 'Kể thật lòng, kể cả các lối tắt em đã đi về quyền truy cập, sự cố em báo muộn và cái giá của việc nói không sớm hơn.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "Kien is quiet for a long moment. He writes: 'Tells us what the logs will tell us, first.' It is the best thing you have read about yourself."
+        vi: "Anh Kiên im lặng một lúc lâu. Anh viết: 'Nói cho mình điều nhật ký sẽ nói, trước tiên.' Đó là lời hay nhất anh/chị từng đọc về mình."
+        effects: [rel kien trust +5, rep.boss +4, stress -2]
+  - en: 'Stay modest: list the wins and one thing to improve.'
+    vi: 'Khiêm tốn: nêu các thắng lợi và một điều cần cải thiện.'
+    outcomes:
+      - p: 1
+        en: 'A safe review. Kien nods and moves to the next topic.'
+        vi: 'Một buổi đánh giá an toàn. Anh Kiên gật đầu và chuyển chủ đề.'
+        effects: [rel kien trust +1, rep.boss +1]
+  - en: 'Present the year as a success and leave out the access you granted without a ticket and the incident that nearly got away.'
+    vi: 'Trình bày cả năm như một thành công và bỏ qua quyền truy cập cấp không có phiếu và sự cố suýt vuột.'
+    outcomes:
+      - p: 0.65
+        en: 'It lands well. You leave with a good rating and a small weight in your chest.'
+        vi: 'Được đón nhận tốt. Anh/chị ra về với điểm cao và một chút nặng nề trong lòng.'
+        effects: [rel kien trust +2, rep.boss +4, stress +1, fact polished_it_review private]
+      - p: 0.35
+        ok: false
+        en: 'Kien has the directory audit log open on his desk, with the dates. He turns the screen towards you without a word.'
+        vi: 'Anh Kiên có nhật ký kiểm toán thư mục mở sẵn trên bàn, kèm ngày tháng. Anh xoay màn hình về phía anh/chị mà không nói một lời.'
+        effects: [rel kien trust -8, rep.boss -5, stress +4, fact polished_it_review witnessed]
+---
+scene: it.manager_offer
+place: meeting_room
+tags: [people, promotion, beat]
+beat: 51-52
+when: [rel.kien.trust >= 12, rep.boss >= 58]
+lines:
+  - who: char:kien
+    en: 'I am moving to group IT at the end of the year. Mr Cuong asked me who should run IT here. I named you. One condition: every month, a director will ask you to give someone access, or look at something, that the policy does not allow. I need to know what you will say.'
+    vi: 'Cuối năm anh chuyển sang IT tập đoàn. Anh Cường hỏi anh ai nên điều hành IT ở đây. Anh nêu tên em. Một điều kiện: mỗi tháng sẽ có giám đốc nhờ em cấp quyền cho ai đó, hoặc xem một thứ mà chính sách không cho phép. Anh cần biết em sẽ nói gì.'
+choices:
+  - en: 'Accept, and say plainly which requests you will not grant, and that the directors will hear it from you first, in writing.'
+    vi: 'Nhận lời và nói rõ những yêu cầu anh/chị sẽ không đáp ứng và ban giám đốc sẽ nghe điều đó từ anh/chị trước, bằng văn bản.'
+    outcomes:
+      - p: 1
+        en: "Kien smiles. 'Then it is yours. Put the list on the first page of the access policy.' You take over IT with the limits in writing."
+        vi: "Anh Kiên cười. 'Vậy là của em. Đưa danh sách đó lên trang đầu chính sách truy cập.' Anh/chị tiếp quản IT với các giới hạn đã viết ra giấy."
+        effects: [rel kien trust +5, rep.boss +5, end promoted]
+  - en: 'Thank him, but decline: you prefer running systems to defending them to the directors.'
+    vi: 'Cảm ơn anh nhưng từ chối: anh/chị muốn vận hành hệ thống hơn là bảo vệ chúng trước ban giám đốc.'
+    outcomes:
+      - p: 1
+        en: "Kien looks disappointed, then understanding. 'The next manager may not be as careful as you.'"
+        vi: "Anh Kiên có vẻ thất vọng rồi thông cảm. 'Người quản lý tiếp theo có thể không cẩn thận như em.'"
+        effects: [rel kien trust +2, stress -3]
+  - en: 'Accept without asking what the condition means in practice.'
+    vi: 'Nhận lời mà không hỏi điều kiện đó thực tế nghĩa là gì.'
+    outcomes:
+      - p: 1
+        en: 'Kien nods slowly and Mr Cuong congratulates you a little too warmly. You realise you agreed to something you did not ask about.'
+        vi: 'Anh Kiên gật đầu chậm và anh Cường chúc mừng anh/chị hơi quá nồng nhiệt. Anh/chị nhận ra mình đã đồng ý với điều mình không hỏi.'
+        effects: [rep.boss +4, fact accepted_it_condition private, end promoted]
+---
+scene: it.resignation_thought
+place: it_room
+tags: [people, pressure]
+weight: 2
+cooldown: 26
+when: [stress >= 75, turn >= 12]
+lines:
+  - who: char:bin
+    en: 'You look like you have not slept. With respect: I have seen sysadmins carry the pager for two years, and leave by the summer. Are you all right?'
+    vi: 'Anh/chị trông như chưa ngủ. Xin phép nói thẳng: em từng thấy quản trị viên mang máy nhắn hai năm và nghỉ vào mùa hè. Anh/chị ổn không?'
+choices:
+  - en: 'Talk to Kien about the on-call load, and ask him to share the pager with you for a month.'
+    vi: 'Nói với anh Kiên về gánh nặng trực và xin anh chia máy nhắn với anh/chị một tháng.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 0.8
+        en: 'Kien listens, takes alternate weekends, and says he should have noticed sooner.'
+        vi: 'Anh Kiên lắng nghe, nhận luân phiên các cuối tuần và nói lẽ ra anh phải để ý sớm hơn.'
+        effects: [rel kien trust +4, rel bin trust +2, stress -6, rep.boss +1]
+      - p: 0.2
+        ok: false
+        en: 'Kien nods and says everyone is stretched at year end. You leave with sympathy and the same pager.'
+        vi: 'Anh Kiên gật đầu và nói cuối năm ai cũng căng. Anh/chị ra về với sự cảm thông và chiếc máy nhắn cũ.'
+        effects: [rel kien trust +1, stress -1]
+  - en: 'Hand in your resignation, politely, with the notice the contract requires.'
+    vi: 'Nộp đơn xin nghỉ, lịch sự, báo trước đúng như hợp đồng quy định.'
+    outcomes:
+      - p: 1
+        en: 'Kien reads it twice and does not argue. You hand over a password vault and an up-to-date access list, and walk out lighter than you walked in.'
+        vi: 'Anh Kiên đọc hai lần và không phản đối. Anh/chị bàn giao một kho mật khẩu và danh sách quyền cập nhật và bước ra nhẹ nhõm hơn lúc bước vào.'
+        effects: [rel kien trust +2, end walked_away]
+  - en: 'Tell Bin you are fine and keep going.'
+    vi: 'Nói với Bin là anh/chị ổn và tiếp tục.'
+    outcomes:
+      - p: 1
+        en: 'Bin nods and does not push. You feel slightly worse afterwards for having said it.'
+        vi: 'Bin gật đầu và không gặng hỏi. Sau đó anh/chị thấy hơi tệ hơn vì đã nói vậy.'
+        effects: [rel bin trust -1, stress +2]

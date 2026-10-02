@@ -18,6 +18,7 @@ const STEPS = [
   ['prod year', 'sim:prod'],
   ['purch year', 'sim:purch'],
   ['inv year', 'sim:inv'],
+  ['it year', 'sim:it'],
   ['mkt year', 'sim:mkt'],
   ['fpa year', 'sim:fpa'],
   ['sup year', 'sim:sup'],

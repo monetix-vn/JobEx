@@ -46,6 +46,7 @@ jobs:
       - run: pnpm sim:prod
       - run: pnpm sim:purch
       - run: pnpm sim:inv
+      - run: pnpm sim:it
       - run: pnpm sim:mkt
       - run: pnpm sim:fpa
       - run: pnpm sim:sup

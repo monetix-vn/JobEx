@@ -1,0 +1,202 @@
+{
+  "id": "scene.it.erp_rights",
+  "location": "loc.finance_office",
+  "cast": ["char:duc"],
+  "lines": [
+    {
+      "speaker": "char:duc",
+      "text_key": "scene.it.erp_rights.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.it.erp_rights.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.it.erp_rights.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": -1
+            },
+            {
+              "delta": "rel.thu.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.fixed_access_properly",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_keys",
+              "stage": "leaver"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.it.erp_rights.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.thu.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.fixed_access_properly",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_keys",
+              "stage": "leaver"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.it.erp_rights.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.it.erp_rights.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.thu.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.the_keys",
+              "stage": "leaver"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.it.erp_rights.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.it.erp_rights.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.thu.trust",
+              "value": -2
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.granted_conflicting_erp_rights",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_keys",
+              "stage": "leaver"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.it.erp_rights.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.thu.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.quoc.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.granted_conflicting_erp_rights",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_keys",
+              "stage": "leaver"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

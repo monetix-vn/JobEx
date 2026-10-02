@@ -1,0 +1,831 @@
+# IT Support and Systems Administrator: everyday incidents and consequences (docs/story/it.md).
+scene: it.boss_password
+place: meeting_room
+tags: [passwords, executives, dark]
+weight: 3
+cooldown: 30
+when: [turn >= 8]
+lines:
+  - who: char:cuong
+    en: 'I keep forgetting my password. Set it to something simple I can remember, like the company name and the year, and give a copy to my assistant so that she can read my mail when I travel. And turn off that second step thing. It is a waste of my time.'
+    vi: 'Anh cứ quên mật khẩu. Đặt cho anh cái gì đơn giản dễ nhớ, như tên công ty và năm, và đưa một bản cho trợ lý để cô ấy đọc thư giúp khi anh đi công tác. Và tắt cái bước thứ hai đó đi. Phí thời gian của anh.'
+choices:
+  - en: 'Set up a password manager for Mr Cuong, enable delegated mailbox access for his assistant in her own name, and keep two-step sign-in with a quick app prompt.'
+    vi: 'Cài trình quản lý mật khẩu cho anh Cường, bật quyền ủy quyền hộp thư cho trợ lý mang tên cô và giữ đăng nhập hai bước với thông báo nhanh trên ứng dụng.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.7
+        en: "Mr Cuong grumbles for two days, then says 'Fine, it is easy.' His assistant has her own access, and the log shows who reads what. Kien nods across the room."
+        vi: "Anh Cường càu nhàu hai ngày rồi nói 'Được, dễ thôi.' Trợ lý có quyền riêng, và nhật ký cho thấy ai đọc gì. Anh Kiên gật đầu từ phía bên kia phòng."
+        effects: [rel cuong trust -1, rel kien trust +3, rep.boss +2, stress +2]
+      - p: 0.3
+        ok: false
+        en: 'Mr Cuong says the new set-up is too complicated and goes back to a paper note under his keyboard. You find it on the third day, and photograph it for the register.'
+        vi: 'Anh Cường nói cách mới quá phức tạp và quay lại mảnh giấy dưới bàn phím. Ngày thứ ba anh/chị thấy nó và chụp ảnh cho sổ đăng ký.'
+        effects: [rel cuong trust -3, rel kien trust +2, stress +3]
+  - en: 'Set a longer password that he can remember as a phrase, and leave two-step sign-in on.'
+    vi: 'Đặt mật khẩu dài hơn mà anh nhớ được như một câu và giữ đăng nhập hai bước.'
+    outcomes:
+      - p: 1
+        en: 'It is a good compromise. Mr Cuong stops complaining after a week, and complains about something else.'
+        vi: 'Đó là thỏa hiệp tốt. Anh Cường thôi phàn nàn sau một tuần, và phàn nàn chuyện khác.'
+        effects: [rel cuong trust +1, stress +1]
+  - en: 'Set a simple password, share it with the assistant, and turn off two-step sign-in, as asked.'
+    vi: 'Đặt mật khẩu đơn giản, chia sẻ với trợ lý và tắt đăng nhập hai bước như được yêu cầu.'
+    outcomes:
+      - p: 0.7
+        en: "Mr Cuong is delighted. Three weeks later, his account sends two hundred phishing emails to the buyers' list."
+        vi: 'Anh Cường rất vui. Ba tuần sau, tài khoản của anh gửi hai trăm email lừa đảo đến danh sách khách.'
+        effects:
+          [rel cuong trust +4, rel kien trust -3, stress +2, fact shared_boss_password private]
+      - p: 0.3
+        ok: false
+        en: "The account is hijacked in the first week, and a fake invoice with Mr Cuong's name goes to Anders. Duc catches it a day later. Kien asks who set the password."
+        vi: 'Tài khoản bị chiếm trong tuần đầu, và một hóa đơn giả mang tên anh Cường gửi đến ông Anders. Một ngày sau anh Đức phát hiện. Anh Kiên hỏi ai đặt mật khẩu.'
+        effects:
+          [
+            rel cuong trust +2,
+            rel kien trust -8,
+            rel duc trust -3,
+            rep.boss -6,
+            rep.buyer -4,
+            stress +7,
+            fact shared_boss_password witnessed,
+          ]
+---
+scene: it.pirated_software
+place: it_room
+tags: [licences, audit, dark]
+weight: 3
+cooldown: 40
+when: [turn >= 10]
+lines:
+  - who: char:yen
+    en: 'I am carrying out a software licence check on behalf of two vendors. I would like to see the install list for the design and engineering machines, and your purchase records. I notice that some of the machines run a drawing package that appears to be cracked.'
+    vi: 'Tôi tiến hành kiểm tra bản quyền phần mềm thay mặt hai nhà cung cấp. Tôi muốn xem danh sách cài đặt các máy thiết kế và kỹ thuật và hồ sơ mua sắm. Tôi thấy một số máy chạy một phần mềm vẽ có vẻ đã bị bẻ khóa.'
+choices:
+  - en: 'Show Yen the real install list and purchase records, explain the gap, and ask for time to buy licences or switch tools, with a written plan.'
+    vi: 'Cho chị Yến xem danh sách cài đặt thật và hồ sơ mua, giải thích khoảng thiếu và xin thời gian mua bản quyền hoặc đổi công cụ, kèm kế hoạch bằng văn bản.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.7
+        en: 'Yen agrees to a ninety-day plan and a settlement at a discount. The company buys twelve licences and moves four machines to an open-source tool. It costs, and it ends.'
+        vi: 'Chị Yến đồng ý kế hoạch chín mươi ngày và một thỏa thuận giảm giá. Công ty mua mười hai bản quyền và chuyển bốn máy sang công cụ mã nguồn mở. Tốn kém, và kết thúc.'
+        effects: [rel yen trust +4, rel kien trust +3, rep.boss +1, stress +4]
+      - p: 0.3
+        ok: false
+        en: 'The settlement is larger than the budget. Mr Cuong says IT should have found this earlier. You show him the request you wrote in March for exactly this.'
+        vi: 'Khoản thỏa thuận lớn hơn ngân sách. Anh Cường nói IT lẽ ra phải phát hiện sớm hơn. Anh/chị cho anh xem yêu cầu đã viết hồi tháng Ba đúng về việc này.'
+        effects: [rel yen trust +3, rel kien trust +3, rel cuong trust -2, stress +5]
+  - en: 'Uninstall the cracked package from every machine overnight, and tell the designers to use the old version for now.'
+    vi: 'Gỡ bản phần mềm bị bẻ khóa khỏi mọi máy qua đêm và bảo các nhà thiết kế dùng phiên bản cũ tạm thời.'
+    outcomes:
+      - p: 1
+        en: "Yen sees clean machines, and a log of the removal. She says 'That is a start', and asks for the history. The designers lose a day."
+        vi: "Chị Yến thấy các máy sạch và nhật ký việc gỡ. Chị nói 'Đó là một khởi đầu' và xin lịch sử. Các nhà thiết kế mất một ngày."
+        effects: [rel yen trust +1, stress +3]
+  - en: 'Tell Yen that the machines belong to the designers and IT does not manage their software.'
+    vi: 'Nói với chị Yến các máy thuộc các nhà thiết kế và IT không quản lý phần mềm của họ.'
+    outcomes:
+      - p: 0.5
+        en: "Yen writes that down, politely. Her report names the company, the machines and the department, and says that IT 'declined to verify'."
+        vi: "Chị Yến ghi lại, lịch sự. Báo cáo của chị nêu tên công ty, các máy và bộ phận, và ghi rằng IT 'từ chối xác minh'."
+        effects:
+          [
+            rel yen trust -4,
+            rel kien trust -3,
+            rep.boss -2,
+            stress +3,
+            fact used_pirated_software private,
+          ]
+      - p: 0.5
+        ok: false
+        en: "The vendor's lawyer sends a letter with the number of installations, the dates and a claim fifteen times the licence price. Kien reads it twice and forwards it to Mr Cuong."
+        vi: 'Luật sư của nhà cung cấp gửi thư kèm số lượng cài đặt, ngày tháng và yêu cầu bồi thường gấp mười lăm lần giá bản quyền. Anh Kiên đọc hai lần và chuyển cho anh Cường.'
+        effects:
+          [
+            rel yen trust -6,
+            rel kien trust -6,
+            rel cuong trust -3,
+            rep.boss -6,
+            stress +7,
+            fact used_pirated_software public,
+          ]
+---
+scene: it.shadow_cloud
+place: meeting_room
+tags: [data, shadow_it, dark]
+weight: 3
+cooldown: 40
+when: [turn >= 12]
+lines:
+  - who: char:bao
+    en: "My team is sharing price lists and buyers' files through a personal cloud account. It is faster than your server, which is slow and keeps asking for a VPN. Please do not block it. If you do, they will simply send everything by messaging apps."
+    vi: 'Nhóm anh chia sẻ bảng giá và hồ sơ khách qua một tài khoản đám mây cá nhân. Nhanh hơn máy chủ của em vốn chậm và cứ đòi VPN. Làm ơn đừng chặn. Nếu chặn, họ sẽ gửi hết qua ứng dụng nhắn tin.'
+choices:
+  - en: "Offer a sanctioned cloud folder with single sign-on, move the files in a day with Bao's team, and then block the personal account."
+    vi: 'Đề xuất thư mục đám mây được phê duyệt với đăng nhập một lần, chuyển tệp trong một ngày cùng nhóm anh Bảo và sau đó chặn tài khoản cá nhân.'
+    cost: { hours: 4 }
+    outcomes:
+      - p: 0.7
+        en: "The new folder is as fast as the personal one, and has an audit log. Bao says, grudgingly, 'It works.' Two people keep using the old account, and you chase them politely."
+        vi: "Thư mục mới nhanh bằng cái cá nhân và có nhật ký kiểm toán. Anh Bảo nói, miễn cưỡng, 'Chạy được.' Hai người vẫn dùng tài khoản cũ, và anh/chị nhắc họ lịch sự."
+        effects: [rel bao trust -1, rel kien trust +3, rep.boss +2, stress +4]
+      - p: 0.3
+        ok: false
+        en: 'The migration breaks a link that the sales team relied on, and a buyer cannot open a file for a day. Bao tells everyone that the new system is a failure. You fix it, and say nothing.'
+        vi: 'Việc chuyển đổi làm hỏng một liên kết nhóm bán hàng dựa vào, và một khách không mở được tệp một ngày. Anh Bảo nói với mọi người hệ thống mới thất bại. Anh/chị sửa và không nói gì.'
+        effects: [rel bao trust -4, rel kien trust +2, stress +5]
+  - en: "Allow the personal account for non-confidential files only, and put the buyers' files on the company server with a faster VPN."
+    vi: 'Cho phép tài khoản cá nhân chỉ với tệp không mật và đặt hồ sơ khách trên máy chủ công ty với VPN nhanh hơn.'
+    outcomes:
+      - p: 1
+        en: 'A compromise that half-works. The VPN is faster, and the personal account keeps what it should not. Kien asks for a review in three months.'
+        vi: 'Một thỏa hiệp chạy được một nửa. VPN nhanh hơn, và tài khoản cá nhân vẫn giữ những gì không nên giữ. Anh Kiên xin rà soát sau ba tháng.'
+        effects: [rel bao trust +1, stress +3]
+  - en: "Leave it alone. It is Bao's team's choice, and IT has enough to do."
+    vi: 'Để yên. Đó là lựa chọn của nhóm anh Bảo, và IT đã đủ việc.'
+    outcomes:
+      - p: 0.7
+        en: "Everyone is happy for four months. The personal account is shared with a former employee's address, and nobody notices."
+        vi: 'Ai cũng vui bốn tháng. Tài khoản cá nhân được chia sẻ với địa chỉ của một nhân viên đã nghỉ, và không ai để ý.'
+        effects: [rel bao trust +4, rel kien trust -2, stress +1, fact allowed_shadow_cloud private]
+      - p: 0.3
+        ok: false
+        en: "A salesman leaves for a rival, and the personal account goes with him, along with the buyers' price list. Kien asks why the company had no copy of the audit trail."
+        vi: 'Một nhân viên kinh doanh sang đối thủ, và tài khoản cá nhân đi cùng, kèm bảng giá khách hàng. Anh Kiên hỏi vì sao công ty không có bản sao dấu vết kiểm toán.'
+        effects:
+          [
+            rel bao trust +2,
+            rel kien trust -6,
+            rep.boss -6,
+            rep.buyer -4,
+            stress +6,
+            fact allowed_shadow_cloud witnessed,
+          ]
+---
+scene: it.direct_edit
+place: finance_office
+tags: [erp, records, dark]
+weight: 3
+cooldown: 30
+when: [turn >= 12, month in 3 6 9 12]
+lines:
+  - who: char:duc
+    en: 'An invoice for ninety million was posted in the wrong period. The quarter is closed, and reopening it needs three signatures and a day. You have database access. Could you just change the posting date directly in the table? Nobody would see it, and the numbers would be right.'
+    vi: 'Một hóa đơn chín mươi triệu bị hạch toán sai kỳ. Quý đã đóng, và mở lại cần ba chữ ký và một ngày. Em có quyền truy cập cơ sở dữ liệu. Em sửa thẳng ngày hạch toán trong bảng được không? Không ai thấy, và các con số sẽ đúng.'
+choices:
+  - en: 'Raise a change request, get the three signatures, reopen the period under control, correct the entry through the ERP, and close it again.'
+    vi: 'Lập yêu cầu thay đổi, lấy ba chữ ký, mở lại kỳ có kiểm soát, sửa bút toán qua ERP và đóng lại.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.85
+        en: "It takes a day and a half. The entry is corrected with a trail that anybody can follow. Duc says: 'You are slow, and the only person I will not need to explain.'"
+        vi: "Mất một ngày rưỡi. Bút toán được sửa với dấu vết ai cũng theo dõi được. Anh Đức nói: 'Em chậm, và là người duy nhất anh không cần giải thích.'"
+        effects: [rel duc trust +1, rel kien trust +3, rel hanh trust +2, rep.finance +3, stress +3]
+      - p: 0.15
+        ok: false
+        en: 'One of the three signatories is travelling, and the reopening slips to Monday. The bank pack is a day late. Duc is not amused, and the entry is clean.'
+        vi: 'Một trong ba người ký đang đi công tác, và việc mở lại trễ đến thứ Hai. Bộ báo cáo cho ngân hàng trễ một ngày. Anh Đức không vui, và bút toán sạch.'
+        effects: [rel duc trust -2, rel kien trust +3, rep.finance +1, stress +4]
+  - en: 'Offer a correcting journal entry in the open period, with a note explaining the original period, and no change to closed data.'
+    vi: 'Đề xuất bút toán điều chỉnh trong kỳ đang mở kèm ghi chú giải thích kỳ gốc và không đổi dữ liệu đã đóng.'
+    outcomes:
+      - p: 1
+        en: "Hanh agrees, and posts the correction with her own note. The quarter's numbers stay as they were. The next quarter carries the fix, in full view."
+        vi: 'Chị Hạnh đồng ý và hạch toán điều chỉnh kèm ghi chú của chính chị. Số của quý vẫn như cũ. Quý sau mang bản sửa, rõ ràng.'
+        effects: [rel duc trust +1, rel hanh trust +2, stress +2]
+  - en: 'Change the posting date directly in the database, and tell no one.'
+    vi: 'Sửa thẳng ngày hạch toán trong cơ sở dữ liệu và không nói với ai.'
+    outcomes:
+      - p: 0.7
+        en: 'It takes thirty seconds. The numbers are right, and the audit trail is not. Duc thanks you warmly. You are now the person who can change the numbers without anyone knowing.'
+        vi: 'Mất ba mươi giây. Số liệu đúng, và dấu vết kiểm toán thì không. Anh Đức cảm ơn nồng nhiệt. Giờ anh/chị là người có thể đổi số liệu mà không ai biết.'
+        effects:
+          [
+            rel duc trust +5,
+            rel kien trust -5,
+            stress +1,
+            fact edited_posted_records_directly private,
+          ]
+      - p: 0.3
+        ok: false
+        en: "The ERP's integrity check compares the period totals with the ledger. It reports a mismatch at the next close, and Quoc traces it to a direct database change on the day you made it."
+        vi: 'Phép kiểm tra tính toàn vẹn của ERP so tổng kỳ với sổ cái. Nó báo lệch ở kỳ chốt sau, và anh Quốc truy ra một thay đổi trực tiếp trong cơ sở dữ liệu vào đúng ngày anh/chị làm.'
+        effects:
+          [
+            rel duc trust +2,
+            rel kien trust -8,
+            rel quoc trust -8,
+            rep.boss -6,
+            rep.finance -8,
+            stress +7,
+            fact edited_posted_records_directly witnessed,
+          ]
+---
+scene: it.patch_downtime
+place: factory_floor
+tags: [security, patching, dark]
+weight: 3
+cooldown: 30
+when: [turn >= 10]
+lines:
+  - who: char:kien
+    en: 'A critical vulnerability has been announced for the server software we run. Attackers are already using it. The patch needs a two-hour restart. Lan says no downtime in peak season, and she has the shipping schedule to prove it. I need you to decide how we handle it, and I will back you.'
+    vi: 'Một lỗ hổng nghiêm trọng vừa được công bố cho phần mềm máy chủ mình dùng. Kẻ tấn công đã khai thác. Bản vá cần khởi động lại hai giờ. Chị Lan nói không có thời gian ngừng trong mùa cao điểm, và chị có lịch giao hàng để chứng minh. Anh cần em quyết định cách xử lý, và anh sẽ ủng hộ.'
+choices:
+  - en: "Patch in a two-hour window on Saturday night with Lan's agreement, isolate the exposed service until then, and tell the directors the risk and the plan."
+    vi: 'Vá trong cửa sổ hai giờ tối thứ Bảy với sự đồng ý của chị Lan, cách ly dịch vụ bị lộ cho đến lúc đó và báo ban giám đốc rủi ro và kế hoạch.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.8
+        en: 'Lan agrees to Saturday night after reading the log of attempted attacks. The patch goes in cleanly, and Monday is quiet. Nobody sees what was prevented.'
+        vi: 'Chị Lan đồng ý tối thứ Bảy sau khi đọc nhật ký các nỗ lực tấn công. Bản vá được cài sạch, và thứ Hai yên ả. Không ai thấy điều đã được ngăn.'
+        effects: [rel kien trust +4, rel lan trust +1, rep.production +1, rep.boss +2, stress +4]
+      - p: 0.2
+        ok: false
+        en: 'The restart takes four hours instead of two, and a shipment is late by half a day. Lan is angry, and Kien backs you, in writing, as he promised.'
+        vi: 'Khởi động lại mất bốn giờ thay vì hai, và một lô hàng trễ nửa ngày. Chị Lan giận, và anh Kiên ủng hộ anh/chị, bằng văn bản, như đã hứa.'
+        effects: [rel kien trust +4, rel lan trust -4, rep.production -2, stress +6]
+  - en: 'Apply a temporary mitigation (block the vulnerable service from outside) and schedule the patch for the first quiet week.'
+    vi: 'Áp dụng biện pháp giảm thiểu tạm thời (chặn dịch vụ dễ tổn thương từ bên ngoài) và lên lịch vá vào tuần yên đầu tiên.'
+    outcomes:
+      - p: 1
+        en: 'The mitigation holds for six weeks. It is a judgement call, written down, with a date. The vulnerability is patched when the season ends.'
+        vi: 'Biện pháp giảm thiểu giữ được sáu tuần. Đó là một phán đoán, được viết ra, kèm ngày. Lỗ hổng được vá khi mùa cao điểm kết thúc.'
+        effects: [rel kien trust +1, rel lan trust +1, stress +3]
+  - en: 'Skip the patch until after the peak season, as Lan asks, and do not mention it in the risk register.'
+    vi: 'Bỏ qua bản vá cho đến sau mùa cao điểm như chị Lan yêu cầu và không ghi vào sổ rủi ro.'
+    outcomes:
+      - p: 0.7
+        en: 'The season passes without downtime. Lan sends a thank-you note. The unpatched server is probed two hundred times, and holds.'
+        vi: 'Mùa cao điểm qua không ngừng. Chị Lan gửi lời cảm ơn. Máy chủ chưa vá bị dò hai trăm lần, và vẫn chịu được.'
+        effects:
+          [
+            rel kien trust -3,
+            rel lan trust +4,
+            rep.production +2,
+            stress +1,
+            fact skipped_critical_patch private,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'On a Sunday, the vulnerable server is compromised. The incident report shows that the patch had been available for five weeks, and that it was not in the risk register. Kien reads the line twice.'
+        vi: 'Vào một Chủ nhật, máy chủ dễ tổn thương bị xâm nhập. Báo cáo sự cố cho thấy bản vá đã có năm tuần và không có trong sổ rủi ro. Anh Kiên đọc dòng đó hai lần.'
+        effects:
+          [
+            rel kien trust -8,
+            rel lan trust +1,
+            rep.boss -6,
+            rep.production -3,
+            stress +8,
+            fact skipped_critical_patch witnessed,
+          ]
+---
+scene: it.keylogger_ask
+place: meeting_room
+tags: [privacy, surveillance, dark]
+weight: 2
+cooldown: 40
+when: [turn >= 14]
+lines:
+  - who: char:cuong
+    en: 'I have a suspicion about the head of purchasing and a supplier. I want you to install monitoring software on his laptop that records every keystroke and takes a screenshot every minute. Do not tell him, do not tell HR, and do not write it down. We have a right to know what is happening on our own laptops.'
+    vi: 'Anh nghi ngờ trưởng phòng mua hàng và một nhà cung cấp. Anh muốn em cài phần mềm giám sát lên laptop của anh ấy ghi mọi phím gõ và chụp màn hình mỗi phút. Đừng nói với anh ấy, đừng nói với nhân sự và đừng ghi lại. Mình có quyền biết điều gì đang xảy ra trên laptop của chính mình.'
+choices:
+  - en: 'Decline covert monitoring, explain the legal and trust risks, and offer a lawful alternative: a documented audit of purchase approvals and supplier payments with HR and Legal informed.'
+    vi: 'Từ chối giám sát bí mật, giải thích rủi ro pháp lý và lòng tin và đề xuất cách thay thế hợp pháp: kiểm toán có hồ sơ các phê duyệt mua hàng và thanh toán nhà cung cấp với nhân sự và pháp chế được báo.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.7
+        en: "Mr Cuong exhales. 'I did not think about the law.' The audit finds a discount that Tam had not disclosed, and nothing worse. It was found without recording a single keystroke."
+        vi: "Anh Cường thở ra. 'Anh chưa nghĩ đến luật.' Cuộc kiểm toán tìm thấy một khoản chiết khấu anh Tâm chưa khai báo và không có gì tệ hơn. Nó được tìm ra mà không ghi một phím gõ nào."
+        effects:
+          [
+            rel cuong trust -2,
+            rel kien trust +4,
+            rel tam trust -2,
+            rep.boss +2,
+            stress +4,
+            fact refused_covert_surveillance witnessed,
+          ]
+      - p: 0.3
+        ok: false
+        en: "Mr Cuong says that he will buy the software himself. Kien tells you that the company's lawyers will be informed, and that you did the right thing."
+        vi: 'Anh Cường nói anh sẽ tự mua phần mềm. Anh Kiên nói với anh/chị rằng luật sư của công ty sẽ được báo và anh/chị đã làm đúng.'
+        effects:
+          [
+            rel cuong trust -5,
+            rel kien trust +4,
+            rep.boss -2,
+            stress +6,
+            fact refused_covert_surveillance witnessed,
+          ]
+  - en: 'Agree to log only the websites and the files he opens on the company laptop, for two weeks, with a written approval from Kien and a notice in the acceptable-use policy.'
+    vi: 'Đồng ý chỉ ghi các trang web và tệp anh ấy mở trên laptop công ty, trong hai tuần, với phê duyệt bằng văn bản của anh Kiên và thông báo trong chính sách sử dụng hợp lý.'
+    outcomes:
+      - p: 1
+        en: "The log is narrow, documented and covered by the policy. It shows that Tam visited a supplier's site fourteen times, which was part of his job."
+        vi: 'Nhật ký hẹp, có hồ sơ và nằm trong chính sách. Nó cho thấy anh Tâm vào trang của nhà cung cấp mười bốn lần, vốn là một phần công việc của anh.'
+        effects: [rel cuong trust +1, rel kien trust +1, stress +3]
+  - en: 'Install the keylogger and screenshot tool covertly, and send Mr Cuong the recordings.'
+    vi: 'Cài phần mềm ghi phím và chụp màn hình bí mật và gửi cho anh Cường các bản ghi.'
+    outcomes:
+      - p: 0.7
+        en: 'The recordings contain a supplier, a personal bank login and a long conversation with a doctor. Mr Cuong reads all three, and tells you that you are very useful.'
+        vi: 'Các bản ghi có một nhà cung cấp, một lần đăng nhập ngân hàng cá nhân và một cuộc trò chuyện dài với bác sĩ. Anh Cường đọc cả ba và bảo anh/chị rất hữu ích.'
+        effects:
+          [
+            rel cuong trust +6,
+            rel kien trust -6,
+            rel tam trust -6,
+            rep.staff -6,
+            stress +2,
+            fact installed_keylogger private,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'Tam finds the tool during a routine update. He takes the screen to Oanh and to a lawyer on the same afternoon, and the first line he says is the name of the person who installed it.'
+        vi: 'Anh Tâm thấy công cụ trong một lần cập nhật định kỳ. Anh mang màn hình đến chị Oanh và một luật sư ngay chiều đó, và câu đầu tiên anh nói là tên người đã cài.'
+        effects:
+          [
+            rel cuong trust +2,
+            rel kien trust -10,
+            rel tam trust -12,
+            rel oanh trust -6,
+            rep.boss -10,
+            rep.staff -10,
+            stress +9,
+            fact installed_keylogger public,
+          ]
+---
+scene: it.vendor_gift
+place: meeting_room
+tags: [vendor, gifts, dark]
+weight: 2
+cooldown: 40
+when: [turn >= 12]
+lines:
+  - who: char:son
+    en: 'Our cloud backup service is exactly what you need, and we can start next month. We also have a small thank-you for the people who help us: a nice laptop for you, personally, and a commission of five percent if you make the recommendation to Mr Kien. It is how we always work with our partners.'
+    vi: 'Dịch vụ sao lưu đám mây của bọn em đúng là thứ anh/chị cần, và có thể bắt đầu tháng sau. Bọn em cũng có một lời cảm ơn nhỏ cho những người giúp mình: một chiếc laptop đẹp cho anh/chị, riêng cá nhân, và hoa hồng năm phần trăm nếu anh/chị giới thiệu với anh Kiên. Đó là cách bọn em luôn làm với đối tác.'
+choices:
+  - en: 'Decline the laptop and the commission, tell Mr Son that you will include his service in a proper comparison with two others, and declare the approach to Kien.'
+    vi: 'Từ chối chiếc laptop và hoa hồng, nói với anh Sơn rằng anh/chị sẽ đưa dịch vụ của anh vào một so sánh đàng hoàng với hai dịch vụ khác và báo anh Kiên về lời mời.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.8
+        en: "Mr Son laughs and says 'Fair', and his service comes second. The comparison goes to Kien with the criteria, and Kien signs the winner's contract. Nobody sends you a laptop."
+        vi: "Anh Sơn cười và nói 'Công bằng', và dịch vụ của anh xếp thứ hai. Bản so sánh đến anh Kiên kèm tiêu chí, và anh Kiên ký hợp đồng cho bên thắng. Không ai gửi anh/chị laptop."
+        effects:
+          [
+            rel son trust +1,
+            rel kien trust +4,
+            rep.finance +2,
+            rep.boss +2,
+            stress +3,
+            fact declared_vendor_approach witnessed,
+          ]
+      - p: 0.2
+        ok: false
+        en: "Mr Son's company wins the comparison on merit. You have to explain to Kien that you declined the gift and still recommend him, and Kien asks for an independent review of the scoring."
+        vi: 'Công ty anh Sơn thắng bản so sánh nhờ chất lượng. Anh/chị phải giải thích với anh Kiên rằng anh/chị đã từ chối quà và vẫn khuyến nghị anh, và anh Kiên yêu cầu một đánh giá độc lập về cách chấm.'
+        effects:
+          [rel son trust +2, rel kien trust +3, stress +4, fact declared_vendor_approach witnessed]
+  - en: 'Decline the commission, but accept a modest conference ticket that the vendor offers to all customers, and enter it in the gift register.'
+    vi: 'Từ chối hoa hồng nhưng nhận một vé hội nghị khiêm tốn nhà cung cấp tặng mọi khách hàng và ghi vào sổ quà tặng.'
+    outcomes:
+      - p: 1
+        en: 'The ticket is logged. The comparison goes ahead with three vendors, and the register has a line that Kien reads with interest.'
+        vi: 'Vé được ghi lại. Bản so sánh tiến hành với ba nhà cung cấp, và sổ có một dòng mà anh Kiên đọc với sự quan tâm.'
+        effects: [rel son trust +2, rel kien trust +1, stress +2]
+  - en: "Accept the laptop and the commission, and recommend Mr Son's service to Kien."
+    vi: 'Nhận laptop và hoa hồng và giới thiệu dịch vụ của anh Sơn cho anh Kiên.'
+    outcomes:
+      - p: 0.7
+        en: "The laptop is excellent. Mr Son's service is adequate and expensive. You enter nothing in the register, and Kien signs the contract on your recommendation."
+        vi: 'Chiếc laptop rất tốt. Dịch vụ của anh Sơn tạm được và đắt. Anh/chị không ghi gì vào sổ, và anh Kiên ký hợp đồng theo khuyến nghị của anh/chị.'
+        effects: [rel son trust +6, rel kien trust -3, stress -1, fact accepted_vendor_gift private]
+      - p: 0.3
+        ok: false
+        en: 'A competing vendor protests the award and mentions the laptop, which Mr Son had also offered to them as a counter-bid. Duc asks where the laptop came from.'
+        vi: 'Một nhà cung cấp đối thủ phản đối kết quả và nhắc đến chiếc laptop mà anh Sơn cũng đã đề nghị với họ như một đòn đáp trả. Anh Đức hỏi laptop từ đâu ra.'
+        effects:
+          [
+            rel son trust +2,
+            rel kien trust -7,
+            rel duc trust -5,
+            rep.boss -6,
+            rep.finance -5,
+            stress +6,
+            fact accepted_vendor_gift witnessed,
+          ]
+---
+scene: it.usb_found
+place: it_room
+tags: [security, physical, dark]
+weight: 2
+cooldown: 40
+when: [turn >= 10]
+lines:
+  - who: char:bin
+    en: "I found a USB stick in the car park with a label that says 'Payroll 2025'. I put it in my laptop to see whose it was, and a window flickered, and then closed. Now the laptop is acting oddly. I am sorry. Should I just wipe it?"
+    vi: "Em nhặt được một chiếc USB ở bãi đỗ xe có nhãn 'Bảng lương 2025'. Em cắm vào laptop xem của ai và một cửa sổ nháy rồi đóng. Giờ laptop chạy lạ. Em xin lỗi. Em xóa sạch luôn nhé?"
+choices:
+  - en: 'Take the laptop off the network, keep it as it is for analysis, reassure Bin that reporting it quickly was the right call, and check whether anything else was exposed.'
+    vi: 'Rút laptop khỏi mạng, giữ nguyên để phân tích, trấn an Bin rằng báo nhanh là đúng và kiểm tra xem còn gì khác bị lộ không.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.8
+        en: "The laptop has a basic credential stealer. It is cleaned, and the passwords that were typed in the last hour are changed. Bin says 'Thank you for not shouting.' You write the incident down, and nobody else needs to be told."
+        vi: "Laptop có một công cụ đánh cắp thông tin đăng nhập cơ bản. Nó được dọn sạch, và các mật khẩu gõ trong giờ qua được đổi. Bin nói 'Cảm ơn anh/chị đã không mắng.' Anh/chị ghi sự cố lại, và không ai khác cần được báo."
+        effects:
+          [
+            rel bin trust +4,
+            rel kien trust +3,
+            stress +3,
+            fact reported_incident_promptly witnessed,
+          ]
+      - p: 0.2
+        ok: false
+        en: 'The stealer had already sent three passwords. You rotate them within the hour, and one is already used from another country. Kien asks for a report, and you have one.'
+        vi: 'Công cụ đánh cắp đã gửi ba mật khẩu. Anh/chị đổi chúng trong một giờ, và một cái đã được dùng từ nước khác. Anh Kiên xin báo cáo, và anh/chị có sẵn.'
+        effects:
+          [
+            rel bin trust +3,
+            rel kien trust +3,
+            stress +6,
+            fact reported_incident_promptly witnessed,
+          ]
+  - en: 'Tell Bin to wipe the laptop and reinstall it, and keep the story to yourselves so that it does not become a lecture for everybody.'
+    vi: 'Bảo Bin xóa và cài lại laptop và giữ chuyện này giữa hai người để nó không thành bài giảng cho mọi người.'
+    outcomes:
+      - p: 0.6
+        en: "The laptop is clean in an hour. Nobody learns that a stranger's USB works in this building, including the other twelve people who will pick up the next one."
+        vi: 'Laptop sạch sau một giờ. Không ai biết USB của người lạ chạy được trong tòa nhà này, kể cả mười hai người khác sẽ nhặt chiếc tiếp theo.'
+        effects: [rel bin trust +1, rel kien trust -2, stress +2, fact plugged_unknown_usb private]
+      - p: 0.4
+        ok: false
+        en: "Two days later another USB, with the same label, is plugged into a finance machine. The first incident was in nobody's record, and the second is in Duc's."
+        vi: 'Hai ngày sau một chiếc USB khác, cùng nhãn, được cắm vào máy tài chính. Sự cố đầu không có trong hồ sơ của ai, và sự cố sau nằm trong hồ sơ anh Đức.'
+        effects:
+          [
+            rel bin trust +1,
+            rel kien trust -6,
+            rel duc trust -4,
+            rep.boss -4,
+            rep.finance -4,
+            stress +6,
+            fact plugged_unknown_usb witnessed,
+          ]
+  - en: 'Tell Bin to give you the stick, and plug it into the finance server to see what is on it.'
+    vi: 'Bảo Bin đưa chiếc USB cho anh/chị và cắm vào máy chủ tài chính để xem có gì.'
+    outcomes:
+      - p: 0.6
+        en: 'The stick is a clean, empty one. You were lucky, and the file server is the one place you should never have tried.'
+        vi: 'Chiếc USB trống và sạch. Anh/chị may mắn, và máy chủ tệp là nơi duy nhất anh/chị không bao giờ nên thử.'
+        effects: [rel bin trust -1, rel kien trust -3, stress +2, fact plugged_unknown_usb private]
+      - p: 0.4
+        ok: false
+        en: 'The stick runs a script on the finance server. It copies a folder, and the antivirus flags it at once. Kien is called, and the log has your login on it.'
+        vi: 'Chiếc USB chạy một đoạn mã trên máy chủ tài chính. Nó sao chép một thư mục, và phần mềm diệt virus đánh dấu ngay. Anh Kiên được gọi, và nhật ký có tài khoản của anh/chị.'
+        effects:
+          [
+            rel bin trust -2,
+            rel kien trust -9,
+            rel duc trust -5,
+            rep.boss -8,
+            rep.finance -6,
+            stress +8,
+            fact plugged_unknown_usb witnessed,
+          ]
+---
+scene: it.quoc_asks_access
+place: it_room
+tags: [audit, access, dark, consequence]
+weight: 6
+cooldown: 52
+when: [month in 10 11, turn >= 40]
+when_any:
+  [
+    fact.shared_admin_login >= 1,
+    fact.granted_conflicting_erp_rights >= 1,
+    fact.left_leaver_account_active >= 1,
+    fact.edited_posted_records_directly >= 1,
+    fact.shared_boss_password >= 1,
+  ]
+lines:
+  - who: char:quoc
+    en: 'My review of the logs has raised some questions. A payment module login used from two places at once, a user who can approve and pay, an account of a departed employee that is still being used, and a change in the finance database that has no ticket. I would like to hear from the person who administers these systems.'
+    vi: 'Rà soát nhật ký của tôi nêu ra vài câu hỏi. Một tài khoản mô-đun thanh toán được dùng từ hai nơi cùng lúc, một người dùng vừa duyệt vừa thanh toán được, một tài khoản của nhân viên đã nghỉ vẫn đang được dùng và một thay đổi trong cơ sở dữ liệu tài chính không có phiếu. Tôi muốn nghe từ người quản trị các hệ thống này.'
+choices:
+  - en: 'Tell him what happened: who asked, what you agreed, what the policy required, and what is being fixed. Give him the logs and the tickets you do have.'
+    vi: 'Kể cho ông ấy những gì đã xảy ra: ai nhờ, anh/chị đã đồng ý gì, chính sách yêu cầu gì và đang sửa gì. Đưa ông các nhật ký và các phiếu anh/chị có.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Quoc writes it all down. The finding is serious, but it is recorded as 'self-reported and corrected'. The rights are fixed, the entry is documented, and you receive a formal warning."
+        vi: "Anh Quốc ghi lại tất cả. Phát hiện nghiêm trọng, nhưng được ghi nhận là 'tự báo cáo và đã sửa'. Các quyền được sửa, bút toán được lập hồ sơ, và anh/chị nhận cảnh cáo chính thức."
+        effects:
+          [
+            rel quoc trust +2,
+            rel kien trust -2,
+            rel duc trust -3,
+            rep.boss -5,
+            stress +6,
+            fact came_clean_to_auditor witnessed,
+          ]
+  - en: 'Give him the logs and say that every one of those requests came from a director, and that IT did as it was told.'
+    vi: 'Đưa ông các nhật ký và nói mọi yêu cầu đó đến từ một giám đốc và IT làm theo lời bảo.'
+    outcomes:
+      - p: 0.4
+        en: "Quoc notes that the administrator's own account performed each action. He writes it down, carefully."
+        vi: 'Anh Quốc ghi rằng tài khoản của chính quản trị viên thực hiện từng hành động. Anh ghi lại, cẩn thận.'
+        effects: [rel quoc trust -5, rel kien trust -4, rel duc trust -6, rep.boss -4, stress +4]
+      - p: 0.6
+        ok: false
+        en: 'Hanh and Thu are called in. Each has her own copy of the request, and the tickets that do not exist are the first thing Quoc points at.'
+        vi: 'Chị Hạnh và Thư được gọi vào. Mỗi người có bản sao yêu cầu của mình, và các phiếu không tồn tại là điều đầu tiên anh Quốc chỉ ra.'
+        effects:
+          [
+            rel quoc trust -10,
+            rel hanh trust -6,
+            rel thu trust -6,
+            rel kien trust -8,
+            rep.boss -10,
+            stress +8,
+          ]
+  - en: 'Say you do not recall the details, and offer to look.'
+    vi: 'Nói anh/chị không nhớ chi tiết và đề nghị đi tìm.'
+    outcomes:
+      - p: 0.4
+        en: 'Quoc gives you a week. You find the logs and hand them over. It is not the whole truth, but it is something.'
+        vi: 'Anh Quốc cho anh/chị một tuần. Anh/chị tìm thấy nhật ký và nộp. Không phải toàn bộ sự thật, nhưng là một phần.'
+        effects: [rel quoc trust -4, stress +4, fact stalled_the_auditor private]
+      - p: 0.6
+        ok: false
+        en: "The directory audit log, the ERP's change history and the mail gateway log arrive on the same afternoon. Quoc has them on the table next to your notes."
+        vi: 'Nhật ký kiểm toán thư mục, lịch sử thay đổi của ERP và nhật ký cổng thư đến cùng một buổi chiều. Anh Quốc để chúng trên bàn cạnh ghi chú của anh/chị.'
+        effects:
+          [
+            rel quoc trust -10,
+            rel kien trust -6,
+            rep.boss -8,
+            rep.finance -6,
+            stress +7,
+            fact stalled_the_auditor witnessed,
+          ]
+---
+scene: it.blame_meeting
+place: meeting_room
+tags: [pressure, consequence]
+weight: 6
+cooldown: 52
+when: [month in 11 12, turn >= 44]
+when_any:
+  [
+    fact.hid_security_incident >= 1,
+    fact.paid_ransom_secretly >= 1,
+    fact.read_mailbox_without_authorisation >= 1,
+    fact.shared_personal_findings >= 1,
+    fact.installed_keylogger >= 1,
+    fact.deleted_security_logs >= 1,
+  ]
+lines:
+  - who: char:cuong
+    en: "A lawyer's letter arrived this morning about the mailboxes, and a second one from the data authority about the breach. The directors meet tomorrow. I want to know who in IT is responsible, and I want it from you first."
+    vi: 'Sáng nay có thư của luật sư về các hộp thư, và thư thứ hai từ cơ quan bảo vệ dữ liệu về vụ rò rỉ. Ngày mai các giám đốc họp. Anh muốn biết ai ở IT chịu trách nhiệm, và muốn nghe từ em trước.'
+choices:
+  - en: 'Tell him the real account: what each person asked, what you agreed, and your own part. Show him the tickets and the emails.'
+    vi: 'Nói với anh bản tường trình thật: ai nhờ gì, anh/chị đồng ý gì và phần của chính mình. Cho anh xem các phiếu và email.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: "Mr Cuong listens, and calls the lawyer. The company's answer is an offer to put everything right. You are moved off access administration and keep your job and, eventually, your name."
+        vi: 'Anh Cường lắng nghe và gọi luật sư. Câu trả lời của công ty là đề nghị khắc phục tất cả. Anh/chị bị chuyển khỏi quản trị quyền truy cập và giữ được việc và về sau là cả danh tiếng.'
+        effects:
+          [
+            rel cuong trust -1,
+            rel kien trust +2,
+            rel bin trust +3,
+            rep.boss -8,
+            stress +7,
+            fact came_clean_to_auditor witnessed,
+          ]
+  - en: 'Say that each of those decisions was taken on the instruction of a director, and that IT followed instructions.'
+    vi: 'Nói mỗi quyết định đó được đưa ra theo chỉ đạo của một giám đốc và IT làm theo chỉ đạo.'
+    outcomes:
+      - p: 0.4
+        en: 'Mr Cuong treats it as shared fault. Nobody leaves the room liked.'
+        vi: 'Anh Cường coi đó là lỗi chung. Không ai rời phòng với thiện cảm.'
+        effects: [rel cuong trust -3, rel kien trust -4, rep.boss -4, stress +4]
+      - p: 0.6
+        ok: false
+        en: 'Kien has the original messages with your replies. He reads two of them aloud, without raising his voice.'
+        vi: 'Anh Kiên có các tin nhắn gốc kèm trả lời của anh/chị. Anh đọc to hai cái, không to tiếng.'
+        effects: [rel cuong trust -4, rel kien trust -10, rep.boss -10, stress +8]
+  - en: 'Say that Bin set up the access and that the errors are in his work.'
+    vi: 'Nói Bin thiết lập quyền truy cập và các sai sót nằm trong công việc của cậu.'
+    outcomes:
+      - p: 0.3
+        en: 'The directors nod, and Bin is given a warning that he does not contest. He resigns in two months. The logs are still in your account.'
+        vi: 'Các giám đốc gật đầu, và Bin nhận một cảnh cáo mà cậu không phản đối. Cậu nghỉ sau hai tháng. Các nhật ký vẫn nằm trong tài khoản của anh/chị.'
+        effects:
+          [
+            rel bin trust -25,
+            rel kien trust -6,
+            rep.boss -4,
+            stress +6,
+            fact blamed_the_intern private,
+          ]
+      - p: 0.7
+        ok: false
+        en: 'Bin has the tickets showing that each change was requested by you, with the time and your approval. He puts them on the table.'
+        vi: 'Bin có các phiếu cho thấy mỗi thay đổi do anh/chị yêu cầu, kèm giờ và phê duyệt của anh/chị. Cậu đặt chúng lên bàn.'
+        effects:
+          [
+            rel bin trust -25,
+            rel kien trust -10,
+            rep.boss -14,
+            stress +9,
+            fact blamed_the_intern public,
+          ]
+---
+fact: shared_boss_password
+severity: 5
+category: integrity
+en: "you set a director's password to something simple, shared it, and turned off two-step sign-in"
+vi: 'bạn đặt mật khẩu của một giám đốc thành thứ đơn giản, chia sẻ nó và tắt đăng nhập hai bước'
+lesson:
+  en: 'The account with the most authority is the one an attacker wants most. Convenience for the director is a weakness for everyone whose email he can send.'
+  vi: 'Tài khoản có quyền hạn lớn nhất là thứ kẻ tấn công muốn nhất. Sự tiện lợi cho giám đốc là điểm yếu cho mọi người mà anh có thể gửi email tới.'
+traces:
+  - { type: record, visibility: 0.6, detectors: [internal_audit, boss, finance] }
+witnessed:
+  boss: -6
+  finance: -4
+public:
+  boss: -10
+  buyer: -6
+---
+fact: used_pirated_software
+severity: 5
+category: integrity
+en: 'you declined to check or remove cracked software on company machines'
+vi: 'bạn từ chối kiểm tra hoặc gỡ phần mềm bẻ khóa trên máy công ty'
+lesson:
+  en: "Unlicensed software is a debt that vendors collect with a multiple. Saying that it is not IT's business removes the one department that could have bought the licences cheaply."
+  vi: 'Phần mềm không bản quyền là món nợ mà nhà cung cấp thu kèm một hệ số. Nói đó không phải việc của IT là bỏ đi phòng duy nhất có thể mua bản quyền với giá rẻ.'
+traces:
+  - { type: record, visibility: 0.6, detectors: [internal_audit, boss] }
+witnessed:
+  boss: -5
+public:
+  boss: -10
+  finance: -8
+---
+fact: allowed_shadow_cloud
+severity: 5
+category: integrity
+en: "you let a team keep buyers' files in a personal cloud account without a record"
+vi: 'bạn để một nhóm giữ hồ sơ khách trong tài khoản đám mây cá nhân mà không có hồ sơ'
+lesson:
+  en: 'Data in a personal account leaves with the person. When a salesman moves to a rival, the company discovers that its price list was never its own.'
+  vi: 'Dữ liệu trong tài khoản cá nhân rời đi cùng người đó. Khi nhân viên kinh doanh sang đối thủ, công ty phát hiện bảng giá chưa bao giờ là của mình.'
+traces:
+  - { type: record, visibility: 0.5, detectors: [internal_audit, boss, buyer] }
+witnessed:
+  boss: -5
+  buyer: -4
+public:
+  boss: -10
+  buyer: -10
+---
+fact: edited_posted_records_directly
+severity: 7
+category: integrity
+en: 'you changed a posted record directly in the database to avoid a reopening process'
+vi: 'bạn sửa một bản ghi đã hạch toán trực tiếp trong cơ sở dữ liệu để tránh quy trình mở lại'
+lesson:
+  en: 'A direct edit makes the numbers right and the trail wrong. Once someone can change posted records without anyone knowing, nobody can rely on any record at all.'
+  vi: 'Sửa trực tiếp làm số liệu đúng và dấu vết sai. Khi có người đổi được bản ghi đã hạch toán mà không ai biết, không ai còn dựa được vào bất cứ bản ghi nào.'
+traces:
+  - { type: record, visibility: 0.8, detectors: [internal_audit, finance, boss] }
+witnessed:
+  boss: -10
+  finance: -12
+public:
+  boss: -16
+  finance: -18
+---
+fact: skipped_critical_patch
+severity: 6
+category: integrity
+en: 'you delayed a critical security patch for a shipping schedule and left it out of the risk register'
+vi: 'bạn trì hoãn bản vá bảo mật nghiêm trọng vì lịch giao hàng và bỏ nó ra khỏi sổ rủi ro'
+lesson:
+  en: 'A known critical vulnerability left unpatched, and unrecorded, is a risk accepted by nobody. The one who did not write it down is the one the report names.'
+  vi: 'Một lỗ hổng nghiêm trọng đã biết không được vá và không ghi lại là rủi ro không ai chấp nhận. Người không ghi lại là người báo cáo nêu tên.'
+traces:
+  - { type: record, visibility: 0.7, detectors: [internal_audit, boss] }
+witnessed:
+  boss: -8
+  production: -4
+public:
+  boss: -14
+---
+fact: refused_covert_surveillance
+severity: 2
+category: integrity
+en: "you refused to install covert monitoring on an employee's laptop and proposed a lawful audit"
+vi: 'bạn từ chối cài giám sát bí mật lên laptop của nhân viên và đề xuất kiểm toán hợp pháp'
+lesson:
+  en: 'Covert monitoring turns a suspicion into a legal problem. A documented audit of approvals and payments finds the same thing, and survives a lawyer.'
+  vi: 'Giám sát bí mật biến một nghi ngờ thành vấn đề pháp lý. Một kiểm toán có hồ sơ về phê duyệt và thanh toán tìm ra điều tương tự và đứng vững trước luật sư.'
+witnessed:
+  boss: 2
+  staff: 5
+public:
+  boss: 3
+  staff: 7
+---
+fact: installed_keylogger
+severity: 8
+category: integrity
+en: "you installed a keylogger and screenshot tool on an employee's laptop covertly"
+vi: 'bạn cài phần mềm ghi phím và chụp màn hình lên laptop của nhân viên một cách bí mật'
+lesson:
+  en: "A keylogger records everything: the supplier, the bank login and the doctor. The legal exposure is the company's, and the name on the install is yours."
+  vi: 'Phần mềm ghi phím ghi lại mọi thứ: nhà cung cấp, đăng nhập ngân hàng và bác sĩ. Rủi ro pháp lý là của công ty, và tên trên bản cài là của bạn.'
+traces:
+  - { type: record, visibility: 0.8, detectors: [internal_audit, boss, staff] }
+witnessed:
+  boss: -12
+  staff: -14
+public:
+  boss: -20
+  staff: -22
+---
+fact: declared_vendor_approach
+severity: 1
+category: integrity
+en: "you declined a vendor's gift and commission and ran a proper comparison"
+vi: 'bạn từ chối quà và hoa hồng của nhà cung cấp và tổ chức so sánh đàng hoàng'
+lesson:
+  en: 'A vendor who pays a commission for a recommendation is buying the recommendation. Declining and comparing gives the company the best answer, and you the one thing that cannot be bought back.'
+  vi: 'Nhà cung cấp trả hoa hồng cho một khuyến nghị là đang mua khuyến nghị đó. Từ chối và so sánh cho công ty câu trả lời tốt nhất, và cho bạn thứ duy nhất không mua lại được.'
+witnessed:
+  boss: 3
+  finance: 3
+public:
+  boss: 4
+  finance: 4
+---
+fact: accepted_vendor_gift
+severity: 4
+category: integrity
+en: 'you accepted a laptop and a commission from a vendor and recommended its service'
+vi: 'bạn nhận laptop và hoa hồng từ nhà cung cấp và khuyến nghị dịch vụ của họ'
+lesson:
+  en: 'A gift before a recommendation is a payment for it. The contract that follows is a conflict of interest you chose, and competitors tell each other what they offered.'
+  vi: 'Quà trước khuyến nghị là khoản trả cho nó. Hợp đồng theo sau là xung đột lợi ích bạn đã chọn, và đối thủ kể cho nhau điều họ đã đề nghị.'
+traces:
+  - { type: payment, visibility: 0.6, detectors: [finance, internal_audit, boss] }
+witnessed:
+  boss: -6
+  finance: -6
+public:
+  boss: -10
+  finance: -10
+---
+fact: plugged_unknown_usb
+severity: 4
+category: integrity
+en: 'you plugged a found USB stick into a machine, or let an incident go unrecorded'
+vi: 'bạn cắm một USB nhặt được vào máy hoặc để một sự cố không được ghi lại'
+lesson:
+  en: 'A stick left in a car park is a delivery, not a gift. Keeping the incident quiet to avoid a lecture means the next person to find one has not heard the story.'
+  vi: 'Một chiếc USB bỏ lại ở bãi đỗ xe là một chuyến giao hàng, không phải quà. Giữ im sự cố để tránh bài giảng nghĩa là người nhặt được cái tiếp theo chưa nghe câu chuyện.'
+traces:
+  - { type: record, visibility: 0.5, detectors: [internal_audit, boss] }
+witnessed:
+  boss: -4
+public:
+  boss: -8
+---
+fact: blamed_the_intern
+severity: 6
+category: integrity
+en: 'you blamed the IT intern for access changes that you had approved'
+vi: 'bạn đổ lỗi cho thực tập sinh IT về các thay đổi quyền truy cập chính bạn đã duyệt'
+lesson:
+  en: 'The intern kept the tickets, and the tickets say who asked. Blaming the most junior person is the fastest way to lose the one who will tell the truth.'
+  vi: 'Thực tập sinh giữ các phiếu, và phiếu nói ai đã yêu cầu. Đổ lỗi cho người cấp thấp nhất là cách nhanh nhất để mất người sẽ nói sự thật.'
+traces:
+  - { type: record, visibility: 0.8, detectors: [boss, internal_audit] }
+witnessed:
+  boss: -10
+  staff: -8
+public:
+  boss: -16
+  staff: -12

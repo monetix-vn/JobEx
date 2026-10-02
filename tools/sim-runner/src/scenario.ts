@@ -20,6 +20,7 @@ export const FIN_ROLE = 'role.fin.accountant';
 export const PROD_ROLE = 'role.prod.planner';
 export const PURCH_ROLE = 'role.purch.buyer';
 export const INV_ROLE = 'role.inv.analyst';
+export const IT_ROLE = 'role.it.admin';
 export const MKT_ROLE = 'role.mkt.brand';
 export const FPA_ROLE = 'role.fpa.analyst';
 export const SUP_ROLE = 'role.prod.supervisor';
@@ -60,6 +61,7 @@ const SCENARIOS: Record<string, { roleId: string; turns: number; directed: boole
   'prod-year': { roleId: PROD_ROLE, turns: 52, directed: true },
   'purch-year': { roleId: PURCH_ROLE, turns: 52, directed: true },
   'inv-year': { roleId: INV_ROLE, turns: 52, directed: true },
+  'it-year': { roleId: IT_ROLE, turns: 52, directed: true },
   'mkt-year': { roleId: MKT_ROLE, turns: 52, directed: true },
   'fpa-year': { roleId: FPA_ROLE, turns: 52, directed: true },
   'sup-year': { roleId: SUP_ROLE, turns: 52, directed: true },

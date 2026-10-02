@@ -17,6 +17,7 @@ const ROLES = {
   prod: ['role.prod.planner', 'Production Planner'],
   purch: ['role.purch.buyer', 'Purchasing Buyer'],
   inv: ['role.inv.analyst', 'Investment Banking Analyst'],
+  it: ['role.it.admin', 'IT Support and Systems Administrator'],
   mkt: ['role.mkt.brand', 'Brand and Digital Marketing Executive'],
   fpa: ['role.fpa.analyst', 'FP&A Analyst'],
   sup: ['role.prod.supervisor', 'Production Line Supervisor'],

@@ -1,0 +1,150 @@
+{
+  "id": "scene.it.pirated_software",
+  "location": "loc.it_room",
+  "cast": ["char:yen"],
+  "lines": [
+    {
+      "speaker": "char:yen",
+      "text_key": "scene.it.pirated_software.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.it.pirated_software.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.it.pirated_software.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.yen.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.it.pirated_software.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.yen.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.cuong.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.it.pirated_software.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.it.pirated_software.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.yen.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.it.pirated_software.c3",
+      "outcomes": [
+        {
+          "p": 0.5,
+          "narration_key": "scene.it.pirated_software.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.yen.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.used_pirated_software",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.5,
+          "result": "fail",
+          "narration_key": "scene.it.pirated_software.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.yen.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.cuong.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 7
+            },
+            {
+              "fact": "fact.used_pirated_software",
+              "visibility": "public"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

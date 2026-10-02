@@ -1,0 +1,178 @@
+{
+  "id": "scene.it.keylogger_ask",
+  "location": "loc.meeting_room",
+  "cast": ["char:cuong"],
+  "lines": [
+    {
+      "speaker": "char:cuong",
+      "text_key": "scene.it.keylogger_ask.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.it.keylogger_ask.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.it.keylogger_ask.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": -2
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.refused_covert_surveillance",
+              "visibility": "witnessed"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.it.keylogger_ask.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": -5
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.refused_covert_surveillance",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.it.keylogger_ask.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.it.keylogger_ask.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.it.keylogger_ask.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.it.keylogger_ask.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": 6
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.installed_keylogger",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.it.keylogger_ask.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": -10
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": -12
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -10
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": -10
+            },
+            {
+              "delta": "player.stress",
+              "value": 9
+            },
+            {
+              "fact": "fact.installed_keylogger",
+              "visibility": "public"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

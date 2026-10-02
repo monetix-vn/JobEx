@@ -13,6 +13,7 @@ import {
   SUP_ROLE,
   PURCH_ROLE,
   INV_ROLE,
+  IT_ROLE,
   MKT_ROLE,
   QC_ROLE,
   SALES_ROLE,
@@ -55,6 +56,7 @@ describe('choosing a job', () => {
       FPA_ROLE,
       HR_ROLE,
       INV_ROLE,
+      IT_ROLE,
       MKT_ROLE,
       PROD_ROLE,
       SUP_ROLE,
@@ -67,6 +69,7 @@ describe('choosing a job', () => {
       'FP&A Analyst',
       'HR Business Partner',
       'Investment Banking Analyst',
+      'IT Support and Systems Administrator',
       'Brand and Digital Marketing Executive',
       'Production Planner',
       'Production Line Supervisor',
@@ -79,6 +82,7 @@ describe('choosing a job', () => {
       'Chuyên viên FP&A (Kế hoạch và Phân tích Tài chính)',
       'Chuyên viên Nhân sự Đối tác Kinh doanh (HRBP)',
       'Chuyên viên Phân tích Ngân hàng Đầu tư',
+      'Chuyên viên Hỗ trợ IT và Quản trị Hệ thống',
       'Chuyên viên Thương hiệu và Marketing Số',
       'Chuyên viên Kế hoạch Sản xuất',
       'Giám sát Chuyền Sản xuất',
@@ -106,6 +110,11 @@ describe('choosing a job', () => {
     expect([...root.querySelectorAll('.je-job b')].map((b) => b.textContent)).toEqual(
       roles.map((r) => r.title),
     );
+    // Jobs are grouped under their department, in order, with the department's title.
+    const headings = [...root.querySelectorAll('.je-dept')].map((h) => h.textContent);
+    expect(headings).toContain('Human Resources');
+    expect(headings).toContain('Production');
+    expect(new Set(headings).size).toBe(headings.length);
     (root.querySelector(`[data-role="${QC_ROLE}"]`) as HTMLButtonElement).click();
     expect(picked).toEqual([QC_ROLE]);
     (root.querySelector('[data-lang="vi"]') as HTMLButtonElement).click();

@@ -1,0 +1,178 @@
+{
+  "id": "scene.it.shared_login",
+  "location": "loc.finance_office",
+  "cast": ["char:hanh"],
+  "lines": [
+    {
+      "speaker": "char:hanh",
+      "text_key": "scene.it.shared_login.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.it.shared_login.c1",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 0.85,
+          "narration_key": "scene.it.shared_login.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.hanh.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.kept_least_privilege",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_keys",
+              "stage": "rights"
+            }
+          ]
+        },
+        {
+          "p": 0.15,
+          "result": "fail",
+          "narration_key": "scene.it.shared_login.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.hanh.trust",
+              "value": -2
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.the_keys",
+              "stage": "rights"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.it.shared_login.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.it.shared_login.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.hanh.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "arc": "arc.the_keys",
+              "stage": "rights"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.it.shared_login.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.it.shared_login.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.hanh.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.shared_admin_login",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_keys",
+              "stage": "rights"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.it.shared_login.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.hanh.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.kien.trust",
+              "value": -7
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.shared_admin_login",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_keys",
+              "stage": "rights"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

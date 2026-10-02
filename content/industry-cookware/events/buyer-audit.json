@@ -31,7 +31,8 @@
       "role.hr.hrbp",
       "role.prod.supervisor",
       "role.fpa.analyst",
-      "role.mkt.brand"
+      "role.mkt.brand",
+      "role.it.admin"
     ]
   },
   {
@@ -49,7 +50,8 @@
       "role.hr.hrbp",
       "role.prod.supervisor",
       "role.fpa.analyst",
-      "role.mkt.brand"
+      "role.mkt.brand",
+      "role.it.admin"
     ]
   }
 ]

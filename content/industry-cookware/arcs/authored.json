@@ -663,5 +663,70 @@
         "delay_weeks": [4, 6]
       }
     ]
+  },
+  {
+    "id": "arc.the_email",
+    "title_key": "arc.the_email.title",
+    "stages": [
+      {
+        "id": "ask",
+        "event": "event.it.read_their_mail"
+      },
+      {
+        "id": "found",
+        "event": "event.it.what_you_found",
+        "delay_weeks": [1, 2]
+      },
+      {
+        "id": "gossip",
+        "event": "event.it.the_gossip",
+        "delay_weeks": [3, 5]
+      }
+    ]
+  },
+  {
+    "id": "arc.the_keys",
+    "title_key": "arc.the_keys.title",
+    "stages": [
+      {
+        "id": "shared",
+        "event": "event.it.shared_login"
+      },
+      {
+        "id": "rights",
+        "event": "event.it.erp_rights",
+        "delay_weeks": [2, 4]
+      },
+      {
+        "id": "leaver",
+        "event": "event.it.leaver_account",
+        "delay_weeks": [3, 5]
+      }
+    ]
+  },
+  {
+    "id": "arc.the_ransom",
+    "title_key": "arc.the_ransom.title",
+    "stages": [
+      {
+        "id": "phish",
+        "event": "event.it.phishing_click"
+      },
+      {
+        "id": "lock",
+        "event": "event.it.files_locked",
+        "delay_weeks": [1, 1]
+      },
+      {
+        "id": "decision",
+        "event": "event.it.pay_or_restore",
+        "delay_weeks": [1, 1]
+      },
+      {
+        "id": "disclosure",
+        "event": "event.it.tell_the_customers",
+        "delay_weeks": [2, 3]
+      }
+    ]
   }
 ]
