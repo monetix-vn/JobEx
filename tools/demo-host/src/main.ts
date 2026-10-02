@@ -5,11 +5,19 @@ import {
   type ClientHandle,
   type Transport,
   type UiLocale,
+  type WorldChoice,
 } from '@je/client-web';
-import type { PlayerProfile, WorldSettings } from '@je/contracts';
+import type { PeopleLibrary, PlayerProfile, World, WorldSettings } from '@je/contracts';
 import { DEFAULT_WORLD_SETTINGS } from '@je/contracts';
 import type { Run } from '@je/kernel';
-import { profileEffects } from '@je/mod-people';
+import {
+  advanceWorldYear,
+  createWorld,
+  ensureRoster,
+  nextRunSeed,
+  profileEffects,
+  retireProtagonist,
+} from '@je/mod-people';
 import {
   FIN_ROLE,
   PROD_ROLE,
@@ -39,6 +47,13 @@ import {
   type SlotId,
   type SlotStorage,
 } from './saves';
+import {
+  SaveHostClient,
+  dossierOf,
+  libraryFromFiles,
+  summariseRun,
+  worldIdFrom,
+} from './world-bridge';
 
 const TURN_INTERVAL_MS = 1500;
 const STORAGE_KEY = 'jobex.lang';
@@ -80,6 +95,20 @@ const contentFiles = Object.fromEntries(
     }) as Record<string, string>,
   ).map(([path, text]) => [path.replace(/^.*\/content\//, ''), text]),
 );
+
+// The people library (archetypes, quirks, names, data tables) is bundled too, keyed by file name.
+const libraryFiles = Object.fromEntries(
+  Object.entries(
+    import.meta.glob('../../../library/*.json', {
+      query: '?raw',
+      import: 'default',
+      eager: true,
+    }) as Record<string, string>,
+  ).map(([path, text]) => [path.replace(/^.*\/library\//, ''), text]),
+);
+let peopleLibraryCache: PeopleLibrary | undefined;
+const peopleLibrary = (): PeopleLibrary => (peopleLibraryCache ??= libraryFromFiles(libraryFiles));
+const saveHost = new SaveHostClient();
 
 const asLocale = (value: string | null | undefined): UiLocale | undefined =>
   value === 'vi' || value === 'en' ? value : undefined;
@@ -144,6 +173,18 @@ const SHELL = {
     week: 'week',
     noStorage: 'This browser cannot keep saves here; use Export to a file.',
     building: 'Building',
+    people: 'People',
+    peopleTitle: 'People in this world',
+    peopleIntro: 'What you can see of them. Their character you learn over time.',
+    noWorld:
+      'This game is not in a world. Start the save host (save-host.bat) and choose a world when you start a game.',
+    newsTitle: 'Meanwhile in the world',
+    newsYear: 'a year passes: year',
+    newsLives: 'lives on in the world. Start a new game and choose Continue to meet them.',
+    newsSaved: 'The world was saved.',
+    newsFailed: 'The world could not be saved: ',
+    retired: 'retired',
+    noNews: 'Nothing notable happened.',
   },
   vi: {
     pause: 'Tạm dừng',
@@ -170,6 +211,18 @@ const SHELL = {
     week: 'tuần',
     noStorage: 'Trình duyệt này không giữ được bản lưu; hãy dùng Xuất ra tệp.',
     building: 'Bản dựng',
+    people: 'Mọi người',
+    peopleTitle: 'Những người trong thế giới này',
+    peopleIntro: 'Những gì bạn thấy được về họ. Tính cách của họ bạn sẽ dần hiểu theo thời gian.',
+    noWorld:
+      'Game này không nằm trong thế giới nào. Hãy bật máy chủ lưu game (save-host.bat) và chọn thế giới khi bắt đầu game.',
+    newsTitle: 'Trong khi đó ở thế giới',
+    newsYear: 'một năm trôi qua: năm',
+    newsLives: 'vẫn sống tiếp trong thế giới. Hãy bắt đầu game mới và chọn Tiếp tục để gặp lại.',
+    newsSaved: 'Thế giới đã được lưu.',
+    newsFailed: 'Không lưu được thế giới: ',
+    retired: 'đã nghỉ hưu',
+    noNews: 'Không có gì đáng chú ý.',
   },
 } as const;
 
@@ -239,6 +292,8 @@ interface Setup {
   seed: string;
   profile?: PlayerProfile;
   settings: WorldSettings;
+  /** The world this game belongs to (kept by the save host), as it was when the game started. */
+  world?: World;
 }
 
 interface Session {
@@ -273,6 +328,7 @@ function saveOf(s: Session): GameSave {
       locale: s.locale,
       ...(s.setup.profile ? { profile: s.setup.profile } : {}),
       settings: s.setup.settings,
+      ...(s.setup.world ? { worldId: s.setup.world.id } : {}),
       run: s.run,
     },
     new Date().toISOString(),
@@ -306,7 +362,7 @@ async function showPicker(locale: UiLocale): Promise<void> {
     onPick: (roleId) => {
       picker?.dispose();
       picker = undefined;
-      showProfile(roleId, locale, roles.find((r) => r.id === roleId)?.title ?? roleId);
+      void showProfile(roleId, locale, roles.find((r) => r.id === roleId)?.title ?? roleId);
     },
     onLocaleChange: (next) => {
       rememberLocale(next);
@@ -318,12 +374,16 @@ async function showPicker(locale: UiLocale): Promise<void> {
 }
 
 /** Who are you, and how should the year run: shown after a job is picked. */
-function showProfile(roleId: string, locale: UiLocale, title: string): void {
+async function showProfile(roleId: string, locale: UiLocale, title: string): Promise<void> {
   currentLocale = locale;
+  const hostUp = await saveHost.available();
+  const worlds = hostUp ? await saveHost.list().catch(() => []) : undefined;
   picker = mountProfileForm(root, {
     locale,
     jobTitle: title,
     random: Math.random,
+    hostAvailable: hostUp,
+    ...(worlds ? { worlds } : {}),
     describeEffects: (profile) => {
       const e = profileEffects(profile);
       return {
@@ -332,19 +392,56 @@ function showProfile(roleId: string, locale: UiLocale, title: string): void {
         boss: e.add['player.rep.boss'] ?? 0,
       };
     },
-    onStart: (profile, settings) => {
+    onStart: (profile, settings, choice) => {
       picker?.dispose();
       picker = undefined;
-      void startGame(roleId, locale, { seed: newSeed(), profile, settings });
+      void beginGame(roleId, locale, profile, settings, choice);
     },
     onBack: () => void showPicker(locale),
     onLocaleChange: (next) => {
       rememberLocale(next);
       picker?.dispose();
-      showProfile(roleId, next, title);
+      void showProfile(roleId, next, title);
     },
   });
   renderBar();
+}
+
+/** Starts a new game, in a world when the player chose one: a new world, or an old one continued with a new seed. */
+async function beginGame(
+  roleId: string,
+  locale: UiLocale,
+  profile: PlayerProfile,
+  settings: WorldSettings,
+  choice: WorldChoice | undefined,
+): Promise<void> {
+  let world: World | undefined;
+  try {
+    if (choice?.kind === 'continue') {
+      world = ensureRoster(peopleLibrary(), await saveHost.get(choice.id));
+    } else if (choice?.kind === 'new') {
+      const existing = (await saveHost.list()).map((w) => w.id);
+      world = ensureRoster(
+        peopleLibrary(),
+        createWorld({
+          id: worldIdFrom(choice.name, existing),
+          name: choice.name,
+          worldSeed: newSeed(),
+          settings,
+          createdAt: new Date().toISOString(),
+        }),
+      );
+    }
+    if (world) await saveHost.put(world);
+  } catch {
+    world = undefined; // no host or an unreadable world: the game still plays, just not in a world
+  }
+  await startGame(roleId, locale, {
+    seed: world ? nextRunSeed(world) : newSeed(),
+    profile,
+    settings,
+    ...(world ? { world } : {}),
+  });
 }
 
 /** A small line under the picker: which build this is, how many jobs it has, and what is not there yet. */
@@ -354,8 +451,8 @@ function showBuildLine(jobs: number, locale: UiLocale): void {
   const when = BUILD ? `build ${BUILD.commit}, ${BUILD.date}` : 'development build';
   line.textContent =
     locale === 'vi'
-      ? `${when} - ${jobs} công việc - chưa có: lưu vào thư mục, thế giới người chơi, rút gọn năm`
-      : `${when} - ${jobs} jobs - not in the game yet: folder saves, the people world, shorter years`;
+      ? `${when} - ${jobs} công việc - chưa có: người trong cảnh game, rút gọn năm`
+      : `${when} - ${jobs} jobs - not in the game yet: people in the scenes, shorter years`;
   root.append(line);
 }
 
@@ -406,6 +503,12 @@ async function startGame(
     if (e.type === 'scene.started') open += 1;
     if (e.type === 'scene.ended') open -= 1;
   });
+  run.observe((e) => {
+    if (e.type === 'run.ended') {
+      const ending = (e.payload as { ending?: string }).ending ?? 'completed';
+      void onRunEnded(roleId, setup, run, ending);
+    }
+  });
   const pacer = makePacer(
     run,
     turns,
@@ -444,6 +547,14 @@ async function loadSave(save: GameSave): Promise<void> {
   picker?.dispose();
   picker = undefined;
   const host = await restoreGame(contentFiles, save);
+  let world: World | undefined;
+  if (save.world_id) {
+    try {
+      world = await saveHost.get(save.world_id);
+    } catch {
+      world = undefined;
+    }
+  }
   await startGame(
     save.roleId,
     save.locale,
@@ -451,6 +562,7 @@ async function loadSave(save: GameSave): Promise<void> {
       seed: save.seed,
       ...(save.profile ? { profile: save.profile } : {}),
       settings: { ...DEFAULT_WORLD_SETTINGS, ...save.settings },
+      ...(world ? { world } : {}),
     },
     undefined,
     { run: host.run, turns: host.turns },
@@ -514,7 +626,8 @@ function renderBar(): void {
     }
   }
   bar.append(
-    barButton(t.save, () => togglePanel()),
+    ...(s?.setup.world ? [barButton(t.people, () => togglePanel('people'))] : []),
+    barButton(t.save, () => togglePanel('saves')),
     barButton(t.menu, () => {
       if (session) {
         if (!window.confirm(t.leave)) return;
@@ -526,9 +639,12 @@ function renderBar(): void {
 }
 
 let panelOpen = false;
+let panelView: 'saves' | 'people' | 'news' = 'saves';
 let panelMessage = '';
-function togglePanel(): void {
-  panelOpen = !panelOpen;
+let newsLines: string[] = [];
+function togglePanel(view: 'saves' | 'people' | 'news' = 'saves'): void {
+  panelOpen = panelOpen && panelView === view ? false : true;
+  panelView = view;
   panelMessage = '';
   renderPanel();
 }
@@ -541,6 +657,12 @@ function describeSave(save: GameSave, t: (typeof SHELL)[UiLocale]): string {
 function renderPanel(): void {
   panel.replaceChildren();
   if (!panelOpen) return;
+  if (panelView === 'people') return renderPeoplePanel();
+  if (panelView === 'news') return renderNewsPanel();
+  renderSavePanel();
+}
+
+function renderSavePanel(): void {
   const t = SHELL[currentLocale];
   const storage = browserStorage();
   const box = document.createElement('div');
@@ -694,3 +816,118 @@ async function start(): Promise<void> {
 }
 
 void start();
+
+/* ------------------------------------------------------------------ the world: people and the end of a run */
+
+const handledRuns = new Set<string>();
+
+/** When a run ends in a world: the protagonist stays as an autonomous person, a year passes, and the world is saved. */
+async function onRunEnded(roleId: string, setup: Setup, run: Run, ending: string): Promise<void> {
+  const world = setup.world;
+  const t = SHELL[currentLocale];
+  if (!world || handledRuns.has(setup.seed)) return;
+  handledRuns.add(setup.seed);
+  try {
+    const library = peopleLibrary();
+    const summary = await summariseRun(contentFiles, run, roleId, ending, setup.profile);
+    const retired = retireProtagonist(library, world, summary, setup.seed);
+    const aged = advanceWorldYear(library, retired.world);
+    await saveHost.put(aged.world);
+    if (session && session.setup === setup) session.setup = { ...setup, world: aged.world };
+    const name = [
+      retired.person.origin.name.family,
+      retired.person.origin.name.middle,
+      retired.person.origin.name.given,
+    ]
+      .filter(Boolean)
+      .join(' ');
+    const events = aged.lore.slice(0, 14).map((l) => (currentLocale === 'vi' ? l.vi : l.en));
+    newsLines = [
+      `${t.newsYear} ${aged.world.year}.`,
+      `${name} ${t.newsLives}`,
+      ...(events.length > 0 ? events : [t.noNews]),
+      t.newsSaved,
+    ];
+  } catch (error) {
+    newsLines = [t.newsFailed + (error instanceof Error ? error.message : String(error))];
+  }
+  panelOpen = true;
+  panelView = 'news';
+  renderPanel();
+}
+
+function panelBox(title: string): HTMLElement {
+  const box = document.createElement('div');
+  box.style.cssText = 'border:3px solid #ffd166;background:#13132a;padding:8px';
+  const heading = document.createElement('b');
+  heading.textContent = title;
+  heading.style.color = '#ffd166';
+  box.append(heading);
+  return box;
+}
+
+function renderNewsPanel(): void {
+  const t = SHELL[currentLocale];
+  const box = panelBox(t.newsTitle);
+  const list = document.createElement('ul');
+  list.style.cssText = 'margin:6px 0;padding-left:18px';
+  for (const line of newsLines) {
+    const li = document.createElement('li');
+    li.textContent = line;
+    list.append(li);
+  }
+  box.append(
+    list,
+    barButton(t.close, () => togglePanel('news')),
+  );
+  panel.append(box);
+}
+
+function renderPeoplePanel(): void {
+  const t = SHELL[currentLocale];
+  const box = panelBox(t.peopleTitle);
+  box.append(note(t.peopleIntro));
+  const world = session?.setup.world;
+  if (!world) {
+    box.append(note(t.noWorld));
+  } else {
+    const departments = new Map<string, string>();
+    void listPlayableRoles(contentFiles, currentLocale).then((roles) => {
+      for (const r of roles)
+        departments.set(r.department.replace(/^dept\./, ''), r.departmentTitle);
+      list.replaceChildren(...rowsFor(world, departments));
+    });
+    const list = document.createElement('div');
+    list.style.cssText = 'max-height:320px;overflow:auto;margin-top:6px';
+    list.replaceChildren(...rowsFor(world, departments));
+    box.append(list);
+  }
+  box.append(barButton(t.close, () => togglePanel('people')));
+  panel.append(box);
+}
+
+function rowsFor(world: World, departments: Map<string, string>): HTMLElement[] {
+  const t = SHELL[currentLocale];
+  const nameOf = (id: string): string => departments.get(id) ?? id.replace(/_/g, ' ');
+  return dossierOf(world, currentLocale, nameOf)
+    .slice(0, 80)
+    .map((e) => {
+      const row = document.createElement('div');
+      row.style.cssText = `margin:4px 0;padding:4px 6px;border-left:3px solid ${e.legacy ? '#ffd166' : '#556'}`;
+      const head = document.createElement('b');
+      head.textContent = e.name;
+      const detail = document.createElement('div');
+      detail.style.cssText = 'color:#bbb;font-size:12px';
+      detail.textContent = [e.department, e.ageBand, e.look, e.retired ? t.retired : '']
+        .filter(Boolean)
+        .join(' - ');
+      row.append(head, detail);
+      if (e.legacy) {
+        const l = document.createElement('div');
+        l.style.cssText = 'color:#ffd166;font-size:12px';
+        l.textContent = e.legacy;
+        row.append(l);
+      }
+      return row;
+    });
+}

@@ -23,3 +23,18 @@ export {
   type Tell,
 } from './appearance';
 export { applyLifeEvent, lifeEventChances, liveOneYear, type YearResult } from './life';
+export {
+  COOKWARE_MIX,
+  advanceWorldYear,
+  ageOf,
+  createWorld,
+  ensureRoster,
+  nextRunSeed,
+  parseWorld,
+  personFromProtagonist,
+  retireProtagonist,
+  temperamentFromRun,
+  type NewWorldOptions,
+  type ParsedWorld,
+  type RetireResult,
+} from './world';

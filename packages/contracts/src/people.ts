@@ -143,6 +143,12 @@ export interface Person {
   /** Always present on generated people; optional so older saves still load. */
   appearance?: Appearance;
   family?: FamilyLinks;
+  /** World year this person was created in (0 for the first run); age grows from it. */
+  created_year?: number;
+  /** active people live and age; others are kept in the world but no longer simulated. */
+  status?: 'active' | 'retired' | 'gone';
+  /** Set on a character the player once controlled; the world keeps them as an autonomous person. */
+  legacy?: { run_no: number; ending: string; title: string };
 }
 
 /** What a caller (the director or a story arc) asks the generator for. */

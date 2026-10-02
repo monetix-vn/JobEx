@@ -15,6 +15,9 @@ import { PROFILE_STRINGS } from './profile-strings';
 import { STYLE, el } from './mount';
 import { UI_LOCALES, UI_STRINGS, type UiLocale } from './strings';
 
+/** Which world the new game belongs to. */
+export type WorldChoice = { kind: 'new'; name: string } | { kind: 'continue'; id: string };
+
 export interface ProfileFormOptions {
   locale?: UiLocale;
   /** The job being started (shown as a heading line). */
@@ -25,7 +28,11 @@ export interface ProfileFormOptions {
   random?: () => number;
   /** Shows what the profile changes at the start (computed by the host from the simulation's own rules). */
   describeEffects?: (profile: PlayerProfile) => { stress: number; pressure: number; boss: number };
-  onStart: (profile: PlayerProfile, settings: WorldSettings) => void;
+  /** Worlds kept by the save host; undefined means the world section is not shown. */
+  worlds?: { id: string; name: string; year: number; runs: number; people: number }[];
+  /** False when no save host is running: the form says so instead of offering worlds. */
+  hostAvailable?: boolean;
+  onStart: (profile: PlayerProfile, settings: WorldSettings, world?: WorldChoice) => void;
   onBack?: () => void;
   onLocaleChange?: (locale: UiLocale) => void;
 }
@@ -270,6 +277,67 @@ export function mountProfileForm(
   intensityRow.append(el('span', '', t.intensity), intensity);
   view.append(intensityRow);
 
+  // World
+  let worldChoice: WorldChoice | undefined;
+  let worldName = t.world.newNameDefault;
+  if (options.hostAvailable === false) {
+    view.append(el('h3', '', t.world.title), el('p', '', t.world.noHost));
+  } else if (options.hostAvailable === true) {
+    view.append(el('h3', '', t.world.title), el('p', '', t.world.intro));
+    worldChoice = { kind: 'new', name: worldName };
+    const choose = (choice: WorldChoice, input: HTMLInputElement): void => {
+      worldChoice = choice;
+      for (const radio of view.querySelectorAll<HTMLInputElement>('[data-world-radio]'))
+        radio.checked = radio === input;
+    };
+    const makeRadio = (value: string, checked: boolean): HTMLInputElement => {
+      const radio = document.createElement('input');
+      radio.type = 'radio';
+      radio.name = 'world';
+      radio.checked = checked;
+      radio.dataset.worldRadio = value;
+      radio.style.width = 'auto';
+      return radio;
+    };
+    const newRow = el('label', 'je-field');
+    const newRadio = makeRadio('new', true);
+    const nameInput = document.createElement('input');
+    nameInput.type = 'text';
+    nameInput.maxLength = 40;
+    nameInput.value = worldName;
+    nameInput.dataset.worldName = 'true';
+    nameInput.addEventListener('input', () => {
+      worldName = nameInput.value;
+      choose({ kind: 'new', name: worldName.trim() || t.world.newNameDefault }, newRadio);
+    });
+    newRadio.addEventListener('change', () =>
+      choose({ kind: 'new', name: worldName.trim() || t.world.newNameDefault }, newRadio),
+    );
+    const newLabel = el('span', '', t.world.newWorld);
+    newLabel.prepend(newRadio, document.createTextNode(' '));
+    newRow.append(newLabel, nameInput);
+    view.append(newRow);
+    for (const w of options.worlds ?? []) {
+      const row = el('label', 'je-field');
+      const radio = makeRadio(w.id, false);
+      radio.addEventListener('change', () => choose({ kind: 'continue', id: w.id }, radio));
+      const label = el('span', '', `${t.world.continue}: ${w.name}`);
+      label.prepend(radio, document.createTextNode(' '));
+      row.append(
+        label,
+        el(
+          'span',
+          '',
+          t.world.summary
+            .replace('{year}', String(w.year))
+            .replace('{runs}', String(w.runs))
+            .replace('{people}', String(w.people)),
+        ),
+      );
+      view.append(row);
+    }
+  }
+
   // Actions
   const actions = el('div', 'je-actions');
   const start = el('button', 'je-again', t.start);
@@ -280,7 +348,7 @@ export function mountProfileForm(
       ...profile,
       name: profile.name.trim() || t.nameDefault,
     };
-    options.onStart(final, { ...settings, year_weeks: 52 });
+    options.onStart(final, { ...settings, year_weeks: 52 }, worldChoice);
   });
   actions.append(start);
   if (options.onBack) {

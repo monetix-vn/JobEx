@@ -22,6 +22,8 @@ export interface GameSave {
   locale: Locale;
   profile?: PlayerProfile;
   settings: WorldSettings;
+  /** The world this game belongs to, when a save host keeps one. */
+  world_id?: string;
   turn: number;
   inputs: RecordedInput[];
 }
@@ -33,6 +35,7 @@ export interface SaveSource {
   locale: Locale;
   profile?: PlayerProfile;
   settings: WorldSettings;
+  worldId?: string;
   run: Pick<Run, 'turn' | 'inputs'>;
 }
 
@@ -47,6 +50,7 @@ export function makeSave(source: SaveSource, savedAt: string, build?: string): G
     locale: source.locale,
     ...(source.profile ? { profile: source.profile } : {}),
     settings: source.settings,
+    ...(source.worldId ? { world_id: source.worldId } : {}),
     turn: source.run.turn,
     inputs: [...source.run.inputs],
   };
@@ -95,6 +99,9 @@ export function parseSave(text: string): ParsedSave {
     locale,
     ...(isRecord(raw.profile) ? { profile: raw.profile as unknown as PlayerProfile } : {}),
     settings: settings as WorldSettings,
+    ...(typeof raw.world_id === 'string' && /^[a-z0-9][a-z0-9_-]{0,63}$/.test(raw.world_id)
+      ? { world_id: raw.world_id }
+      : {}),
     turn,
     inputs: inputs as RecordedInput[],
   };

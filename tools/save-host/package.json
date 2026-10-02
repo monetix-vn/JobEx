@@ -1,0 +1,16 @@
+{
+  "name": "@je/save-host",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/server.ts"
+  },
+  "bin": {
+    "save-host": "./src/cli.ts"
+  },
+  "dependencies": {
+    "@je/contracts": "workspace:*",
+    "@je/mod-people": "workspace:*"
+  }
+}

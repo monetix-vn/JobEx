@@ -6,3 +6,5 @@ dist-single
 out/
 JobEx-play.html
 JobEx-play-vi.html
+# Worlds saved by the save host (your games)
+saves/

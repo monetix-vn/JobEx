@@ -39,6 +39,16 @@ export interface ProfileStrings {
   start: string;
   back: string;
   nameDefault: string;
+  world: {
+    title: string;
+    intro: string;
+    newWorld: string;
+    newName: string;
+    newNameDefault: string;
+    continue: string;
+    summary: string;
+    noHost: string;
+  };
 }
 
 export const PROFILE_STRINGS: Record<UiLocale, ProfileStrings> = {
@@ -133,6 +143,18 @@ export const PROFILE_STRINGS: Record<UiLocale, ProfileStrings> = {
     start: 'Start the job',
     back: 'Back',
     nameDefault: 'You',
+    world: {
+      title: 'World',
+      intro:
+        'A world keeps its people and history. Continue one to meet the people from earlier games (including characters you played), a year older.',
+      newWorld: 'Start a new world',
+      newName: 'World name',
+      newNameDefault: 'My world',
+      continue: 'Continue',
+      summary: 'year {year}, {runs} games, {people} people',
+      noHost:
+        'No save host is running, so this game will not be kept as a world. Double-click save-host.bat to keep worlds, then reload.',
+    },
   },
   vi: {
     title: 'Bạn là ai?',
@@ -225,5 +247,17 @@ export const PROFILE_STRINGS: Record<UiLocale, ProfileStrings> = {
     start: 'Bắt đầu công việc',
     back: 'Quay lại',
     nameDefault: 'Bạn',
+    world: {
+      title: 'Thế giới',
+      intro:
+        'Một thế giới giữ lại con người và lịch sử của nó. Tiếp tục một thế giới để gặp lại những người từ các game trước (kể cả nhân vật bạn từng chơi), già hơn một tuổi.',
+      newWorld: 'Bắt đầu thế giới mới',
+      newName: 'Tên thế giới',
+      newNameDefault: 'Thế giới của tôi',
+      continue: 'Tiếp tục',
+      summary: 'năm {year}, {runs} game, {people} người',
+      noHost:
+        'Chưa có máy chủ lưu game, nên game này sẽ không được giữ lại thành thế giới. Bấm đúp save-host.bat để giữ thế giới, rồi tải lại trang.',
+    },
   },
 };

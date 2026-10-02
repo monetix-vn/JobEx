@@ -43,3 +43,55 @@ export interface WorldSeeds {
 /** The three simulation tiers: weekly full detail, monthly company pass, yearly statistical pass. */
 export const SIM_TIERS = ['near', 'company', 'world'] as const;
 export type SimTier = (typeof SIM_TIERS)[number];
+
+/** A line of a world history: something that happened to someone in a world year. */
+export interface LoreEntry {
+  year: number;
+  kind: 'life_event' | 'run_ended' | 'created';
+  person: string;
+  en: string;
+  vi: string;
+}
+
+/** One run (one playthrough with one character) inside a world. */
+export interface WorldRunRecord {
+  run_no: number;
+  run_seed: string;
+  role_id: string;
+  protagonist: string;
+  ending: string;
+  weeks: number;
+}
+
+export const WORLD_FORMAT = 1;
+
+/**
+ * A persistent world (ADR 0004): its seed, settings, history and every person in it. A world is kept in a folder; the
+ * player can continue it with a new character (a new run seed), and old characters stay in it as autonomous people.
+ */
+export interface World {
+  format: typeof WORLD_FORMAT;
+  id: string;
+  name: string;
+  world_seed: string;
+  settings: WorldSettings;
+  created_at: string;
+  /** Whole years that have passed in the world (each finished run is a year). */
+  year: number;
+  runs: WorldRunRecord[];
+  people: import('./people').Person[];
+  lore: LoreEntry[];
+}
+
+/** What a finished run tells the world about its protagonist. Computed by the host from the final state. */
+export interface RunSummary {
+  role_id: string;
+  department: string;
+  profile?: import('./profile').PlayerProfile;
+  ending: string;
+  weeks: number;
+  stress: number;
+  /** Facts the protagonist left, with their severity (1 to 10) and how far they got (0 private to 3 public). */
+  facts: { id: string; severity: number; level: number }[];
+  reputation: Record<string, number>;
+}

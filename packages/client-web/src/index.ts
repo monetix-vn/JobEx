@@ -2,5 +2,5 @@ export { mount, type ClientHandle, type MountOptions, type Transport } from './m
 export { mountRolePicker, type PickableRole, type PickerOptions } from './picker';
 export { UI_LOCALES, UI_STRINGS, type UiLocale, type UiStrings } from './strings';
 export { initialState, reduce, type ClientScene, type ClientState } from './state';
-export { mountProfileForm, type ProfileFormOptions } from './profile';
+export { mountProfileForm, type ProfileFormOptions, type WorldChoice } from './profile';
 export { PROFILE_STRINGS, type ProfileStrings } from './profile-strings';
