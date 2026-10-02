@@ -1,0 +1,182 @@
+{
+  "id": "scene.sup.nam_returns",
+  "location": "loc.factory_floor",
+  "cast": ["char:nam"],
+  "lines": [
+    {
+      "speaker": "char:nam",
+      "text_key": "scene.sup.nam_returns.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sup.nam_returns.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.sup.nam_returns.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.hoa.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -1
+            },
+            {
+              "delta": "rel.binh.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": 4
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.the_hand",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.sup.nam_returns.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.hoa.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "arc": "arc.the_hand",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sup.nam_returns.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.sup.nam_returns.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.hoa.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.binh.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.the_hand",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sup.nam_returns.c3",
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.sup.nam_returns.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.hoa.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.forced_early_return",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_hand",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.sup.nam_returns.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.hoa.trust",
+              "value": -10
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.binh.trust",
+              "value": -10
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": -8
+            },
+            {
+              "delta": "player.stress",
+              "value": 7
+            },
+            {
+              "fact": "fact.forced_early_return",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_hand",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

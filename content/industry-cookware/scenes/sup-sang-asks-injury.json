@@ -1,0 +1,162 @@
+{
+  "id": "scene.sup.sang_asks_injury",
+  "location": "loc.meeting_room",
+  "cast": ["char:sang"],
+  "lines": [
+    {
+      "speaker": "char:sang",
+      "text_key": "scene.sup.sang_asks_injury.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sup.sang_asks_injury.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.sup.sang_asks_injury.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.sang.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -2
+            },
+            {
+              "delta": "rel.hoa.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.came_clean_to_auditor",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sup.sang_asks_injury.c2",
+      "outcomes": [
+        {
+          "p": 0.35,
+          "narration_key": "scene.sup.sang_asks_injury.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.sang.trust",
+              "value": -5
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        },
+        {
+          "p": 0.65,
+          "result": "fail",
+          "narration_key": "scene.sup.sang_asks_injury.c2.fail",
+          "effects": [
+            {
+              "delta": "rel.sang.trust",
+              "value": -10
+            },
+            {
+              "delta": "rel.hoa.trust",
+              "value": -12
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -10
+            },
+            {
+              "delta": "player.stress",
+              "value": 8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sup.sang_asks_injury.c3",
+      "outcomes": [
+        {
+          "p": 0.4,
+          "narration_key": "scene.sup.sang_asks_injury.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.sang.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.stalled_the_inspector",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.6,
+          "result": "fail",
+          "narration_key": "scene.sup.sang_asks_injury.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.sang.trust",
+              "value": -10
+            },
+            {
+              "delta": "rel.hoa.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -8
+            },
+            {
+              "delta": "player.stress",
+              "value": 7
+            },
+            {
+              "fact": "fact.stalled_the_inspector",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

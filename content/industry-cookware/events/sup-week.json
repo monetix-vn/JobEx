@@ -1,0 +1,430 @@
+[
+  {
+    "id": "event.sup.first_week",
+    "role": "role.prod.supervisor",
+    "tags": ["onboarding", "people", "beat"],
+    "beat": {
+      "from_week": 1,
+      "to_week": 3
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.sup.first_week"
+  },
+  {
+    "id": "event.sup.midyear_review",
+    "role": "role.prod.supervisor",
+    "tags": ["people", "review", "beat"],
+    "beat": {
+      "from_week": 24,
+      "to_week": 28
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.sup.midyear_review"
+  },
+  {
+    "id": "event.sup.rush_order_twist",
+    "role": "role.prod.supervisor",
+    "tags": ["pressure", "rush", "beat"],
+    "beat": {
+      "from_week": 29,
+      "to_week": 32
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.sup.rush_order_twist"
+  },
+  {
+    "id": "event.sup.safety_inspection",
+    "role": "role.prod.supervisor",
+    "tags": ["audit", "safety", "beat"],
+    "beat": {
+      "from_week": 41,
+      "to_week": 44
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.sup.safety_inspection"
+  },
+  {
+    "id": "event.sup.year_end_review",
+    "role": "role.prod.supervisor",
+    "tags": ["people", "review", "beat"],
+    "beat": {
+      "from_week": 49,
+      "to_week": 50
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.sup.year_end_review"
+  },
+  {
+    "id": "event.sup.manager_offer",
+    "role": "role.prod.supervisor",
+    "tags": ["people", "promotion", "beat"],
+    "when": {
+      "all": [
+        {
+          "gte": [
+            {
+              "var": ["rel.lan.trust", 0]
+            },
+            5
+          ]
+        },
+        {
+          "gte": ["player.rep.boss", 58]
+        }
+      ]
+    },
+    "beat": {
+      "from_week": 51,
+      "to_week": 52
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.sup.manager_offer"
+  },
+  {
+    "id": "event.sup.resignation_thought",
+    "role": "role.prod.supervisor",
+    "tags": ["people", "pressure"],
+    "when": {
+      "all": [
+        {
+          "gte": ["player.stress", 75]
+        },
+        {
+          "gte": ["world.turn", 12]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 26,
+    "scene": "scene.sup.resignation_thought"
+  },
+  {
+    "id": "event.sup.target_raised",
+    "role": "role.prod.supervisor",
+    "arc": "arc.the_target",
+    "tags": ["pressure", "target", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 8]
+        },
+        {
+          "lte": ["world.turn", 38]
+        }
+      ]
+    },
+    "weight": 3,
+    "cooldown_weeks": 40,
+    "scene": "scene.sup.target_raised"
+  },
+  {
+    "id": "event.sup.run_it_faster",
+    "role": "role.prod.supervisor",
+    "tags": ["pressure", "safety", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.sup.run_it_faster"
+  },
+  {
+    "id": "event.sup.end_of_shift_count",
+    "role": "role.prod.supervisor",
+    "tags": ["pressure", "count", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.sup.end_of_shift_count"
+  },
+  {
+    "id": "event.sup.qc_recount",
+    "role": "role.prod.supervisor",
+    "tags": ["pressure", "count", "consequence", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.sup.qc_recount"
+  },
+  {
+    "id": "event.sup.hand_caught",
+    "role": "role.prod.supervisor",
+    "arc": "arc.the_hand",
+    "tags": ["injury", "safety", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 12]
+        },
+        {
+          "lte": ["world.turn", 40]
+        }
+      ]
+    },
+    "weight": 3,
+    "cooldown_weeks": 40,
+    "scene": "scene.sup.hand_caught"
+  },
+  {
+    "id": "event.sup.how_to_record",
+    "role": "role.prod.supervisor",
+    "tags": ["injury", "report", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.sup.how_to_record"
+  },
+  {
+    "id": "event.sup.binh_investigates",
+    "role": "role.prod.supervisor",
+    "tags": ["injury", "investigation", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.sup.binh_investigates"
+  },
+  {
+    "id": "event.sup.nam_returns",
+    "role": "role.prod.supervisor",
+    "tags": ["injury", "people", "consequence", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.sup.nam_returns"
+  },
+  {
+    "id": "event.sup.tai_late",
+    "role": "role.prod.supervisor",
+    "arc": "arc.the_roster",
+    "tags": ["people", "attendance", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 10]
+        },
+        {
+          "lte": ["world.turn", 36]
+        }
+      ]
+    },
+    "weight": 3,
+    "cooldown_weeks": 40,
+    "scene": "scene.sup.tai_late"
+  },
+  {
+    "id": "event.sup.favourite_overtime",
+    "role": "role.prod.supervisor",
+    "tags": ["people", "overtime", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.sup.favourite_overtime"
+  },
+  {
+    "id": "event.sup.break_dispute",
+    "role": "role.prod.supervisor",
+    "tags": ["people", "breaks", "pressure", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.sup.break_dispute"
+  },
+  {
+    "id": "event.sup.heat_day",
+    "role": "role.prod.supervisor",
+    "tags": ["safety", "heat", "pressure", "dark"],
+    "when": {
+      "all": [
+        {
+          "in": ["world.month_of_year", 4, 5, 6, 7, 8, 9]
+        },
+        {
+          "gte": ["world.turn", 8]
+        }
+      ]
+    },
+    "weight": 3,
+    "cooldown_weeks": 26,
+    "scene": "scene.sup.heat_day"
+  },
+  {
+    "id": "event.sup.breakdown_pressure",
+    "role": "role.prod.supervisor",
+    "tags": ["maintenance", "pressure", "dark"],
+    "when": {
+      "gte": ["world.turn", 10]
+    },
+    "weight": 3,
+    "cooldown_weeks": 26,
+    "scene": "scene.sup.breakdown_pressure"
+  },
+  {
+    "id": "event.sup.qc_hold_rework",
+    "role": "role.prod.supervisor",
+    "tags": ["quality", "pressure", "dark"],
+    "when": {
+      "gte": ["world.turn", 8]
+    },
+    "weight": 3,
+    "cooldown_weeks": 26,
+    "scene": "scene.sup.qc_hold_rework"
+  },
+  {
+    "id": "event.sup.training_signoff",
+    "role": "role.prod.supervisor",
+    "tags": ["training", "safety", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 10]
+        },
+        {
+          "in": ["world.month_of_year", 8, 9, 10, 11]
+        }
+      ]
+    },
+    "weight": 3,
+    "cooldown_weeks": 30,
+    "scene": "scene.sup.training_signoff"
+  },
+  {
+    "id": "event.sup.handover_gap",
+    "role": "role.prod.supervisor",
+    "tags": ["handover", "people", "dark"],
+    "when": {
+      "gte": ["world.turn", 8]
+    },
+    "weight": 3,
+    "cooldown_weeks": 26,
+    "scene": "scene.sup.handover_gap"
+  },
+  {
+    "id": "event.sup.vip_visit",
+    "role": "role.prod.supervisor",
+    "tags": ["safety", "buyer", "dark"],
+    "when": {
+      "gte": ["world.turn", 12]
+    },
+    "weight": 2,
+    "cooldown_weeks": 40,
+    "scene": "scene.sup.vip_visit"
+  },
+  {
+    "id": "event.sup.exit_blocked",
+    "role": "role.prod.supervisor",
+    "tags": ["safety", "rush", "dark"],
+    "when": {
+      "gte": ["world.turn", 12]
+    },
+    "weight": 2,
+    "cooldown_weeks": 40,
+    "scene": "scene.sup.exit_blocked"
+  },
+  {
+    "id": "event.sup.scrap_theft",
+    "role": "role.prod.supervisor",
+    "tags": ["people", "discipline", "fairness"],
+    "when": {
+      "gte": ["world.turn", 14]
+    },
+    "weight": 2,
+    "cooldown_weeks": 40,
+    "scene": "scene.sup.scrap_theft"
+  },
+  {
+    "id": "event.sup.sang_asks_injury",
+    "role": "role.prod.supervisor",
+    "tags": ["audit", "safety", "dark", "consequence"],
+    "when": {
+      "all": [
+        {
+          "in": ["world.month_of_year", 10, 11]
+        },
+        {
+          "gte": ["world.turn", 40]
+        },
+        {
+          "any": [
+            {
+              "gte": [
+                {
+                  "var": ["fact.hid_injury", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.blamed_injured_worker", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.ran_above_rated_speed", 0]
+                },
+                1
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "weight": 6,
+    "cooldown_weeks": 52,
+    "scene": "scene.sup.sang_asks_injury"
+  },
+  {
+    "id": "event.sup.blame_meeting",
+    "role": "role.prod.supervisor",
+    "tags": ["pressure", "consequence"],
+    "when": {
+      "all": [
+        {
+          "in": ["world.month_of_year", 11, 12]
+        },
+        {
+          "gte": ["world.turn", 44]
+        },
+        {
+          "any": [
+            {
+              "gte": [
+                {
+                  "var": ["fact.inflated_output_count", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.forced_early_return", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.signed_false_training", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.ran_machine_past_fault", 0]
+                },
+                1
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "weight": 6,
+    "cooldown_weeks": 52,
+    "scene": "scene.sup.blame_meeting"
+  }
+]

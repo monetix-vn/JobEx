@@ -1,0 +1,127 @@
+{
+  "id": "scene.sup.exit_blocked",
+  "location": "loc.factory_floor",
+  "cast": ["char:binh"],
+  "lines": [
+    {
+      "speaker": "char:binh",
+      "text_key": "scene.sup.exit_blocked.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sup.exit_blocked.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.sup.exit_blocked.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.binh.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sup.exit_blocked.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.sup.exit_blocked.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.binh.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sup.exit_blocked.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.sup.exit_blocked.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.binh.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.blocked_fire_exit",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.sup.exit_blocked.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.binh.trust",
+              "value": -10
+            },
+            {
+              "delta": "rel.kiet.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 8
+            },
+            {
+              "fact": "fact.blocked_fire_exit",
+              "visibility": "public"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

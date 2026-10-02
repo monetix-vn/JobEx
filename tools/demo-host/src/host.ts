@@ -47,6 +47,7 @@ export const FIN_ROLE = 'role.fin.accountant';
 export const PROD_ROLE = 'role.prod.planner';
 export const PURCH_ROLE = 'role.purch.buyer';
 export const INV_ROLE = 'role.inv.analyst';
+export const SUP_ROLE = 'role.prod.supervisor';
 export const HR_ROLE = 'role.hr.hrbp';
 
 export interface GameHostOptions {

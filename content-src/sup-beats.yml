@@ -1,0 +1,338 @@
+# Production Line Supervisor (docs/story/supervisor.md): cast and beats. Shared from the cookware world: Lan, Kiet, Mai, Phuc, Sang, Khoa, Bao.
+char: hoa
+department: production
+group: staff
+traits: [experienced, informal_leader, proud]
+start: { trust: 5, loyalty: 5 }
+en: { name: 'Ms Hoa', title: 'Senior operator, informal leader of the crew' }
+vi: { name: 'Chị Hoa', title: 'Công nhân lâu năm, người có tiếng nói trong tổ' }
+---
+char: nam
+department: production
+group: staff
+traits: [young, eager, impatient]
+start: { trust: 10 }
+en: { name: 'Nam', title: 'Young press operator' }
+vi: { name: 'Nam', title: 'Công nhân ép trẻ' }
+---
+char: binh
+department: safety
+group: boss
+traits: [by_the_book, overworked, fair]
+start: { trust: 5 }
+en: { name: 'Mr Binh', title: 'Safety officer' }
+vi: { name: 'Anh Bình', title: 'Cán bộ an toàn' }
+---
+char: tai
+department: production
+group: staff
+traits: [skilled, unreliable_hours, sick_child]
+start: { trust: 5 }
+en: { name: 'Tai', title: 'Skilled operator with attendance problems' }
+vi: { name: 'Tài', title: 'Công nhân tay nghề cao hay vắng mặt' }
+---
+scene: sup.first_week
+place: factory_floor
+tags: [onboarding, people, beat]
+beat: 1-3
+lines:
+  - who: char:lan
+    en: 'Line 3 is yours. Twenty people, two shifts, one target per day. The first rule is that nobody runs a press with the guard off, not for a minute, not for me. The second is that you tell me early, not late.'
+    vi: 'Chuyền 3 là của em. Hai mươi người, hai ca, một chỉ tiêu mỗi ngày. Quy tắc đầu tiên là không ai chạy máy ép khi tháo tấm chắn, dù một phút, dù là vì chị. Quy tắc thứ hai là em báo cho chị sớm, không phải muộn.'
+  - who: char:hoa
+    en: 'I have been on this line for nine years. The crew will test you in the first month. If you ask us, we will tell you how the line really runs. If you tell us, we will smile and do it our way.'
+    vi: 'Chị làm ở chuyền này chín năm rồi. Cả tổ sẽ thử em trong tháng đầu. Nếu em hỏi, bọn chị sẽ nói chuyền thực sự chạy thế nào. Nếu em ra lệnh, bọn chị sẽ cười và làm theo cách của mình.'
+choices:
+  - en: 'Spend the first shifts on the line beside the crew: ask Hoa how each press really behaves, check the guards yourself, and write down what you learn.'
+    vi: 'Dành những ca đầu đứng cạnh tổ trên chuyền: hỏi chị Hoa từng máy ép thực sự chạy thế nào, tự kiểm tra các tấm chắn và ghi lại điều học được.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Hoa shows you the press that sticks on cold mornings and the one that is quicker than its rating. You find one guard with a loose bracket and have it fixed by lunch. 'Nobody has checked with us before,' Hoa says."
+        vi: "Chị Hoa chỉ cho em chiếc máy ép bị kẹt vào buổi sáng lạnh và chiếc chạy nhanh hơn định mức. Em thấy một tấm chắn lỏng giá đỡ và nhờ sửa trước trưa. 'Chưa ai kiểm tra cùng bọn chị,' chị Hoa nói."
+        effects: [rel hoa trust +5, rel lan trust +3, rep.production +2, stress +1]
+  - en: 'Read the shift reports and the safety manual first, and meet the crew properly next week.'
+    vi: 'Đọc báo cáo ca và cẩm nang an toàn trước, tuần sau mới gặp tổ cho đàng hoàng.'
+    outcomes:
+      - p: 1
+        en: 'You learn the procedures quickly. The crew sees a supervisor who stays at a desk. Hoa notes it, and says nothing.'
+        vi: 'Anh/chị học quy trình nhanh. Cả tổ thấy một giám sát ngồi ở bàn. Chị Hoa ghi nhận và không nói gì.'
+        effects: [rel hoa trust -1, rel lan trust +1, stress +1]
+  - en: 'Set the rules on day one: you decide the roster, the breaks and the speed, and nobody questions it.'
+    vi: 'Đặt luật ngay ngày đầu: anh/chị quyết định lịch, giờ nghỉ và tốc độ, và không ai được thắc mắc.'
+    outcomes:
+      - p: 0.7
+        en: 'The crew nods. For a week the line runs to the letter. Then it starts to run to its own rules, and you are the last to know.'
+        vi: 'Cả tổ gật đầu. Một tuần chuyền chạy đúng từng chữ. Rồi nó bắt đầu chạy theo luật riêng, và anh/chị là người biết sau cùng.'
+        effects: [rel hoa trust -4, rep.production -1, stress +2]
+      - p: 0.3
+        ok: false
+        en: 'Two of the crew ask Lan whether the new supervisor is allowed to change the breaks. Lan asks you, mildly, what you changed.'
+        vi: 'Hai người trong tổ hỏi chị Lan liệu giám sát mới có được đổi giờ nghỉ không. Chị Lan hỏi anh/chị, nhẹ nhàng, đã đổi gì.'
+        effects: [rel hoa trust -6, rel lan trust -3, rep.boss -2, stress +3]
+---
+scene: sup.midyear_review
+place: meeting_room
+tags: [people, review, beat]
+beat: 24-28
+lines:
+  - who: char:lan
+    en: 'Half a year. Your output is a little below target, but your line has no injuries and the lowest rework in the plant. The directors only look at output. How do you want to handle that?'
+    vi: 'Nửa năm rồi. Sản lượng của em thấp hơn chỉ tiêu một chút, nhưng chuyền của em không có chấn thương và tỷ lệ làm lại thấp nhất nhà máy. Ban giám đốc chỉ nhìn sản lượng. Em muốn xử lý chuyện đó thế nào?'
+choices:
+  - en: 'Show the full picture: good units per shift, rework, near misses and absences, and propose that good units, not raw output, are the measure.'
+    vi: 'Cho xem bức tranh đầy đủ: sản phẩm đạt mỗi ca, làm lại, suýt tai nạn và vắng mặt, và đề xuất lấy sản phẩm đạt, không phải sản lượng thô, làm thước đo.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.7
+        en: "Lan takes the page to the directors. 'Good units per shift' is added next to output. A small change, and it changes what supervisors are rewarded for."
+        vi: "Chị Lan mang trang giấy lên ban giám đốc. 'Sản phẩm đạt mỗi ca' được thêm cạnh sản lượng. Một thay đổi nhỏ, và nó đổi điều giám sát được thưởng."
+        effects: [rel lan trust +4, rep.boss +3, stress +1]
+      - p: 0.3
+        ok: false
+        en: "The directors say output is what pays the wages. Lan shrugs: 'I tried.' Your numbers stay modest."
+        vi: "Ban giám đốc nói sản lượng mới trả được lương. Chị Lan nhún vai: 'Chị đã thử.' Con số của em vẫn khiêm tốn."
+        effects: [rel lan trust +2, stress +2]
+  - en: 'Say you will find an extra five percent of output without touching safety, and ask for two weeks of overtime on the slow press.'
+    vi: 'Nói anh/chị sẽ tìm thêm năm phần trăm sản lượng mà không đụng đến an toàn, và xin hai tuần làm thêm trên máy ép chậm.'
+    outcomes:
+      - p: 1
+        en: 'Lan agrees, and writes the limit next to the request. You get three points of output and a crew that is tired but not hurt.'
+        vi: 'Chị Lan đồng ý và ghi giới hạn bên cạnh yêu cầu. Anh/chị được thêm ba điểm sản lượng và một tổ mệt nhưng không bị thương.'
+        effects: [rel lan trust +2, stress +3]
+  - en: 'Say you will hit the number whatever it takes.'
+    vi: 'Nói anh/chị sẽ đạt con số đó bằng mọi giá.'
+    outcomes:
+      - p: 0.6
+        en: "Lan smiles. 'Good.' A week later the target rises to a level that the presses can only reach with a guard off or a count rounded up."
+        vi: "Chị Lan cười. 'Tốt.' Một tuần sau chỉ tiêu tăng lên mức mà các máy ép chỉ đạt được khi tháo tấm chắn hay làm tròn số đếm."
+        effects: [rel lan trust +3, stress +3]
+      - p: 0.4
+        ok: false
+        en: "Hoa hears about 'whatever it takes' from the crew room and tells you, plainly, what the crew thinks it means."
+        vi: "Chị Hoa nghe chuyện 'bằng mọi giá' từ phòng nghỉ của tổ và nói thẳng với anh/chị tổ hiểu nó nghĩa là gì."
+        effects: [rel lan trust +1, rel hoa trust -6, stress +3]
+---
+scene: sup.rush_order_twist
+place: meeting_room
+tags: [pressure, rush, beat]
+beat: 29-32
+lines:
+  - who: char:bao
+    en: 'Mr Anders needs fifteen thousand units in three weeks for a retail promotion. I said yes. Line 3 can do it if it runs six days, two shifts, and does not stop for anything.'
+    vi: 'Ông Anders cần mười lăm nghìn chiếc trong ba tuần cho đợt khuyến mãi bán lẻ. Anh đã nói đồng ý. Chuyền 3 làm được nếu chạy sáu ngày, hai ca, và không dừng vì bất cứ điều gì.'
+  - who: char:lan
+    en: 'I will back what is honest. Tell us what your crew can really do, and what it will cost.'
+    vi: 'Chị sẽ ủng hộ điều trung thực. Nói cho mọi người biết tổ em thực sự làm được gì và sẽ tốn gì.'
+choices:
+  - en: 'Say eleven thousand in three weeks within the limits, fifteen in five, and offer a split delivery with a paid, recorded sixth day.'
+    vi: 'Nói mười một nghìn trong ba tuần trong giới hạn, mười lăm nghìn trong năm tuần, và đề xuất giao chia đợt với ngày thứ sáu có trả lương và được ghi lại.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.7
+        en: 'Bao groans and calls Anders. Anders accepts two deliveries. The crew gets paid for the sixth day, and Hoa tells the others who asked for it.'
+        vi: 'Anh Bảo rên rỉ và gọi ông Anders. Ông Anders chấp nhận hai đợt giao. Cả tổ được trả lương ngày thứ sáu, và chị Hoa nói với mọi người ai đã xin điều đó.'
+        effects:
+          [rel bao trust -3, rel lan trust +4, rel hoa trust +4, rep.production +2, stress +4]
+      - p: 0.3
+        ok: false
+        en: 'Anders will not split the order and gives the second half to a rival. You were right, and the plant is poorer for it.'
+        vi: 'Ông Anders không chia đơn và giao nửa sau cho đối thủ. Anh/chị đúng, và nhà máy nghèo đi vì điều đó.'
+        effects: [rel bao trust -6, rel lan trust +3, rel hoa trust +3, rep.boss -2, stress +4]
+  - en: 'Offer thirteen thousand with a legal third shift on weekends, voluntary and paid, and ask Bao to negotiate the rest.'
+    vi: 'Đề xuất mười ba nghìn với ca ba hợp pháp cuối tuần, tự nguyện và có trả lương, và nhờ anh Bảo thương lượng phần còn lại.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: 'It is a stretch within the limits. Nine of the crew volunteer. Bao negotiates a one-week extension on the rest.'
+        vi: 'Một nỗ lực trong giới hạn. Chín người trong tổ tình nguyện. Anh Bảo thương lượng gia hạn một tuần cho phần còn lại.'
+        effects: [rel bao trust +1, rel lan trust +1, rel hoa trust +1, stress +4]
+  - en: 'Say it is possible, then run the presses at the top speed and cut the breaks to make it so.'
+    vi: 'Nói là làm được, rồi chạy máy ép ở tốc độ tối đa và cắt giờ nghỉ để làm cho nó thành sự thật.'
+    outcomes:
+      - p: 0.7
+        en: 'The order is delivered. The crew is shaking by the end. Bao kisses the air. Hoa does not look at you for two days.'
+        vi: 'Đơn hàng được giao. Cuối cùng cả tổ run rẩy. Anh Bảo hôn gió. Chị Hoa không nhìn anh/chị hai ngày.'
+        effects:
+          [
+            rel bao trust +6,
+            rel hoa trust -6,
+            rel lan trust +1,
+            stress +2,
+            fact ran_above_rated_speed private,
+          ]
+      - p: 0.3
+        ok: false
+        en: "A press jams at three in the morning on the fifth day. Nam's sleeve is caught, not his hand, and it is a very near thing. Lan asks why the line was at that speed."
+        vi: 'Một máy ép kẹt lúc ba giờ sáng ngày thứ năm. Tay áo của Nam bị kẹt, không phải bàn tay, và đó là một chuyện suýt xảy ra. Chị Lan hỏi vì sao chuyền chạy ở tốc độ đó.'
+        effects:
+          [
+            rel bao trust +2,
+            rel hoa trust -8,
+            rel lan trust -6,
+            rep.boss -5,
+            stress +7,
+            fact ran_above_rated_speed witnessed,
+          ]
+---
+scene: sup.safety_inspection
+place: factory_floor
+tags: [audit, safety, beat]
+beat: 41-44
+lines:
+  - who: char:sang
+    en: 'I am here for the annual safety inspection. I would like to see the presses on Line 3, the guards, the shift records and the injury log for the last six months. I start on the floor, and I would like to talk to the crew without the supervisor present.'
+    vi: 'Tôi đến kiểm tra an toàn định kỳ hằng năm. Tôi muốn xem các máy ép chuyền 3, tấm chắn, hồ sơ ca và sổ ghi chấn thương sáu tháng qua. Tôi bắt đầu từ xưởng, và tôi muốn nói chuyện với tổ khi giám sát không có mặt.'
+choices:
+  - en: 'Walk him through the real line and the real records, including what is not ideal, and step out while he talks to the crew.'
+    vi: 'Dẫn ông đi qua chuyền thật và hồ sơ thật, kể cả những điều chưa lý tưởng, và đi ra ngoài khi ông nói chuyện với tổ.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Sang spends two hours on the line and writes three observations, none serious. 'The crew says the same as the records. I wish that were less unusual.' Hoa nods at you across the floor."
+        vi: "Ông Sáng dành hai giờ ở chuyền và ghi ba nhận xét, không cái nào nghiêm trọng. 'Tổ nói giống hồ sơ. Tôi ước điều đó bớt hiếm.' Chị Hoa gật đầu với anh/chị từ phía bên kia xưởng."
+        effects: [rel sang trust +5, rel hoa trust +4, rel lan trust +3, rep.boss +3, stress +2]
+  - en: 'Tidy the obvious problems honestly, answer his questions, and give the records he asks for.'
+    vi: 'Dọn các vấn đề rõ ràng một cách trung thực, trả lời câu hỏi và đưa các hồ sơ ông yêu cầu.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "A routine inspection. Sang notes two items, both on Mai's list. You come out with nothing to hide and no credit either."
+        vi: 'Một buổi kiểm tra thường lệ. Ông Sáng ghi hai mục, cả hai đã có trong danh sách của chị Mai. Anh/chị ra về không có gì phải giấu và cũng không được tiếng khen.'
+        effects: [rel sang trust +1, rel lan trust +1]
+  - en: 'Prepare the floor: put every guard back, brief the crew on what to say, and keep the injury log out of reach.'
+    vi: 'Chuẩn bị xưởng: lắp lại mọi tấm chắn, dặn tổ nên nói gì và để sổ chấn thương ngoài tầm với.'
+    outcomes:
+      - p: 0.45
+        en: 'Sang sees a perfect line. He looks at the new paint on a bracket, and asks the crew one question that the briefing did not cover. The answer is an honest silence.'
+        vi: 'Ông Sáng thấy một chuyền hoàn hảo. Ông nhìn lớp sơn mới trên giá đỡ và hỏi tổ một câu mà buổi dặn không bao gồm. Câu trả lời là một sự im lặng thành thật.'
+        effects:
+          [rel sang trust -2, rel hoa trust -5, stress -1, fact staged_safety_inspection private]
+      - p: 0.55
+        ok: false
+        en: "A worker tells Sang, politely, that the guard on press 2 was put back this morning. Sang asks for the injury log, and the crew's names."
+        vi: 'Một công nhân nói với ông Sáng, lịch sự, rằng tấm chắn máy ép 2 mới được lắp lại sáng nay. Ông Sáng xin sổ chấn thương và tên các thành viên trong tổ.'
+        effects:
+          [
+            rel sang trust -10,
+            rel hoa trust -8,
+            rel lan trust -6,
+            rep.boss -6,
+            stress +6,
+            fact staged_safety_inspection public,
+          ]
+---
+scene: sup.year_end_review
+place: meeting_room
+tags: [people, review, beat]
+beat: 49-50
+lines:
+  - who: char:lan
+    en: 'Annual review. Before I give you my view, tell me how you would rate your own year, and what you would run differently on the line.'
+    vi: 'Đánh giá cuối năm. Trước khi chị cho ý kiến, em hãy tự chấm năm của mình và nói em sẽ vận hành chuyền khác đi điều gì.'
+choices:
+  - en: 'Give an honest account, including the nights you ran too fast, the times you were slow to say no, and what the crew paid for it.'
+    vi: 'Kể thật lòng, kể cả những đêm anh/chị cho chạy quá nhanh, những lần chậm nói không và cái giá tổ đã trả.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "Lan is quiet for a long moment. She writes: 'Runs the line the crew would choose to work on.' It is the best thing you have read about yourself."
+        vi: "Chị Lan im lặng một lúc lâu. Chị viết: 'Chạy chuyền mà tổ sẽ chọn để làm việc.' Đó là lời hay nhất anh/chị từng đọc về mình."
+        effects: [rel lan trust +5, rep.boss +4, stress -2]
+  - en: 'Stay modest: list the wins and one thing to improve.'
+    vi: 'Khiêm tốn: nêu các thắng lợi và một điều cần cải thiện.'
+    outcomes:
+      - p: 1
+        en: 'A safe review. Lan nods and moves to the next topic.'
+        vi: 'Một buổi đánh giá an toàn. Chị Lan gật đầu và chuyển chủ đề.'
+        effects: [rel lan trust +1, rep.boss +1]
+  - en: 'Present the year as a success and leave out the nights and the near misses nobody wrote down.'
+    vi: 'Trình bày cả năm như một thành công và bỏ qua những ca đêm và những lần suýt tai nạn không ai ghi lại.'
+    outcomes:
+      - p: 0.65
+        en: 'It lands well. You leave with a good rating and a small weight in your chest.'
+        vi: 'Được đón nhận tốt. Anh/chị ra về với điểm cao và một chút nặng nề trong lòng.'
+        effects: [rel lan trust +2, rep.boss +4, stress +1, fact polished_supervisor_review private]
+      - p: 0.35
+        ok: false
+        en: "Lan has Hoa's shift notes open on her desk. She turns them towards you without a word."
+        vi: 'Chị Lan có ghi chú ca của chị Hoa mở sẵn trên bàn. Chị xoay chúng về phía anh/chị mà không nói một lời.'
+        effects:
+          [
+            rel lan trust -8,
+            rel hoa trust -3,
+            rep.boss -5,
+            stress +4,
+            fact polished_supervisor_review witnessed,
+          ]
+---
+scene: sup.manager_offer
+place: meeting_room
+tags: [people, promotion, beat]
+beat: 51-52
+when: [rel.lan.trust >= 5, rep.boss >= 58]
+lines:
+  - who: char:lan
+    en: 'I am moving to plant director at the end of the year. The directors asked me who should be assistant production manager. I named you. One condition: every week, someone will ask you to run a line faster or leave something off the record, just this once. I need to know what you will say.'
+    vi: 'Cuối năm chị lên giám đốc nhà máy. Ban giám đốc hỏi chị ai nên làm phó quản đốc sản xuất. Chị nêu tên em. Một điều kiện: mỗi tuần sẽ có người nhờ em cho chạy chuyền nhanh hơn hay để một việc ngoài hồ sơ, chỉ lần này thôi. Chị cần biết em sẽ nói gì.'
+choices:
+  - en: 'Accept, and say plainly which limits you will not move, and that the directors will hear it from you first.'
+    vi: 'Nhận lời và nói rõ những giới hạn anh/chị sẽ không nới và ban giám đốc sẽ nghe điều đó từ anh/chị trước.'
+    outcomes:
+      - p: 1
+        en: "Lan smiles. 'Then it is yours. Write them on the wall of the line office.' You take the role with the limits in writing."
+        vi: "Chị Lan cười. 'Vậy là của em. Viết chúng lên tường văn phòng chuyền.' Anh/chị nhận vị trí với các giới hạn đã viết ra giấy."
+        effects: [rel lan trust +5, rep.boss +5, end promoted]
+  - en: 'Thank her, but decline: you would rather be on the line than above it.'
+    vi: 'Cảm ơn chị nhưng từ chối: anh/chị muốn ở trên chuyền hơn là ở trên cao.'
+    outcomes:
+      - p: 1
+        en: "Lan looks disappointed, then understanding. 'The next manager may not be as careful as you.'"
+        vi: "Chị Lan có vẻ thất vọng rồi thông cảm. 'Người quản lý tiếp theo có thể không cẩn thận như em.'"
+        effects: [rel lan trust +2, stress -3]
+  - en: 'Accept without asking what the condition means in practice.'
+    vi: 'Nhận lời mà không hỏi điều kiện đó thực tế nghĩa là gì.'
+    outcomes:
+      - p: 1
+        en: 'Lan nods slowly and the directors congratulate you a little too warmly. You realise you agreed to something you did not ask about.'
+        vi: 'Chị Lan gật đầu chậm và ban giám đốc chúc mừng anh/chị hơi quá nồng nhiệt. Anh/chị nhận ra mình đã đồng ý với điều mình không hỏi.'
+        effects: [rep.boss +4, fact accepted_supervisor_condition private, end promoted]
+---
+scene: sup.resignation_thought
+place: factory_floor
+tags: [people, pressure]
+weight: 2
+cooldown: 26
+when: [stress >= 75, turn >= 12]
+lines:
+  - who: char:hoa
+    en: 'You look like you have not slept. With respect: I have seen supervisors live on this line and leave by the summer. Are you all right?'
+    vi: 'Em trông như chưa ngủ. Xin phép nói thẳng: chị từng thấy các giám sát sống trên chuyền này và nghỉ vào mùa hè. Em ổn không?'
+choices:
+  - en: 'Talk to Lan about the load, and ask her to take a night shift or a rush order off your plate.'
+    vi: 'Nói với chị Lan về khối lượng và xin chị bớt một ca đêm hay một đơn gấp.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 0.8
+        en: 'Lan listens, gives the Thursday night shift to Kiet for two months, and says she should have noticed sooner.'
+        vi: 'Chị Lan lắng nghe, giao ca đêm thứ Năm cho anh Kiệt hai tháng và nói lẽ ra chị phải để ý sớm hơn.'
+        effects: [rel lan trust +4, rel hoa trust +2, stress -6, rep.boss +1]
+      - p: 0.2
+        ok: false
+        en: 'Lan nods and says everyone is stretched this quarter. You leave with sympathy and the same load.'
+        vi: 'Chị Lan gật đầu và nói quý này ai cũng căng. Anh/chị ra về với sự cảm thông và khối lượng cũ.'
+        effects: [rel lan trust +1, stress -1]
+  - en: 'Hand in your resignation, politely, with the notice the contract requires.'
+    vi: 'Nộp đơn xin nghỉ, lịch sự, báo trước đúng như hợp đồng quy định.'
+    outcomes:
+      - p: 1
+        en: 'Lan reads it twice and does not argue. You walk out of the gate lighter than you walked in.'
+        vi: 'Chị Lan đọc hai lần và không phản đối. Anh/chị bước ra khỏi cổng nhẹ nhõm hơn lúc bước vào.'
+        effects: [rel lan trust +2, end walked_away]
+  - en: 'Tell Hoa you are fine and keep going.'
+    vi: 'Nói với chị Hoa là anh/chị ổn và tiếp tục.'
+    outcomes:
+      - p: 1
+        en: 'Hoa nods and does not push. You feel slightly worse afterwards for having said it.'
+        vi: 'Chị Hoa gật đầu và không gặng hỏi. Sau đó anh/chị thấy hơi tệ hơn vì đã nói vậy.'
+        effects: [rel hoa trust -1, stress +2]

@@ -1,0 +1,158 @@
+{
+  "id": "scene.sup.qc_hold_rework",
+  "location": "loc.factory_floor",
+  "cast": ["char:khoa"],
+  "lines": [
+    {
+      "speaker": "char:khoa",
+      "text_key": "scene.sup.qc_hold_rework.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sup.qc_hold_rework.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.75,
+          "narration_key": "scene.sup.qc_hold_rework.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        },
+        {
+          "p": 0.25,
+          "result": "fail",
+          "narration_key": "scene.sup.qc_hold_rework.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sup.qc_hold_rework.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.sup.qc_hold_rework.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sup.qc_hold_rework.c3",
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.sup.qc_hold_rework.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": -5
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.pressured_qc_release",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.sup.qc_hold_rework.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.pressured_qc_release",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

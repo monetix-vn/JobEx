@@ -96,7 +96,7 @@ remembered for next time.
 
 ## Phase 1 so far: two jobs, text only
 
-You pick a job at the start (**Export Sales Specialist**, **Quality Control Specialist**, **Finance and Accounting Specialist**, **Production Planner**, **Purchasing Buyer**, **Investment Banking Analyst** or **HR Business Partner**; jobs are grouped by department) and can
+You pick a job at the start (**Export Sales Specialist**, **Quality Control Specialist**, **Finance and Accounting Specialist**, **Production Planner**, **Purchasing Buyer**, **Investment Banking Analyst** or **HR Business Partner**, **Production Line Supervisor**; jobs are grouped by department) and can
 choose another after each debrief. Nine modules run on the `industry-cookware` pack: `mod-sim-core`, `mod-workload`, `mod-choice`,
 `mod-narrative`, `mod-director`, `mod-knowledge`, `mod-social`, `mod-risk` and `mod-education`.
 

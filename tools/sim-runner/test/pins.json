@@ -1,10 +1,11 @@
 {
   "stub-year.2026": "0463af7f042961",
-  "sales-year.2026": "03a1b29cb41137",
-  "qc-year.2026": "0d9d4611bc813d",
-  "fin-year.2026": "1301b92f4d6bce",
-  "prod-year.2026": "12812a842a08a6",
-  "purch-year.2026": "1bc4389d2848d6",
-  "inv-year.2026": "18049a0a080aed",
-  "hr-year.2026": "054cbbc067a000"
+  "sales-year.2026": "04a60fc90bc8b3",
+  "qc-year.2026": "170dd35c0d4f6f",
+  "fin-year.2026": "1006855e16edd9",
+  "prod-year.2026": "0e9b74c37da19b",
+  "purch-year.2026": "11ac86c32f5847",
+  "inv-year.2026": "0830f1b2456465",
+  "hr-year.2026": "00ab2e5b43a961",
+  "sup-year.2026": "091e0812319d79"
 }

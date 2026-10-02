@@ -1,0 +1,114 @@
+{
+  "id": "scene.sup.midyear_review",
+  "location": "loc.meeting_room",
+  "cast": ["char:lan"],
+  "lines": [
+    {
+      "speaker": "char:lan",
+      "text_key": "scene.sup.midyear_review.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sup.midyear_review.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.sup.midyear_review.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.sup.midyear_review.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sup.midyear_review.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.sup.midyear_review.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sup.midyear_review.c3",
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.sup.midyear_review.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.sup.midyear_review.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.hoa.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

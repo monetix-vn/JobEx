@@ -2843,5 +2843,520 @@
         "staff": -16
       }
     }
+  },
+  {
+    "id": "fact.promised_impossible_target",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.promised_impossible_target",
+    "lesson_key": "lesson.promised_impossible_target",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.5,
+        "detectors": ["boss", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -3,
+        "staff": -5
+      },
+      "public": {
+        "boss": -6
+      }
+    }
+  },
+  {
+    "id": "fact.refused_unsafe_speed",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.refused_unsafe_speed",
+    "lesson_key": "lesson.refused_unsafe_speed",
+    "consequences": {
+      "witnessed": {
+        "boss": 2,
+        "production": 3,
+        "staff": 5
+      },
+      "public": {
+        "boss": 4,
+        "staff": 6
+      }
+    }
+  },
+  {
+    "id": "fact.ran_above_rated_speed",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.ran_above_rated_speed",
+    "lesson_key": "lesson.ran_above_rated_speed",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "boss", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8,
+        "production": -8,
+        "staff": -10
+      },
+      "public": {
+        "boss": -14,
+        "staff": -14
+      }
+    }
+  },
+  {
+    "id": "fact.reported_true_count",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.reported_true_count",
+    "lesson_key": "lesson.reported_true_count",
+    "consequences": {
+      "witnessed": {
+        "boss": 3,
+        "qc": 3
+      },
+      "public": {
+        "boss": 5
+      }
+    }
+  },
+  {
+    "id": "fact.inflated_output_count",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.inflated_output_count",
+    "lesson_key": "lesson.inflated_output_count",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.7,
+        "detectors": ["qc", "internal_audit", "buyer", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8,
+        "qc": -8
+      },
+      "public": {
+        "boss": -14,
+        "buyer": -10
+      }
+    }
+  },
+  {
+    "id": "fact.delayed_medical_care",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.delayed_medical_care",
+    "lesson_key": "lesson.delayed_medical_care",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.8,
+        "detectors": ["boss", "staff", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "staff": -8
+      },
+      "public": {
+        "boss": -10,
+        "staff": -12
+      }
+    }
+  },
+  {
+    "id": "fact.reported_injury_honestly",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.reported_injury_honestly",
+    "lesson_key": "lesson.reported_injury_honestly",
+    "consequences": {
+      "witnessed": {
+        "boss": 3,
+        "production": 4,
+        "staff": 5
+      },
+      "public": {
+        "boss": 5,
+        "staff": 7
+      }
+    }
+  },
+  {
+    "id": "fact.blamed_injured_worker",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.blamed_injured_worker",
+    "lesson_key": "lesson.blamed_injured_worker",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "boss", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8,
+        "production": -8,
+        "staff": -10
+      },
+      "public": {
+        "boss": -14,
+        "staff": -14
+      }
+    }
+  },
+  {
+    "id": "fact.hid_injury",
+    "category": "integrity",
+    "severity": 8,
+    "text_key": "fact.hid_injury",
+    "lesson_key": "lesson.hid_injury",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.8,
+        "detectors": ["internal_audit", "boss", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -12,
+        "production": -10,
+        "staff": -12
+      },
+      "public": {
+        "boss": -20,
+        "staff": -18
+      }
+    }
+  },
+  {
+    "id": "fact.forced_early_return",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.forced_early_return",
+    "lesson_key": "lesson.forced_early_return",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.7,
+        "detectors": ["boss", "staff", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8,
+        "staff": -10
+      },
+      "public": {
+        "boss": -14,
+        "staff": -14
+      }
+    }
+  },
+  {
+    "id": "fact.docked_pay_unfairly",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.docked_pay_unfairly",
+    "lesson_key": "lesson.docked_pay_unfairly",
+    "consequences": {
+      "witnessed": {
+        "staff": -5
+      },
+      "public": {
+        "staff": -8
+      }
+    }
+  },
+  {
+    "id": "fact.edited_attendance_sheet",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.edited_attendance_sheet",
+    "lesson_key": "lesson.edited_attendance_sheet",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "staff": -4
+      },
+      "public": {
+        "boss": -10,
+        "staff": -6
+      }
+    }
+  },
+  {
+    "id": "fact.posted_fair_rota",
+    "category": "integrity",
+    "severity": 1,
+    "text_key": "fact.posted_fair_rota",
+    "lesson_key": "lesson.posted_fair_rota",
+    "consequences": {
+      "witnessed": {
+        "staff": 4
+      },
+      "public": {
+        "staff": 6
+      }
+    }
+  },
+  {
+    "id": "fact.favoured_friends_overtime",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.favoured_friends_overtime",
+    "lesson_key": "lesson.favoured_friends_overtime",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.6,
+        "detectors": ["finance", "boss", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -4,
+        "staff": -8
+      },
+      "public": {
+        "boss": -8,
+        "staff": -12
+      }
+    }
+  },
+  {
+    "id": "fact.negotiated_break_fairly",
+    "category": "integrity",
+    "severity": 1,
+    "text_key": "fact.negotiated_break_fairly",
+    "lesson_key": "lesson.negotiated_break_fairly",
+    "consequences": {
+      "witnessed": {
+        "boss": 1,
+        "staff": 5
+      },
+      "public": {
+        "boss": 2,
+        "staff": 7
+      }
+    }
+  },
+  {
+    "id": "fact.broke_a_promise_to_crew",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.broke_a_promise_to_crew",
+    "lesson_key": "lesson.broke_a_promise_to_crew",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.7,
+        "detectors": ["boss", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -4,
+        "staff": -8
+      },
+      "public": {
+        "boss": -8,
+        "staff": -12
+      }
+    }
+  },
+  {
+    "id": "fact.polished_supervisor_review",
+    "category": "integrity",
+    "severity": 3,
+    "text_key": "fact.polished_supervisor_review",
+    "lesson_key": "lesson.polished_supervisor_review",
+    "consequences": {
+      "witnessed": {
+        "boss": -4
+      },
+      "public": {
+        "boss": -6
+      }
+    }
+  },
+  {
+    "id": "fact.accepted_supervisor_condition",
+    "category": "integrity",
+    "severity": 3,
+    "text_key": "fact.accepted_supervisor_condition",
+    "lesson_key": "lesson.accepted_supervisor_condition",
+    "consequences": {
+      "witnessed": {
+        "boss": -2
+      },
+      "public": {
+        "boss": -4
+      }
+    }
+  },
+  {
+    "id": "fact.ran_machine_past_fault",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.ran_machine_past_fault",
+    "lesson_key": "lesson.ran_machine_past_fault",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "boss", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8,
+        "production": -8,
+        "staff": -8
+      },
+      "public": {
+        "boss": -14,
+        "staff": -12
+      }
+    }
+  },
+  {
+    "id": "fact.signed_false_training",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.signed_false_training",
+    "lesson_key": "lesson.signed_false_training",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "boss", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8,
+        "staff": -8
+      },
+      "public": {
+        "boss": -14,
+        "staff": -12
+      }
+    }
+  },
+  {
+    "id": "fact.skipped_handover",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.skipped_handover",
+    "lesson_key": "lesson.skipped_handover",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.5,
+        "detectors": ["boss", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -4,
+        "production": -4
+      },
+      "public": {
+        "boss": -8
+      }
+    }
+  },
+  {
+    "id": "fact.waived_ppe_for_vip",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.waived_ppe_for_vip",
+    "lesson_key": "lesson.waived_ppe_for_vip",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.7,
+        "detectors": ["boss", "staff", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "staff": -6
+      },
+      "public": {
+        "boss": -10,
+        "buyer": -4
+      }
+    }
+  },
+  {
+    "id": "fact.blocked_fire_exit",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.blocked_fire_exit",
+    "lesson_key": "lesson.blocked_fire_exit",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.8,
+        "detectors": ["boss", "staff", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "staff": -6
+      },
+      "public": {
+        "boss": -10,
+        "staff": -10
+      }
+    }
+  },
+  {
+    "id": "fact.fired_without_process",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.fired_without_process",
+    "lesson_key": "lesson.fired_without_process",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.8,
+        "detectors": ["boss", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "staff": -10
+      },
+      "public": {
+        "boss": -12,
+        "staff": -14
+      }
+    }
   }
 ]

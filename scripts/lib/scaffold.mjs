@@ -13,6 +13,7 @@ const ROLE_BY_PREFIX = {
   prod: 'role.prod.planner',
   purch: 'role.purch.buyer',
   inv: 'role.inv.analyst',
+  sup: 'role.prod.supervisor',
   hr: 'role.hr.hrbp',
 };
 

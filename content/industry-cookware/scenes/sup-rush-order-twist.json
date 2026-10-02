@@ -1,0 +1,173 @@
+{
+  "id": "scene.sup.rush_order_twist",
+  "location": "loc.meeting_room",
+  "cast": ["char:bao", "char:lan"],
+  "lines": [
+    {
+      "speaker": "char:bao",
+      "text_key": "scene.sup.rush_order_twist.l1"
+    },
+    {
+      "speaker": "char:lan",
+      "text_key": "scene.sup.rush_order_twist.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sup.rush_order_twist.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.sup.rush_order_twist.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.hoa.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.production",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.sup.rush_order_twist.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.hoa.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sup.rush_order_twist.c2",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.sup.rush_order_twist.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.hoa.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sup.rush_order_twist.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.sup.rush_order_twist.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 6
+            },
+            {
+              "delta": "rel.hoa.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.ran_above_rated_speed",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.sup.rush_order_twist.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.hoa.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 7
+            },
+            {
+              "fact": "fact.ran_above_rated_speed",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

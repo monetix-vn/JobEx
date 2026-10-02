@@ -28,7 +28,8 @@
       "role.fin.accountant",
       "role.prod.planner",
       "role.purch.buyer",
-      "role.hr.hrbp"
+      "role.hr.hrbp",
+      "role.prod.supervisor"
     ]
   },
   {
@@ -43,7 +44,8 @@
       "role.fin.accountant",
       "role.prod.planner",
       "role.purch.buyer",
-      "role.hr.hrbp"
+      "role.hr.hrbp",
+      "role.prod.supervisor"
     ]
   }
 ]

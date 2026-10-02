@@ -17,6 +17,7 @@ const ROLES = {
   prod: ['role.prod.planner', 'Production Planner'],
   purch: ['role.purch.buyer', 'Purchasing Buyer'],
   inv: ['role.inv.analyst', 'Investment Banking Analyst'],
+  sup: ['role.prod.supervisor', 'Production Line Supervisor'],
   hr: ['role.hr.hrbp', 'HR Business Partner'],
 };
 const want = opt('role') ?? 'all';

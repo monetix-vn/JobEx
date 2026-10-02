@@ -448,5 +448,75 @@
         "delay_weeks": [4, 6]
       }
     ]
+  },
+  {
+    "id": "arc.the_target",
+    "title_key": "arc.the_target.title",
+    "stages": [
+      {
+        "id": "raised",
+        "event": "event.sup.target_raised"
+      },
+      {
+        "id": "faster",
+        "event": "event.sup.run_it_faster",
+        "delay_weeks": [1, 2]
+      },
+      {
+        "id": "count",
+        "event": "event.sup.end_of_shift_count",
+        "delay_weeks": [2, 3]
+      },
+      {
+        "id": "recount",
+        "event": "event.sup.qc_recount",
+        "delay_weeks": [3, 5]
+      }
+    ]
+  },
+  {
+    "id": "arc.the_hand",
+    "title_key": "arc.the_hand.title",
+    "stages": [
+      {
+        "id": "caught",
+        "event": "event.sup.hand_caught"
+      },
+      {
+        "id": "record",
+        "event": "event.sup.how_to_record",
+        "delay_weeks": [1, 1]
+      },
+      {
+        "id": "investigation",
+        "event": "event.sup.binh_investigates",
+        "delay_weeks": [1, 2]
+      },
+      {
+        "id": "return",
+        "event": "event.sup.nam_returns",
+        "delay_weeks": [3, 5]
+      }
+    ]
+  },
+  {
+    "id": "arc.the_roster",
+    "title_key": "arc.the_roster.title",
+    "stages": [
+      {
+        "id": "late",
+        "event": "event.sup.tai_late"
+      },
+      {
+        "id": "favourite",
+        "event": "event.sup.favourite_overtime",
+        "delay_weeks": [2, 4]
+      },
+      {
+        "id": "breaks",
+        "event": "event.sup.break_dispute",
+        "delay_weeks": [2, 4]
+      }
+    ]
   }
 ]

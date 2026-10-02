@@ -88,6 +88,14 @@ source of truth for what scene comes next; update their Status column as you go.
 - [x] First-cut balance check (`hr-year.test.ts`)
 - [ ] More HR scenes (about 32 decisions a year, the lightest job) and practitioner review (labour-law details especially)
 
+## Job 8: Production Line Supervisor (`docs/story/supervisor.md`)
+
+- [x] Bible v1 (AI) written with the scenes (owner review pending); same factory as the planner, Line 3, seen from the floor
+- [x] Role `role.prod.supervisor` (department Production, so it is grouped with the planner) playable (overhead 15 hours), `sup-year` scenario, CI step `sim:sup`
+- [x] 29 scenes: beats (first week, midyear review, rush order twist, safety inspection, year-end review, manager offer), arcs The Target, The Hand, The Roster, incidents (heat, breakdown, QC hold, training sign-off, handover, VIP visit, blocked exit, scrap theft), consequences (labour inspector asks, blame meeting), resignation; 4 new characters, 24 facts
+- [x] First-cut balance check (`sup-year.test.ts`)
+- [ ] More Supervisor scenes and practitioner review (injury recording and speed rating practice especially)
+
 ## Later jobs (not yet designed)
 
 - [x] Owner decision 2026-10-02: add HR (HRBP), Production (Line Supervisor), FP&A, Marketing and IT in that order, grouped by department in the picker (`docs/story/JOB-PROPOSALS.md`)

@@ -1,0 +1,1086 @@
+# Production Line Supervisor storylines (docs/story/supervisor.md): The Target, The Hand, The Roster.
+arc: the_target
+title:
+  en: 'The target'
+  vi: 'Chỉ tiêu'
+stages:
+  - { id: raised, event: sup.target_raised }
+  - { id: faster, event: sup.run_it_faster, delay: 1-2 }
+  - { id: count, event: sup.end_of_shift_count, delay: 2-3 }
+  - { id: recount, event: sup.qc_recount, delay: 3-5 }
+---
+scene: sup.target_raised
+arc: the_target
+place: meeting_room
+tags: [pressure, target, dark]
+weight: 3
+cooldown: 40
+when: [turn >= 8, turn <= 38]
+lines:
+  - who: char:lan
+    en: 'The directors raised the daily target for Line 3 by fifteen percent from Monday. The presses did not change. The bonus for the plant depends on it. I know. Tell me what you need to make it, and tell me what you cannot.'
+    vi: 'Ban giám đốc nâng chỉ tiêu ngày của chuyền 3 lên mười lăm phần trăm từ thứ Hai. Các máy ép không đổi. Thưởng của cả nhà máy phụ thuộc vào đó. Chị biết. Nói chị nghe em cần gì để đạt, và nói điều em không thể.'
+choices:
+  - en: "Show Lan the line's rated capacity and the real changeover losses, and propose a target that rises by eight percent with a plan to recover the rest."
+    vi: 'Cho chị Lan xem công suất định mức của chuyền và tổn thất thật khi đổi khuôn, và đề xuất chỉ tiêu tăng tám phần trăm kèm kế hoạch lấy lại phần còn lại.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.6
+        en: 'Lan takes the numbers to the directors. They give eight percent now and the rest in a quarter. It is a smaller win than anyone wanted, and it holds.'
+        vi: 'Chị Lan mang số liệu lên ban giám đốc. Họ cho tám phần trăm bây giờ và phần còn lại sau một quý. Một thắng lợi nhỏ hơn mọi người muốn, và nó giữ được.'
+        effects: [rel lan trust +3, rep.boss +2, rep.production +2, stress +3, arc the_target end]
+      - p: 0.4
+        ok: false
+        en: 'The directors say fifteen percent is fifteen percent. Lan tells you she argued, and lost, and that the number stays.'
+        vi: 'Ban giám đốc nói mười lăm là mười lăm. Chị Lan nói chị đã tranh luận, và thua, và con số vẫn vậy.'
+        effects: [rel lan trust +2, stress +4, arc the_target faster]
+  - en: 'Say you will try, and reorganise the crew to cut idle time between jobs, within the rated speeds.'
+    vi: 'Nói anh/chị sẽ cố, và tổ chức lại tổ để cắt thời gian chờ giữa các việc, trong tốc độ định mức.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: 'You find six percent in the changeovers and the break rota. The line is faster and more tired. The rest you cannot find honestly.'
+        vi: 'Anh/chị tìm được sáu phần trăm trong việc đổi khuôn và lịch nghỉ. Chuyền nhanh hơn và mệt hơn. Phần còn lại anh/chị không tìm được một cách trung thực.'
+        effects: [rel lan trust +1, rel hoa trust -1, stress +4, arc the_target faster]
+  - en: 'Say yes to fifteen percent, and work out how afterwards.'
+    vi: 'Nói đồng ý mười lăm phần trăm và tính cách làm sau.'
+    outcomes:
+      - p: 0.8
+        en: 'Lan looks relieved. You have promised a number that needs the presses to run past their rating.'
+        vi: 'Chị Lan có vẻ nhẹ nhõm. Anh/chị đã hứa một con số cần các máy ép chạy vượt định mức.'
+        effects:
+          [
+            rel lan trust +4,
+            rel hoa trust -2,
+            stress +2,
+            fact promised_impossible_target private,
+            arc the_target faster,
+          ]
+      - p: 0.2
+        ok: false
+        en: 'Hoa asks, in front of the crew, which press is going to do the extra fifteen percent. You do not have an answer.'
+        vi: 'Chị Hoa hỏi, trước mặt cả tổ, máy ép nào sẽ làm thêm mười lăm phần trăm đó. Anh/chị không có câu trả lời.'
+        effects:
+          [
+            rel lan trust +2,
+            rel hoa trust -5,
+            stress +3,
+            fact promised_impossible_target witnessed,
+            arc the_target faster,
+          ]
+---
+scene: sup.run_it_faster
+weight: 0
+place: factory_floor
+tags: [pressure, safety, dark, arc]
+lines:
+  - who: char:hoa
+    en: 'We are three thousand short for the week. Press 2 can run twenty percent faster than its rating if the crew skips the pause check between strokes. We have done it before, when the old supervisor allowed it. I am telling you, so that you can say yes or no.'
+    vi: 'Cả tuần mình thiếu ba nghìn. Máy ép 2 chạy nhanh hơn định mức hai mươi phần trăm nếu tổ bỏ bước kiểm tra tạm dừng giữa các nhịp. Mình từng làm khi giám sát cũ cho phép. Chị nói để em quyết có hay không.'
+choices:
+  - en: 'Say no to the speed-up, keep the pause check, and move two people from the finishing bench to press 2 to recover the units honestly.'
+    vi: 'Nói không với việc tăng tốc, giữ bước kiểm tra tạm dừng, và chuyển hai người từ bàn hoàn thiện sang máy ép 2 để lấy lại sản phẩm một cách trung thực.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.7
+        en: "You recover two thousand of the three. Hoa says: 'Good. Now I know what you will say.' The directors see a shortfall of a thousand and a clean injury log."
+        vi: "Anh/chị lấy lại hai nghìn trong ba nghìn. Chị Hoa nói: 'Tốt. Giờ chị biết em sẽ nói gì.' Ban giám đốc thấy thiếu một nghìn và sổ chấn thương sạch."
+        effects:
+          [
+            rel hoa trust +5,
+            rel lan trust +1,
+            rep.production +2,
+            stress +3,
+            fact refused_unsafe_speed witnessed,
+            arc the_target count,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'The two people from the bench are slow on the press. The shortfall is two thousand, and Lan asks why the line is not hitting its number.'
+        vi: 'Hai người từ bàn hoàn thiện làm chậm trên máy ép. Thiếu hai nghìn, và chị Lan hỏi vì sao chuyền không đạt số.'
+        effects:
+          [
+            rel hoa trust +3,
+            rel lan trust -3,
+            rep.boss -2,
+            stress +5,
+            fact refused_unsafe_speed witnessed,
+            arc the_target count,
+          ]
+  - en: 'Allow it for one shift only, with Binh informed, and check the press after every hundred strokes.'
+    vi: 'Cho phép trong đúng một ca, có báo anh Bình và kiểm tra máy sau mỗi một trăm nhịp.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: 'Binh grumbles, and watches. The shift makes up half the shortfall. Nobody is hurt, and everybody knows this is the last time.'
+        vi: 'Anh Bình càu nhàu và theo dõi. Ca đó bù được nửa phần thiếu. Không ai bị thương, và ai cũng biết đây là lần cuối.'
+        effects: [rel hoa trust +1, rel binh trust +1, stress +4, arc the_target count]
+  - en: 'Say yes, run the line at the higher speed for the rest of the week, and keep the pause check off the shift report.'
+    vi: 'Nói đồng ý, cho chuyền chạy tốc độ cao suốt tuần và để bước kiểm tra tạm dừng ngoài báo cáo ca.'
+    outcomes:
+      - p: 0.7
+        en: 'The week makes its number. The press runs hot and loud. Hoa does as you said, and her silence is the worst thing about it.'
+        vi: 'Cả tuần đạt số. Máy ép nóng và ồn. Chị Hoa làm như em nói, và sự im lặng của chị là điều tệ nhất.'
+        effects:
+          [
+            rel hoa trust -3,
+            rel lan trust +4,
+            stress +2,
+            fact ran_above_rated_speed private,
+            arc the_target count,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'Thursday, the clutch on press 2 slips, and the ram comes down on an empty die. Nobody is hurt. Binh walks in an hour later, and the pause log is not there.'
+        vi: 'Thứ Năm, ly hợp máy ép 2 trượt, và đầu ép hạ xuống khuôn trống. Không ai bị thương. Một giờ sau anh Bình bước vào, và sổ tạm dừng không có.'
+        effects:
+          [
+            rel hoa trust -6,
+            rel lan trust -3,
+            rel binh trust -8,
+            rep.boss -4,
+            stress +6,
+            fact ran_above_rated_speed witnessed,
+            arc the_target count,
+          ]
+---
+scene: sup.end_of_shift_count
+weight: 0
+place: factory_floor
+tags: [pressure, count, dark, arc]
+lines:
+  - who: char:lan
+    en: 'Friday night. The line is eight hundred short of the week. The directors read the number at seven tomorrow. I would like to see a good number on the report. I am not asking you to do anything. I am saying what I would like to see.'
+    vi: 'Tối thứ Sáu. Chuyền thiếu tám trăm so với cả tuần. Ban giám đốc đọc con số lúc bảy giờ sáng mai. Chị muốn thấy một con số đẹp trên báo cáo. Chị không bảo em làm gì. Chị nói điều chị muốn thấy.'
+choices:
+  - en: 'Report the true count, with the shortfall explained: the breakdown, the changeovers, and the pause checks that were kept.'
+    vi: 'Báo cáo số đếm thật kèm giải thích phần thiếu: hỏng máy, đổi khuôn và các bước kiểm tra tạm dừng đã giữ.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 0.8
+        en: "Lan reads the explanation and says, after a moment, 'Thank you.' The directors see eight hundred missing. Nobody is happy, and the number is true."
+        vi: "Chị Lan đọc phần giải thích và nói, sau một lúc, 'Cảm ơn em.' Ban giám đốc thấy thiếu tám trăm. Không ai vui, và con số là thật."
+        effects:
+          [
+            rel lan trust +3,
+            rep.boss +1,
+            stress +3,
+            fact reported_true_count witnessed,
+            arc the_target recount,
+          ]
+      - p: 0.2
+        ok: false
+        en: 'The directors ask why Line 3 is the only line that is short. Lan answers with your explanation, and does not say it was yours.'
+        vi: 'Ban giám đốc hỏi vì sao chuyền 3 là chuyền duy nhất thiếu. Chị Lan trả lời bằng lời giải thích của em, và không nói đó là của em.'
+        effects:
+          [
+            rel lan trust +1,
+            rep.boss -2,
+            stress +4,
+            fact reported_true_count witnessed,
+            arc the_target recount,
+          ]
+  - en: 'Count the units on the finishing bench that are waiting for the final check, and report them as complete, because they will pass.'
+    vi: 'Đếm cả sản phẩm trên bàn hoàn thiện đang chờ kiểm tra cuối và báo là hoàn tất vì chúng sẽ đạt.'
+    outcomes:
+      - p: 1
+        en: 'The count is eight hundred higher. Most of them will pass. A few will not. Hoa watches you sign the sheet and says nothing.'
+        vi: 'Số đếm cao hơn tám trăm. Phần lớn sẽ đạt. Một số thì không. Chị Hoa nhìn em ký bảng và không nói gì.'
+        effects: [rel lan trust +2, rel hoa trust -2, stress +2, arc the_target recount]
+  - en: 'Add eight hundred to the count, to round the week up.'
+    vi: 'Cộng thêm tám trăm vào số đếm để làm tròn cả tuần.'
+    outcomes:
+      - p: 0.65
+        en: "The number reads clean at seven o'clock. Lan thanks you, in the voice of someone who has not asked. You have invented eight hundred pans."
+        vi: 'Con số trông sạch lúc bảy giờ. Chị Lan cảm ơn, bằng giọng của người chưa hỏi gì. Anh/chị đã bịa ra tám trăm chiếc chảo.'
+        effects:
+          [
+            rel lan trust +5,
+            rel hoa trust -4,
+            rep.boss +3,
+            stress +1,
+            fact inflated_output_count private,
+            arc the_target recount,
+          ]
+      - p: 0.35
+        ok: false
+        en: "The packing list for the shipment says eight hundred fewer pans than the report. Mr Khoa's team notices, and asks the line for an explanation."
+        vi: 'Phiếu đóng gói của lô hàng ghi ít hơn báo cáo tám trăm chiếc chảo. Nhóm anh Khoa nhận ra và xin chuyền giải thích.'
+        effects:
+          [
+            rel lan trust +2,
+            rel khoa trust -6,
+            rep.boss -4,
+            rep.qc -4,
+            stress +5,
+            fact inflated_output_count witnessed,
+            arc the_target recount,
+          ]
+---
+scene: sup.qc_recount
+weight: 0
+place: meeting_room
+tags: [pressure, count, consequence, arc]
+lines:
+  - who: char:khoa
+    en: "We counted the finished stock for the shipment. It does not match the line's weekly report for Line 3. I am not accusing anyone. I would like to understand where the difference is, before the buyer's audit finds it."
+    vi: 'Bọn anh đã đếm thành phẩm của lô hàng. Nó không khớp báo cáo tuần của chuyền 3. Anh không buộc tội ai. Anh muốn hiểu chênh lệch nằm ở đâu, trước khi đợt đánh giá của khách tìm ra nó.'
+choices:
+  - en: 'Show Khoa the shift sheets and the true counts, say exactly where the differences came from, and offer to change how the end-of-shift count is made.'
+    vi: 'Cho anh Khoa xem các phiếu ca và số đếm thật, nói chính xác chênh lệch đến từ đâu và đề xuất đổi cách đếm cuối ca.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Khoa reads the sheets. 'A bench count is not a finished count. Let us write that down.' The reporting rule is changed, and you get a quiet word from Lan."
+        vi: "Anh Khoa đọc các phiếu. 'Đếm ở bàn không phải đếm thành phẩm. Mình ghi lại điều đó.' Quy tắc báo cáo được đổi, và anh/chị nhận một lời nhắc nhỏ từ chị Lan."
+        effects: [rel khoa trust +4, rel lan trust -1, rep.qc +3, stress +3, arc the_target end]
+  - en: 'Say the difference is probably the finishing bench and a timing issue, and ask for a week to reconcile.'
+    vi: 'Nói chênh lệch chắc là do bàn hoàn thiện và vấn đề thời điểm và xin một tuần để đối chiếu.'
+    outcomes:
+      - p: 1
+        en: 'Khoa gives you a week. You reconcile what you can, and the rest becomes a footnote.'
+        vi: 'Anh Khoa cho anh/chị một tuần. Anh/chị đối chiếu được phần nào, và phần còn lại thành chú thích.'
+        effects: [rel khoa trust -1, stress +3, arc the_target end]
+  - en: 'Say the QC count is the one that is wrong, and ask Khoa to recount.'
+    vi: 'Nói số đếm của QC mới là số sai và đề nghị anh Khoa đếm lại.'
+    outcomes:
+      - p: 0.4
+        en: 'Khoa recounts, and the number is nearly the same. He writes down that the line disputed it. The pans are not there.'
+        vi: 'Anh Khoa đếm lại và con số gần như vậy. Anh ghi lại rằng chuyền phản đối. Số chảo không có đó.'
+        effects: [rel khoa trust -6, rep.qc -3, stress +4, arc the_target end]
+      - p: 0.6
+        ok: false
+        en: 'Hoa has the real count in her pocket notebook, and Khoa asks to see it. Hoa hands it over, and looks at you only after she has.'
+        vi: 'Chị Hoa có số đếm thật trong sổ tay bỏ túi, và anh Khoa xin xem. Chị Hoa đưa, và chỉ nhìn anh/chị sau khi đã đưa.'
+        effects:
+          [
+            rel khoa trust -8,
+            rel hoa trust -6,
+            rel lan trust -6,
+            rep.boss -6,
+            rep.qc -5,
+            stress +6,
+            arc the_target end,
+          ]
+---
+arc: the_hand
+title:
+  en: 'The hand'
+  vi: 'Bàn tay'
+stages:
+  - { id: caught, event: sup.hand_caught }
+  - { id: record, event: sup.how_to_record, delay: 1 }
+  - { id: investigation, event: sup.binh_investigates, delay: 1-2 }
+  - { id: return, event: sup.nam_returns, delay: 3-5 }
+---
+scene: sup.hand_caught
+arc: the_hand
+place: factory_floor
+tags: [injury, safety, dark]
+weight: 3
+cooldown: 40
+when: [turn >= 12, turn <= 40]
+lines:
+  - who: char:hoa
+    en: "Nam's hand was caught in the press. He pulled it back in time, but it is cut and swollen, and he cannot close his fingers. He wants to go back to work. He says it is nothing. Look at his hand."
+    vi: 'Tay Nam bị kẹt vào máy ép. Cậu rút ra kịp, nhưng bị rách và sưng, và không nắm lại được ngón tay. Cậu muốn quay lại làm việc. Cậu nói không sao. Em nhìn tay cậu đi.'
+choices:
+  - en: 'Stop the press, take Nam to the clinic now, and call Binh and Lan before anything else.'
+    vi: 'Dừng máy ép, đưa Nam đến phòng khám ngay và gọi anh Bình và chị Lan trước mọi việc khác.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: "The doctor says two fingers are fractured, and he will be off work for three weeks. Nam is frightened about the pay. Binh arrives, takes photographs of the press, and says: 'Good. Now we have a record that starts right.'"
+        vi: "Bác sĩ nói hai ngón tay bị gãy và cậu nghỉ ba tuần. Nam lo về lương. Anh Bình đến, chụp ảnh máy ép và nói: 'Tốt. Giờ mình có hồ sơ bắt đầu đúng.'"
+        effects:
+          [rel hoa trust +4, rel binh trust +4, rel lan trust +1, stress +5, arc the_hand record]
+  - en: 'Send Nam to the clinic with Hoa, restart the press with a temporary guard, and report the incident at the end of the shift.'
+    vi: 'Cho Nam đến phòng khám cùng chị Hoa, chạy lại máy ép với tấm chắn tạm và báo sự cố cuối ca.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "Nam is treated, and the line loses only an hour. Binh asks why the press ran again before he inspected it. You say you wanted the crew to keep their pay. He says that the crew's safety is not a pay question."
+        vi: 'Nam được điều trị, và chuyền chỉ mất một giờ. Anh Bình hỏi vì sao máy ép chạy lại trước khi anh kiểm tra. Anh/chị nói muốn tổ giữ lương. Anh nói an toàn của tổ không phải câu hỏi về lương.'
+        effects: [rel hoa trust +1, rel binh trust -3, stress +4, arc the_hand record]
+  - en: 'Bandage the hand, send Nam back to light work, and keep the press running.'
+    vi: 'Băng tay, cho Nam quay lại việc nhẹ và giữ máy ép chạy.'
+    outcomes:
+      - p: 0.7
+        en: 'Nam does the light work. By afternoon his hand is the size of a glove, and Hoa takes him to the clinic herself, with a look at you.'
+        vi: 'Nam làm việc nhẹ. Đến chiều bàn tay cậu to bằng một chiếc găng, và chị Hoa tự đưa cậu đến phòng khám, kèm một cái nhìn dành cho anh/chị.'
+        effects:
+          [
+            rel hoa trust -6,
+            rel binh trust -3,
+            stress +4,
+            fact delayed_medical_care private,
+            arc the_hand record,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'The doctor asks why the hand was not seen for six hours. Binh is called, and the first line of his report is a question about you.'
+        vi: 'Bác sĩ hỏi vì sao sáu tiếng sau mới cho khám. Anh Bình được gọi, và dòng đầu tiên trong báo cáo của anh là một câu hỏi về anh/chị.'
+        effects:
+          [
+            rel hoa trust -8,
+            rel binh trust -8,
+            rel lan trust -5,
+            rep.boss -5,
+            stress +6,
+            fact delayed_medical_care witnessed,
+            arc the_hand record,
+          ]
+---
+scene: sup.how_to_record
+weight: 0
+place: meeting_room
+tags: [injury, report, dark, arc]
+lines:
+  - who: char:lan
+    en: 'The plant has gone two hundred days without a lost-time injury, and the safety bonus depends on it. Nam is off for three weeks. That makes it a lost-time injury. It could also be recorded as first aid, with a medical leave for something else. I am not telling you what to write. I am telling you what it costs.'
+    vi: 'Nhà máy đã hai trăm ngày không có chấn thương mất ngày công, và thưởng an toàn phụ thuộc vào đó. Nam nghỉ ba tuần. Như vậy là chấn thương mất ngày công. Cũng có thể ghi là sơ cứu, và nghỉ ốm vì lý do khác. Chị không bảo em viết gì. Chị nói điều đó tốn bao nhiêu.'
+choices:
+  - en: 'Record it as a lost-time injury, with what happened, including that the guard was not fully set, and the fix for it.'
+    vi: 'Ghi là chấn thương mất ngày công, kèm chuyện đã xảy ra, kể cả việc tấm chắn chưa được đặt đủ, và cách sửa.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.75
+        en: 'The counter goes back to zero. Lan says nothing about the bonus. She signs the report, and asks Binh to review the guard on every press.'
+        vi: 'Bộ đếm về không. Chị Lan không nói gì về thưởng. Chị ký báo cáo và nhờ anh Bình rà soát tấm chắn mọi máy ép.'
+        effects:
+          [
+            rel lan trust +1,
+            rel binh trust +5,
+            rel hoa trust +4,
+            rep.boss -1,
+            rep.staff +3,
+            stress +3,
+            fact reported_injury_honestly witnessed,
+            arc the_hand investigation,
+          ]
+      - p: 0.25
+        ok: false
+        en: "Mr Cuong asks why Line 3 broke the plant's record. Lan answers with your report, and tells him it was a good one."
+        vi: 'Anh Cường hỏi vì sao chuyền 3 phá kỷ lục của nhà máy. Chị Lan trả lời bằng báo cáo của em và nói với anh đó là một báo cáo tốt.'
+        effects:
+          [
+            rel lan trust +3,
+            rel binh trust +4,
+            rep.boss -2,
+            rep.staff +3,
+            stress +5,
+            fact reported_injury_honestly witnessed,
+            arc the_hand investigation,
+          ]
+  - en: "Record it as an injury but classify it as 'operator error', since Nam was told to wait for the pause check."
+    vi: "Ghi là chấn thương nhưng phân loại 'lỗi người vận hành' vì Nam đã được dặn chờ bước kiểm tra tạm dừng."
+    outcomes:
+      - p: 0.6
+        en: 'The report is accepted. Nam learns that he was at fault, and that his three weeks of pay are on a different line. Hoa reads it and puts it down very gently.'
+        vi: 'Báo cáo được chấp nhận. Nam biết mình là người có lỗi, và ba tuần lương của cậu nằm ở một dòng khác. Chị Hoa đọc và đặt nó xuống rất nhẹ.'
+        effects:
+          [
+            rel lan trust +1,
+            rel hoa trust -8,
+            rel binh trust -4,
+            rep.staff -5,
+            stress +2,
+            fact blamed_injured_worker private,
+            arc the_hand investigation,
+          ]
+      - p: 0.4
+        ok: false
+        en: 'Nam asks Binh to read the report back to him. Binh does, and asks who told Nam to wait for the pause check, since no one told him.'
+        vi: 'Nam nhờ anh Bình đọc lại báo cáo cho cậu. Anh Bình đọc, và hỏi ai bảo Nam chờ bước kiểm tra tạm dừng, vì không ai bảo cả.'
+        effects:
+          [
+            rel lan trust -1,
+            rel hoa trust -10,
+            rel binh trust -8,
+            rep.boss -4,
+            rep.staff -8,
+            stress +5,
+            fact blamed_injured_worker witnessed,
+            arc the_hand investigation,
+          ]
+  - en: 'Record it as first aid, and give Nam three weeks of sick leave under another reason.'
+    vi: 'Ghi là sơ cứu và cho Nam nghỉ ba tuần với lý do khác.'
+    outcomes:
+      - p: 0.65
+        en: 'The counter stays at two hundred. Nam gets his pay, and takes the paper without looking at it. Lan nods, and does not look at you either.'
+        vi: 'Bộ đếm vẫn ở hai trăm. Nam nhận lương và cầm tờ giấy mà không nhìn. Chị Lan gật đầu và cũng không nhìn anh/chị.'
+        effects:
+          [
+            rel lan trust +4,
+            rel hoa trust -6,
+            rel binh trust -5,
+            rep.boss +2,
+            stress +1,
+            fact hid_injury private,
+            arc the_hand investigation,
+          ]
+      - p: 0.35
+        ok: false
+        en: "The clinic's bill goes to the insurer with the real diagnosis. Binh gets a copy, and puts it next to the first-aid report on his desk."
+        vi: 'Hoá đơn của phòng khám gửi cho bảo hiểm kèm chẩn đoán thật. Anh Bình nhận một bản và đặt nó cạnh báo cáo sơ cứu trên bàn.'
+        effects:
+          [
+            rel lan trust +2,
+            rel hoa trust -8,
+            rel binh trust -10,
+            rep.boss -6,
+            rep.staff -6,
+            stress +6,
+            fact hid_injury witnessed,
+            arc the_hand investigation,
+          ]
+---
+scene: sup.binh_investigates
+weight: 0
+place: factory_floor
+tags: [injury, investigation, arc]
+lines:
+  - who: char:binh
+    en: 'I have to complete the incident investigation. I would like to talk to Nam, to Hoa and to you, separately, and look at the press records. I want to know why the hand got there, not who to blame.'
+    vi: 'Anh phải hoàn tất điều tra sự cố. Anh muốn nói chuyện với Nam, chị Hoa và em, riêng từng người, và xem hồ sơ máy ép. Anh muốn biết vì sao bàn tay vào đó, không phải ai để đổ lỗi.'
+choices:
+  - en: 'Tell Binh the whole sequence, including the target pressure, the speed, and your part in it, and give him the shift records.'
+    vi: 'Kể với anh Bình toàn bộ chuỗi sự việc, kể cả áp lực chỉ tiêu, tốc độ và phần của anh/chị, và đưa ông các hồ sơ ca.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: 'Binh writes it all down, and finds the root cause: a sensor that was bypassed two months ago, and a target that rewarded the bypass. The fix is a new sensor, and a recommendation to review the target.'
+        vi: 'Anh Bình ghi lại tất cả và tìm ra nguyên nhân gốc: một cảm biến bị bỏ qua hai tháng trước và một chỉ tiêu thưởng cho việc bỏ qua đó. Biện pháp là thay cảm biến mới, kèm kiến nghị rà soát chỉ tiêu.'
+        effects:
+          [
+            rel binh trust +5,
+            rel hoa trust +3,
+            rel lan trust -1,
+            rep.boss -1,
+            stress +4,
+            arc the_hand return,
+          ]
+  - en: 'Answer his questions, and give him the press records, without volunteering your own part.'
+    vi: 'Trả lời câu hỏi và đưa hồ sơ máy ép, không chủ động nói phần của mình.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "Binh finds the bypassed sensor himself and writes that 'supervision' did not detect it. He does not name you. The word is enough."
+        vi: "Anh Bình tự tìm ra cảm biến bị bỏ qua và ghi rằng 'giám sát' không phát hiện. Anh không nêu tên em. Một từ là đủ."
+        effects: [rel binh trust +1, stress +3, arc the_hand return]
+  - en: 'Tell Binh that Nam bypassed the sensor himself, and that you only found out afterwards.'
+    vi: 'Nói với anh Bình rằng Nam tự bỏ qua cảm biến và anh/chị chỉ biết sau đó.'
+    outcomes:
+      - p: 0.5
+        en: 'Binh writes it down. Nam is given a written warning, and Hoa takes her chair out of the room.'
+        vi: 'Anh Bình ghi lại. Nam nhận cảnh cáo bằng văn bản, và chị Hoa đẩy ghế ra khỏi phòng.'
+        effects:
+          [
+            rel binh trust -3,
+            rel hoa trust -8,
+            rep.staff -5,
+            stress +2,
+            fact blamed_injured_worker private,
+            arc the_hand return,
+          ]
+      - p: 0.5
+        ok: false
+        en: 'Hoa tells Binh that you asked the crew to bypass it for the week of the rush order, in front of four people. Binh asks you to say that again.'
+        vi: 'Chị Hoa nói với anh Bình rằng anh/chị đã bảo tổ bỏ qua nó trong tuần đơn gấp, trước mặt bốn người. Anh Bình nhờ anh/chị nói lại.'
+        effects:
+          [
+            rel binh trust -10,
+            rel hoa trust -8,
+            rel lan trust -6,
+            rep.boss -8,
+            rep.staff -8,
+            stress +7,
+            fact blamed_injured_worker witnessed,
+            arc the_hand return,
+          ]
+---
+scene: sup.nam_returns
+weight: 0
+place: factory_floor
+tags: [injury, people, consequence, arc]
+lines:
+  - who: char:nam
+    en: 'The doctor says I can do light duty from next week. Lan wants me back on the press on Monday, because we are short. I can open and close the hand, a little. I do not want to say no to you.'
+    vi: 'Bác sĩ nói tuần sau em làm việc nhẹ được. Chị Lan muốn em quay lại máy ép thứ Hai vì mình thiếu người. Em nắm mở bàn tay được một chút. Em không muốn nói không với anh/chị.'
+choices:
+  - en: 'Keep Nam on light duty as the doctor says, cover the press with a trained temp, and tell Lan the reason in writing.'
+    vi: 'Giữ Nam làm việc nhẹ như bác sĩ nói, dùng một người thời vụ đã được huấn luyện thay ở máy ép và nói rõ lý do với chị Lan bằng văn bản.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.8
+        en: 'Lan grumbles, and approves it. Nam does the packing, and tells the crew that his supervisor did not make him ask. His hand gets better.'
+        vi: 'Chị Lan càu nhàu rồi chấp thuận. Nam làm đóng gói và nói với tổ rằng giám sát của cậu không bắt cậu phải xin. Tay cậu khá dần.'
+        effects:
+          [
+            rel hoa trust +4,
+            rel lan trust -1,
+            rel binh trust +2,
+            rep.staff +4,
+            stress +3,
+            arc the_hand end,
+          ]
+      - p: 0.2
+        ok: false
+        en: 'Lan insists that a trained temp is not available this month, and asks you to find the hours some other way. You find them, and it costs you two weekends.'
+        vi: 'Chị Lan khẳng định tháng này không có người thời vụ đã huấn luyện và nhờ anh/chị tìm giờ bằng cách khác. Anh/chị tìm được, và tốn của anh/chị hai ngày cuối tuần.'
+        effects: [rel hoa trust +4, rel lan trust -2, rep.staff +3, stress +6, arc the_hand end]
+  - en: 'Put Nam on a lighter press with a partner for the first week, and check his grip before every shift.'
+    vi: 'Cho Nam làm ở máy nhẹ hơn có người đi cùng trong tuần đầu và kiểm tra sức nắm của cậu trước mỗi ca.'
+    outcomes:
+      - p: 1
+        en: 'It is slower, and safe enough. Nam does not say anything, and does the checks without being asked.'
+        vi: 'Chậm hơn, và đủ an toàn. Nam không nói gì và tự làm các kiểm tra không cần nhắc.'
+        effects: [rel hoa trust +2, rel binh trust +1, stress +3, arc the_hand end]
+  - en: 'Put Nam back on the press on Monday, since he says he is fine and the line is short.'
+    vi: 'Cho Nam quay lại máy ép thứ Hai vì cậu nói ổn và chuyền đang thiếu người.'
+    outcomes:
+      - p: 0.6
+        en: 'He runs the press all week. His hand holds, and so does his silence. The line makes its number.'
+        vi: 'Cậu chạy máy ép cả tuần. Tay cậu chịu được, và sự im lặng cũng vậy. Chuyền đạt số.'
+        effects:
+          [
+            rel hoa trust -6,
+            rel lan trust +3,
+            rep.staff -3,
+            stress +1,
+            fact forced_early_return private,
+            arc the_hand end,
+          ]
+      - p: 0.4
+        ok: false
+        en: "On Thursday Nam's grip fails on a part, and it drops on his foot. He is off again, and this time Binh's report has two incidents on it with your signature."
+        vi: 'Thứ Năm sức nắm của Nam hụt khi cầm một chi tiết, và nó rơi xuống chân cậu. Cậu lại nghỉ, và lần này báo cáo của anh Bình có hai sự cố kèm chữ ký của anh/chị.'
+        effects:
+          [
+            rel hoa trust -10,
+            rel lan trust -4,
+            rel binh trust -10,
+            rep.boss -8,
+            rep.staff -8,
+            stress +7,
+            fact forced_early_return witnessed,
+            arc the_hand end,
+          ]
+---
+arc: the_roster
+title:
+  en: 'The roster'
+  vi: 'Lịch ca'
+stages:
+  - { id: late, event: sup.tai_late }
+  - { id: favourite, event: sup.favourite_overtime, delay: 2-4 }
+  - { id: breaks, event: sup.break_dispute, delay: 2-4 }
+---
+scene: sup.tai_late
+arc: the_roster
+place: factory_floor
+tags: [people, attendance, dark]
+weight: 3
+cooldown: 40
+when: [turn >= 10, turn <= 36]
+lines:
+  - who: char:tai
+    en: 'I am late again, I know. My daughter is in hospital with a fever, and I cannot leave her until my sister comes at seven. I can work through lunch to make up the time. I do not want to lose my pay, and I do not want to lose the job.'
+    vi: 'Em lại đến trễ, em biết. Con gái em nằm viện sốt, em không thể rời con cho đến khi chị em đến lúc bảy giờ. Em có thể làm bù giờ ăn trưa. Em không muốn mất lương, và không muốn mất việc.'
+choices:
+  - en: 'Agree a temporary start of seven-thirty for two weeks with written approval from Lan, and record the hours he makes up.'
+    vi: 'Thống nhất giờ vào ca bảy giờ rưỡi trong hai tuần có chị Lan duyệt bằng văn bản và ghi lại số giờ anh bù.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.8
+        en: 'Lan signs, after a long look at the page. Tai makes up the time, and the crew sees that the supervisor can be fair and also hold a line.'
+        vi: 'Chị Lan ký sau một cái nhìn dài vào trang giấy. Tài làm bù giờ, và cả tổ thấy giám sát có thể công bằng và vẫn giữ được ranh giới.'
+        effects:
+          [rel hoa trust +3, rel lan trust +1, rep.staff +4, stress +2, arc the_roster favourite]
+      - p: 0.2
+        ok: false
+        en: 'Lan says that exceptions for one worker mean exceptions for everyone, and declines. You help Tai find a few days of leave instead.'
+        vi: 'Chị Lan nói ngoại lệ cho một người nghĩa là ngoại lệ cho tất cả và từ chối. Anh/chị giúp Tài tìm được vài ngày nghỉ phép thay thế.'
+        effects:
+          [rel hoa trust +2, rel lan trust -2, rep.staff +2, stress +3, arc the_roster favourite]
+  - en: 'Apply the rule: a late arrival is docked by the minute, and a warning goes on the file after three.'
+    vi: 'Áp dụng quy định: đến trễ bị trừ theo phút và cảnh cáo vào hồ sơ sau ba lần.'
+    outcomes:
+      - p: 1
+        en: 'The rule is the rule. Tai is docked. The crew watches how you treated someone with a sick child, and decides what they will tell you in future.'
+        vi: 'Quy định là quy định. Tài bị trừ lương. Cả tổ nhìn cách anh/chị đối xử với người có con ốm và quyết định sau này sẽ nói gì với anh/chị.'
+        effects:
+          [
+            rel hoa trust -4,
+            rel lan trust +1,
+            rep.staff -4,
+            stress +1,
+            fact docked_pay_unfairly private,
+            arc the_roster favourite,
+          ]
+  - en: "Say it is fine, off the record, and cover for Tai's lateness by editing the attendance sheet."
+    vi: 'Nói không sao, ngoài hồ sơ, và che việc đi trễ của Tài bằng cách sửa bảng chấm công.'
+    outcomes:
+      - p: 0.7
+        en: 'Tai is grateful. Hoa watches the sheet being edited. Everybody on the crew wants a favour like that next week.'
+        vi: 'Tài biết ơn. Chị Hoa nhìn bảng bị sửa. Ai trong tổ cũng muốn một ân huệ như vậy vào tuần sau.'
+        effects:
+          [
+            rel hoa trust -2,
+            rel lan trust -2,
+            rep.staff +1,
+            stress +1,
+            fact edited_attendance_sheet private,
+            arc the_roster favourite,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'HR compares the badge swipes with the attendance sheet. Oanh asks you politely why they differ on eleven days.'
+        vi: 'Nhân sự đối chiếu thẻ quẹt với bảng chấm công. Chị Oanh hỏi anh/chị lịch sự vì sao chúng lệch nhau mười một ngày.'
+        effects:
+          [
+            rel hoa trust -4,
+            rel lan trust -4,
+            rep.boss -4,
+            stress +4,
+            fact edited_attendance_sheet witnessed,
+            arc the_roster favourite,
+          ]
+---
+scene: sup.favourite_overtime
+weight: 0
+place: factory_floor
+tags: [people, overtime, dark, arc]
+lines:
+  - who: char:hoa
+    en: 'The rush week has extra overtime hours, and everybody wants them. I have a list of the people who always stay late and never complain. They are my friends, and they are good. Put them first. Nobody else needs to know why.'
+    vi: 'Tuần gấp có thêm giờ làm thêm và ai cũng muốn. Chị có danh sách những người luôn ở lại muộn và không bao giờ than. Họ là bạn chị, và họ giỏi. Cho họ trước. Không ai khác cần biết vì sao.'
+choices:
+  - en: "Offer the hours to everyone on a rotation posted on the board, with skill needs marked, and give Hoa's friends their share of it."
+    vi: 'Chia giờ cho tất cả theo lịch luân phiên dán trên bảng, có đánh dấu nhu cầu kỹ năng, và cho bạn của chị Hoa phần của họ.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.7
+        en: 'Hoa grumbles for a day, then understands. The rota is on the board, and Tai gets two shifts that he needed. The crew reads the board twice.'
+        vi: 'Chị Hoa càu nhàu một ngày rồi hiểu. Lịch luân phiên có trên bảng, và Tài được hai ca anh cần. Cả tổ đọc bảng hai lần.'
+        effects:
+          [
+            rel hoa trust -2,
+            rep.staff +4,
+            stress +3,
+            fact posted_fair_rota witnessed,
+            arc the_roster breaks,
+          ]
+      - p: 0.3
+        ok: false
+        en: "Hoa's friends say they are being punished for being loyal. Two of them stop volunteering, and you are short for a week."
+        vi: 'Bạn của chị Hoa nói họ bị phạt vì trung thành. Hai người thôi tình nguyện, và anh/chị thiếu người một tuần.'
+        effects:
+          [
+            rel hoa trust -5,
+            rep.staff +2,
+            stress +5,
+            fact posted_fair_rota witnessed,
+            arc the_roster breaks,
+          ]
+  - en: "Give Hoa's list first priority, but open the remaining hours to the rest, and tell her you will review it in a month."
+    vi: 'Cho danh sách của chị Hoa ưu tiên trước, nhưng mở phần giờ còn lại cho những người khác và nói với chị sẽ xem lại sau một tháng.'
+    outcomes:
+      - p: 1
+        en: 'It is a compromise that the crew can see and argue about. Hoa is satisfied, and others are not, and a month is a long time.'
+        vi: 'Một thỏa hiệp mà cả tổ nhìn thấy và tranh luận được. Chị Hoa hài lòng, những người khác thì không, và một tháng là rất dài.'
+        effects: [rel hoa trust +2, rep.staff -1, stress +3, arc the_roster breaks]
+  - en: "Give Hoa's list all the hours, and keep it quiet."
+    vi: 'Cho danh sách của chị Hoa toàn bộ số giờ và giữ im lặng.'
+    outcomes:
+      - p: 0.7
+        en: 'Hoa is delighted, and her friends are loyal to you. The others see the same eight faces staying late and draw their conclusions.'
+        vi: 'Chị Hoa rất vui, và bạn chị trung thành với anh/chị. Những người khác thấy cùng tám gương mặt ở lại muộn và rút ra kết luận.'
+        effects:
+          [
+            rel hoa trust +5,
+            rep.staff -5,
+            stress +1,
+            fact favoured_friends_overtime private,
+            arc the_roster breaks,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'Tai, who needed the hours, sees the payslips of his colleagues on the table in the canteen. He brings it to Lan, politely, in writing.'
+        vi: 'Tài, người cần giờ làm thêm, thấy phiếu lương của đồng nghiệp trên bàn căng tin. Anh mang chuyện này đến chị Lan, lịch sự, bằng văn bản.'
+        effects:
+          [
+            rel hoa trust +2,
+            rel lan trust -5,
+            rep.boss -4,
+            rep.staff -8,
+            stress +5,
+            fact favoured_friends_overtime witnessed,
+            arc the_roster breaks,
+          ]
+---
+scene: sup.break_dispute
+weight: 0
+place: factory_floor
+tags: [people, breaks, pressure, arc]
+lines:
+  - who: char:hoa
+    en: 'The crew has stopped asking and decided. During the rush weeks the lunch break was cut from forty-five minutes to twenty. They say that they will take the full break tomorrow, with or without your agreement. I am telling you as a friend, not as a threat.'
+    vi: 'Cả tổ thôi hỏi và đã quyết định. Trong các tuần gấp giờ nghỉ trưa bị cắt từ bốn mươi lăm phút xuống hai mươi. Họ nói ngày mai họ sẽ nghỉ đủ, dù em đồng ý hay không. Chị nói với tư cách bạn, không phải đe dọa.'
+choices:
+  - en: 'Agree that the full break is restored, and propose a staggered break so that the line never stops, and tell Lan before the crew does.'
+    vi: 'Đồng ý khôi phục giờ nghỉ đầy đủ, đề xuất nghỉ so le để chuyền không bao giờ dừng, và báo chị Lan trước khi tổ báo.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.75
+        en: "The staggered break costs four percent of output and gives the crew their forty-five minutes. Lan agrees after a short, loud call. Hoa says: 'We were not going to forget this.'"
+        vi: "Nghỉ so le tốn bốn phần trăm sản lượng và trả lại cho tổ bốn mươi lăm phút. Chị Lan đồng ý sau một cuộc gọi ngắn và lớn tiếng. Chị Hoa nói: 'Bọn chị sẽ không quên chuyện này.'"
+        effects:
+          [
+            rel hoa trust +5,
+            rel lan trust -2,
+            rep.staff +5,
+            rep.production +2,
+            stress +4,
+            fact negotiated_break_fairly witnessed,
+            arc the_roster end,
+          ]
+      - p: 0.25
+        ok: false
+        en: 'Lan says no change during the rush, and tells you it is your job to hold the line. You tell the crew, and they take the full break anyway, calmly, the next day.'
+        vi: 'Chị Lan nói không đổi trong đợt gấp và bảo anh/chị giữ chuyền là việc của anh/chị. Anh/chị báo cho tổ và họ vẫn nghỉ đủ, bình tĩnh, ngày hôm sau.'
+        effects: [rel hoa trust +3, rel lan trust -5, rep.staff +2, stress +6, arc the_roster end]
+  - en: 'Ask the crew to wait one more week and promise a proper break after the rush, in writing.'
+    vi: 'Xin tổ chờ thêm một tuần và hứa bằng văn bản sẽ có giờ nghỉ đàng hoàng sau đợt gấp.'
+    outcomes:
+      - p: 0.5
+        en: 'The crew waits. After the rush, you keep your word and the break returns. It costs you some trust that you earn back.'
+        vi: 'Cả tổ chờ. Sau đợt gấp, anh/chị giữ lời và giờ nghỉ trở lại. Anh/chị mất chút lòng tin rồi lấy lại được.'
+        effects: [rel hoa trust +1, rep.staff +1, stress +3, arc the_roster end]
+      - p: 0.5
+        ok: false
+        en: 'The rush runs two weeks longer than planned. You are asked to extend, and the break does not return. The crew remembers the paper you signed.'
+        vi: 'Đợt gấp kéo dài hơn dự kiến hai tuần. Anh/chị bị yêu cầu gia hạn và giờ nghỉ không trở lại. Cả tổ nhớ tờ giấy anh/chị đã ký.'
+        effects:
+          [
+            rel hoa trust -6,
+            rep.staff -5,
+            stress +4,
+            fact broke_a_promise_to_crew private,
+            arc the_roster end,
+          ]
+  - en: 'Refuse and threaten warnings for anyone who stops the line.'
+    vi: 'Từ chối và dọa cảnh cáo bất cứ ai dừng chuyền.'
+    outcomes:
+      - p: 0.5
+        en: 'The crew complies in silence for three days. Then three of them call in sick on the same day.'
+        vi: 'Cả tổ im lặng tuân thủ ba ngày. Rồi ba người cùng xin nghỉ ốm một ngày.'
+        effects:
+          [
+            rel hoa trust -8,
+            rel lan trust +1,
+            rep.staff -6,
+            stress +5,
+            fact broke_a_promise_to_crew private,
+            arc the_roster end,
+          ]
+      - p: 0.5
+        ok: false
+        en: 'Twenty people stop the line at noon and sit on the floor, politely. Lan arrives, then Mr Cuong. A photo of the sitting crew goes into the factory chat.'
+        vi: 'Hai mươi người dừng chuyền lúc trưa và ngồi xuống sàn, lịch sự. Chị Lan đến, rồi anh Cường. Một bức ảnh tổ ngồi đã vào nhóm chat của nhà máy.'
+        effects:
+          [
+            rel hoa trust -10,
+            rel lan trust -6,
+            rep.boss -8,
+            rep.production -6,
+            rep.staff -10,
+            stress +8,
+            fact broke_a_promise_to_crew public,
+            arc the_roster end,
+          ]
+---
+fact: promised_impossible_target
+severity: 4
+category: integrity
+en: 'you agreed to a target the presses could not reach within their rating'
+vi: 'bạn nhận một chỉ tiêu mà các máy ép không thể đạt trong định mức'
+lesson:
+  en: 'Saying yes to a target that needs the machines to run past their rating moves the pressure from the meeting to the floor. The crew will pay for it before the directors do.'
+  vi: 'Nói đồng ý với một chỉ tiêu cần máy chạy vượt định mức chuyển áp lực từ cuộc họp xuống xưởng. Tổ sẽ trả giá trước ban giám đốc.'
+traces:
+  - { type: witness, visibility: 0.5, detectors: [boss, staff] }
+witnessed:
+  boss: -3
+  staff: -5
+public:
+  boss: -6
+---
+fact: refused_unsafe_speed
+severity: 2
+category: integrity
+en: 'you kept the pause check and refused to run a press above its rating'
+vi: 'bạn giữ bước kiểm tra tạm dừng và từ chối cho máy ép chạy vượt định mức'
+lesson:
+  en: "Refusing the speed-up costs units this week and buys the crew's trust for the year. It is also what a fair inspection looks for."
+  vi: 'Từ chối tăng tốc tốn sản phẩm tuần này và đổi lại lòng tin của tổ cả năm. Đó cũng là điều một cuộc thanh tra công bằng tìm kiếm.'
+witnessed:
+  boss: 2
+  production: 3
+  staff: 5
+public:
+  boss: 4
+  staff: 6
+---
+fact: ran_above_rated_speed
+severity: 6
+category: integrity
+en: 'you ran a press above its rated speed and left the checks off the record'
+vi: 'bạn cho máy ép chạy vượt tốc độ định mức và để các bước kiểm tra ngoài hồ sơ'
+lesson:
+  en: 'A rating is the speed at which the guard and the sensors can still protect a hand. Running above it, and not recording it, hides the risk from the people who could have stopped it.'
+  vi: 'Định mức là tốc độ mà tấm chắn và cảm biến còn bảo vệ được một bàn tay. Chạy vượt và không ghi lại giấu rủi ro khỏi những người có thể ngăn nó.'
+traces:
+  - { type: witness, visibility: 0.7, detectors: [internal_audit, boss, staff] }
+witnessed:
+  boss: -8
+  production: -8
+  staff: -10
+public:
+  boss: -14
+  staff: -14
+---
+fact: reported_true_count
+severity: 2
+category: integrity
+en: 'you reported the true output count with the shortfall explained'
+vi: 'bạn báo cáo số sản lượng thật kèm giải thích phần thiếu'
+lesson:
+  en: 'A true count with an explanation is a small embarrassment on Saturday. A false one is a large one later, and everyone who relied on it learns that your numbers need checking.'
+  vi: 'Một số đếm thật kèm giải thích là một sự bối rối nhỏ vào thứ Bảy. Một số sai là sự bối rối lớn sau này, và mọi người dựa vào nó biết số của anh/chị cần kiểm tra lại.'
+witnessed:
+  boss: 3
+  qc: 3
+public:
+  boss: 5
+---
+fact: inflated_output_count
+severity: 6
+category: integrity
+en: 'you added units to the weekly count that had not been made'
+vi: 'bạn cộng vào số đếm tuần những sản phẩm chưa được làm ra'
+lesson:
+  en: "An invented count moves the shortfall to the next person: to the packing list, to the shipment and, if you are unlucky, to the buyer's audit."
+  vi: 'Một số đếm bịa dời phần thiếu sang người kế tiếp: sang phiếu đóng gói, lô hàng và, nếu xui, đợt đánh giá của khách.'
+traces:
+  - { type: document, visibility: 0.7, detectors: [qc, internal_audit, buyer, boss] }
+witnessed:
+  boss: -8
+  qc: -8
+public:
+  boss: -14
+  buyer: -10
+---
+fact: delayed_medical_care
+severity: 5
+category: integrity
+en: 'you kept an injured worker on the line for hours before he saw a doctor'
+vi: 'bạn giữ một công nhân bị thương trên chuyền nhiều giờ trước khi cậu gặp bác sĩ'
+lesson:
+  en: "A delay of hours turns a treatable injury into a worse one, and the decision to delay is the supervisor's, not the worker's."
+  vi: 'Chậm nhiều giờ biến một chấn thương chữa được thành tệ hơn, và quyết định chậm là của giám sát, không phải của công nhân.'
+traces:
+  - { type: witness, visibility: 0.8, detectors: [boss, staff, internal_audit] }
+witnessed:
+  boss: -6
+  staff: -8
+public:
+  boss: -10
+  staff: -12
+---
+fact: reported_injury_honestly
+severity: 2
+category: integrity
+en: 'you recorded an injury as it was, including your own part'
+vi: 'bạn ghi nhận một chấn thương đúng như bản chất, kể cả phần của mình'
+lesson:
+  en: 'An honest injury record breaks a safety streak and fixes the guard. A hidden one keeps the streak and leaves the guard as it was.'
+  vi: 'Một hồ sơ chấn thương trung thực phá kỷ lục an toàn và sửa tấm chắn. Một hồ sơ bị giấu giữ kỷ lục và để tấm chắn như cũ.'
+witnessed:
+  boss: 3
+  production: 4
+  staff: 5
+public:
+  boss: 5
+  staff: 7
+---
+fact: blamed_injured_worker
+severity: 6
+category: integrity
+en: "you wrote an injury up as the worker's fault when the line's pressure was part of it"
+vi: 'bạn ghi một chấn thương là lỗi của công nhân trong khi áp lực của chuyền là một phần nguyên nhân'
+lesson:
+  en: 'Blaming the person who was hurt closes the report and keeps the cause alive. The next person at the press inherits it.'
+  vi: 'Đổ lỗi cho người bị thương đóng báo cáo và giữ nguyên nguyên nhân. Người đứng máy kế tiếp thừa hưởng nó.'
+traces:
+  - { type: document, visibility: 0.7, detectors: [internal_audit, boss, staff] }
+witnessed:
+  boss: -8
+  production: -8
+  staff: -10
+public:
+  boss: -14
+  staff: -14
+---
+fact: hid_injury
+severity: 8
+category: integrity
+en: 'you recorded a lost-time injury as first aid and gave the worker leave for another reason'
+vi: 'bạn ghi chấn thương mất ngày công là sơ cứu và cho công nhân nghỉ vì lý do khác'
+lesson:
+  en: "An injury that is hidden for a bonus is still an injury. The doctor's bill, the insurer and the worker all know the truth, and the safety record becomes a falsified record."
+  vi: 'Một chấn thương bị giấu vì tiền thưởng vẫn là chấn thương. Hóa đơn bác sĩ, bảo hiểm và công nhân đều biết sự thật, và hồ sơ an toàn trở thành hồ sơ giả.'
+traces:
+  - { type: record, visibility: 0.8, detectors: [internal_audit, boss, staff] }
+witnessed:
+  boss: -12
+  production: -10
+  staff: -12
+public:
+  boss: -20
+  staff: -18
+---
+fact: forced_early_return
+severity: 6
+category: integrity
+en: 'you put an injured worker back on the press before he was fit'
+vi: 'bạn cho một công nhân bị thương quay lại máy ép trước khi đủ sức'
+lesson:
+  en: "A worker who says 'I am fine' to a supervisor is answering the supervisor, not the doctor. The decision to return is yours, and so is the second injury."
+  vi: "Công nhân nói 'em ổn' với giám sát là trả lời giám sát, không phải bác sĩ. Quyết định cho quay lại là của anh/chị, và chấn thương thứ hai cũng vậy."
+traces:
+  - { type: witness, visibility: 0.7, detectors: [boss, staff, internal_audit] }
+witnessed:
+  boss: -8
+  staff: -10
+public:
+  boss: -14
+  staff: -14
+---
+fact: docked_pay_unfairly
+severity: 4
+category: integrity
+en: 'you applied the attendance rule to a worker with a sick child, with no discretion and no record of why'
+vi: 'bạn áp dụng quy định chuyên cần cho công nhân có con ốm, không linh hoạt và không ghi lý do'
+lesson:
+  en: 'A rule applied without judgement is not fairness; it is the absence of a decision. The crew learns what to hide from you.'
+  vi: 'Một quy định áp dụng không có phán đoán không phải công bằng; đó là sự vắng mặt của một quyết định. Tổ học được điều gì cần giấu anh/chị.'
+witnessed:
+  staff: -5
+public:
+  staff: -8
+---
+fact: edited_attendance_sheet
+severity: 5
+category: integrity
+en: 'you edited the attendance sheet to cover for a late worker'
+vi: 'bạn sửa bảng chấm công để che cho một công nhân đi trễ'
+lesson:
+  en: 'An edited attendance sheet is an unwritten rule that favours the person you like. HR compares badge swipes, and every other worker wants the same favour.'
+  vi: 'Một bảng chấm công bị sửa là quy định ngầm ưu ái người anh/chị thương. Nhân sự đối chiếu thẻ quẹt, và mọi công nhân khác đều muốn ân huệ tương tự.'
+traces:
+  - { type: record, visibility: 0.7, detectors: [internal_audit, boss] }
+witnessed:
+  boss: -6
+  staff: -4
+public:
+  boss: -10
+  staff: -6
+---
+fact: posted_fair_rota
+severity: 1
+category: integrity
+en: 'you posted a rota for overtime that everyone could read'
+vi: 'bạn dán lịch làm thêm giờ để mọi người đều đọc được'
+lesson:
+  en: 'A rota on the wall costs you the favour of your friends and earns the trust of everyone else. People forgive a rule they can read.'
+  vi: 'Một lịch dán trên tường khiến anh/chị mất thiện cảm của bạn bè và có được lòng tin của mọi người khác. Người ta tha thứ cho quy tắc họ đọc được.'
+witnessed:
+  staff: 4
+public:
+  staff: 6
+---
+fact: favoured_friends_overtime
+severity: 4
+category: integrity
+en: "you gave the overtime to a crew member's friends and kept it quiet"
+vi: 'bạn cho giờ làm thêm vào nhóm bạn của một thành viên trong tổ và giữ im lặng'
+lesson:
+  en: 'A quiet favour is read by everyone who did not get it. The overtime goes to the same faces, and the rest of the crew decides how loyal to be.'
+  vi: 'Một ân huệ lặng lẽ bị mọi người không được hưởng đọc ra. Giờ làm thêm vào cùng một nhóm người, và phần còn lại của tổ quyết định mình trung thành đến đâu.'
+traces:
+  - { type: record, visibility: 0.6, detectors: [finance, boss, staff] }
+witnessed:
+  boss: -4
+  staff: -8
+public:
+  boss: -8
+  staff: -12
+---
+fact: negotiated_break_fairly
+severity: 1
+category: integrity
+en: 'you restored the full lunch break and found the time elsewhere'
+vi: 'bạn khôi phục giờ nghỉ trưa đầy đủ và tìm thời gian ở chỗ khác'
+lesson:
+  en: 'A break is a right, not a favour. Restoring it costs a few percent of output and tells the crew what their supervisor stands for.'
+  vi: 'Giờ nghỉ là quyền, không phải ân huệ. Khôi phục nó tốn vài phần trăm sản lượng và cho tổ biết giám sát của họ đứng về phía nào.'
+witnessed:
+  boss: 1
+  staff: 5
+public:
+  boss: 2
+  staff: 7
+---
+fact: broke_a_promise_to_crew
+severity: 4
+category: integrity
+en: 'you promised the crew something in writing and did not keep it'
+vi: 'bạn hứa với tổ điều gì đó bằng văn bản và không giữ lời'
+lesson:
+  en: 'A written promise to the crew becomes the measure of every future promise. Broken once, it is quoted for a year.'
+  vi: 'Một lời hứa bằng văn bản với tổ trở thành thước đo mọi lời hứa sau này. Phá một lần, nó được trích dẫn cả năm.'
+traces:
+  - { type: document, visibility: 0.7, detectors: [boss, staff] }
+witnessed:
+  boss: -4
+  staff: -8
+public:
+  boss: -8
+  staff: -12
+---
+fact: polished_supervisor_review
+severity: 3
+category: integrity
+en: 'you left the near misses and the unrecorded nights out of your own review'
+vi: 'bạn bỏ các lần suýt tai nạn và những ca đêm không ghi nhận ra khỏi buổi đánh giá của chính mình'
+lesson:
+  en: "A review without the hard nights rewards the wrong skill. The crew's notes are a record too."
+  vi: 'Một buổi đánh giá không có những đêm khó thưởng cho sai kỹ năng. Ghi chú của tổ cũng là hồ sơ.'
+witnessed:
+  boss: -4
+public:
+  boss: -6
+---
+fact: accepted_supervisor_condition
+severity: 3
+category: integrity
+en: 'you accepted the promotion without asking what the condition meant'
+vi: 'bạn nhận thăng chức mà không hỏi điều kiện nghĩa là gì'
+lesson:
+  en: 'A promotion with an unspoken condition is a decision postponed to a worse moment, made by someone who has already said yes.'
+  vi: 'Thăng chức với điều kiện không nói ra là một quyết định hoãn đến thời điểm tệ hơn, do người đã nói có đưa ra.'
+witnessed:
+  boss: -2
+public:
+  boss: -4

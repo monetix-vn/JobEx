@@ -1,0 +1,150 @@
+{
+  "id": "scene.sup.breakdown_pressure",
+  "location": "loc.factory_floor",
+  "cast": ["char:mai"],
+  "lines": [
+    {
+      "speaker": "char:mai",
+      "text_key": "scene.sup.breakdown_pressure.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sup.breakdown_pressure.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.sup.breakdown_pressure.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.mai.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.rep.production",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.sup.breakdown_pressure.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.mai.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sup.breakdown_pressure.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.sup.breakdown_pressure.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.mai.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sup.breakdown_pressure.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.sup.breakdown_pressure.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.mai.trust",
+              "value": -5
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.production",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.ran_machine_past_fault",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.sup.breakdown_pressure.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.mai.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.binh.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 7
+            },
+            {
+              "fact": "fact.ran_machine_past_fault",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+{
+  "id": "scene.sup.heat_day",
+  "location": "loc.factory_floor",
+  "cast": ["char:hoa"],
+  "lines": [
+    {
+      "speaker": "char:hoa",
+      "text_key": "scene.sup.heat_day.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sup.heat_day.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.sup.heat_day.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.hoa.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.production",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.sup.heat_day.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.hoa.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sup.heat_day.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.sup.heat_day.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.hoa.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sup.heat_day.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.sup.heat_day.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.hoa.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.ignored_heat_risk",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.sup.heat_day.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.hoa.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.binh.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": -8
+            },
+            {
+              "delta": "player.stress",
+              "value": 8
+            },
+            {
+              "fact": "fact.ignored_heat_risk",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -259,5 +259,50 @@
     "start": {
       "trust": 0
     }
+  },
+  {
+    "id": "char.hoa",
+    "name_key": "char.hoa.name",
+    "title_key": "char.hoa.title",
+    "department": "production",
+    "home_group": "staff",
+    "traits": ["experienced", "informal_leader", "proud"],
+    "start": {
+      "trust": 5,
+      "loyalty": 5
+    }
+  },
+  {
+    "id": "char.nam",
+    "name_key": "char.nam.name",
+    "title_key": "char.nam.title",
+    "department": "production",
+    "home_group": "staff",
+    "traits": ["young", "eager", "impatient"],
+    "start": {
+      "trust": 10
+    }
+  },
+  {
+    "id": "char.binh",
+    "name_key": "char.binh.name",
+    "title_key": "char.binh.title",
+    "department": "safety",
+    "home_group": "boss",
+    "traits": ["by_the_book", "overworked", "fair"],
+    "start": {
+      "trust": 5
+    }
+  },
+  {
+    "id": "char.tai",
+    "name_key": "char.tai.name",
+    "title_key": "char.tai.title",
+    "department": "production",
+    "home_group": "staff",
+    "traits": ["skilled", "unreliable_hours", "sick_child"],
+    "start": {
+      "trust": 5
+    }
   }
 ]

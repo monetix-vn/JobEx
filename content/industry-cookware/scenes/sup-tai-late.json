@@ -1,0 +1,178 @@
+{
+  "id": "scene.sup.tai_late",
+  "location": "loc.factory_floor",
+  "cast": ["char:tai"],
+  "lines": [
+    {
+      "speaker": "char:tai",
+      "text_key": "scene.sup.tai_late.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sup.tai_late.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.sup.tai_late.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.hoa.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": 4
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.the_roster",
+              "stage": "favourite"
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.sup.tai_late.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.hoa.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.the_roster",
+              "stage": "favourite"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sup.tai_late.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.sup.tai_late.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.hoa.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.docked_pay_unfairly",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_roster",
+              "stage": "favourite"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sup.tai_late.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.sup.tai_late.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.hoa.trust",
+              "value": -2
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.edited_attendance_sheet",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_roster",
+              "stage": "favourite"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.sup.tai_late.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.hoa.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.edited_attendance_sheet",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_roster",
+              "stage": "favourite"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

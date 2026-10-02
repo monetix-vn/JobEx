@@ -1,0 +1,138 @@
+{
+  "id": "scene.sup.handover_gap",
+  "location": "loc.factory_floor",
+  "cast": ["char:kiet"],
+  "lines": [
+    {
+      "speaker": "char:kiet",
+      "text_key": "scene.sup.handover_gap.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sup.handover_gap.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.sup.handover_gap.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.mai.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.production",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.sup.handover_gap.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sup.handover_gap.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.sup.handover_gap.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sup.handover_gap.c3",
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.sup.handover_gap.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.production",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.skipped_handover",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.sup.handover_gap.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.mai.trust",
+              "value": -5
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.skipped_handover",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

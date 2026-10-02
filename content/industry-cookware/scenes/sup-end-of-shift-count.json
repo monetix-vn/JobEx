@@ -1,0 +1,174 @@
+{
+  "id": "scene.sup.end_of_shift_count",
+  "location": "loc.factory_floor",
+  "cast": ["char:lan"],
+  "lines": [
+    {
+      "speaker": "char:lan",
+      "text_key": "scene.sup.end_of_shift_count.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.sup.end_of_shift_count.c1",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.sup.end_of_shift_count.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.reported_true_count",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_target",
+              "stage": "recount"
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.sup.end_of_shift_count.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.reported_true_count",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_target",
+              "stage": "recount"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.sup.end_of_shift_count.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.sup.end_of_shift_count.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.hoa.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.the_target",
+              "stage": "recount"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.sup.end_of_shift_count.c3",
+      "outcomes": [
+        {
+          "p": 0.65,
+          "narration_key": "scene.sup.end_of_shift_count.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.hoa.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.inflated_output_count",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_target",
+              "stage": "recount"
+            }
+          ]
+        },
+        {
+          "p": 0.35,
+          "result": "fail",
+          "narration_key": "scene.sup.end_of_shift_count.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.inflated_output_count",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_target",
+              "stage": "recount"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

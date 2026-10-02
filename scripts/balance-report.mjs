@@ -14,6 +14,7 @@ for (const scenario of [
   'prod-year',
   'purch-year',
   'inv-year',
+  'sup-year',
   'hr-year',
 ]) {
   const result = run(

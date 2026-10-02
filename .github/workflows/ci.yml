@@ -46,6 +46,7 @@ jobs:
       - run: pnpm sim:prod
       - run: pnpm sim:purch
       - run: pnpm sim:inv
+      - run: pnpm sim:sup
       - run: pnpm sim:hr
 
       # 7. Build the web client shell

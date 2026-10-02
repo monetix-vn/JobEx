@@ -1,0 +1,29 @@
+[
+  {
+    "id": "role.prod.supervisor",
+    "department": "dept.production",
+    "level": 1,
+    "title_key": "role.prod.supervisor.title",
+    "blurb_key": "role.prod.supervisor.blurb",
+    "reports_to": "role.prod.manager",
+    "kpis": [
+      { "id": "kpi.output_vs_target", "weight": 0.5 },
+      { "id": "kpi.safety_incidents", "weight": 0.3 }
+    ],
+    "weekly_demand": [
+      { "task": "task.shift_handover", "per_week": [4, 6], "effort_h": 1.5 },
+      { "task": "task.line_supervision", "per_week": [5, 8], "effort_h": 2.0 },
+      { "task": "task.attendance_and_roster", "per_week": [2, 4], "effort_h": 1.0 }
+    ],
+    "approval_limits": { "overtime_hours_week": 0 },
+    "skills": ["leadership", "machine_knowledge", "backbone"],
+    "start_state": {
+      "salary_vnd": 14000000,
+      "stress": 30,
+      "skill.leadership": 40,
+      "skill.machine_knowledge": 45,
+      "skill.backbone": 30
+    },
+    "overhead_hours": 15
+  }
+]
