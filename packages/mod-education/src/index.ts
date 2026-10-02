@@ -55,6 +55,7 @@ const STAT_PATHS = [
   'player.rep.production',
   'player.rep.qc',
   'player.rep.cs',
+  'player.rep.staff',
 ];
 
 const fill = (template: string, values: Record<string, string>): string =>

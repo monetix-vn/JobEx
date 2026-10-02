@@ -283,5 +283,6 @@
   "scene.inv.scapegoat_meeting.c1.ok": "Trang listens, and says, finally: 'It is more than I expected from anyone.' The partners treat it as a firm-level failure, not a personal one. You are suspended, and eventually cleared with a formal reprimand.",
   "scene.inv.scapegoat_meeting.c2": "Say that you built the model as instructed and that the client and Trang chose the assumptions.",
   "scene.inv.scapegoat_meeting.c2.ok": "The partners nod. Trang takes the weight of it, quietly, and never staffs you on a deal again.",
-  "scene.inv.scapegoat_meeting.c2.fail": "Trang has your emails, including the one that says 'built to match forty'. She reads it aloud."
+  "scene.inv.scapegoat_meeting.c2.fail": "Trang has your emails, including the one that says 'built to match forty'. She reads it aloud.",
+  "dept.investment_banking.title": "Investment Banking"
 }

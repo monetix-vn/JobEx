@@ -5,6 +5,9 @@ export interface PickableRole {
   id: string;
   title: string;
   blurb: string;
+  /** Department id and its title; jobs with the same department are grouped under one heading. */
+  department?: string;
+  departmentTitle?: string;
 }
 
 export interface PickerOptions {
@@ -45,7 +48,14 @@ export function mountRolePicker(
     status.append(langs);
   }
   view.append(status, el('p', '', t.pickHint));
+  let lastDept: string | undefined;
   for (const role of roles) {
+    if (role.department !== undefined && role.department !== lastDept) {
+      lastDept = role.department;
+      const heading = el('h3', 'je-dept', role.departmentTitle ?? role.department);
+      heading.dataset.dept = role.department;
+      view.append(heading);
+    }
     const card = el('button', 'je-job');
     card.type = 'button';
     card.dataset.role = role.id;

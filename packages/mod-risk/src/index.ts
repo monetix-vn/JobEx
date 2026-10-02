@@ -58,6 +58,7 @@ const DEFAULT_STRENGTHS: Record<Detector, number> = {
   qc: 0.5,
   buyer: 0.4,
   boss: 0.4,
+  staff: 0.5,
 };
 const DEFAULT_AUDIT_WEEKS = [12, 25, 38, 51];
 const PRIVATE = 1;

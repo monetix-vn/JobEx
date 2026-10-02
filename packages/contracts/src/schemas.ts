@@ -260,14 +260,14 @@ const repDeltas = {
   type: 'object',
   additionalProperties: false,
   properties: Object.fromEntries(
-    ['boss', 'buyer', 'finance', 'production', 'qc', 'cs'].map((g) => [
+    ['boss', 'buyer', 'finance', 'production', 'qc', 'cs', 'staff'].map((g) => [
       g,
       { type: 'number', minimum: -100, maximum: 100 },
     ]),
   ),
 };
 
-const DETECTOR_IDS = ['finance', 'internal_audit', 'qc', 'buyer', 'boss'];
+const DETECTOR_IDS = ['finance', 'internal_audit', 'qc', 'buyer', 'boss', 'staff'];
 
 export const termSchema = {
   $id: `${BASE}term.json`,
@@ -291,7 +291,7 @@ export const characterSchema = {
     name_key: { type: 'string' },
     title_key: { type: 'string' },
     department: { type: 'string' },
-    home_group: { enum: ['boss', 'buyer', 'finance', 'production', 'qc', 'cs'] },
+    home_group: { enum: ['boss', 'buyer', 'finance', 'production', 'qc', 'cs', 'staff'] },
     traits: { type: 'array', items: { type: 'string' } },
     start: {
       type: 'object',

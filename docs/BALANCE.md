@@ -54,3 +54,11 @@ will behave differently.
 | careful | promoted 37, completed 3 | 51 / 51 / 52 | 28 / 31.1 / 36 | 37.8 | pitch_error 100%, the_hours 100%, the_tip 100%, the_valuation 100% |
 | random | fired 26, prosecuted 12, completed 2 | 11 / 20 / 52 | 9 / 21.4 / 44 | 52.2 | pitch_error 95%, the_hours 100%, the_tip 100%, the_valuation 100% |
 | reckless | fired 31, prosecuted 9 | 10 / 14 / 20 | 5 / 14.4 / 26 | 57 | pitch_error 65%, the_hours 95%, the_tip 83%, the_valuation 100% |
+
+### hr-year
+
+| Player | Endings | Weeks (min/median/max) | Decisions (min/mean/max) | Final stress | Storylines started |
+| ------ | ------- | ---------------------- | ------------------------ | ------------ | ------------------ |
+| careful | promoted 40 | 51 / 51 / 51 | 30 / 34.2 / 37 | 40.6 | the_chosen_one 100%, the_complaint 100%, the_list 100%, the_squeeze 100% |
+| random | fired 31, completed 7, prosecuted 2 | 12 / 33 / 52 | 8 / 27.3 / 41 | 31 | the_chosen_one 98%, the_complaint 100%, the_list 63%, the_squeeze 100% |
+| reckless | fired 39, prosecuted 1 | 12 / 19 / 36 | 8 / 21.1 / 33 | 33.1 | the_chosen_one 98%, the_complaint 100%, the_list 15%, the_squeeze 100% |

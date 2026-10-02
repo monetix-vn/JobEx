@@ -46,6 +46,7 @@ export const STYLE = `
 .je-picker h2{margin:0 0 6px;font-size:1.15em;color:#ffd166}
 .je-job{display:block;width:100%;text-align:left;margin-top:8px;padding:10px;font:inherit;color:#eee;background:#33335a;border:3px solid #eee;cursor:pointer}
 .je-job:hover,.je-job:focus{background:#4a4a80}
+.je-dept{margin:16px 0 0;font-size:14px;color:#9ad;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid #556}
 .je-job b{display:block;color:#ffd166;margin-bottom:4px}
 .je-again{margin-top:12px;padding:8px 12px;font:inherit;color:#111;background:#ffd166;border:3px solid #eee;cursor:pointer}
 .je-terms{margin-top:8px;font-size:.9em}

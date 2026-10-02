@@ -1,0 +1,157 @@
+{
+  "id": "scene.hr.cost_cut_twist",
+  "location": "loc.meeting_room",
+  "cast": ["char:cuong", "char:oanh"],
+  "lines": [
+    {
+      "speaker": "char:cuong",
+      "text_key": "scene.hr.cost_cut_twist.l1"
+    },
+    {
+      "speaker": "char:oanh",
+      "text_key": "scene.hr.cost_cut_twist.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.hr.cost_cut_twist.c1",
+      "cost": {
+        "hours": 4
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.hr.cost_cut_twist.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.oanh.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.cuong.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.the_list",
+              "stage": "names"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.hr.cost_cut_twist.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.oanh.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.cuong.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "arc": "arc.the_list",
+              "stage": "names"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.hr.cost_cut_twist.c2",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.hr.cost_cut_twist.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.the_list",
+              "stage": "names"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.hr.cost_cut_twist.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.hr.cost_cut_twist.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.the_list",
+              "stage": "names"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.hr.cost_cut_twist.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.the_list",
+              "stage": "names"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

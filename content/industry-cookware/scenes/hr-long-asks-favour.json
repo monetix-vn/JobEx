@@ -1,0 +1,177 @@
+{
+  "id": "scene.hr.long_asks_favour",
+  "location": "loc.hr_office",
+  "cast": ["char:long", "char:oanh"],
+  "lines": [
+    {
+      "speaker": "char:long",
+      "text_key": "scene.hr.long_asks_favour.l1"
+    },
+    {
+      "speaker": "char:oanh",
+      "text_key": "scene.hr.long_asks_favour.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.hr.long_asks_favour.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.hr.long_asks_favour.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.long.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.documented_conflict_of_interest",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_chosen_one",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.hr.long_asks_favour.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.long.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.documented_conflict_of_interest",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_chosen_one",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.hr.long_asks_favour.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.hr.long_asks_favour.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.long.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.the_chosen_one",
+              "stage": "shortlist"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.hr.long_asks_favour.c3",
+      "outcomes": [
+        {
+          "p": 0.85,
+          "narration_key": "scene.hr.long_asks_favour.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.long.trust",
+              "value": 6
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.promised_hire_to_owner_nephew",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_chosen_one",
+              "stage": "shortlist"
+            }
+          ]
+        },
+        {
+          "p": 0.15,
+          "result": "fail",
+          "narration_key": "scene.hr.long_asks_favour.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.long.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": -7
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.promised_hire_to_owner_nephew",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_chosen_one",
+              "stage": "shortlist"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

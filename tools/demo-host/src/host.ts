@@ -47,6 +47,7 @@ export const FIN_ROLE = 'role.fin.accountant';
 export const PROD_ROLE = 'role.prod.planner';
 export const PURCH_ROLE = 'role.purch.buyer';
 export const INV_ROLE = 'role.inv.analyst';
+export const HR_ROLE = 'role.hr.hrbp';
 
 export interface GameHostOptions {
   /** Content pack files by path relative to the content root, e.g. "core/manifest.json". */
@@ -145,6 +146,8 @@ export interface PlayableRole {
   id: string;
   title: string;
   blurb: string;
+  department: string;
+  departmentTitle: string;
 }
 
 /** The jobs a player can pick: roles that have a blurb, with their text in the given language. */
@@ -159,10 +162,14 @@ export async function listPlayableRoles(
   return registry
     .all('role')
     .filter((r) => r.blurb_key)
-    .sort((a, b) => (a.id < b.id ? -1 : 1))
+    .sort((a, b) =>
+      a.department < b.department ? -1 : a.department > b.department ? 1 : a.id < b.id ? -1 : 1,
+    )
     .map((r) => ({
       id: r.id,
       title: registry.text(locale, r.title_key) ?? r.id,
       blurb: registry.text(locale, r.blurb_key!) ?? '',
+      department: r.department,
+      departmentTitle: registry.text(locale, `${r.department}.title`) ?? r.department,
     }));
 }

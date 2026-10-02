@@ -1,0 +1,178 @@
+{
+  "id": "scene.hr.blame_meeting",
+  "location": "loc.meeting_room",
+  "cast": ["char:cuong"],
+  "lines": [
+    {
+      "speaker": "char:cuong",
+      "text_key": "scene.hr.blame_meeting.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.hr.blame_meeting.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.hr.blame_meeting.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": -1
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.loan.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 7
+            },
+            {
+              "fact": "fact.came_clean_to_auditor",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.hr.blame_meeting.c2",
+      "outcomes": [
+        {
+          "p": 0.4,
+          "narration_key": "scene.hr.blame_meeting.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": -2
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        },
+        {
+          "p": 0.6,
+          "result": "fail",
+          "narration_key": "scene.hr.blame_meeting.c2.fail",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": -10
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -10
+            },
+            {
+              "delta": "player.stress",
+              "value": 8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.hr.blame_meeting.c3",
+      "outcomes": [
+        {
+          "p": 0.3,
+          "narration_key": "scene.hr.blame_meeting.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.loan.trust",
+              "value": -25
+            },
+            {
+              "delta": "rel.loan.loyalty",
+              "value": -20
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.blamed_hr_admin",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.7,
+          "result": "fail",
+          "narration_key": "scene.hr.blame_meeting.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.loan.trust",
+              "value": -25
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": -12
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -14
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": -8
+            },
+            {
+              "delta": "player.stress",
+              "value": 9
+            },
+            {
+              "fact": "fact.blamed_hr_admin",
+              "visibility": "public"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

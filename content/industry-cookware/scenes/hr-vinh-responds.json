@@ -1,0 +1,146 @@
+{
+  "id": "scene.hr.vinh_responds",
+  "location": "loc.meeting_room",
+  "cast": ["char:vinh", "char:bao"],
+  "lines": [
+    {
+      "speaker": "char:vinh",
+      "text_key": "scene.hr.vinh_responds.l1"
+    },
+    {
+      "speaker": "char:bao",
+      "text_key": "scene.hr.vinh_responds.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.hr.vinh_responds.c1",
+      "cost": {
+        "hours": 4
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.hr.vinh_responds.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.oanh.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.ngoc.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.the_complaint",
+              "stage": "decision"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.hr.vinh_responds.c2",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.hr.vinh_responds.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.oanh.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.the_complaint",
+              "stage": "decision"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.hr.vinh_responds.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.hr.vinh_responds.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.vinh.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.ngoc.trust",
+              "value": -12
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.leaked_complainant_name",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_complaint",
+              "stage": "decision"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.hr.vinh_responds.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.vinh.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.ngoc.trust",
+              "value": -16
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.leaked_complainant_name",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_complaint",
+              "stage": "decision"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

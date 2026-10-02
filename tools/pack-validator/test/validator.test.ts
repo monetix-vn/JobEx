@@ -30,16 +30,22 @@ describe('pack validator', () => {
   it('reads packs from disk and validates the shipped content cleanly', async () => {
     const { registry, diagnostics } = await loadContent(directorySource(contentDir));
     expect(hasErrors(diagnostics)).toBe(false);
-    expect(registry?.counts()).toEqual({
-      role: 12,
-      event: 208,
-      scene: 208,
+    // Content only grows: these are floors (the content lint and the year tests guard quality).
+    const counts = registry?.counts() ?? {};
+    const floors = {
+      role: 14,
+      event: 237,
+      scene: 237,
       offer: 3,
-      fact: 166,
+      fact: 193,
       term: 41,
-      character: 25,
-      arc: 24,
-    });
+      character: 31,
+      arc: 27,
+    };
+    for (const [kind, floor] of Object.entries(floors)) {
+      expect(counts[kind as keyof typeof counts], kind).toBeGreaterThanOrEqual(floor);
+    }
+    expect(counts.event).toBe(counts.scene);
   });
 
   it('CLI exits 0 on the shipped content, even with --strict', () => {

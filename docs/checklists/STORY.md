@@ -80,9 +80,18 @@ source of truth for what scene comes next; update their Status column as you go.
 - [x] First-cut balance check (`inv-year.test.ts`)
 - [ ] More Investment scenes (see the bible) and practitioner review
 
+## Job 7: HR Business Partner (`docs/story/hr.md`)
+
+- [x] Bible v1 (AI) written with the scenes (owner review pending); same company as the cookware jobs; new reputation group and detector `staff`
+- [x] Role `role.hr.hrbp` playable (overhead 20 hours), `hr-year` scenario, CI step `sim:hr`
+- [x] 29 scenes: beats (first week, midyear review, cost-cut twist, labour inspection, year-end review, manager offer), arcs The Chosen One, The Complaint, The List, incidents (contract chain, overtime records, insurance base, salary leak, probation and pregnancy, underage applicant, engagement survey, Tet bonus, reference call), consequences (labour inspector asks, blame meeting), resignation; 6 new characters, 27 facts
+- [x] First-cut balance check (`hr-year.test.ts`)
+- [ ] More HR scenes (about 32 decisions a year, the lightest job) and practitioner review (labour-law details especially)
+
 ## Later jobs (not yet designed)
 
-- [ ] Choose the next jobs (HR? Logistics? Warehouse? a bank branch? a start-up?) (needs owner)
+- [x] Owner decision 2026-10-02: add HR (HRBP), Production (Line Supervisor), FP&A, Marketing and IT in that order, grouped by department in the picker (`docs/story/JOB-PROPOSALS.md`)
+- [ ] Further jobs after those five (Logistics? Warehouse? a bank branch? a start-up?) (needs owner)
 - [ ] For each: bible, then scenes (same steps as above)
 
 ## Story-writing loop (each session)

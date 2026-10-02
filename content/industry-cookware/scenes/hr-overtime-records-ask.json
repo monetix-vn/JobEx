@@ -1,0 +1,166 @@
+{
+  "id": "scene.hr.overtime_records_ask",
+  "location": "loc.hr_office",
+  "cast": ["char:lan"],
+  "lines": [
+    {
+      "speaker": "char:lan",
+      "text_key": "scene.hr.overtime_records_ask.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.hr.overtime_records_ask.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.hr.overtime_records_ask.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.loan.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 1
+            },
+            {
+              "delta": "player.rep.production",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.hr.overtime_records_ask.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.cuong.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.hr.overtime_records_ask.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.hr.overtime_records_ask.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": -1
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.hr.overtime_records_ask.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.hr.overtime_records_ask.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.loan.trust",
+              "value": -7
+            },
+            {
+              "delta": "player.rep.production",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.edited_overtime_records",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.hr.overtime_records_ask.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.kiet.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.loan.trust",
+              "value": -7
+            },
+            {
+              "delta": "player.rep.production",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.edited_overtime_records",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

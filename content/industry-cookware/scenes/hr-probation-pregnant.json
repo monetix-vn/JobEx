@@ -1,0 +1,170 @@
+{
+  "id": "scene.hr.probation_pregnant",
+  "location": "loc.hr_office",
+  "cast": ["char:khoa"],
+  "lines": [
+    {
+      "speaker": "char:khoa",
+      "text_key": "scene.hr.probation_pregnant.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.hr.probation_pregnant.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.hr.probation_pregnant.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": -2
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": 1
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": 4
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.hr.probation_pregnant.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": -5
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": -1
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.hr.probation_pregnant.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.hr.probation_pregnant.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.hr.probation_pregnant.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.hr.probation_pregnant.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 6
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.ended_probation_for_pregnancy",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.hr.probation_pregnant.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": -9
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": -3
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": -10
+            },
+            {
+              "delta": "player.stress",
+              "value": 8
+            },
+            {
+              "fact": "fact.ended_probation_for_pregnancy",
+              "visibility": "public"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

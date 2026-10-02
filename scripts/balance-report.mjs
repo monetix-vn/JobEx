@@ -14,6 +14,7 @@ for (const scenario of [
   'prod-year',
   'purch-year',
   'inv-year',
+  'hr-year',
 ]) {
   const result = run(
     `npx tsx tools/sim-runner/src/cli.ts balance --scenario ${scenario} --runs ${runs} --content ${q('content')}`,

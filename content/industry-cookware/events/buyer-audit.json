@@ -27,7 +27,8 @@
       "role.qc.specialist",
       "role.fin.accountant",
       "role.prod.planner",
-      "role.purch.buyer"
+      "role.purch.buyer",
+      "role.hr.hrbp"
     ]
   },
   {
@@ -41,7 +42,8 @@
       "role.qc.specialist",
       "role.fin.accountant",
       "role.prod.planner",
-      "role.purch.buyer"
+      "role.purch.buyer",
+      "role.hr.hrbp"
     ]
   }
 ]

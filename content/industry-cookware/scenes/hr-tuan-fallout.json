@@ -1,0 +1,119 @@
+{
+  "id": "scene.hr.tuan_fallout",
+  "location": "loc.meeting_room",
+  "cast": ["char:kiet"],
+  "lines": [
+    {
+      "speaker": "char:kiet",
+      "text_key": "scene.hr.tuan_fallout.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.hr.tuan_fallout.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.hr.tuan_fallout.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.oanh.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.kiet.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.hr.tuan_fallout.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.hr.tuan_fallout.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.hr.tuan_fallout.c3",
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.hr.tuan_fallout.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.production",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.hr.tuan_fallout.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": -7
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.production",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

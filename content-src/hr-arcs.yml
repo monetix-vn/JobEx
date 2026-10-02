@@ -1,0 +1,997 @@
+# HR Business Partner storylines (docs/story/hr.md): The Chosen One, The Complaint, The List.
+arc: the_chosen_one
+title:
+  en: 'The chosen one'
+  vi: 'Người đã được chọn'
+stages:
+  - { id: ask, event: hr.long_asks_favour }
+  - { id: shortlist, event: hr.shortlist_pressure, delay: 1-2 }
+  - { id: offer, event: hr.salary_exception, delay: 1-2 }
+  - { id: fallout, event: hr.tuan_fallout, delay: 5-9 }
+---
+scene: hr.long_asks_favour
+arc: the_chosen_one
+place: hr_office
+tags: [recruitment, favour, dark]
+weight: 3
+cooldown: 40
+when: [turn >= 8, turn <= 34]
+lines:
+  - who: char:long
+    en: "We are hiring a logistics supervisor. A friend of mine, Tuan, is going to apply. Very capable, worked in a trading company. The post is public, of course, for form's sake. I only ask that you make sure it goes well for him."
+    vi: 'Mình đang tuyển giám sát logistics. Một người bạn của anh, Tuấn, sẽ nộp hồ sơ. Rất giỏi, từng làm ở công ty thương mại. Tin tuyển tất nhiên là công khai, cho đúng thủ tục. Anh chỉ nhờ em bảo đảm mọi việc suôn sẻ với cậu ấy.'
+  - who: char:oanh
+    en: "Long is the owner's nephew. Do not say no to him in a way he can repeat at dinner. Do not say yes in a way I will have to explain to an inspector."
+    vi: 'Anh Long là cháu chủ. Đừng nói không với anh ấy theo kiểu anh ấy có thể kể lại trong bữa tối. Đừng nói có theo kiểu chị phải giải trình với thanh tra.'
+choices:
+  - en: 'Tell Long that Tuan is welcome to apply and will be scored on the same criteria as everyone else, and record the friendship as a declared interest in the file.'
+    vi: 'Nói với anh Long rằng anh Tuấn cứ nộp hồ sơ và sẽ được chấm theo cùng tiêu chí như mọi người, và ghi mối quan hệ bạn bè là lợi ích được khai báo trong hồ sơ.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.7
+        en: "Long laughs it off. 'Of course, of course, treat him like anyone.' He leaves a little cooler than he arrived. Your note in the file is dated and signed."
+        vi: "Anh Long cười xòa. 'Tất nhiên, tất nhiên, cứ đối xử như bao người khác.' Anh ra về lạnh hơn lúc đến một chút. Ghi chú của anh/chị trong hồ sơ có ngày và chữ ký."
+        effects:
+          [
+            rel long trust -3,
+            rel oanh trust +4,
+            rep.boss +2,
+            stress +2,
+            fact documented_conflict_of_interest private,
+            arc the_chosen_one end,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'Long says that nobody else in the company asks for a declaration, and that he will remember who made things difficult.'
+        vi: 'Anh Long nói chẳng ai khác trong công ty đòi khai báo và anh sẽ nhớ ai gây khó dễ.'
+        effects:
+          [
+            rel long trust -8,
+            rel oanh trust +3,
+            rep.boss -2,
+            stress +4,
+            fact documented_conflict_of_interest private,
+            arc the_chosen_one end,
+          ]
+  - en: 'Say you will run a proper process with a panel of three managers and a practical test, and that Tuan will do well if he is the best.'
+    vi: 'Nói anh/chị sẽ chạy quy trình đàng hoàng với hội đồng ba quản lý và một bài kiểm tra thực hành, và anh Tuấn sẽ làm tốt nếu cậu ấy là người giỏi nhất.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "Long shrugs. 'Fine, as long as it goes well.' You have said neither yes nor no, and he has noticed."
+        vi: "Anh Long nhún vai. 'Được, miễn là suôn sẻ.' Anh/chị chưa nói có cũng chưa nói không, và anh ấy đã nhận ra."
+        effects: [rel long trust -1, stress +2, arc the_chosen_one shortlist]
+  - en: 'Say you will take care of it.'
+    vi: 'Nói anh/chị sẽ lo việc đó.'
+    outcomes:
+      - p: 0.85
+        en: "Long beams and pats your shoulder. 'I knew I could count on HR.' You have promised an outcome in a process that is supposed to have none."
+        vi: "Anh Long rạng rỡ và vỗ vai anh/chị. 'Anh biết có thể trông cậy vào nhân sự.' Anh/chị đã hứa một kết quả trong một quy trình đáng lẽ không có kết quả định sẵn."
+        effects:
+          [
+            rel long trust +6,
+            rel oanh trust -2,
+            stress +2,
+            fact promised_hire_to_owner_nephew private,
+            arc the_chosen_one shortlist,
+          ]
+      - p: 0.15
+        ok: false
+        en: 'Oanh was walking past the open door. She says nothing, but she closes it on her way out.'
+        vi: 'Chị Oanh đi ngang qua cánh cửa mở. Chị không nói gì, nhưng đóng cửa lại khi ra.'
+        effects:
+          [
+            rel long trust +4,
+            rel oanh trust -7,
+            rep.boss -3,
+            stress +3,
+            fact promised_hire_to_owner_nephew witnessed,
+            arc the_chosen_one shortlist,
+          ]
+---
+scene: hr.shortlist_pressure
+weight: 0
+place: hr_office
+tags: [recruitment, favour, dark, arc]
+lines:
+  - who: char:long
+    en: 'I saw the scores. Tuan is fourth. Hang, the warehouse lead, is first. She has been here six years and she will never be a supervisor, so why not give the post to someone who will grow? Just move him up a little.'
+    vi: 'Anh thấy bảng điểm rồi. Tuấn đứng thứ tư. Hằng, tổ trưởng kho, đứng đầu. Chị ấy làm sáu năm rồi và sẽ không bao giờ lên giám sát, vậy sao không giao vị trí cho người sẽ phát triển? Cứ đẩy cậu ấy lên một chút.'
+choices:
+  - en: 'Keep the scores as the panel wrote them, offer Tuan written feedback and another role, and tell Long the first-ranked candidate gets the offer.'
+    vi: 'Giữ nguyên bảng điểm như hội đồng đã chấm, gửi anh Tuấn phản hồi bằng văn bản và đề xuất vị trí khác, và nói với anh Long rằng ứng viên xếp đầu sẽ nhận đề nghị.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.75
+        en: "Hang gets the offer and says only 'Thank you for not forgetting me.' Long is cold for a week, then pretends it never happened."
+        vi: "Chị Hằng nhận đề nghị và chỉ nói 'Cảm ơn em đã không quên chị.' Anh Long lạnh nhạt một tuần rồi làm như chưa có chuyện gì."
+        effects:
+          [
+            rel long trust -6,
+            rel oanh trust +4,
+            rel kiet trust +3,
+            rep.boss +2,
+            stress +3,
+            fact ran_fair_process private,
+            arc the_chosen_one end,
+          ]
+      - p: 0.25
+        ok: false
+        en: 'Long goes to Mr Cuong. Mr Cuong asks Oanh why HR is blocking a friend of the family. Oanh answers with the file, and wins, and tells you it cost her something.'
+        vi: 'Anh Long sang gặp anh Cường. Anh Cường hỏi chị Oanh vì sao nhân sự chặn một người quen của gia đình. Chị Oanh trả lời bằng hồ sơ, và thắng, và nói với anh/chị rằng chuyện đó khiến chị mất một thứ.'
+        effects:
+          [
+            rel long trust -10,
+            rel oanh trust +3,
+            rep.boss -3,
+            stress +5,
+            fact ran_fair_process private,
+            arc the_chosen_one end,
+          ]
+  - en: 'Add a practical test for the top three to settle it on evidence, and let the result decide.'
+    vi: 'Thêm một bài thực hành cho ba người đứng đầu để quyết định bằng bằng chứng, và để kết quả quyết định.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: 'The test shows Tuan is better with people and worse with inventory. Hang is better at the job. The decision is harder to dispute, and Long accepts it with ill grace.'
+        vi: 'Bài thực hành cho thấy anh Tuấn giỏi với người hơn và kém với hàng tồn. Chị Hằng làm việc tốt hơn. Quyết định khó bị phản bác hơn, và anh Long chấp nhận một cách miễn cưỡng.'
+        effects: [rel long trust -3, stress +3, arc the_chosen_one offer]
+  - en: "Adjust two scores on the panel sheet so that Tuan comes first, on the grounds of 'potential'."
+    vi: "Chỉnh hai điểm trên bảng chấm của hội đồng để anh Tuấn lên đầu, với lý do 'tiềm năng'."
+    outcomes:
+      - p: 0.7
+        en: 'The sheet now says what Long wants. The panel members signed an earlier version and have not looked since. Tuan is first, and nobody says a word.'
+        vi: 'Bảng giờ ghi điều anh Long muốn. Các thành viên hội đồng ký bản trước và chưa nhìn lại. Anh Tuấn đứng đầu, và không ai nói gì.'
+        effects:
+          [
+            rel long trust +5,
+            rel kiet trust -4,
+            stress +2,
+            fact rigged_shortlist private,
+            arc the_chosen_one offer,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'Hang asks for her scoring sheet, which she is entitled to see. The two versions do not match, and she looks at you for a moment before she says thank you.'
+        vi: 'Chị Hằng xin xem bảng điểm của mình, điều chị có quyền. Hai bản không khớp, và chị nhìn anh/chị một lúc rồi mới nói cảm ơn.'
+        effects:
+          [
+            rel long trust +3,
+            rel kiet trust -8,
+            rep.boss -4,
+            stress +5,
+            fact rigged_shortlist witnessed,
+            arc the_chosen_one offer,
+          ]
+---
+scene: hr.salary_exception
+weight: 0
+place: hr_office
+tags: [recruitment, pay, dark, arc]
+lines:
+  - who: char:long
+    en: "Tuan will not accept the band. He wants twenty-five percent above the top of it, because of his experience. Give him a monthly 'responsibility allowance' on top, outside the grade. Nobody has to see it."
+    vi: "Tuấn không nhận khung lương. Cậu ấy muốn cao hơn trần hai mươi lăm phần trăm vì kinh nghiệm. Cho cậu ấy một khoản 'phụ cấp trách nhiệm' hằng tháng, nằm ngoài ngạch. Không ai phải thấy."
+choices:
+  - en: "Offer the top of the band and a written review at six months, and tell Long that exceptions need Oanh's and Mr Cuong's signature."
+    vi: 'Đề nghị mức trần của khung và đánh giá bằng văn bản sau sáu tháng, và nói với anh Long rằng ngoại lệ cần chữ ký chị Oanh và anh Cường.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.7
+        en: 'Tuan accepts after a night. The six-month review goes in the calendar. Oanh signs the offer and the review date.'
+        vi: 'Anh Tuấn nhận sau một đêm. Buổi đánh giá sáu tháng được đặt vào lịch. Chị Oanh ký đề nghị và ngày đánh giá.'
+        effects: [rel oanh trust +3, rel long trust -2, stress +2, arc the_chosen_one fallout]
+      - p: 0.3
+        ok: false
+        en: 'Tuan declines and takes another job. Long says that is what happens when HR is rigid, and the post is open again.'
+        vi: 'Anh Tuấn từ chối và nhận việc khác. Anh Long nói đó là hậu quả khi nhân sự cứng nhắc, và vị trí lại để trống.'
+        effects: [rel oanh trust +2, rel long trust -5, stress +3, arc the_chosen_one end]
+  - en: 'Say you will take it to Oanh and Mr Cuong with a written reason, and that the allowance must go on the contract and the payroll.'
+    vi: 'Nói anh/chị sẽ trình chị Oanh và anh Cường kèm lý do bằng văn bản, và khoản phụ cấp phải ghi vào hợp đồng và bảng lương.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'Mr Cuong approves a smaller, documented allowance. It is above the band and in the open, which is a different thing from above the band and hidden.'
+        vi: 'Anh Cường duyệt một khoản phụ cấp nhỏ hơn, có hồ sơ. Cao hơn khung nhưng công khai, khác với cao hơn khung và giấu.'
+        effects: [rel oanh trust +2, rel long trust +1, stress +2, arc the_chosen_one fallout]
+  - en: 'Pay the allowance through the petty cash of the administration budget, off the payroll.'
+    vi: 'Chi khoản phụ cấp qua quỹ tiền mặt của ngân sách hành chính, ngoài bảng lương.'
+    outcomes:
+      - p: 0.7
+        en: 'It works. Tuan is paid the figure he wanted, and the payroll shows the band. Long thanks you with a gift voucher you do not enter in the gift register.'
+        vi: 'Chạy được. Anh Tuấn nhận đúng số anh muốn, và bảng lương ghi mức khung. Anh Long cảm ơn bằng một phiếu quà mà anh/chị không ghi vào sổ quà tặng.'
+        effects:
+          [
+            rel long trust +6,
+            stress +1,
+            fact paid_above_band_secretly private,
+            arc the_chosen_one fallout,
+          ]
+      - p: 0.3
+        ok: false
+        en: "Duc's team reconciles the petty cash and finds a regular payment with no payee in the payroll. He asks Oanh whose it is."
+        vi: 'Nhóm anh Đức đối chiếu quỹ tiền mặt và thấy một khoản chi đều đặn mà bảng lương không có người nhận. Anh hỏi chị Oanh khoản đó của ai.'
+        effects:
+          [
+            rel long trust +3,
+            rel oanh trust -6,
+            rel duc trust -5,
+            rep.boss -5,
+            stress +5,
+            fact paid_above_band_secretly witnessed,
+            arc the_chosen_one fallout,
+          ]
+---
+scene: hr.tuan_fallout
+weight: 0
+place: meeting_room
+tags: [recruitment, people, consequence, arc]
+lines:
+  - who: char:kiet
+    en: 'Tuan has been here four months. He cannot read the stock sheet, and the team is covering for him. Hang has asked to transfer. I am not complaining, but I would like HR to know.'
+    vi: 'Tuấn vào được bốn tháng. Cậu ấy không đọc nổi bảng tồn kho và cả tổ đang che cho cậu ấy. Hằng xin chuyển bộ phận. Anh không than phiền, nhưng anh muốn nhân sự biết.'
+choices:
+  - en: 'Take it to Oanh with the facts, including how the process went, and propose a coaching plan with a review date for Tuan and a retention conversation with Hang.'
+    vi: 'Mang việc này đến chị Oanh với đầy đủ dữ kiện, kể cả quy trình đã diễn ra thế nào, và đề xuất kế hoạch kèm cặp có ngày đánh giá cho anh Tuấn và một buổi trò chuyện giữ chân chị Hằng.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Oanh listens without interrupting. 'Thank you for telling me the part that is yours.' Tuan gets a plan, Hang stays after a long talk, and the file shows what happened and when."
+        vi: "Chị Oanh lắng nghe không ngắt lời. 'Cảm ơn em đã nói phần của em.' Anh Tuấn có kế hoạch, chị Hằng ở lại sau một cuộc nói chuyện dài, và hồ sơ ghi rõ chuyện gì xảy ra và khi nào."
+        effects: [rel oanh trust +3, rel kiet trust +4, rep.boss +1, stress +3]
+  - en: 'Coach Tuan quietly, move the stock work to Hang for two months, and hope it settles.'
+    vi: 'Kèm anh Tuấn lặng lẽ, chuyển việc tồn kho cho chị Hằng hai tháng và hy vọng mọi chuyện ổn.'
+    outcomes:
+      - p: 1
+        en: 'The team calms down. Hang does two jobs for the price of one. Nothing is written down.'
+        vi: 'Cả tổ dịu lại. Chị Hằng làm hai việc với giá một việc. Không có gì được ghi lại.'
+        effects: [rel kiet trust +1, rel oanh trust -1, stress +2]
+  - en: 'Tell Kiet that Tuan passed the same process as everyone and that the team should give him time.'
+    vi: 'Nói với anh Kiệt rằng anh Tuấn đã qua quy trình như mọi người và cả tổ nên cho cậu ấy thời gian.'
+    outcomes:
+      - p: 0.6
+        en: "Kiet nods and leaves. Hang resigns the following week and takes two warehouse colleagues' goodwill with her."
+        vi: 'Anh Kiệt gật đầu và đi ra. Chị Hằng nghỉ việc tuần sau và mang theo thiện cảm của hai đồng nghiệp kho.'
+        effects: [rel kiet trust -5, rep.production -3, stress +3]
+      - p: 0.4
+        ok: false
+        en: 'Hang tells Kiet why she is leaving, and Kiet tells Oanh what Hang told him about the scoring sheet.'
+        vi: 'Chị Hằng nói với anh Kiệt lý do chị nghỉ, và anh Kiệt kể với chị Oanh điều chị Hằng nói về bảng điểm.'
+        effects: [rel kiet trust -8, rel oanh trust -7, rep.boss -4, rep.production -4, stress +6]
+---
+arc: the_complaint
+title:
+  en: 'The complaint'
+  vi: 'Khiếu nại'
+stages:
+  - { id: informal, event: hr.ngoc_comes }
+  - { id: response, event: hr.vinh_responds, delay: 1-2 }
+  - { id: decision, event: hr.decision_meeting, delay: 2-3 }
+  - { id: aftermath, event: hr.ngoc_after, delay: 3-5 }
+---
+scene: hr.ngoc_comes
+arc: the_complaint
+place: hr_office
+tags: [case, people, dark]
+weight: 3
+cooldown: 40
+when: [turn >= 10, turn <= 36]
+lines:
+  - who: char:ngoc
+    en: "I did not know who else to tell. Mr Vinh sends me messages late at night, he comments on how I look, and he said my bonus depends on 'being friendly' with the buyers at the dinners. I am not sure it is a complaint. Please do not tell anyone yet."
+    vi: "Em không biết nói với ai khác. Anh Vinh nhắn tin cho em rất khuya, nhận xét về ngoại hình của em, và nói thưởng của em phụ thuộc vào việc 'thân thiện' với khách ở các bữa tối. Em không chắc đây là khiếu nại. Xin đừng nói với ai vội."
+choices:
+  - en: 'Listen, write down what she says in her own words, explain the options and the limits of confidentiality, and offer to open a formal case with her consent and protection from retaliation.'
+    vi: 'Lắng nghe, ghi lại lời chị ấy bằng chính lời của chị, giải thích các lựa chọn và giới hạn của bảo mật, và đề nghị mở vụ việc chính thức với sự đồng ý của chị và bảo vệ khỏi trả đũa.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Ngoc is quiet, then asks you to open the case. She keeps screenshots of the messages. You tell Oanh the same day, and she says: 'Good. Now it is real, and we are responsible for it.'"
+        vi: "Ngọc im lặng rồi xin anh/chị mở vụ việc. Chị giữ ảnh chụp các tin nhắn. Ngay hôm đó anh/chị báo chị Oanh và chị nói: 'Tốt. Giờ nó là thật, và mình có trách nhiệm.'"
+        effects: [rel ngoc trust +8, rel oanh trust +3, stress +4, arc the_complaint response]
+  - en: 'Suggest she talks to Bao, the sales manager, informally, and that HR will check in with her in a few weeks.'
+    vi: 'Gợi ý chị ấy nói chuyện thân mật với anh Bảo, trưởng phòng kinh doanh, và nhân sự sẽ hỏi thăm chị sau vài tuần.'
+    outcomes:
+      - p: 1
+        en: 'Ngoc nods and says she will think. Two weeks later nothing has happened, and Bao has not been told. She stops looking at you in the corridor.'
+        vi: 'Ngọc gật đầu và nói chị sẽ suy nghĩ. Hai tuần sau không có gì xảy ra, và anh Bảo chưa được báo. Chị thôi nhìn anh/chị ở hành lang.'
+        effects: [rel ngoc trust -2, stress +2, arc the_complaint response]
+  - en: "Tell her it is probably a misunderstanding, that Vinh is just friendly and the company's best seller, and write nothing down."
+    vi: 'Nói với chị rằng chắc chỉ là hiểu lầm, anh Vinh chỉ thân thiện và là người bán giỏi nhất công ty, và không ghi lại gì.'
+    outcomes:
+      - p: 0.7
+        en: "Ngoc says 'Yes, maybe.' She does not come back. You feel the case close like a door, and you are the one who closed it."
+        vi: "Ngọc nói 'Vâng, có lẽ vậy.' Chị không quay lại. Anh/chị thấy vụ việc đóng lại như một cánh cửa, và chính anh/chị đóng nó."
+        effects:
+          [
+            rel ngoc trust -10,
+            stress +1,
+            fact buried_complaint private,
+            arc the_complaint aftermath,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'Ngoc leaves, and tells Loan on her way out. Loan looks at you across the room and writes a line in her own notebook.'
+        vi: 'Ngọc đi ra và nói với Loan trên đường ra. Loan nhìn anh/chị qua phòng và viết một dòng vào cuốn sổ riêng.'
+        effects:
+          [
+            rel ngoc trust -10,
+            rel loan trust -6,
+            rep.boss -2,
+            stress +3,
+            fact buried_complaint witnessed,
+            arc the_complaint aftermath,
+          ]
+---
+scene: hr.vinh_responds
+weight: 0
+place: meeting_room
+tags: [case, people, dark, arc]
+lines:
+  - who: char:vinh
+    en: 'This is a joke, is it not? I have brought in thirty percent of the export orders this year. If I joke with the coordinators, it is because we are a team. Ngoc is sensitive. Let us not make a big thing of it.'
+    vi: 'Chuyện này đùa chắc? Năm nay anh mang về ba mươi phần trăm đơn xuất khẩu. Nếu anh đùa với các bạn điều phối thì là vì mình là một đội. Ngọc nhạy cảm. Đừng làm to chuyện.'
+  - who: char:bao
+    en: 'Vinh is the last person we should lose before the buyer visit. Handle it quietly, will you?'
+    vi: 'Anh Vinh là người cuối cùng mình nên mất trước chuyến thăm của khách. Xử lý lặng lẽ giúp anh nhé?'
+choices:
+  - en: "Run the case properly: interview Vinh and Ngoc separately, collect the messages, speak to two witnesses, and keep Ngoc's name out of every meeting that does not need it."
+    vi: 'Xử lý vụ việc đúng quy trình: phỏng vấn riêng anh Vinh và chị Ngọc, thu thập tin nhắn, nói chuyện với hai nhân chứng và không để tên chị Ngọc xuất hiện ở bất kỳ cuộc họp nào không cần thiết.'
+    cost: { hours: 4 }
+    outcomes:
+      - p: 1
+        en: 'Two witnesses confirm the late messages and a remark at a dinner. Bao is unhappy, and says so. Oanh reads your notes and tells you to bring the findings on Thursday.'
+        vi: 'Hai nhân chứng xác nhận các tin nhắn khuya và một câu nói ở bữa tối. Anh Bảo không vui và nói thẳng. Chị Oanh đọc ghi chú của anh/chị và bảo mang kết quả vào thứ Năm.'
+        effects:
+          [
+            rel oanh trust +3,
+            rel bao trust -4,
+            rel ngoc trust +4,
+            stress +4,
+            arc the_complaint decision,
+          ]
+  - en: 'Interview only Vinh and Ngoc, keep it short, and give Oanh a one-page summary.'
+    vi: 'Chỉ phỏng vấn anh Vinh và chị Ngọc, làm ngắn gọn và đưa chị Oanh bản tóm tắt một trang.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: 'The summary says the accounts differ. Oanh asks about the messages, which you have not read. You go and read them.'
+        vi: 'Bản tóm tắt ghi rằng lời kể khác nhau. Chị Oanh hỏi về các tin nhắn mà anh/chị chưa đọc. Anh/chị đi đọc.'
+        effects: [rel oanh trust -1, stress +3, arc the_complaint decision]
+  - en: 'Tell Vinh who made the complaint so that he can clear the air with her directly.'
+    vi: 'Nói với anh Vinh ai là người khiếu nại để anh ấy tự làm rõ với chị ấy.'
+    outcomes:
+      - p: 0.7
+        en: "Vinh smiles and says he will take care of it. The next day Ngoc is moved off the buyer account and told it is a 'workload adjustment'."
+        vi: "Anh Vinh cười và nói sẽ lo. Hôm sau chị Ngọc bị chuyển khỏi tài khoản khách và được báo đó là 'điều chỉnh khối lượng công việc'."
+        effects:
+          [
+            rel vinh trust +5,
+            rel ngoc trust -12,
+            stress +2,
+            fact leaked_complainant_name private,
+            arc the_complaint decision,
+          ]
+      - p: 0.3
+        ok: false
+        en: "Ngoc finds out within a day who was told. She sends HR a one-line email: 'You told him.'"
+        vi: "Chưa đầy một ngày Ngọc biết ai đã được báo. Chị gửi nhân sự một email một dòng: 'Chị đã nói với anh ấy.'"
+        effects:
+          [
+            rel vinh trust +3,
+            rel ngoc trust -16,
+            rel oanh trust -6,
+            rep.boss -4,
+            stress +6,
+            fact leaked_complainant_name witnessed,
+            arc the_complaint decision,
+          ]
+---
+scene: hr.decision_meeting
+weight: 0
+place: meeting_room
+tags: [case, people, dark, arc]
+lines:
+  - who: char:oanh
+    en: 'Mr Cuong, Bao and I are meeting on the Vinh case. Bao will argue it is a misunderstanding. Mr Cuong will ask what it costs. I want your recommendation, in writing, and I want it to be one you can defend to Ngoc.'
+    vi: 'Anh Cường, anh Bảo và chị họp về vụ anh Vinh. Anh Bảo sẽ nói đó là hiểu lầm. Anh Cường sẽ hỏi nó tốn bao nhiêu. Chị muốn khuyến nghị của em bằng văn bản, và muốn nó là điều em bảo vệ được trước chị Ngọc.'
+choices:
+  - en: 'Recommend a formal written warning for Vinh, a change of reporting line away from him for Ngoc if she wants it, and a written outcome to Ngoc with the right to appeal.'
+    vi: 'Khuyến nghị cảnh cáo bằng văn bản chính thức đối với anh Vinh, đổi đầu mối báo cáo khỏi anh ấy cho chị Ngọc nếu chị muốn, và gửi kết quả bằng văn bản cho chị Ngọc kèm quyền khiếu nại lại.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.65
+        en: "Mr Cuong winces at the warning, Bao stays silent, and Oanh signs. You tell Ngoc in person. She says 'Thank you' and her hands are shaking."
+        vi: "Anh Cường nhăn mặt vì cảnh cáo, anh Bảo im lặng, và chị Oanh ký. Anh/chị báo chị Ngọc trực tiếp. Chị nói 'Cảm ơn' và tay chị run."
+        effects:
+          [
+            rel oanh trust +4,
+            rel ngoc trust +8,
+            rel bao trust -5,
+            rel cuong trust -2,
+            rep.boss +2,
+            stress +4,
+            fact investigated_fairly witnessed,
+            arc the_complaint aftermath,
+          ]
+      - p: 0.35
+        ok: false
+        en: "Mr Cuong says a warning will lose the buyer visit and asks for a 'conversation' instead. Oanh holds out for the written warning and gets half of it: a letter without the word 'warning'."
+        vi: "Anh Cường nói cảnh cáo sẽ làm hỏng chuyến thăm của khách và xin một 'cuộc trao đổi' thay thế. Chị Oanh giữ lập trường cảnh cáo bằng văn bản và được một nửa: một lá thư không có chữ 'cảnh cáo'."
+        effects:
+          [
+            rel oanh trust +2,
+            rel ngoc trust +3,
+            rel bao trust -3,
+            rel cuong trust -4,
+            stress +5,
+            fact investigated_fairly witnessed,
+            arc the_complaint aftermath,
+          ]
+  - en: 'Recommend training and a verbal reminder for Vinh and a quiet note to Ngoc that the matter is closed.'
+    vi: 'Khuyến nghị tập huấn và nhắc nhở bằng lời đối với anh Vinh và một ghi chú lặng lẽ cho chị Ngọc rằng vụ việc đã đóng.'
+    outcomes:
+      - p: 1
+        en: "Everyone in the room is relieved. Ngoc reads the note twice, and does not reply. You file the case as 'resolved'."
+        vi: "Mọi người trong phòng đều nhẹ nhõm. Ngọc đọc ghi chú hai lần và không trả lời. Anh/chị lưu vụ việc là 'đã giải quyết'."
+        effects:
+          [
+            rel oanh trust -1,
+            rel ngoc trust -4,
+            rel bao trust +3,
+            rel cuong trust +2,
+            stress +2,
+            arc the_complaint aftermath,
+          ]
+  - en: "Recommend closing the case as 'not substantiated', and add a performance note about Ngoc's lateness to her file, dated last month."
+    vi: "Khuyến nghị đóng vụ việc với kết luận 'không đủ căn cứ' và thêm một ghi chú hiệu suất về việc chị Ngọc đi trễ vào hồ sơ, ghi ngày tháng trước."
+    outcomes:
+      - p: 0.55
+        en: "Bao nods and Mr Cuong thanks you for 'being practical'. The note sits in Ngoc's file, dated before she complained. Nobody asks when it was written."
+        vi: "Anh Bảo gật đầu và anh Cường cảm ơn vì đã 'thực tế'. Ghi chú nằm trong hồ sơ chị Ngọc, ghi ngày trước khi chị khiếu nại. Không ai hỏi nó được viết khi nào."
+        effects:
+          [
+            rel bao trust +5,
+            rel cuong trust +4,
+            rel ngoc trust -14,
+            rel oanh trust -5,
+            stress +3,
+            fact retaliated_against_complainant private,
+            fact backdated_warning private,
+            arc the_complaint aftermath,
+          ]
+      - p: 0.45
+        ok: false
+        en: "Oanh reads the note and the file's edit history on her screen. 'This note was created at four this afternoon,' she says. She does not raise her voice."
+        vi: "Chị Oanh đọc ghi chú và lịch sử chỉnh sửa hồ sơ trên màn hình. 'Ghi chú này được tạo lúc bốn giờ chiều nay,' chị nói. Chị không to tiếng."
+        effects:
+          [
+            rel bao trust +3,
+            rel ngoc trust -14,
+            rel oanh trust -14,
+            rep.boss -8,
+            stress +7,
+            fact retaliated_against_complainant witnessed,
+            fact backdated_warning witnessed,
+            arc the_complaint aftermath,
+          ]
+---
+scene: hr.ngoc_after
+weight: 0
+place: hr_office
+tags: [case, people, consequence, arc]
+lines:
+  - who: char:ngoc
+    en: 'It has been a month. Some of the team no longer sit with me at lunch. I was left out of the buyer call yesterday, and nobody told me why. I am not sure whether I should say something, or whether it will make it worse.'
+    vi: 'Đã một tháng rồi. Một số người trong nhóm không còn ngồi ăn trưa với em. Hôm qua em bị bỏ ra khỏi cuộc gọi với khách và không ai nói lý do. Em không chắc có nên nói gì không, hay sẽ làm mọi chuyện tệ hơn.'
+choices:
+  - en: 'Check in on her workload and access, speak to Bao about the call, put in writing that retaliation is a separate breach, and agree a regular check-in date.'
+    vi: 'Rà soát khối lượng công việc và quyền truy cập của chị, nói với anh Bảo về cuộc gọi, ghi bằng văn bản rằng trả đũa là một vi phạm riêng, và thống nhất ngày hỏi thăm định kỳ.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.8
+        en: "The call list is fixed the next day. Bao grumbles and does it. Ngoc says 'It is better' and, a month later, asks to stay on the buyer account."
+        vi: "Danh sách cuộc gọi được sửa ngay hôm sau. Anh Bảo càu nhàu và làm. Ngọc nói 'Đỡ hơn rồi' và, một tháng sau, xin ở lại tài khoản khách."
+        effects:
+          [rel ngoc trust +6, rel oanh trust +3, rel bao trust -2, stress +3, arc the_complaint end]
+      - p: 0.2
+        ok: false
+        en: 'The isolation continues in smaller ways. Ngoc finds it hard to say so again, but you keep the check-ins in the calendar.'
+        vi: 'Sự xa lánh tiếp tục theo những cách nhỏ hơn. Ngọc khó nói lại điều đó, nhưng anh/chị giữ các buổi hỏi thăm trong lịch.'
+        effects: [rel ngoc trust +3, stress +4, arc the_complaint end]
+  - en: 'Say you will keep an eye on it, and suggest she keeps notes of anything that happens.'
+    vi: 'Nói anh/chị sẽ để mắt tới và gợi ý chị ghi chú lại mọi việc xảy ra.'
+    outcomes:
+      - p: 1
+        en: 'Ngoc thanks you, and keeps notes. You do not know whether you will look at them in time.'
+        vi: 'Ngọc cảm ơn và ghi chú lại. Anh/chị không biết mình có xem chúng kịp lúc hay không.'
+        effects: [rel ngoc trust +1, stress +2, arc the_complaint end]
+  - en: 'Tell her the case is closed, and that it is better for everyone to move on.'
+    vi: 'Nói với chị rằng vụ việc đã đóng và tốt cho mọi người nếu cùng bước tiếp.'
+    outcomes:
+      - p: 0.6
+        en: "Ngoc hands in her resignation three weeks later. The exit form says 'personal reasons'. Loan puts a copy of it in her own folder."
+        vi: "Ba tuần sau Ngọc nộp đơn nghỉ. Mẫu nghỉ việc ghi 'lý do cá nhân'. Loan để một bản sao vào cặp riêng của mình."
+        effects:
+          [rel ngoc trust -10, rel loan trust -5, rep.boss -2, stress +2, arc the_complaint end]
+      - p: 0.4
+        ok: false
+        en: 'Ngoc writes to the labour authority. A letter arrives from the district office asking for the HR file on the case, by Friday.'
+        vi: 'Ngọc viết thư cho cơ quan lao động. Một công văn từ phòng lao động quận đến, yêu cầu hồ sơ nhân sự về vụ việc, trước thứ Sáu.'
+        effects:
+          [rel ngoc trust -12, rel oanh trust -8, rep.boss -8, stress +8, arc the_complaint end]
+---
+arc: the_list
+title:
+  en: 'The list'
+  vi: 'Danh sách'
+stages:
+  - { id: target, event: hr.cost_cut_twist }
+  - { id: names, event: hr.the_names, delay: 1-2 }
+  - { id: notice, event: hr.notice_day, delay: 2-3 }
+  - { id: survivors, event: hr.survivors, delay: 4-6 }
+---
+scene: hr.the_names
+weight: 0
+place: meeting_room
+tags: [layoff, people, dark, arc]
+lines:
+  - who: char:oanh
+    en: "The managers sent forty-one names. Among them: three who raised concerns in writing this year, a woman who told me last week she is pregnant, a man who is organising the canteen petition, and Kiet's best press operator. Mr Cuong wants the final list by Friday."
+    vi: 'Các quản lý gửi bốn mươi mốt cái tên. Trong đó: ba người đã nêu mối quan ngại bằng văn bản trong năm nay, một chị vừa báo với chị tuần trước là đang mang thai, một anh đang tổ chức kiến nghị về căng tin, và công nhân ép giỏi nhất của Kiệt. Anh Cường muốn danh sách cuối cùng trước thứ Sáu.'
+choices:
+  - en: 'Apply written, role-based criteria to every name, remove anyone who is protected by law or on leave, and document why each remaining person is on the list.'
+    vi: 'Áp dụng tiêu chí bằng văn bản, gắn với vị trí, cho từng cái tên, loại những người được pháp luật bảo vệ hoặc đang nghỉ, và ghi lại lý do từng người còn lại có tên trong danh sách.'
+    cost: { hours: 4 }
+    outcomes:
+      - p: 0.75
+        en: "The list drops to thirty-one. The three who raised concerns are off it, and so are the pregnant woman and Kiet's operator. Mr Cuong reads the criteria sheet and says 'Fine, if the lawyers agree.' They do."
+        vi: "Danh sách còn ba mươi mốt. Ba người đã nêu quan ngại không còn, chị mang thai và công nhân của Kiệt cũng vậy. Anh Cường đọc bảng tiêu chí và nói 'Được, nếu luật sư đồng ý.' Họ đồng ý."
+        effects:
+          [
+            rel oanh trust +4,
+            rel cuong trust +1,
+            rel kiet trust +3,
+            stress +4,
+            fact fair_selection_documented witnessed,
+            arc the_list notice,
+          ]
+      - p: 0.25
+        ok: false
+        en: 'Mr Cuong wants the operator back on the list for cost reasons. You hold the criteria, and Oanh backs you in writing. He agrees, unhappily, to review it again next quarter.'
+        vi: 'Anh Cường muốn đưa công nhân đó trở lại danh sách vì lý do chi phí. Anh/chị giữ tiêu chí, và chị Oanh ủng hộ bằng văn bản. Anh đồng ý, không vui, xem lại vào quý sau.'
+        effects:
+          [
+            rel oanh trust +3,
+            rel cuong trust -3,
+            rel kiet trust +2,
+            stress +5,
+            fact fair_selection_documented witnessed,
+            arc the_list notice,
+          ]
+  - en: 'Take out the pregnant woman and the operator, and send the rest of the list to Mr Cuong as it is.'
+    vi: 'Bỏ chị mang thai và công nhân đó ra, và gửi phần còn lại cho anh Cường nguyên trạng.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'The list has thirty-six names, including the petition organiser and the three who raised concerns. Nobody asks how it was chosen. You do not say.'
+        vi: 'Danh sách có ba mươi sáu tên, gồm cả người tổ chức kiến nghị và ba người đã nêu quan ngại. Không ai hỏi vì sao chọn vậy. Anh/chị không nói.'
+        effects: [rel oanh trust -2, rel cuong trust +2, stress +3, arc the_list notice]
+  - en: 'Send the list as it came, and let the managers and Mr Cuong own it.'
+    vi: 'Gửi danh sách nguyên như nhận và để các quản lý và anh Cường chịu trách nhiệm.'
+    outcomes:
+      - p: 0.7
+        en: "The list goes through in an hour, with the petition organiser, the three, and the pregnant woman on it. Mr Cuong says 'Good, quick.'"
+        vi: "Danh sách được thông qua trong một giờ, có cả người tổ chức kiến nghị, ba người đó và chị mang thai. Anh Cường nói 'Tốt, nhanh.'"
+        effects:
+          [
+            rel cuong trust +4,
+            rel oanh trust -6,
+            stress +2,
+            fact targeted_complainer_for_layoff private,
+            arc the_list notice,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'The woman who is pregnant sees a draft on the shared printer. By evening everyone in the factory knows, and the petition has doubled.'
+        vi: 'Chị mang thai thấy bản nháp trên máy in chung. Đến tối cả nhà máy đều biết, và bản kiến nghị có thêm gấp đôi chữ ký.'
+        effects:
+          [
+            rel cuong trust +2,
+            rel oanh trust -9,
+            rel loan trust -5,
+            rep.boss -6,
+            rep.staff -8,
+            stress +7,
+            fact targeted_complainer_for_layoff public,
+            arc the_list notice,
+          ]
+---
+scene: hr.notice_day
+weight: 0
+place: meeting_room
+tags: [layoff, people, dark, arc]
+lines:
+  - who: char:cuong
+    en: 'Notice day. I want it done in one afternoon. Everyone on the list signs a voluntary resignation form, they get one month, and we skip the consultation because it only creates noise. You will take the forms round.'
+    vi: 'Ngày thông báo. Anh muốn xong trong một buổi chiều. Mọi người trong danh sách ký đơn tự nguyện nghỉ việc, nhận một tháng lương, và mình bỏ qua tham vấn vì nó chỉ gây ồn. Em mang các biểu mẫu đi.'
+choices:
+  - en: 'Follow the notice period and consultation in the law, meet every person with their manager, give the legal severance and an outplacement list.'
+    vi: 'Tuân thủ thời hạn báo trước và tham vấn theo luật, gặp từng người cùng quản lý của họ, trả trợ cấp theo luật và đưa danh sách giới thiệu việc làm.'
+    cost: { hours: 5 }
+    outcomes:
+      - p: 0.7
+        en: "It takes three weeks instead of one afternoon, and costs more. Mr Cuong grumbles at the number and then at the lawyer's letter. Nobody walks out in tears in front of the line."
+        vi: 'Mất ba tuần thay vì một buổi chiều và tốn kém hơn. Anh Cường càu nhàu về con số rồi về thư của luật sư. Không ai bước ra khóc trước mặt chuyền.'
+        effects:
+          [
+            rel oanh trust +4,
+            rel cuong trust -2,
+            rep.boss +1,
+            rep.staff +3,
+            stress +5,
+            fact legal_severance_paid witnessed,
+            arc the_list survivors,
+          ]
+      - p: 0.3
+        ok: false
+        en: "A worker's lawyer asks for the consultation minutes. You have them, and the process holds. It still costs you two nights."
+        vi: 'Luật sư của một công nhân xin biên bản tham vấn. Anh/chị có và quy trình đứng vững. Nhưng vẫn tốn của anh/chị hai đêm.'
+        effects:
+          [
+            rel oanh trust +3,
+            rep.staff +1,
+            stress +6,
+            fact legal_severance_paid witnessed,
+            arc the_list survivors,
+          ]
+  - en: 'Give the notice the law requires but shorten the meetings, and ask Mr Cuong to approve a month of extra pay as goodwill.'
+    vi: 'Báo trước đúng theo luật nhưng rút ngắn các buổi gặp, và xin anh Cường duyệt thêm một tháng lương làm thiện chí.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: 'It is decent and quick. Some people feel they were processed. A few thank you for the extra month.'
+        vi: 'Tử tế và nhanh. Vài người cảm thấy mình bị xử lý như hồ sơ. Một số cảm ơn vì tháng lương thêm.'
+        effects:
+          [rel oanh trust +1, rel cuong trust +1, rep.staff +1, stress +3, arc the_list survivors]
+  - en: 'Take the forms round, as asked, and let people believe the one month is all there is.'
+    vi: 'Mang các biểu mẫu đi như được yêu cầu và để mọi người tin rằng một tháng lương là tất cả.'
+    outcomes:
+      - p: 0.6
+        en: 'Twenty-nine sign. Two ask to read the form and are told there is no time. The company saves the legal severance, and you hand over the signed pile with a cold feeling in your stomach.'
+        vi: 'Hai mươi chín người ký. Hai người xin đọc biểu mẫu và được bảo không có thời gian. Công ty tiết kiệm được trợ cấp theo luật, và anh/chị giao chồng đơn đã ký với cảm giác lạnh trong bụng.'
+        effects:
+          [
+            rel cuong trust +6,
+            rel oanh trust -7,
+            rep.staff -6,
+            stress +4,
+            fact skipped_legal_notice private,
+            arc the_list survivors,
+          ]
+      - p: 0.4
+        ok: false
+        en: "One of the two who wanted to read the form takes a photo of it. The next morning a post about 'forced resignations at the cookware factory' is sent to the labour office."
+        vi: "Một trong hai người muốn đọc biểu mẫu chụp ảnh nó. Sáng hôm sau một bài viết về 'ép nghỉ việc ở nhà máy đồ gia dụng' được gửi đến phòng lao động."
+        effects:
+          [
+            rel cuong trust +2,
+            rel oanh trust -12,
+            rep.boss -8,
+            rep.staff -10,
+            stress +8,
+            fact skipped_legal_notice public,
+            arc the_list survivors,
+          ]
+---
+scene: hr.survivors
+weight: 0
+place: factory_floor
+tags: [layoff, people, consequence, arc]
+lines:
+  - who: char:kiet
+    en: 'We lost six people on Line 2 and the target did not change. The ones left are working through lunch. They keep asking me whether they are next. What do I tell them?'
+    vi: 'Chuyền 2 mất sáu người và chỉ tiêu không đổi. Những người còn lại làm cả giờ ăn trưa. Họ cứ hỏi anh có phải là người tiếp theo không. Anh nói với họ thế nào?'
+choices:
+  - en: 'Hold a short briefing with Kiet: what is decided, what is not, no more cuts planned this year as far as you know, and review the workload against the new headcount.'
+    vi: 'Họp ngắn cùng anh Kiệt: điều gì đã quyết, điều gì chưa, theo hiểu biết của anh/chị thì năm nay không cắt thêm, và rà lại khối lượng công việc theo số người mới.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.8
+        en: 'The briefing is short and honest. The line is still stretched, and the questions stop. The workload review moves two orders to the next quarter.'
+        vi: 'Buổi thông tin ngắn và thẳng thắn. Chuyền vẫn căng, và những câu hỏi dừng lại. Việc rà khối lượng chuyển hai đơn hàng sang quý sau.'
+        effects: [rel kiet trust +4, rep.production +3, rep.staff +3, stress +2, arc the_list end]
+      - p: 0.2
+        ok: false
+        en: "Mr Cuong hears about the briefing and says that promising 'no more cuts' was not HR's place. You wrote 'as far as I know', and he lets it go."
+        vi: "Anh Cường nghe về buổi thông tin và nói hứa 'không cắt thêm' không phải chỗ của nhân sự. Anh/chị đã nói 'theo hiểu biết của tôi', và anh bỏ qua."
+        effects: [rel kiet trust +3, rel cuong trust -3, rep.staff +2, stress +4, arc the_list end]
+  - en: 'Tell Kiet to keep the line calm, and say the workload is a production issue.'
+    vi: 'Bảo anh Kiệt giữ chuyền yên ổn và nói khối lượng công việc là chuyện của sản xuất.'
+    outcomes:
+      - p: 1
+        en: "Kiet says 'Understood' in the tone of a man who has understood something about you."
+        vi: "Anh Kiệt nói 'Đã hiểu' bằng giọng của người vừa hiểu ra điều gì đó về anh/chị."
+        effects: [rel kiet trust -4, rep.production -2, stress +1, arc the_list end]
+  - en: 'Say that the survivors should be grateful, and that overtime is expected until orders recover.'
+    vi: 'Nói những người còn lại nên biết ơn và làm thêm giờ là điều được kỳ vọng cho đến khi đơn hàng hồi phục.'
+    outcomes:
+      - p: 0.6
+        en: "The overtime comes, and so do three resignations in a month. Kiet puts the figures on Oanh's desk without comment."
+        vi: 'Giờ làm thêm đến, và ba đơn xin nghỉ trong một tháng cũng đến. Anh Kiệt đặt các con số lên bàn chị Oanh mà không bình luận.'
+        effects:
+          [
+            rel kiet trust -8,
+            rel oanh trust -3,
+            rep.production -5,
+            rep.staff -6,
+            stress +3,
+            arc the_list end,
+          ]
+      - p: 0.4
+        ok: false
+        en: 'Someone records the sentence on their phone and posts it in the factory group chat. By lunch it has been read by three hundred people.'
+        vi: 'Có người ghi âm câu nói trên điện thoại và đăng vào nhóm chat của nhà máy. Đến trưa ba trăm người đã nghe.'
+        effects:
+          [
+            rel kiet trust -10,
+            rel oanh trust -8,
+            rep.boss -6,
+            rep.staff -12,
+            stress +7,
+            arc the_list end,
+          ]
+---
+fact: documented_conflict_of_interest
+severity: 1
+category: integrity
+en: 'you wrote down a friendship between a decision-maker and a candidate'
+vi: 'bạn ghi lại mối quan hệ bạn bè giữa người ra quyết định và một ứng viên'
+lesson:
+  en: 'A declared interest is not an accusation. It is the cheapest protection a fair process has, for the candidate, the decision-maker and the person who ran it.'
+  vi: 'Lợi ích được khai báo không phải lời buộc tội. Đó là sự bảo vệ rẻ nhất của một quy trình công bằng, cho ứng viên, cho người quyết định và cho người tổ chức quy trình.'
+witnessed:
+  boss: 2
+public:
+  boss: 3
+---
+fact: promised_hire_to_owner_nephew
+severity: 4
+category: integrity
+en: "you promised a hire to the owner's nephew before the process had started"
+vi: 'bạn hứa một suất tuyển cho cháu chủ trước khi quy trình bắt đầu'
+lesson:
+  en: 'A promise made before the interviews turns the interviews into theatre. Everyone who applies is then competing against a decision that was already made.'
+  vi: 'Lời hứa trước khi phỏng vấn biến các buổi phỏng vấn thành sân khấu. Mọi người nộp hồ sơ khi đó đang cạnh tranh với một quyết định đã có sẵn.'
+traces:
+  - { type: witness, visibility: 0.5, detectors: [boss, staff] }
+witnessed:
+  boss: -4
+  staff: -5
+public:
+  boss: -8
+  staff: -8
+---
+fact: ran_fair_process
+severity: 1
+category: integrity
+en: 'you ran a recruitment process on the scores, not on the connections'
+vi: 'bạn tổ chức tuyển dụng theo điểm số, không theo quan hệ'
+lesson:
+  en: 'A fair process costs a hard conversation with the person who has the power. It earns the trust of every candidate you will meet afterwards.'
+  vi: 'Một quy trình công bằng khiến bạn phải có một cuộc nói chuyện khó với người có quyền. Nó đổi lại lòng tin của mọi ứng viên bạn sẽ gặp sau đó.'
+witnessed:
+  boss: 3
+  production: 3
+  staff: 4
+public:
+  boss: 5
+  staff: 6
+---
+fact: rigged_shortlist
+severity: 6
+category: integrity
+en: 'you changed the panel scores so that a connected candidate came first'
+vi: 'bạn sửa điểm của hội đồng để một ứng viên có quan hệ đứng đầu'
+lesson:
+  en: 'Changing a score after the panel signed it is falsifying a record. It also teaches every candidate who was better, and every panel member, what the process is really for.'
+  vi: 'Sửa điểm sau khi hội đồng đã ký là làm giả hồ sơ. Nó cũng dạy mọi ứng viên giỏi hơn, và mọi thành viên hội đồng, quy trình thực sự dành cho ai.'
+traces:
+  - { type: document, visibility: 0.7, detectors: [internal_audit, boss, staff] }
+witnessed:
+  boss: -8
+  production: -8
+  staff: -10
+public:
+  boss: -14
+  staff: -14
+---
+fact: paid_above_band_secretly
+severity: 5
+category: integrity
+en: 'you paid a new hire above the pay band through a hidden allowance'
+vi: 'bạn trả cho người mới cao hơn khung lương qua một khoản phụ cấp ẩn'
+lesson:
+  en: 'A secret exception is an unfairness to everyone who stayed inside the band, and a record that does not match the payroll. The same exception, in the open, is only a decision.'
+  vi: 'Một ngoại lệ bí mật là sự bất công với mọi người ở trong khung lương, và là hồ sơ không khớp với bảng lương. Cùng ngoại lệ đó, công khai, chỉ là một quyết định.'
+traces:
+  - { type: payment, visibility: 0.6, detectors: [finance, internal_audit, boss] }
+witnessed:
+  boss: -6
+  finance: -8
+public:
+  boss: -10
+  finance: -10
+---
+fact: buried_complaint
+severity: 7
+category: integrity
+en: "you closed an employee's complaint without recording it or looking into it"
+vi: 'bạn đóng khiếu nại của một nhân viên mà không ghi nhận hay xem xét'
+lesson:
+  en: 'An informal complaint that is waved away does not disappear. It waits, with the employee who made it, for the next person who will listen, and for a time when you will be asked what you did.'
+  vi: 'Một khiếu nại không chính thức bị gạt đi không biến mất. Nó chờ, cùng nhân viên đã nêu nó, người tiếp theo chịu lắng nghe, và lúc anh/chị bị hỏi mình đã làm gì.'
+traces:
+  - { type: witness, visibility: 0.6, detectors: [boss, staff, internal_audit] }
+witnessed:
+  boss: -8
+  staff: -10
+public:
+  boss: -14
+  staff: -14
+---
+fact: investigated_fairly
+severity: 2
+category: integrity
+en: 'you investigated a complaint with both sides heard and the complainant protected'
+vi: 'bạn điều tra một khiếu nại, nghe cả hai bên và bảo vệ người khiếu nại'
+lesson:
+  en: 'A fair investigation can annoy a high performer and a manager in the same week. It is also the only thing that makes the next employee with a problem believe it is worth coming to HR.'
+  vi: 'Một cuộc điều tra công bằng có thể làm phật lòng một nhân viên giỏi và một quản lý trong cùng một tuần. Đó cũng là điều duy nhất khiến nhân viên có vấn đề tiếp theo tin rằng đáng đến nhân sự.'
+witnessed:
+  boss: 3
+  staff: 6
+public:
+  boss: 5
+  staff: 8
+---
+fact: leaked_complainant_name
+severity: 7
+category: integrity
+en: 'you told the accused who had complained about them'
+vi: 'bạn nói với người bị khiếu nại ai là người đã khiếu nại họ'
+lesson:
+  en: 'Confidentiality is what makes a complaint safe. Once the name leaves the room, retaliation does not need a decision, only an opportunity.'
+  vi: 'Bảo mật là điều làm khiếu nại an toàn. Khi cái tên rời khỏi căn phòng, trả đũa không cần quyết định, chỉ cần cơ hội.'
+traces:
+  - { type: witness, visibility: 0.7, detectors: [boss, staff] }
+witnessed:
+  boss: -8
+  staff: -12
+public:
+  boss: -14
+  staff: -16
+---
+fact: retaliated_against_complainant
+severity: 8
+category: integrity
+en: "you added a performance note to a complainant's file after she complained"
+vi: 'bạn thêm ghi chú hiệu suất vào hồ sơ của người khiếu nại sau khi chị ấy khiếu nại'
+lesson:
+  en: 'Retaliation is a breach by itself, and often worse than the original complaint, because it is a choice made with the file open. A note that arrives after a complaint will be read as what it is.'
+  vi: 'Trả đũa tự nó là một vi phạm, và thường tệ hơn khiếu nại ban đầu vì đó là lựa chọn được đưa ra khi hồ sơ đang mở. Một ghi chú xuất hiện sau khiếu nại sẽ được đọc đúng như bản chất của nó.'
+traces:
+  - { type: document, visibility: 0.8, detectors: [internal_audit, boss, staff] }
+witnessed:
+  boss: -12
+  staff: -14
+public:
+  boss: -18
+  staff: -20
+---
+fact: backdated_warning
+severity: 7
+category: integrity
+en: 'you wrote a warning with a date earlier than the day it was written'
+vi: 'bạn viết một cảnh cáo với ngày sớm hơn ngày thực sự viết'
+lesson:
+  en: 'A backdated document is a false document. Systems keep edit histories, and people keep copies. It turns a disciplinary decision into evidence against the company.'
+  vi: 'Tài liệu ghi lùi ngày là tài liệu giả. Hệ thống lưu lịch sử chỉnh sửa và con người giữ bản sao. Nó biến một quyết định kỷ luật thành bằng chứng chống lại công ty.'
+traces:
+  - { type: document, visibility: 0.8, detectors: [internal_audit, boss] }
+witnessed:
+  boss: -10
+  staff: -8
+public:
+  boss: -16
+  staff: -12
+---
+fact: fair_selection_documented
+severity: 2
+category: integrity
+en: 'you chose people for redundancy on written criteria and kept a record of why'
+vi: 'bạn chọn người bị cắt giảm theo tiêu chí viết ra và lưu lại lý do'
+lesson:
+  en: 'Written criteria cannot make a layoff painless. They make it explainable, to the people on the list, to the labour office, and to yourself.'
+  vi: 'Tiêu chí viết ra không làm cắt giảm bớt đau. Chúng làm cho nó giải thích được, với những người trong danh sách, với cơ quan lao động và với chính bạn.'
+witnessed:
+  boss: 2
+  staff: 4
+public:
+  boss: 3
+  staff: 6
+---
+fact: targeted_complainer_for_layoff
+severity: 8
+category: integrity
+en: 'you left on a redundancy list people who had complained, organised, or were pregnant'
+vi: 'bạn để lại trong danh sách cắt giảm những người đã khiếu nại, tổ chức hoặc đang mang thai'
+lesson:
+  en: 'Choosing the voices that are inconvenient, or the people the law protects, is not cost cutting. It is the thing the labour inspector looks for first.'
+  vi: 'Chọn những tiếng nói bất tiện, hay những người được luật bảo vệ, không phải cắt giảm chi phí. Đó là thứ thanh tra lao động tìm đầu tiên.'
+traces:
+  - { type: document, visibility: 0.7, detectors: [internal_audit, boss, staff] }
+witnessed:
+  boss: -10
+  staff: -14
+public:
+  boss: -16
+  staff: -20
+---
+fact: legal_severance_paid
+severity: 1
+category: integrity
+en: 'you followed the notice and severance rules when people were let go'
+vi: 'bạn tuân thủ quy định báo trước và trợ cấp khi cho người nghỉ việc'
+lesson:
+  en: 'Following the notice and severance rules costs real money. It also means nobody can later say the company took something it owed.'
+  vi: 'Tuân thủ quy định báo trước và trợ cấp tốn tiền thật. Nó cũng có nghĩa là không ai sau này nói được rằng công ty lấy đi thứ mình nợ.'
+witnessed:
+  boss: 1
+  staff: 4
+public:
+  boss: 2
+  staff: 6
+---
+fact: skipped_legal_notice
+severity: 7
+category: integrity
+en: 'you had people sign voluntary resignations to avoid notice and severance'
+vi: 'bạn cho người ký đơn tự nguyện nghỉ việc để tránh báo trước và trợ cấp'
+lesson:
+  en: 'A voluntary resignation that nobody volunteered for is a dismissal in disguise. The signed form will be read against the company, and the saving is paid back with a penalty.'
+  vi: 'Đơn tự nguyện nghỉ việc mà không ai tự nguyện là một vụ sa thải trá hình. Tờ đơn đã ký sẽ bị đọc chống lại công ty, và khoản tiết kiệm được trả lại kèm tiền phạt.'
+traces:
+  - { type: document, visibility: 0.7, detectors: [internal_audit, boss, staff] }
+witnessed:
+  boss: -10
+  staff: -14
+public:
+  boss: -16
+  staff: -20
+---
+fact: polished_hr_review
+severity: 3
+category: integrity
+en: 'you left the difficult cases out of your own year-end review'
+vi: 'bạn bỏ các vụ việc khó ra khỏi buổi đánh giá cuối năm của chính mình'
+lesson:
+  en: 'A review without the hard cases rewards the wrong skill. The case log is a record, and your boss can read it.'
+  vi: 'Một buổi đánh giá không có các vụ việc khó thưởng cho sai kỹ năng. Sổ theo dõi vụ việc là hồ sơ, và sếp bạn có thể đọc nó.'
+witnessed:
+  boss: -4
+public:
+  boss: -6
+---
+fact: accepted_hr_condition
+severity: 3
+category: integrity
+en: 'you accepted the head of HR role without asking what the condition meant'
+vi: 'bạn nhận vị trí trưởng phòng nhân sự mà không hỏi điều kiện nghĩa là gì'
+lesson:
+  en: 'A promotion with an unspoken condition is a decision to be made later, under pressure, by someone who has already said yes.'
+  vi: 'Một lần thăng chức với điều kiện không nói ra là một quyết định phải đưa ra sau, dưới áp lực, bởi người đã nói có.'
+witnessed:
+  boss: -2
+public:
+  boss: -4

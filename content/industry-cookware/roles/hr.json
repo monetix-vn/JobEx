@@ -1,0 +1,37 @@
+[
+  {
+    "id": "role.hr.hrbp",
+    "department": "dept.hr",
+    "level": 1,
+    "title_key": "role.hr.hrbp.title",
+    "blurb_key": "role.hr.hrbp.blurb",
+    "reports_to": "role.hr.manager",
+    "kpis": [
+      { "id": "kpi.time_to_hire", "weight": 0.4 },
+      { "id": "kpi.cases_closed", "weight": 0.3 }
+    ],
+    "weekly_demand": [
+      { "task": "task.recruitment_requests", "per_week": [3, 5], "effort_h": 2.0 },
+      { "task": "task.employee_cases", "per_week": [2, 4], "effort_h": 2.0 },
+      { "task": "task.contract_admin", "per_week": [3, 5], "effort_h": 1.0 }
+    ],
+    "approval_limits": { "salary_exception_percent": 0 },
+    "skills": ["people", "employment_law", "backbone"],
+    "start_state": {
+      "salary_vnd": 16000000,
+      "stress": 25,
+      "skill.people": 40,
+      "skill.employment_law": 30,
+      "skill.backbone": 30
+    },
+    "overhead_hours": 20
+  },
+  {
+    "id": "role.hr.manager",
+    "department": "dept.hr",
+    "level": 2,
+    "title_key": "role.hr.manager.title",
+    "approval_limits": { "salary_exception_percent": 10 },
+    "start_state": { "salary_vnd": 36000000, "stress": 40 }
+  }
+]

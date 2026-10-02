@@ -1,0 +1,134 @@
+{
+  "id": "scene.hr.labour_inspection",
+  "location": "loc.hr_office",
+  "cast": ["char:sang", "char:oanh"],
+  "lines": [
+    {
+      "speaker": "char:sang",
+      "text_key": "scene.hr.labour_inspection.l1"
+    },
+    {
+      "speaker": "char:oanh",
+      "text_key": "scene.hr.labour_inspection.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.hr.labour_inspection.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.hr.labour_inspection.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.sang.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.loan.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.hr.labour_inspection.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.hr.labour_inspection.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.sang.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.hr.labour_inspection.c3",
+      "outcomes": [
+        {
+          "p": 0.45,
+          "narration_key": "scene.hr.labour_inspection.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.sang.trust",
+              "value": -2
+            },
+            {
+              "delta": "rel.loan.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": -1
+            },
+            {
+              "fact": "fact.backdated_hr_records",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.55,
+          "result": "fail",
+          "narration_key": "scene.hr.labour_inspection.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.sang.trust",
+              "value": -10
+            },
+            {
+              "delta": "rel.loan.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.backdated_hr_records",
+              "visibility": "public"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

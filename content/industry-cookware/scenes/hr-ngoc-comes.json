@@ -1,0 +1,127 @@
+{
+  "id": "scene.hr.ngoc_comes",
+  "location": "loc.hr_office",
+  "cast": ["char:ngoc"],
+  "lines": [
+    {
+      "speaker": "char:ngoc",
+      "text_key": "scene.hr.ngoc_comes.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.hr.ngoc_comes.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.hr.ngoc_comes.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.ngoc.trust",
+              "value": 8
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.the_complaint",
+              "stage": "response"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.hr.ngoc_comes.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.hr.ngoc_comes.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.ngoc.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.the_complaint",
+              "stage": "response"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.hr.ngoc_comes.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.hr.ngoc_comes.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.ngoc.trust",
+              "value": -10
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.buried_complaint",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_complaint",
+              "stage": "aftermath"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.hr.ngoc_comes.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.ngoc.trust",
+              "value": -10
+            },
+            {
+              "delta": "rel.loan.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.buried_complaint",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_complaint",
+              "stage": "aftermath"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

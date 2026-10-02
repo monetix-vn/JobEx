@@ -1,0 +1,862 @@
+# HR Business Partner: everyday incidents and consequences (docs/story/hr.md).
+scene: hr.contract_chain
+place: hr_office
+tags: [contracts, pressure, dark]
+weight: 3
+cooldown: 30
+when: [turn >= 10]
+lines:
+  - who: char:lan
+    en: 'I have two press operators on their third three-month contract. They are good, and I do not want to pay them for a permanent position until the orders are certain. Can you just draw up another contract, with a few days between?'
+    vi: 'Chị có hai công nhân ép đang ở hợp đồng ba tháng lần thứ ba. Họ giỏi, và chị không muốn trả lương vị trí dài hạn cho đến khi đơn hàng chắc chắn. Em soạn thêm một hợp đồng nữa, cách vài ngày, được không?'
+  - who: char:loan
+    en: 'The code only allows two fixed-term contracts in a row. The third becomes indefinite by law. I have the dates in my file.'
+    vi: 'Bộ luật chỉ cho phép hai hợp đồng xác định thời hạn liên tiếp. Hợp đồng thứ ba mặc nhiên thành không xác định thời hạn. Em có ngày tháng trong hồ sơ.'
+choices:
+  - en: 'Convert both to indefinite contracts as the law requires, and take the cost to Lan and Oanh with a plan for peak and slow months.'
+    vi: 'Chuyển cả hai sang hợp đồng không xác định thời hạn như luật yêu cầu, và mang chi phí này đến chị Lan và chị Oanh kèm kế hoạch cho mùa cao điểm và mùa thấp.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.8
+        en: 'Lan sighs, then agrees to keep the two and not renew a third temp. The operators learn about the change from Loan, and one of them cries in the corridor.'
+        vi: 'Chị Lan thở dài rồi đồng ý giữ hai người và không gia hạn thêm người thời vụ thứ ba. Hai công nhân biết tin từ Loan, và một người khóc ngoài hành lang.'
+        effects: [rel lan trust -2, rel loan trust +3, rep.production +2, rep.staff +4, stress +2]
+      - p: 0.2
+        ok: false
+        en: "Mr Cuong is unhappy about the headcount and asks why HR did not find a way. Oanh answers: 'Because there is not one.'"
+        vi: "Anh Cường không hài lòng về số lượng nhân sự và hỏi vì sao nhân sự không tìm cách. Chị Oanh trả lời: 'Vì không có cách nào cả.'"
+        effects: [rel lan trust -1, rel oanh trust +2, rel cuong trust -3, rep.staff +4, stress +4]
+  - en: 'Convert the better operator, and extend the other for a final, honest three months with a clear end date and a training offer.'
+    vi: 'Chuyển người giỏi hơn, và gia hạn người kia thêm ba tháng cuối cùng, trung thực, có ngày kết thúc rõ và có đề nghị đào tạo.'
+    outcomes:
+      - p: 1
+        en: 'A compromise within the code. The second operator knows the date and starts looking. Lan says it is fair.'
+        vi: 'Một thỏa hiệp trong khuôn khổ luật. Người công nhân thứ hai biết ngày và bắt đầu tìm việc. Chị Lan nói vậy là công bằng.'
+        effects: [rel lan trust +1, rel loan trust +1, rep.staff +1, stress +2]
+  - en: "Draw up the contracts with a week's gap, and call them new contracts."
+    vi: 'Soạn hợp đồng cách nhau một tuần và gọi đó là hợp đồng mới.'
+    outcomes:
+      - p: 0.7
+        en: 'It works on paper. Lan thanks you. Loan files the contracts, and writes the dates in her notebook without a word.'
+        vi: 'Trên giấy thì được. Chị Lan cảm ơn. Loan lưu các hợp đồng và ghi ngày vào sổ của cô mà không nói gì.'
+        effects:
+          [
+            rel lan trust +5,
+            rel loan trust -6,
+            rep.staff -3,
+            stress +1,
+            fact chained_contracts private,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'One of the operators asks a cousin who works for a law firm. By Friday you have a letter asking why the third contract is not indefinite.'
+        vi: 'Một trong hai công nhân hỏi người anh họ làm ở văn phòng luật. Đến thứ Sáu anh/chị nhận một công văn hỏi vì sao hợp đồng thứ ba không phải không xác định thời hạn.'
+        effects:
+          [
+            rel lan trust +2,
+            rel loan trust -6,
+            rel oanh trust -5,
+            rep.boss -4,
+            rep.staff -6,
+            stress +5,
+            fact chained_contracts witnessed,
+          ]
+---
+scene: hr.overtime_records_ask
+place: hr_office
+tags: [overtime, pressure, dark]
+weight: 3
+cooldown: 30
+when: [turn >= 12]
+lines:
+  - who: char:lan
+    en: 'Line 3 worked well over the monthly cap last month to finish the Anders order. The sheets say what they say. Could you adjust the hours so that nobody is above the cap on paper? The money has been paid. It is only the record.'
+    vi: 'Tháng trước chuyền 3 làm vượt xa mức trần hằng tháng để kịp đơn ông Anders. Bảng ghi sao thì là vậy. Em chỉnh giờ để trên giấy không ai vượt trần được không? Tiền đã trả rồi. Chỉ là hồ sơ thôi.'
+choices:
+  - en: 'Refuse to alter the hours, report the breach to Oanh, and agree a schedule and a hiring plan so it does not happen again.'
+    vi: 'Từ chối sửa giờ, báo vi phạm cho chị Oanh và thống nhất lịch làm việc và kế hoạch tuyển để không lặp lại.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.7
+        en: 'Lan is angry for a day, then asks for the schedule. Oanh reports it to Mr Cuong as an issue that was found and fixed. The record is accurate, and ugly.'
+        vi: 'Chị Lan giận một ngày rồi xin lịch làm việc. Chị Oanh báo anh Cường như một vấn đề đã được phát hiện và sửa. Hồ sơ chính xác, và xấu.'
+        effects:
+          [
+            rel lan trust -3,
+            rel oanh trust +4,
+            rel loan trust +3,
+            rep.boss +1,
+            rep.production +1,
+            stress +4,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'Mr Cuong says the report makes the company look bad and asks why HR is writing things down.'
+        vi: 'Anh Cường nói bản báo cáo làm công ty trông tệ và hỏi vì sao nhân sự lại ghi chép lại.'
+        effects: [rel lan trust -3, rel oanh trust +2, rel cuong trust -4, stress +5]
+  - en: "Record the true hours, mark the breach as 'under review' and tell Lan that next month will be different."
+    vi: "Ghi giờ thật, đánh dấu vi phạm 'đang xem xét' và nói với chị Lan rằng tháng sau sẽ khác."
+    outcomes:
+      - p: 1
+        en: 'The sheet is true and the file is not yet complete. Lan accepts it. The breach is still a breach, and you have a month to be believed.'
+        vi: 'Bảng ghi đúng và hồ sơ chưa đầy đủ. Chị Lan chấp nhận. Vi phạm vẫn là vi phạm, và anh/chị có một tháng để được tin.'
+        effects: [rel lan trust -1, rel oanh trust +1, stress +3]
+  - en: 'Adjust the hours on the sheets to the cap, and spread the surplus across the next two months.'
+    vi: 'Chỉnh giờ trên bảng về mức trần và dàn phần dư sang hai tháng sau.'
+    outcomes:
+      - p: 0.7
+        en: "The sheets are clean. The workers' payslips do not match the sheets by a few hours each. Loan notices the gap and writes it down."
+        vi: 'Các bảng sạch. Phiếu lương của công nhân lệch với bảng vài giờ mỗi người. Loan nhận ra khoảng lệch và ghi lại.'
+        effects:
+          [
+            rel lan trust +5,
+            rel loan trust -7,
+            rep.production +2,
+            stress +1,
+            fact edited_overtime_records private,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'A worker compares his payslip with his own notebook and brings both to Kiet. The numbers do not agree, and Kiet asks you to explain.'
+        vi: 'Một công nhân so phiếu lương với sổ riêng của mình rồi mang cả hai đến anh Kiệt. Con số không khớp, và anh Kiệt đề nghị anh/chị giải thích.'
+        effects:
+          [
+            rel lan trust +2,
+            rel kiet trust -8,
+            rel loan trust -7,
+            rep.production -6,
+            rep.staff -6,
+            stress +5,
+            fact edited_overtime_records witnessed,
+          ]
+---
+scene: hr.insurance_base
+place: finance_office
+tags: [insurance, cost, dark]
+weight: 2
+cooldown: 40
+when: [turn >= 14, month in 1 4 7 10]
+lines:
+  - who: char:duc
+    en: 'Social insurance is costing us more than the budget. Many companies declare a lower base salary for the contribution and pay the rest as allowances. Nobody notices, and the workers take home the same. Can HR prepare the declarations that way?'
+    vi: 'Bảo hiểm xã hội đang tốn hơn ngân sách. Nhiều công ty khai mức lương đóng thấp hơn và trả phần còn lại bằng phụ cấp. Không ai để ý, và công nhân vẫn nhận như cũ. Nhân sự chuẩn bị kê khai theo cách đó được không?'
+choices:
+  - en: "Decline, explain the effect on workers' pensions and sick pay, and offer Duc a costed proposal to stage the increase over two years."
+    vi: 'Từ chối, giải thích tác động lên lương hưu và chế độ ốm đau của công nhân, và đề xuất anh Đức một phương án có tính chi phí để tăng dần trong hai năm.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.7
+        en: "Duc reads the numbers, and is quiet. 'I did not think about the pensions.' The two-year plan is approved, slowly."
+        vi: "Anh Đức đọc các con số và im lặng. 'Anh chưa nghĩ tới lương hưu.' Phương án hai năm được duyệt, chậm rãi."
+        effects: [rel duc trust +4, rel oanh trust +2, rep.finance +2, rep.staff +3, stress +3]
+      - p: 0.3
+        ok: false
+        en: 'Duc says the budget does not allow it this year, and asks HR to wait. The declarations stay as they are, honestly, for now.'
+        vi: 'Anh Đức nói ngân sách năm nay không cho phép và xin nhân sự chờ. Các kê khai giữ nguyên, trung thực, trong lúc này.'
+        effects: [rel duc trust -1, rel oanh trust +1, stress +2]
+  - en: 'Say you will review the grades and move people to their real base pay where they are clearly underdeclared, case by case.'
+    vi: 'Nói anh/chị sẽ rà soát ngạch lương và đưa những người đang bị khai thấp rõ ràng về mức lương thật, từng trường hợp một.'
+    outcomes:
+      - p: 1
+        en: 'It is slow and unglamorous. Duc grumbles, and the worst cases are fixed first.'
+        vi: 'Chậm và không hào nhoáng. Anh Đức càu nhàu, và các trường hợp tệ nhất được sửa trước.'
+        effects: [rel duc trust -1, rep.staff +2, stress +3]
+  - en: 'Prepare the declarations at the lower base, with the difference paid as allowances.'
+    vi: 'Chuẩn bị kê khai ở mức lương đóng thấp hơn, phần chênh trả bằng phụ cấp.'
+    outcomes:
+      - p: 0.75
+        en: 'The company saves a visible sum each month. Loan prepares the files and asks you to sign the cover note yourself.'
+        vi: 'Công ty tiết kiệm một khoản đáng kể mỗi tháng. Loan chuẩn bị hồ sơ và đề nghị anh/chị tự ký phiếu chuyển.'
+        effects:
+          [
+            rel duc trust +5,
+            rel loan trust -4,
+            rep.finance +3,
+            rep.staff -3,
+            stress +1,
+            fact underreported_insurance_base private,
+          ]
+      - p: 0.25
+        ok: false
+        en: 'A worker on long sick leave learns that the benefit is calculated on the declared base, not the real pay. She comes to HR with her payslip.'
+        vi: 'Một công nhân nghỉ ốm dài ngày biết rằng chế độ được tính theo mức đóng đã khai, không phải lương thật. Chị đến phòng nhân sự cùng phiếu lương.'
+        effects:
+          [
+            rel duc trust +2,
+            rel loan trust -5,
+            rel oanh trust -5,
+            rep.boss -4,
+            rep.staff -8,
+            stress +5,
+            fact underreported_insurance_base witnessed,
+          ]
+---
+scene: hr.salary_leak
+place: hr_office
+tags: [privacy, mistake]
+weight: 2
+cooldown: 40
+when: [turn >= 8]
+lines:
+  - who: char:loan
+    en: 'I made a mistake. I sent the all-staff email about the Tet schedule with the wrong attachment. It was the salary sheet. Four hundred people have it. I tried to recall it. Eleven opened it already.'
+    vi: 'Em mắc lỗi. Em gửi email toàn công ty về lịch nghỉ Tết nhưng đính kèm nhầm. Đó là bảng lương. Bốn trăm người có nó. Em đã thử thu hồi. Mười một người đã mở.'
+choices:
+  - en: 'Tell Oanh immediately, send a short plain notice to everyone asking them to delete it, and meet the affected people whose pay is the most unusual.'
+    vi: 'Báo chị Oanh ngay, gửi một thông báo ngắn gọn cho mọi người đề nghị xóa tệp, và gặp những người có mức lương đặc biệt nhất.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.7
+        en: "Oanh says 'Good, tell them the truth.' Some people are upset about pay differences, and most are grateful for the honesty. Loan is shaken, and you stay with her for an hour."
+        vi: "Chị Oanh nói 'Tốt, nói thật với họ.' Một số người buồn vì chênh lệch lương, và phần lớn cảm kích sự trung thực. Loan bị sốc, và anh/chị ngồi với cô một tiếng."
+        effects: [rel oanh trust +4, rel loan trust +6, rep.staff +2, stress +4]
+      - p: 0.3
+        ok: false
+        en: 'Someone has already posted the sheet in the factory chat. The notice does not catch it. Mr Cuong asks who was responsible, and you answer for Loan.'
+        vi: 'Có người đã đăng bảng lương lên nhóm chat nhà máy. Thông báo không chặn được. Anh Cường hỏi ai chịu trách nhiệm, và anh/chị trả lời thay Loan.'
+        effects: [rel oanh trust +2, rel loan trust +4, rel cuong trust -3, rep.staff -3, stress +6]
+  - en: 'Recall what you can, ask the eleven quietly to delete it, and tell no one else.'
+    vi: 'Thu hồi những gì có thể, lặng lẽ nhờ mười một người xóa tệp và không báo ai khác.'
+    outcomes:
+      - p: 0.6
+        en: 'It mostly works. For a week you wait for the whispering. It does not start, and you do not know why you feel worse.'
+        vi: 'Phần lớn có tác dụng. Một tuần anh/chị chờ tiếng xì xào. Nó không bắt đầu, và anh/chị không biết vì sao lại thấy tệ hơn.'
+        effects: [rel loan trust +1, stress +4]
+      - p: 0.4
+        ok: false
+        en: 'One of the eleven forwards it to a friend in another department, who asks Oanh why HR said nothing.'
+        vi: 'Một trong mười một người chuyển nó cho bạn ở bộ phận khác, người này hỏi chị Oanh vì sao nhân sự không nói gì.'
+        effects: [rel loan trust -2, rel oanh trust -5, rep.boss -2, rep.staff -3, stress +4]
+  - en: 'Tell Loan to say it never happened, and that anyone who asks was shown an old file.'
+    vi: 'Bảo Loan nói rằng chuyện đó chưa từng xảy ra và ai hỏi thì bảo họ đã xem một tệp cũ.'
+    outcomes:
+      - p: 0.6
+        en: 'For a while it holds. Loan does as she is told, and does not look at you for the rest of the week.'
+        vi: 'Một thời gian thì giữ được. Loan làm như được bảo, và không nhìn anh/chị suốt phần còn lại của tuần.'
+        effects: [rel loan trust -8, stress +2, fact hid_salary_leak private]
+      - p: 0.4
+        ok: false
+        en: 'The sheet was opened by eleven people and photographed by three. By evening the numbers are being compared in a message group, and someone asks why HR denied it.'
+        vi: 'Bảng lương đã được mười một người mở và ba người chụp ảnh. Đến tối các con số được so sánh trong một nhóm tin nhắn, và có người hỏi vì sao nhân sự chối.'
+        effects:
+          [
+            rel loan trust -10,
+            rel oanh trust -8,
+            rep.boss -5,
+            rep.staff -10,
+            stress +7,
+            fact hid_salary_leak public,
+          ]
+---
+scene: hr.probation_pregnant
+place: hr_office
+tags: [probation, pregnancy, dark]
+weight: 2
+cooldown: 40
+when: [turn >= 10]
+lines:
+  - who: char:khoa
+    en: 'My new lab technician finishes probation in two weeks. She told me yesterday she is pregnant. I will be short a person in the autumn peak. I would prefer not to confirm her. We can say the performance was fine, not outstanding.'
+    vi: 'Kỹ thuật viên phòng thí nghiệm mới của anh hết thử việc trong hai tuần. Hôm qua cô ấy báo với anh là đang mang thai. Anh sẽ thiếu một người vào đợt cao điểm mùa thu. Anh muốn không ký chính thức cho cô ấy. Mình có thể nói hiệu suất ổn, chưa xuất sắc.'
+choices:
+  - en: 'Assess her only on the documented probation objectives, tell Khoa that pregnancy cannot be a factor, and plan cover for her leave.'
+    vi: 'Chỉ đánh giá cô ấy theo các mục tiêu thử việc đã ghi nhận, nói với anh Khoa rằng việc mang thai không được là yếu tố, và lên kế hoạch người thay khi cô nghỉ.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.8
+        en: 'Her objectives were met. Khoa is unhappy and also relieved to have it settled. You put a temp on the plan for the autumn.'
+        vi: 'Cô ấy đạt mục tiêu. Anh Khoa không vui và cũng nhẹ nhõm vì đã rõ ràng. Anh/chị đưa một người thời vụ vào kế hoạch mùa thu.'
+        effects: [rel khoa trust -2, rel oanh trust +3, rep.qc +1, rep.staff +4, stress +3]
+      - p: 0.2
+        ok: false
+        en: 'Khoa says that if her objectives were met he will find others. You say that this would be a different conversation, with Oanh in the room.'
+        vi: 'Anh Khoa nói nếu cô đạt mục tiêu thì anh sẽ tìm cớ khác. Anh/chị nói như vậy sẽ là một cuộc nói chuyện khác, có chị Oanh trong phòng.'
+        effects: [rel khoa trust -5, rel oanh trust +3, rep.qc -1, rep.staff +3, stress +5]
+  - en: "Suggest extending her probation by one month 'to complete the assessment', and decide afterwards."
+    vi: "Gợi ý gia hạn thử việc thêm một tháng 'để hoàn tất đánh giá' và quyết định sau."
+    outcomes:
+      - p: 1
+        en: 'It buys time and nobody is happy. The technician guesses why. The extension is a decision you will have to defend either way.'
+        vi: 'Nó mua thêm thời gian và không ai hài lòng. Kỹ thuật viên đoán được lý do. Việc gia hạn là quyết định anh/chị sẽ phải bảo vệ dù thế nào.'
+        effects: [rel khoa trust +1, rep.staff -2, stress +3]
+  - en: "Draft the non-confirmation letter citing 'performance below expectation' and send it before she can claim leave."
+    vi: "Soạn thư không xác nhận hợp đồng nêu 'hiệu suất thấp hơn kỳ vọng' và gửi trước khi cô kịp xin nghỉ thai sản."
+    outcomes:
+      - p: 0.7
+        en: 'Khoa thanks you with real feeling. The technician cries in the corridor and does not argue. The reason on the letter is not the reason.'
+        vi: 'Anh Khoa cảm ơn anh/chị chân thành. Kỹ thuật viên khóc ngoài hành lang và không tranh cãi. Lý do ghi trong thư không phải lý do thật.'
+        effects:
+          [
+            rel khoa trust +6,
+            rel oanh trust -4,
+            rep.qc +2,
+            rep.staff -6,
+            stress +2,
+            fact ended_probation_for_pregnancy private,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'She has her objectives form, signed by Khoa and rated as met. She brings it to the labour office with the date she told him.'
+        vi: 'Cô giữ phiếu mục tiêu, có chữ ký anh Khoa và đánh giá đạt. Cô mang nó đến phòng lao động cùng ngày cô báo với anh.'
+        effects:
+          [
+            rel khoa trust -3,
+            rel oanh trust -9,
+            rep.boss -8,
+            rep.qc -3,
+            rep.staff -10,
+            stress +8,
+            fact ended_probation_for_pregnancy public,
+          ]
+---
+scene: hr.young_applicant
+place: hr_office
+tags: [recruitment, age, dark]
+weight: 2
+cooldown: 40
+when: [turn >= 10, month in 8 9 10]
+lines:
+  - who: char:kiet
+    en: 'Peak season. I need twenty hands by Monday. There is a boy at the gate who says he is nineteen. His ID says he is nineteen. He looks sixteen. He is quick, and his family needs the money. Can you process him?'
+    vi: 'Mùa cao điểm. Anh cần hai mươi người vào thứ Hai. Có một cậu bé ở cổng nói mười chín tuổi. CCCD ghi mười chín tuổi. Trông cậu mới mười sáu. Cậu nhanh nhẹn, và nhà cậu cần tiền. Em làm thủ tục cho cậu được không?'
+choices:
+  - en: 'Check the ID against the family register and the face, and if he is under age, decline politely and offer him a place in the vocational programme.'
+    vi: 'Đối chiếu CCCD với sổ hộ khẩu và gương mặt, và nếu cậu chưa đủ tuổi, từ chối lịch sự và giới thiệu cậu vào chương trình học nghề.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.8
+        en: "The ID is his cousin's. He is sixteen. He takes the vocational form and says nothing, and you feel the weight of his family's need. Kiet nods: 'Thank you. I could not say it.'"
+        vi: "CCCD là của anh họ cậu. Cậu mười sáu tuổi. Cậu nhận mẫu đăng ký học nghề và không nói gì, và anh/chị thấy sức nặng của nhu cầu của gia đình cậu. Anh Kiệt gật đầu: 'Cảm ơn em. Anh không nói được.'"
+        effects: [rel kiet trust +4, rep.production +1, rep.staff +2, stress +3]
+      - p: 0.2
+        ok: false
+        en: 'The ID is real. He is nineteen, and a slow starter. You have lost an hour and Kiet is a person short.'
+        vi: 'CCCD thật. Cậu mười chín tuổi và dậy thì muộn. Anh/chị mất một giờ và anh Kiệt thiếu một người.'
+        effects: [rel kiet trust -1, stress +2]
+  - en: 'Offer a light, non-hazardous role for a seventeen-year-old only with parental consent, reduced hours and a medical check, if he qualifies on the real documents.'
+    vi: 'Đề xuất một việc nhẹ, không độc hại cho người mười bảy tuổi chỉ khi có sự đồng ý của phụ huynh, giờ làm giảm và khám sức khỏe, nếu cậu đủ điều kiện theo giấy tờ thật.'
+    outcomes:
+      - p: 1
+        en: 'He is sixteen, which is below the minimum, so there is no role. The conversation is awkward and honest. His mother thanks you for explaining.'
+        vi: 'Cậu mười sáu tuổi, thấp hơn mức tối thiểu, nên không có vị trí nào. Cuộc trò chuyện khó xử và thẳng thắn. Mẹ cậu cảm ơn vì anh/chị đã giải thích.'
+        effects: [rel kiet trust +1, rep.staff +2, stress +3]
+  - en: 'Process him as nineteen, on the ID he brought.'
+    vi: 'Làm thủ tục cho cậu như mười chín tuổi, theo CCCD cậu mang đến.'
+    outcomes:
+      - p: 0.7
+        en: 'He starts Monday on the stamping line. Kiet says nothing. The ID is what the file says, and you tell yourself that is the same as checking.'
+        vi: 'Cậu bắt đầu thứ Hai ở chuyền dập. Anh Kiệt không nói gì. CCCD là điều hồ sơ ghi, và anh/chị tự nhủ vậy cũng như đã kiểm tra.'
+        effects:
+          [rel kiet trust +3, rep.production +2, stress +1, fact hired_underage_worker private]
+      - p: 0.3
+        ok: false
+        en: 'A press operator is injured on the stamping line on Wednesday. His is the name the safety officer asks for. His age is on the form.'
+        vi: 'Một công nhân ép bị thương ở chuyền dập vào thứ Tư. Tên cậu là tên mà cán bộ an toàn hỏi. Tuổi của cậu ghi trong phiếu.'
+        effects:
+          [
+            rel kiet trust -3,
+            rel oanh trust -10,
+            rep.boss -12,
+            rep.production -8,
+            rep.staff -10,
+            stress +10,
+            fact hired_underage_worker public,
+          ]
+---
+scene: hr.engagement_survey
+place: meeting_room
+tags: [survey, honesty, dark]
+weight: 2
+cooldown: 40
+when: [turn >= 16, month in 5 6 7 8]
+lines:
+  - who: char:cuong
+    en: "I have seen the survey. Forty-one percent would not recommend the company as a place to work. The factory floor is the worst. I do not want that in the board summary. Show the average, or leave out the departments with low response, or ask the managers to help people answer 'properly'."
+    vi: "Anh đã xem khảo sát. Bốn mươi mốt phần trăm không giới thiệu công ty là nơi làm việc. Xưởng sản xuất tệ nhất. Anh không muốn điều đó có trong bản tóm tắt cho hội đồng. Cho xem con số trung bình, hoặc bỏ các bộ phận ít phản hồi, hoặc nhờ quản lý giúp mọi người trả lời 'cho đúng'."
+choices:
+  - en: 'Present the full results with the breakdown, three causes the data points to, and an action plan with owners and dates.'
+    vi: 'Trình bày toàn bộ kết quả kèm phân tích theo bộ phận, ba nguyên nhân dữ liệu chỉ ra, và kế hoạch hành động có người chịu trách nhiệm và ngày tháng.'
+    cost: { hours: 4 }
+    outcomes:
+      - p: 0.7
+        en: 'Mr Cuong reads the breakdown, and the action plan, twice. He picks two of the three actions and funds them. The summary to the board contains the number.'
+        vi: 'Anh Cường đọc phần phân tích và kế hoạch hành động hai lần. Anh chọn hai trong ba hành động và cấp ngân sách. Bản tóm tắt gửi hội đồng có con số đó.'
+        effects: [rel cuong trust +1, rel oanh trust +4, rep.boss +3, rep.staff +3, stress +4]
+      - p: 0.3
+        ok: false
+        en: 'Mr Cuong says the board will think the company is broken, and asks you to tone it down. You hold the numbers, and offer to present them to the board yourself.'
+        vi: 'Anh Cường nói hội đồng sẽ nghĩ công ty có vấn đề và xin anh/chị làm nhẹ đi. Anh/chị giữ nguyên các con số và đề nghị tự trình bày cho hội đồng.'
+        effects: [rel cuong trust -4, rel oanh trust +4, stress +6]
+  - en: "Present the results with a softer framing, an 'engagement index' and a positive headline, but keep the numbers in the appendix."
+    vi: "Trình bày kết quả với cách nhìn nhẹ nhàng hơn, một 'chỉ số gắn kết' và tiêu đề tích cực, nhưng giữ các con số trong phụ lục."
+    outcomes:
+      - p: 1
+        en: 'The board reads the headline. The appendix is long, and unread. The numbers are there for anyone who looks.'
+        vi: 'Hội đồng đọc tiêu đề. Phụ lục dài và không ai đọc. Các con số vẫn ở đó cho ai chịu xem.'
+        effects: [rel cuong trust +2, rel oanh trust -1, stress +2]
+  - en: 'Drop the two lowest departments, and re-run the survey in team meetings, with managers present.'
+    vi: 'Bỏ hai bộ phận thấp nhất và chạy lại khảo sát trong các cuộc họp nhóm, có quản lý có mặt.'
+    outcomes:
+      - p: 0.7
+        en: 'The score rises to sixty-eight percent. Mr Cuong is delighted. The workers who answered in front of their manager do not trust the next survey.'
+        vi: 'Điểm tăng lên sáu mươi tám phần trăm. Anh Cường rất hài lòng. Những công nhân trả lời trước mặt quản lý sẽ không tin khảo sát tiếp theo.'
+        effects:
+          [
+            rel cuong trust +5,
+            rel oanh trust -4,
+            rep.staff -4,
+            stress +1,
+            fact manipulated_survey private,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'The original results were exported to a spreadsheet by the survey tool and shared with the team leads. Kiet asks, mildly, which number is correct.'
+        vi: 'Kết quả gốc đã được công cụ khảo sát xuất ra bảng tính và chia sẻ với các trưởng nhóm. Anh Kiệt hỏi, nhẹ nhàng, con số nào là đúng.'
+        effects:
+          [
+            rel cuong trust +2,
+            rel oanh trust -6,
+            rel kiet trust -5,
+            rep.boss -4,
+            rep.staff -8,
+            stress +5,
+            fact manipulated_survey witnessed,
+          ]
+---
+scene: hr.tet_bonus
+place: meeting_room
+tags: [bonus, fairness, dark]
+weight: 3
+cooldown: 52
+when: [month in 11 12, turn >= 40]
+lines:
+  - who: char:cuong
+    en: 'The Tet bonus pool is eight percent smaller than last year. Bao wants more for sales, Lan wants more for the lines, and I want to keep a few people happy. Tell me how HR will divide it.'
+    vi: 'Quỹ thưởng Tết nhỏ hơn năm ngoái tám phần trăm. Anh Bảo muốn thêm cho kinh doanh, chị Lan muốn thêm cho các chuyền, và anh muốn giữ vài người vui lòng. Em nói nhân sự sẽ chia thế nào.'
+choices:
+  - en: 'Divide by a published formula across everyone, explain the eight percent in writing, and propose a smaller, documented reward pool for exceptional contribution.'
+    vi: 'Chia theo công thức được công bố cho tất cả mọi người, giải thích khoản giảm tám phần trăm bằng văn bản, và đề xuất một quỹ khen thưởng nhỏ hơn, có hồ sơ, cho đóng góp xuất sắc.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.7
+        en: 'Nobody is delighted, and nobody can say it was unfair. Bao and Lan each complain once. The workers read the formula on the noticeboard and nod.'
+        vi: 'Không ai vui mừng, và không ai nói được là bất công. Anh Bảo và chị Lan mỗi người than phiền một lần. Công nhân đọc công thức trên bảng tin và gật đầu.'
+        effects: [rel cuong trust -1, rel oanh trust +3, rep.boss +2, rep.staff +4, stress +3]
+      - p: 0.3
+        ok: false
+        en: 'Mr Cuong says a formula takes away his discretion and that he will decide the top ten himself. You write down that he did, and why.'
+        vi: 'Anh Cường nói công thức lấy mất quyền quyết định của anh và anh sẽ tự quyết mười người đứng đầu. Anh/chị ghi lại rằng anh đã làm vậy và vì sao.'
+        effects: [rel cuong trust -3, rel oanh trust +2, stress +4]
+  - en: 'Use the formula for the base, and give Bao and Lan a small pool each to allocate, with a rule that every award is written down with a reason.'
+    vi: 'Dùng công thức cho phần cơ bản, và cho anh Bảo và chị Lan mỗi người một quỹ nhỏ để phân bổ, với quy tắc mọi khoản thưởng đều ghi lý do bằng văn bản.'
+    outcomes:
+      - p: 1
+        en: "It is a compromise with a paper trail. Bao's pool goes to his favourites, with reasons that are barely true. Lan's goes to the night shift."
+        vi: 'Một thỏa hiệp có dấu vết giấy tờ. Quỹ của anh Bảo chảy vào những người anh quý, với lý do đúng một nửa. Quỹ của chị Lan đi vào ca đêm.'
+        effects: [rel cuong trust +1, rel oanh trust +1, rep.staff +1, stress +3]
+  - en: 'Let the managers and Mr Cuong allocate privately, and tell HR only the totals.'
+    vi: 'Để các quản lý và anh Cường phân bổ riêng và chỉ báo nhân sự tổng số.'
+    outcomes:
+      - p: 0.7
+        en: 'The envelopes go out with no formula behind them. People compare. Those who did less and got more learn to keep quiet, and those who did more and got less do not.'
+        vi: 'Phong bì được phát đi mà không có công thức nào đứng sau. Mọi người so sánh. Người làm ít mà nhận nhiều học cách im lặng, còn người làm nhiều mà nhận ít thì không.'
+        effects:
+          [
+            rel cuong trust +4,
+            rel oanh trust -3,
+            rep.staff -5,
+            stress +1,
+            fact favoured_in_bonus private,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'Thu in accounts payable posts the totals by mistake in the finance group. By afternoon the whole factory knows who got what.'
+        vi: 'Thư ở bộ phận phải trả đăng nhầm tổng số lên nhóm tài chính. Đến chiều cả nhà máy biết ai được bao nhiêu.'
+        effects:
+          [
+            rel cuong trust +2,
+            rel oanh trust -6,
+            rep.boss -4,
+            rep.staff -9,
+            stress +6,
+            fact favoured_in_bonus public,
+          ]
+---
+scene: hr.reference_call
+place: hr_office
+tags: [reference, honesty, dark]
+weight: 2
+cooldown: 40
+when: [turn >= 14]
+lines:
+  - who: char:bao
+    en: 'I need to move one of my salespeople on. Another company called for a reference. If we say he is excellent, he leaves, and I do not have to go through a dismissal. He is not excellent, between us. Can you write the reference?'
+    vi: 'Anh cần cho một nhân viên kinh doanh đi chỗ khác. Một công ty khác gọi xin tham chiếu. Nếu mình nói cậu ấy xuất sắc, cậu ấy đi, và anh không phải qua một vụ sa thải. Giữa mình với nhau, cậu ấy không xuất sắc. Em viết tham chiếu giúp anh được không?'
+choices:
+  - en: 'Give a factual reference that confirms his dates and role, as the policy says, and offer Bao a performance plan if he wants to manage the issue.'
+    vi: 'Đưa tham chiếu thực tế chỉ xác nhận ngày làm và vị trí như chính sách quy định, và đề nghị anh Bảo một kế hoạch cải thiện hiệu suất nếu muốn xử lý vấn đề.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: "Bao grumbles and says 'So I have to do it properly.' He does. The salesperson improves a little, or leaves in six months with an honest record."
+        vi: "Anh Bảo càu nhàu và nói 'Vậy anh phải làm cho đàng hoàng.' Anh làm. Nhân viên đó cải thiện một chút, hoặc nghỉ sau sáu tháng với một hồ sơ trung thực."
+        effects: [rel bao trust -2, rel oanh trust +2, rep.staff +1, stress +2]
+  - en: 'Decline to give any reference beyond the dates, in line with the policy, and say nothing more.'
+    vi: 'Từ chối đưa tham chiếu nào ngoài ngày làm, theo đúng chính sách, và không nói gì thêm.'
+    outcomes:
+      - p: 1
+        en: 'The other company hears what a refusal means. Bao is not pleased. It is a clean answer to a dirty request.'
+        vi: 'Công ty kia hiểu việc từ chối có nghĩa gì. Anh Bảo không hài lòng. Đó là một câu trả lời sạch cho một yêu cầu bẩn.'
+        effects: [rel bao trust -3, stress +1]
+  - en: 'Write the glowing reference.'
+    vi: 'Viết bản tham chiếu tốt đẹp.'
+    outcomes:
+      - p: 0.7
+        en: 'The salesperson is gone within a month. Bao buys you a coffee. A year later you wonder about the people who read it.'
+        vi: 'Nhân viên đó đi trong vòng một tháng. Anh Bảo mời anh/chị cà phê. Một năm sau anh/chị nghĩ về những người đã đọc nó.'
+        effects: [rel bao trust +5, stress +1, fact inflated_reference private]
+      - p: 0.3
+        ok: false
+        en: 'The new employer discovers that the sales figures in the reference do not match what the buyers say. Their HR manager calls Oanh, who asks you about it.'
+        vi: 'Chủ mới phát hiện số liệu kinh doanh trong tham chiếu không khớp với điều khách hàng nói. Trưởng phòng nhân sự bên đó gọi chị Oanh, và chị hỏi anh/chị về chuyện này.'
+        effects:
+          [
+            rel bao trust +3,
+            rel oanh trust -6,
+            rep.boss -4,
+            stress +4,
+            fact inflated_reference witnessed,
+          ]
+---
+scene: hr.sang_asks_contracts
+place: hr_office
+tags: [audit, labour, dark, consequence]
+weight: 6
+cooldown: 52
+when: [month in 10 11, turn >= 40]
+when_any:
+  [
+    fact.chained_contracts >= 1,
+    fact.edited_overtime_records >= 1,
+    fact.underreported_insurance_base >= 1,
+  ]
+lines:
+  - who: char:sang
+    en: 'I have talked to some of your workers. They say their contracts were renewed with gaps, their overtime does not match what they worked, and their insurance is on a lower figure than their pay. I would like to hear from the person who prepared the files.'
+    vi: 'Tôi đã nói chuyện với một số công nhân của anh/chị. Họ nói hợp đồng được gia hạn có khoảng trống, giờ làm thêm không khớp với giờ họ làm và bảo hiểm tính trên số thấp hơn lương. Tôi muốn nghe từ người đã chuẩn bị hồ sơ.'
+choices:
+  - en: 'Tell him what happened: who asked, what you agreed, what should have been done, and what is already being corrected. Give him the files.'
+    vi: 'Kể cho ông ấy những gì đã xảy ra: ai nhờ, anh/chị đã đồng ý gì, lẽ ra nên làm gì và đang sửa gì. Đưa ông hồ sơ.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Sang writes it all down. The finding is serious, but it is recorded as 'self-reported and corrected'. The company pays back the contributions, and you receive a formal warning."
+        vi: "Ông Sáng ghi lại tất cả. Phát hiện nghiêm trọng, nhưng được ghi nhận là 'tự báo cáo và đã sửa'. Công ty hoàn trả các khoản đóng, và anh/chị nhận cảnh cáo chính thức."
+        effects:
+          [
+            rel sang trust +2,
+            rel oanh trust -2,
+            rel loan trust +4,
+            rep.boss -5,
+            stress +6,
+            fact came_clean_to_auditor witnessed,
+          ]
+  - en: "Give him the files and say the arrangements were the managers' decisions, and that HR only processed them."
+    vi: 'Đưa ông hồ sơ và nói các sắp xếp là quyết định của quản lý, nhân sự chỉ thực hiện.'
+    outcomes:
+      - p: 0.4
+        en: 'Sang notes that HR prepared the documents and signed the cover notes. He writes it down, carefully.'
+        vi: 'Ông Sáng ghi rằng nhân sự đã soạn tài liệu và ký các phiếu chuyển. Ông ghi lại, cẩn thận.'
+        effects: [rel sang trust -5, rel oanh trust -4, rep.boss -4, stress +4]
+      - p: 0.6
+        ok: false
+        en: 'Loan is called in. She says, quietly, that she raised each issue and was told to proceed. She has the dates in her notebook.'
+        vi: 'Loan được gọi vào. Cô khẽ nói rằng cô đã nêu từng vấn đề và được bảo cứ làm. Cô có ngày tháng trong sổ.'
+        effects:
+          [rel sang trust -10, rel loan trust -10, rel oanh trust -8, rep.boss -10, stress +8]
+  - en: 'Say you do not recall the details, and offer to look.'
+    vi: 'Nói anh/chị không nhớ chi tiết và đề nghị đi tìm.'
+    outcomes:
+      - p: 0.4
+        en: 'Sang gives you a week. You find the files and hand them over. It is not the whole truth, but it is something.'
+        vi: 'Ông Sáng cho anh/chị một tuần. Anh/chị tìm thấy hồ sơ và nộp. Không phải toàn bộ sự thật, nhưng là một phần.'
+        effects: [rel sang trust -4, stress +4, fact stalled_the_inspector private]
+      - p: 0.6
+        ok: false
+        en: 'The workers give Sang their payslips and notebooks, which show the real figures and your signatures. He has them on the table next to your notes.'
+        vi: 'Các công nhân đưa ông Sáng phiếu lương và sổ ghi chép, cho thấy số thật và chữ ký của anh/chị. Ông để chúng trên bàn cạnh ghi chú của anh/chị.'
+        effects:
+          [
+            rel sang trust -10,
+            rel loan trust -6,
+            rel oanh trust -6,
+            rep.boss -8,
+            stress +7,
+            fact stalled_the_inspector witnessed,
+          ]
+---
+scene: hr.blame_meeting
+place: meeting_room
+tags: [pressure, consequence]
+weight: 6
+cooldown: 52
+when: [month in 11 12, turn >= 44]
+when_any:
+  [
+    fact.retaliated_against_complainant >= 1,
+    fact.skipped_legal_notice >= 1,
+    fact.rigged_shortlist >= 1,
+    fact.ended_probation_for_pregnancy >= 1,
+  ]
+lines:
+  - who: char:cuong
+    en: "A lawyer's letter arrived this morning. It names the complaint file, the redundancy forms and a recruitment process. The company will answer on Friday. I want to know who in HR is responsible. I want it from you first."
+    vi: 'Sáng nay có thư của luật sư. Thư nêu hồ sơ khiếu nại, các đơn nghỉ việc và một quy trình tuyển dụng. Công ty sẽ trả lời vào thứ Sáu. Anh muốn biết ai ở nhân sự chịu trách nhiệm. Anh muốn nghe từ em trước.'
+choices:
+  - en: 'Tell him the real account: what each person asked, what you agreed, and your own part. Show the documents.'
+    vi: 'Nói với anh bản tường trình thật: ai nhờ gì, anh/chị đồng ý gì và phần của chính anh/chị. Đưa các tài liệu.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: "Mr Cuong listens, and calls the lawyer. The company's answer on Friday is an offer to put things right. You are moved off case work and keep your job, and, eventually, your name."
+        vi: 'Anh Cường lắng nghe và gọi luật sư. Câu trả lời của công ty vào thứ Sáu là một đề nghị khắc phục. Anh/chị bị chuyển khỏi công việc xử lý vụ việc và giữ được việc, và về sau là cả danh tiếng.'
+        effects:
+          [
+            rel cuong trust -1,
+            rel oanh trust +2,
+            rel loan trust +4,
+            rep.boss -8,
+            rep.staff +2,
+            stress +7,
+            fact came_clean_to_auditor witnessed,
+          ]
+  - en: 'Say that each of those decisions was taken on the instruction of a manager, and that HR followed instructions.'
+    vi: 'Nói mỗi quyết định đó được đưa ra theo chỉ đạo của một quản lý và nhân sự chỉ làm theo chỉ đạo.'
+    outcomes:
+      - p: 0.4
+        en: 'Mr Cuong treats it as shared fault, and the lawyer is told the same. Nobody leaves the room liked.'
+        vi: 'Anh Cường coi đó là lỗi chung, và luật sư cũng được báo như vậy. Không ai rời phòng với thiện cảm.'
+        effects: [rel cuong trust -2, rel oanh trust -4, rep.boss -4, stress +4]
+      - p: 0.6
+        ok: false
+        en: 'Oanh has the original emails with your replies. She reads two of them aloud, without raising her voice.'
+        vi: 'Chị Oanh có các email gốc kèm trả lời của anh/chị. Chị đọc to hai cái, không to tiếng.'
+        effects: [rel cuong trust -4, rel oanh trust -10, rep.boss -10, stress +8]
+  - en: 'Say that Loan prepared the paperwork, and that the errors are in her files.'
+    vi: 'Nói Loan chuẩn bị giấy tờ và các sai sót nằm trong hồ sơ của cô ấy.'
+    outcomes:
+      - p: 0.3
+        en: 'Mr Cuong nods, and Loan is given a warning that she does not contest. She resigns in two months. The files are still in her handwriting.'
+        vi: 'Anh Cường gật đầu, và Loan nhận một cảnh cáo mà cô không phản đối. Cô nghỉ sau hai tháng. Hồ sơ vẫn bằng nét chữ của cô.'
+        effects:
+          [
+            rel loan trust -25,
+            rel loan loyalty -20,
+            rel oanh trust -8,
+            rep.boss -4,
+            rep.staff -6,
+            stress +6,
+            fact blamed_hr_admin private,
+          ]
+      - p: 0.7
+        ok: false
+        en: 'Loan has her notebook, her copies, and a one-line email from you telling her to proceed. She puts all three on the table.'
+        vi: 'Loan có sổ, có các bản sao, và một email một dòng của anh/chị bảo cô cứ làm. Cô đặt cả ba lên bàn.'
+        effects:
+          [
+            rel loan trust -25,
+            rel oanh trust -12,
+            rep.boss -14,
+            rep.staff -8,
+            stress +9,
+            fact blamed_hr_admin public,
+          ]
+---
+fact: backdated_hr_records
+severity: 7
+category: integrity
+en: 'you signed missing documents with their original dates, and aligned records before an inspection'
+vi: 'bạn ký bổ sung tài liệu còn thiếu với ngày gốc và chỉnh hồ sơ trước một cuộc thanh tra'
+lesson:
+  en: 'Records are only worth anything if they were made when they say. Backdating a signature makes a gap into a forgery, and a missing signature is something you can explain, forgery you cannot.'
+  vi: 'Hồ sơ chỉ có giá trị nếu được lập đúng lúc nó ghi. Ký lùi ngày biến chỗ thiếu thành giả mạo, và chữ ký thiếu thì giải thích được, giả mạo thì không.'
+traces:
+  - { type: document, visibility: 0.7, detectors: [internal_audit, boss, staff] }
+witnessed:
+  boss: -10
+  staff: -8
+public:
+  boss: -16
+  staff: -12
+---
+fact: chained_contracts
+severity: 5
+category: integrity
+en: 'you renewed fixed-term contracts with gaps to avoid giving workers an indefinite contract'
+vi: 'bạn gia hạn hợp đồng xác định thời hạn có khoảng nghỉ để tránh phải ký không xác định thời hạn với công nhân'
+lesson:
+  en: 'A rule about contracts exists because chaining them takes security from workers who are doing permanent work. A gap week is a trick the law has already seen.'
+  vi: 'Quy định về hợp đồng tồn tại vì việc nối chuỗi chúng lấy đi sự ổn định của công nhân làm việc lâu dài. Một tuần nghỉ là mánh mà luật đã thấy rồi.'
+traces:
+  - { type: document, visibility: 0.6, detectors: [internal_audit, boss, staff] }
+witnessed:
+  boss: -6
+  staff: -8
+public:
+  boss: -10
+  staff: -12
+---
+fact: edited_overtime_records
+severity: 6
+category: integrity
+en: 'you changed overtime records so that nobody exceeded the legal cap on paper'
+vi: 'bạn sửa hồ sơ giờ làm thêm để trên giấy không ai vượt mức trần luật định'
+lesson:
+  en: "An overtime cap protects tired people around machines. Editing the sheet hides the breach from everyone who could prevent the next one, and leaves the workers' pay and the paper in disagreement."
+  vi: 'Mức trần giờ làm thêm bảo vệ những người mệt mỏi quanh máy móc. Sửa bảng ghi giấu vi phạm khỏi mọi người có thể ngăn lần sau, và để lương công nhân và giấy tờ mâu thuẫn nhau.'
+traces:
+  - { type: record, visibility: 0.7, detectors: [internal_audit, boss, staff] }
+witnessed:
+  boss: -8
+  production: -8
+  staff: -10
+public:
+  boss: -14
+  staff: -14
+---
+fact: underreported_insurance_base
+severity: 6
+category: integrity
+en: 'you declared social insurance on a base pay lower than what workers were paid'
+vi: 'bạn kê khai bảo hiểm xã hội trên mức lương thấp hơn mức công nhân thực nhận'
+lesson:
+  en: 'Underdeclared insurance saves the company money and costs the worker later: sick pay, maternity pay and pension are all calculated on the declared base.'
+  vi: 'Khai thấp bảo hiểm giúp công ty tiết kiệm và khiến công nhân mất về sau: ốm đau, thai sản và lương hưu đều tính theo mức đã khai.'
+traces:
+  - { type: record, visibility: 0.6, detectors: [finance, internal_audit] }
+witnessed:
+  boss: -8
+  finance: -6
+  staff: -10
+public:
+  boss: -14
+  staff: -14
+---
+fact: hid_salary_leak
+severity: 5
+category: integrity
+en: 'you denied that the salary sheet had been sent to everyone'
+vi: 'bạn chối việc bảng lương đã bị gửi cho mọi người'
+lesson:
+  en: 'The leak was a mistake. The denial is a decision. People forgive the first and remember the second, and the person who told you the truth learns what telling you the truth costs.'
+  vi: 'Rò rỉ là một lỗi. Chối là một quyết định. Người ta tha thứ cho cái đầu và nhớ cái sau, và người đã nói thật với bạn biết nói thật với bạn tốn gì.'
+traces:
+  - { type: witness, visibility: 0.7, detectors: [boss, staff] }
+witnessed:
+  boss: -5
+  staff: -8
+public:
+  boss: -10
+  staff: -12
+---
+fact: ended_probation_for_pregnancy
+severity: 8
+category: integrity
+en: 'you ended a probation because the employee was pregnant, and wrote another reason'
+vi: 'bạn chấm dứt thử việc vì nhân viên mang thai và ghi một lý do khác'
+lesson:
+  en: 'Pregnancy is protected by law. A false reason on the letter turns a hard business decision into discrimination with a written alibi, and the alibi is the evidence.'
+  vi: 'Mang thai được pháp luật bảo vệ. Một lý do giả trong thư biến một quyết định kinh doanh khó thành phân biệt đối xử có sẵn lời biện hộ viết ra, và lời biện hộ chính là bằng chứng.'
+traces:
+  - { type: document, visibility: 0.8, detectors: [internal_audit, boss, qc, staff] }
+witnessed:
+  boss: -12
+  qc: -4
+  staff: -14
+public:
+  boss: -18
+  staff: -20
+---
+fact: hired_underage_worker
+severity: 9
+category: integrity
+en: 'you hired a worker who you suspected was under age, on a borrowed ID'
+vi: 'bạn tuyển một công nhân mà bạn nghi chưa đủ tuổi, bằng CCCD mượn'
+lesson:
+  en: 'Checking an ID means looking at the person. Hiring a child on a borrowed card moves the risk of the machine, and of the law, onto the one who can least bear it.'
+  vi: 'Kiểm tra CCCD nghĩa là nhìn vào người đó. Tuyển một đứa trẻ bằng thẻ mượn đẩy rủi ro của máy móc, và của pháp luật, lên người ít gánh nổi nhất.'
+traces:
+  - { type: witness, visibility: 0.8, detectors: [internal_audit, boss, staff] }
+witnessed:
+  boss: -14
+  production: -10
+  staff: -14
+public:
+  boss: -22
+  staff: -22
+---
+fact: manipulated_survey
+severity: 4
+category: integrity
+en: 'you changed how an employee survey was run so that it gave a better result'
+vi: 'bạn thay đổi cách chạy khảo sát nhân viên để có kết quả tốt hơn'
+lesson:
+  en: 'A survey measures what people are willing to say. If the answers are collected in front of their managers, the number says how afraid they are.'
+  vi: 'Khảo sát đo điều người ta sẵn sàng nói. Nếu câu trả lời được thu trước mặt quản lý, con số cho biết họ sợ đến đâu.'
+traces:
+  - { type: document, visibility: 0.6, detectors: [boss, staff, internal_audit] }
+witnessed:
+  boss: -5
+  staff: -8
+public:
+  boss: -9
+  staff: -12
+---
+fact: favoured_in_bonus
+severity: 4
+category: integrity
+en: 'you let bonuses be allocated privately, with no formula behind them'
+vi: 'bạn để thưởng được phân bổ riêng, không có công thức nào đứng sau'
+lesson:
+  en: 'A bonus without a rule is a message about who counts. Everyone reads it, and the ones who got less than they earned stop working for the company.'
+  vi: 'Thưởng không có quy tắc là thông điệp về ai quan trọng. Ai cũng đọc nó, và những người nhận ít hơn mức họ xứng đáng thôi làm việc cho công ty.'
+traces:
+  - { type: document, visibility: 0.5, detectors: [finance, boss, staff] }
+witnessed:
+  boss: -4
+  staff: -8
+public:
+  boss: -8
+  staff: -12
+---
+fact: inflated_reference
+severity: 4
+category: integrity
+en: 'you wrote a glowing reference for a weak performer so that he would leave'
+vi: 'bạn viết tham chiếu tốt đẹp cho một nhân viên yếu để cậu ấy đi'
+lesson:
+  en: 'A false reference solves your problem and hands it to someone else, who trusted you. It also makes your own references worth less.'
+  vi: 'Một tham chiếu sai giải quyết vấn đề của bạn và trao nó cho người khác, người đã tin bạn. Nó cũng làm tham chiếu của chính bạn giá trị kém đi.'
+traces:
+  - { type: document, visibility: 0.5, detectors: [boss] }
+witnessed:
+  boss: -5
+public:
+  boss: -9
+---
+fact: blamed_hr_admin
+severity: 7
+category: integrity
+en: 'you blamed the HR administrator for decisions you had made'
+vi: 'bạn đổ lỗi cho nhân viên hành chính nhân sự về những quyết định chính bạn đã đưa ra'
+lesson:
+  en: 'The person who keeps the files also keeps the record of who asked. Blaming the junior colleague who raised the issue is the fastest way to lose the people you depend on.'
+  vi: 'Người giữ hồ sơ cũng giữ bản ghi ai đã nhờ. Đổ lỗi cho đồng nghiệp cấp dưới đã nêu vấn đề là cách nhanh nhất để mất những người bạn phụ thuộc vào.'
+traces:
+  - { type: witness, visibility: 0.8, detectors: [boss, staff] }
+witnessed:
+  boss: -10
+  staff: -12
+public:
+  boss: -16
+  staff: -16

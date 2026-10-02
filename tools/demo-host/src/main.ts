@@ -5,6 +5,7 @@ import {
   PROD_ROLE,
   PURCH_ROLE,
   INV_ROLE,
+  HR_ROLE,
   QC_ROLE,
   SALES_ROLE,
   createGameHost,
@@ -23,6 +24,7 @@ const ROLE_SHORTCUTS: Record<string, string> = {
   prod: PROD_ROLE,
   purch: PURCH_ROLE,
   inv: INV_ROLE,
+  hr: HR_ROLE,
 };
 
 const params = new URLSearchParams(window.location.search);

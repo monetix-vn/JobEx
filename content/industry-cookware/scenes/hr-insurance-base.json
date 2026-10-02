@@ -1,0 +1,162 @@
+{
+  "id": "scene.hr.insurance_base",
+  "location": "loc.finance_office",
+  "cast": ["char:duc"],
+  "lines": [
+    {
+      "speaker": "char:duc",
+      "text_key": "scene.hr.insurance_base.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.hr.insurance_base.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.hr.insurance_base.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.hr.insurance_base.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": -1
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.hr.insurance_base.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.hr.insurance_base.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.hr.insurance_base.c3",
+      "outcomes": [
+        {
+          "p": 0.75,
+          "narration_key": "scene.hr.insurance_base.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.loan.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.underreported_insurance_base",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.25,
+          "result": "fail",
+          "narration_key": "scene.hr.insurance_base.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.loan.trust",
+              "value": -5
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": -8
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.underreported_insurance_base",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,445 @@
+[
+  {
+    "id": "event.hr.first_week",
+    "role": "role.hr.hrbp",
+    "tags": ["onboarding", "people", "beat"],
+    "beat": {
+      "from_week": 1,
+      "to_week": 3
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.hr.first_week"
+  },
+  {
+    "id": "event.hr.midyear_review",
+    "role": "role.hr.hrbp",
+    "tags": ["people", "review", "beat"],
+    "beat": {
+      "from_week": 24,
+      "to_week": 28
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.hr.midyear_review"
+  },
+  {
+    "id": "event.hr.cost_cut_twist",
+    "role": "role.hr.hrbp",
+    "arc": "arc.the_list",
+    "tags": ["pressure", "layoff", "beat"],
+    "beat": {
+      "from_week": 29,
+      "to_week": 32
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.hr.cost_cut_twist"
+  },
+  {
+    "id": "event.hr.labour_inspection",
+    "role": "role.hr.hrbp",
+    "tags": ["audit", "labour", "beat"],
+    "beat": {
+      "from_week": 41,
+      "to_week": 44
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.hr.labour_inspection"
+  },
+  {
+    "id": "event.hr.year_end_review",
+    "role": "role.hr.hrbp",
+    "tags": ["people", "review", "beat"],
+    "beat": {
+      "from_week": 49,
+      "to_week": 50
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.hr.year_end_review"
+  },
+  {
+    "id": "event.hr.manager_offer",
+    "role": "role.hr.hrbp",
+    "tags": ["people", "promotion", "beat"],
+    "when": {
+      "all": [
+        {
+          "gte": [
+            {
+              "var": ["rel.oanh.trust", 0]
+            },
+            25
+          ]
+        },
+        {
+          "gte": ["player.rep.boss", 58]
+        }
+      ]
+    },
+    "beat": {
+      "from_week": 51,
+      "to_week": 52
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.hr.manager_offer"
+  },
+  {
+    "id": "event.hr.resignation_thought",
+    "role": "role.hr.hrbp",
+    "tags": ["people", "pressure"],
+    "when": {
+      "all": [
+        {
+          "gte": ["player.stress", 75]
+        },
+        {
+          "gte": ["world.turn", 12]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 26,
+    "scene": "scene.hr.resignation_thought"
+  },
+  {
+    "id": "event.hr.long_asks_favour",
+    "role": "role.hr.hrbp",
+    "arc": "arc.the_chosen_one",
+    "tags": ["recruitment", "favour", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 8]
+        },
+        {
+          "lte": ["world.turn", 34]
+        }
+      ]
+    },
+    "weight": 3,
+    "cooldown_weeks": 40,
+    "scene": "scene.hr.long_asks_favour"
+  },
+  {
+    "id": "event.hr.shortlist_pressure",
+    "role": "role.hr.hrbp",
+    "tags": ["recruitment", "favour", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.hr.shortlist_pressure"
+  },
+  {
+    "id": "event.hr.salary_exception",
+    "role": "role.hr.hrbp",
+    "tags": ["recruitment", "pay", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.hr.salary_exception"
+  },
+  {
+    "id": "event.hr.tuan_fallout",
+    "role": "role.hr.hrbp",
+    "tags": ["recruitment", "people", "consequence", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.hr.tuan_fallout"
+  },
+  {
+    "id": "event.hr.ngoc_comes",
+    "role": "role.hr.hrbp",
+    "arc": "arc.the_complaint",
+    "tags": ["case", "people", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 10]
+        },
+        {
+          "lte": ["world.turn", 36]
+        }
+      ]
+    },
+    "weight": 3,
+    "cooldown_weeks": 40,
+    "scene": "scene.hr.ngoc_comes"
+  },
+  {
+    "id": "event.hr.vinh_responds",
+    "role": "role.hr.hrbp",
+    "tags": ["case", "people", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.hr.vinh_responds"
+  },
+  {
+    "id": "event.hr.decision_meeting",
+    "role": "role.hr.hrbp",
+    "tags": ["case", "people", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.hr.decision_meeting"
+  },
+  {
+    "id": "event.hr.ngoc_after",
+    "role": "role.hr.hrbp",
+    "tags": ["case", "people", "consequence", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.hr.ngoc_after"
+  },
+  {
+    "id": "event.hr.the_names",
+    "role": "role.hr.hrbp",
+    "tags": ["layoff", "people", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.hr.the_names"
+  },
+  {
+    "id": "event.hr.notice_day",
+    "role": "role.hr.hrbp",
+    "tags": ["layoff", "people", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.hr.notice_day"
+  },
+  {
+    "id": "event.hr.survivors",
+    "role": "role.hr.hrbp",
+    "tags": ["layoff", "people", "consequence", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.hr.survivors"
+  },
+  {
+    "id": "event.hr.contract_chain",
+    "role": "role.hr.hrbp",
+    "tags": ["contracts", "pressure", "dark"],
+    "when": {
+      "gte": ["world.turn", 10]
+    },
+    "weight": 3,
+    "cooldown_weeks": 30,
+    "scene": "scene.hr.contract_chain"
+  },
+  {
+    "id": "event.hr.overtime_records_ask",
+    "role": "role.hr.hrbp",
+    "tags": ["overtime", "pressure", "dark"],
+    "when": {
+      "gte": ["world.turn", 12]
+    },
+    "weight": 3,
+    "cooldown_weeks": 30,
+    "scene": "scene.hr.overtime_records_ask"
+  },
+  {
+    "id": "event.hr.insurance_base",
+    "role": "role.hr.hrbp",
+    "tags": ["insurance", "cost", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 14]
+        },
+        {
+          "in": ["world.month_of_year", 1, 4, 7, 10]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 40,
+    "scene": "scene.hr.insurance_base"
+  },
+  {
+    "id": "event.hr.salary_leak",
+    "role": "role.hr.hrbp",
+    "tags": ["privacy", "mistake"],
+    "when": {
+      "gte": ["world.turn", 8]
+    },
+    "weight": 2,
+    "cooldown_weeks": 40,
+    "scene": "scene.hr.salary_leak"
+  },
+  {
+    "id": "event.hr.probation_pregnant",
+    "role": "role.hr.hrbp",
+    "tags": ["probation", "pregnancy", "dark"],
+    "when": {
+      "gte": ["world.turn", 10]
+    },
+    "weight": 2,
+    "cooldown_weeks": 40,
+    "scene": "scene.hr.probation_pregnant"
+  },
+  {
+    "id": "event.hr.young_applicant",
+    "role": "role.hr.hrbp",
+    "tags": ["recruitment", "age", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 10]
+        },
+        {
+          "in": ["world.month_of_year", 8, 9, 10]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 40,
+    "scene": "scene.hr.young_applicant"
+  },
+  {
+    "id": "event.hr.engagement_survey",
+    "role": "role.hr.hrbp",
+    "tags": ["survey", "honesty", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 16]
+        },
+        {
+          "in": ["world.month_of_year", 5, 6, 7, 8]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 40,
+    "scene": "scene.hr.engagement_survey"
+  },
+  {
+    "id": "event.hr.tet_bonus",
+    "role": "role.hr.hrbp",
+    "tags": ["bonus", "fairness", "dark"],
+    "when": {
+      "all": [
+        {
+          "in": ["world.month_of_year", 11, 12]
+        },
+        {
+          "gte": ["world.turn", 40]
+        }
+      ]
+    },
+    "weight": 3,
+    "cooldown_weeks": 52,
+    "scene": "scene.hr.tet_bonus"
+  },
+  {
+    "id": "event.hr.reference_call",
+    "role": "role.hr.hrbp",
+    "tags": ["reference", "honesty", "dark"],
+    "when": {
+      "gte": ["world.turn", 14]
+    },
+    "weight": 2,
+    "cooldown_weeks": 40,
+    "scene": "scene.hr.reference_call"
+  },
+  {
+    "id": "event.hr.sang_asks_contracts",
+    "role": "role.hr.hrbp",
+    "tags": ["audit", "labour", "dark", "consequence"],
+    "when": {
+      "all": [
+        {
+          "in": ["world.month_of_year", 10, 11]
+        },
+        {
+          "gte": ["world.turn", 40]
+        },
+        {
+          "any": [
+            {
+              "gte": [
+                {
+                  "var": ["fact.chained_contracts", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.edited_overtime_records", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.underreported_insurance_base", 0]
+                },
+                1
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "weight": 6,
+    "cooldown_weeks": 52,
+    "scene": "scene.hr.sang_asks_contracts"
+  },
+  {
+    "id": "event.hr.blame_meeting",
+    "role": "role.hr.hrbp",
+    "tags": ["pressure", "consequence"],
+    "when": {
+      "all": [
+        {
+          "in": ["world.month_of_year", 11, 12]
+        },
+        {
+          "gte": ["world.turn", 44]
+        },
+        {
+          "any": [
+            {
+              "gte": [
+                {
+                  "var": ["fact.retaliated_against_complainant", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.skipped_legal_notice", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.rigged_shortlist", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.ended_probation_for_pregnancy", 0]
+                },
+                1
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "weight": 6,
+    "cooldown_weeks": 52,
+    "scene": "scene.hr.blame_meeting"
+  }
+]

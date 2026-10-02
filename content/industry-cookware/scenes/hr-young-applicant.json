@@ -1,0 +1,146 @@
+{
+  "id": "scene.hr.young_applicant",
+  "location": "loc.hr_office",
+  "cast": ["char:kiet"],
+  "lines": [
+    {
+      "speaker": "char:kiet",
+      "text_key": "scene.hr.young_applicant.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.hr.young_applicant.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.hr.young_applicant.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.production",
+              "value": 1
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.hr.young_applicant.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.hr.young_applicant.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.hr.young_applicant.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.hr.young_applicant.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.hr.young_applicant.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.production",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.hired_underage_worker",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.hr.young_applicant.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.kiet.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": -10
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -12
+            },
+            {
+              "delta": "player.rep.production",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": -10
+            },
+            {
+              "delta": "player.stress",
+              "value": 10
+            },
+            {
+              "fact": "fact.hired_underage_worker",
+              "visibility": "public"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

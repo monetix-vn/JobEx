@@ -1,0 +1,174 @@
+{
+  "id": "scene.hr.contract_chain",
+  "location": "loc.hr_office",
+  "cast": ["char:lan", "char:loan"],
+  "lines": [
+    {
+      "speaker": "char:lan",
+      "text_key": "scene.hr.contract_chain.l1"
+    },
+    {
+      "speaker": "char:loan",
+      "text_key": "scene.hr.contract_chain.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.hr.contract_chain.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.hr.contract_chain.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": -2
+            },
+            {
+              "delta": "rel.loan.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.production",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": 4
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.hr.contract_chain.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": -1
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.cuong.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": 4
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.hr.contract_chain.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.hr.contract_chain.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.loan.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.hr.contract_chain.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.hr.contract_chain.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.loan.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.chained_contracts",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.hr.contract_chain.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.loan.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.oanh.trust",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.chained_contracts",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

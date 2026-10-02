@@ -283,5 +283,6 @@
   "scene.inv.scapegoat_meeting.c1.ok": "Chị Trang lắng nghe và cuối cùng nói: 'Nhiều hơn chị mong từ bất cứ ai.' Các đối tác coi đó là thất bại cấp công ty, không phải cá nhân. Anh/chị bị đình chỉ và cuối cùng được xác nhận với khiển trách chính thức.",
   "scene.inv.scapegoat_meeting.c2": "Nói rằng anh/chị dựng mô hình theo chỉ đạo và khách cùng chị Trang chọn các giả định.",
   "scene.inv.scapegoat_meeting.c2.ok": "Các đối tác gật đầu. Chị Trang gánh phần nặng, lặng lẽ, và không bao giờ xếp anh/chị vào thương vụ nào nữa.",
-  "scene.inv.scapegoat_meeting.c2.fail": "Chị Trang có email của anh/chị, kể cả cái ghi 'dựng cho khớp bốn mươi'. Chị đọc to lên."
+  "scene.inv.scapegoat_meeting.c2.fail": "Chị Trang có email của anh/chị, kể cả cái ghi 'dựng cho khớp bốn mươi'. Chị đọc to lên.",
+  "dept.investment_banking.title": "Ngân hàng Đầu tư"
 }

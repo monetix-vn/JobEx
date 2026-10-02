@@ -2246,5 +2246,602 @@
         "boss": -12
       }
     }
+  },
+  {
+    "id": "fact.documented_conflict_of_interest",
+    "category": "integrity",
+    "severity": 1,
+    "text_key": "fact.documented_conflict_of_interest",
+    "lesson_key": "lesson.documented_conflict_of_interest",
+    "consequences": {
+      "witnessed": {
+        "boss": 2
+      },
+      "public": {
+        "boss": 3
+      }
+    }
+  },
+  {
+    "id": "fact.promised_hire_to_owner_nephew",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.promised_hire_to_owner_nephew",
+    "lesson_key": "lesson.promised_hire_to_owner_nephew",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.5,
+        "detectors": ["boss", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -4,
+        "staff": -5
+      },
+      "public": {
+        "boss": -8,
+        "staff": -8
+      }
+    }
+  },
+  {
+    "id": "fact.ran_fair_process",
+    "category": "integrity",
+    "severity": 1,
+    "text_key": "fact.ran_fair_process",
+    "lesson_key": "lesson.ran_fair_process",
+    "consequences": {
+      "witnessed": {
+        "boss": 3,
+        "production": 3,
+        "staff": 4
+      },
+      "public": {
+        "boss": 5,
+        "staff": 6
+      }
+    }
+  },
+  {
+    "id": "fact.rigged_shortlist",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.rigged_shortlist",
+    "lesson_key": "lesson.rigged_shortlist",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "boss", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8,
+        "production": -8,
+        "staff": -10
+      },
+      "public": {
+        "boss": -14,
+        "staff": -14
+      }
+    }
+  },
+  {
+    "id": "fact.paid_above_band_secretly",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.paid_above_band_secretly",
+    "lesson_key": "lesson.paid_above_band_secretly",
+    "traces": [
+      {
+        "type": "payment",
+        "visibility": 0.6,
+        "detectors": ["finance", "internal_audit", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "finance": -8
+      },
+      "public": {
+        "boss": -10,
+        "finance": -10
+      }
+    }
+  },
+  {
+    "id": "fact.buried_complaint",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.buried_complaint",
+    "lesson_key": "lesson.buried_complaint",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.6,
+        "detectors": ["boss", "staff", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8,
+        "staff": -10
+      },
+      "public": {
+        "boss": -14,
+        "staff": -14
+      }
+    }
+  },
+  {
+    "id": "fact.investigated_fairly",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.investigated_fairly",
+    "lesson_key": "lesson.investigated_fairly",
+    "consequences": {
+      "witnessed": {
+        "boss": 3,
+        "staff": 6
+      },
+      "public": {
+        "boss": 5,
+        "staff": 8
+      }
+    }
+  },
+  {
+    "id": "fact.leaked_complainant_name",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.leaked_complainant_name",
+    "lesson_key": "lesson.leaked_complainant_name",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.7,
+        "detectors": ["boss", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8,
+        "staff": -12
+      },
+      "public": {
+        "boss": -14,
+        "staff": -16
+      }
+    }
+  },
+  {
+    "id": "fact.retaliated_against_complainant",
+    "category": "integrity",
+    "severity": 8,
+    "text_key": "fact.retaliated_against_complainant",
+    "lesson_key": "lesson.retaliated_against_complainant",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.8,
+        "detectors": ["internal_audit", "boss", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -12,
+        "staff": -14
+      },
+      "public": {
+        "boss": -18,
+        "staff": -20
+      }
+    }
+  },
+  {
+    "id": "fact.backdated_warning",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.backdated_warning",
+    "lesson_key": "lesson.backdated_warning",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.8,
+        "detectors": ["internal_audit", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -10,
+        "staff": -8
+      },
+      "public": {
+        "boss": -16,
+        "staff": -12
+      }
+    }
+  },
+  {
+    "id": "fact.fair_selection_documented",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.fair_selection_documented",
+    "lesson_key": "lesson.fair_selection_documented",
+    "consequences": {
+      "witnessed": {
+        "boss": 2,
+        "staff": 4
+      },
+      "public": {
+        "boss": 3,
+        "staff": 6
+      }
+    }
+  },
+  {
+    "id": "fact.targeted_complainer_for_layoff",
+    "category": "integrity",
+    "severity": 8,
+    "text_key": "fact.targeted_complainer_for_layoff",
+    "lesson_key": "lesson.targeted_complainer_for_layoff",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "boss", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -10,
+        "staff": -14
+      },
+      "public": {
+        "boss": -16,
+        "staff": -20
+      }
+    }
+  },
+  {
+    "id": "fact.legal_severance_paid",
+    "category": "integrity",
+    "severity": 1,
+    "text_key": "fact.legal_severance_paid",
+    "lesson_key": "lesson.legal_severance_paid",
+    "consequences": {
+      "witnessed": {
+        "boss": 1,
+        "staff": 4
+      },
+      "public": {
+        "boss": 2,
+        "staff": 6
+      }
+    }
+  },
+  {
+    "id": "fact.skipped_legal_notice",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.skipped_legal_notice",
+    "lesson_key": "lesson.skipped_legal_notice",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "boss", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -10,
+        "staff": -14
+      },
+      "public": {
+        "boss": -16,
+        "staff": -20
+      }
+    }
+  },
+  {
+    "id": "fact.polished_hr_review",
+    "category": "integrity",
+    "severity": 3,
+    "text_key": "fact.polished_hr_review",
+    "lesson_key": "lesson.polished_hr_review",
+    "consequences": {
+      "witnessed": {
+        "boss": -4
+      },
+      "public": {
+        "boss": -6
+      }
+    }
+  },
+  {
+    "id": "fact.accepted_hr_condition",
+    "category": "integrity",
+    "severity": 3,
+    "text_key": "fact.accepted_hr_condition",
+    "lesson_key": "lesson.accepted_hr_condition",
+    "consequences": {
+      "witnessed": {
+        "boss": -2
+      },
+      "public": {
+        "boss": -4
+      }
+    }
+  },
+  {
+    "id": "fact.backdated_hr_records",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.backdated_hr_records",
+    "lesson_key": "lesson.backdated_hr_records",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "boss", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -10,
+        "staff": -8
+      },
+      "public": {
+        "boss": -16,
+        "staff": -12
+      }
+    }
+  },
+  {
+    "id": "fact.chained_contracts",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.chained_contracts",
+    "lesson_key": "lesson.chained_contracts",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.6,
+        "detectors": ["internal_audit", "boss", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "staff": -8
+      },
+      "public": {
+        "boss": -10,
+        "staff": -12
+      }
+    }
+  },
+  {
+    "id": "fact.edited_overtime_records",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.edited_overtime_records",
+    "lesson_key": "lesson.edited_overtime_records",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "boss", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8,
+        "production": -8,
+        "staff": -10
+      },
+      "public": {
+        "boss": -14,
+        "staff": -14
+      }
+    }
+  },
+  {
+    "id": "fact.underreported_insurance_base",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.underreported_insurance_base",
+    "lesson_key": "lesson.underreported_insurance_base",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.6,
+        "detectors": ["finance", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8,
+        "finance": -6,
+        "staff": -10
+      },
+      "public": {
+        "boss": -14,
+        "staff": -14
+      }
+    }
+  },
+  {
+    "id": "fact.hid_salary_leak",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.hid_salary_leak",
+    "lesson_key": "lesson.hid_salary_leak",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.7,
+        "detectors": ["boss", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -5,
+        "staff": -8
+      },
+      "public": {
+        "boss": -10,
+        "staff": -12
+      }
+    }
+  },
+  {
+    "id": "fact.ended_probation_for_pregnancy",
+    "category": "integrity",
+    "severity": 8,
+    "text_key": "fact.ended_probation_for_pregnancy",
+    "lesson_key": "lesson.ended_probation_for_pregnancy",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.8,
+        "detectors": ["internal_audit", "boss", "qc", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -12,
+        "qc": -4,
+        "staff": -14
+      },
+      "public": {
+        "boss": -18,
+        "staff": -20
+      }
+    }
+  },
+  {
+    "id": "fact.hired_underage_worker",
+    "category": "integrity",
+    "severity": 9,
+    "text_key": "fact.hired_underage_worker",
+    "lesson_key": "lesson.hired_underage_worker",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.8,
+        "detectors": ["internal_audit", "boss", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -14,
+        "production": -10,
+        "staff": -14
+      },
+      "public": {
+        "boss": -22,
+        "staff": -22
+      }
+    }
+  },
+  {
+    "id": "fact.manipulated_survey",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.manipulated_survey",
+    "lesson_key": "lesson.manipulated_survey",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.6,
+        "detectors": ["boss", "staff", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -5,
+        "staff": -8
+      },
+      "public": {
+        "boss": -9,
+        "staff": -12
+      }
+    }
+  },
+  {
+    "id": "fact.favoured_in_bonus",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.favoured_in_bonus",
+    "lesson_key": "lesson.favoured_in_bonus",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.5,
+        "detectors": ["finance", "boss", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -4,
+        "staff": -8
+      },
+      "public": {
+        "boss": -8,
+        "staff": -12
+      }
+    }
+  },
+  {
+    "id": "fact.inflated_reference",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.inflated_reference",
+    "lesson_key": "lesson.inflated_reference",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.5,
+        "detectors": ["boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -5
+      },
+      "public": {
+        "boss": -9
+      }
+    }
+  },
+  {
+    "id": "fact.blamed_hr_admin",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.blamed_hr_admin",
+    "lesson_key": "lesson.blamed_hr_admin",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.8,
+        "detectors": ["boss", "staff"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -10,
+        "staff": -12
+      },
+      "public": {
+        "boss": -16,
+        "staff": -16
+      }
+    }
   }
 ]

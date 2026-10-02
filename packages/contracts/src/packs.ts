@@ -140,11 +140,19 @@ export const FACT_VISIBILITIES = ['private', 'witnessed', 'rumor', 'public'] as 
 export type FactVisibility = (typeof FACT_VISIBILITIES)[number];
 
 /** Groups whose opinion of the player the simulation tracks: `player.rep.<group>`. */
-export const REPUTATION_GROUPS = ['boss', 'buyer', 'finance', 'production', 'qc', 'cs'] as const;
+export const REPUTATION_GROUPS = [
+  'boss',
+  'buyer',
+  'finance',
+  'production',
+  'qc',
+  'cs',
+  'staff',
+] as const;
 export type ReputationGroup = (typeof REPUTATION_GROUPS)[number];
 
 /** Who can notice something the player did, and so uncover it. */
-export const DETECTORS = ['finance', 'internal_audit', 'qc', 'buyer', 'boss'] as const;
+export const DETECTORS = ['finance', 'internal_audit', 'qc', 'buyer', 'boss', 'staff'] as const;
 export type Detector = (typeof DETECTORS)[number];
 
 /** Evidence a deed leaves behind, and who might find it. */

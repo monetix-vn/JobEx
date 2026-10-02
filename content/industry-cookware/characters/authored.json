@@ -192,5 +192,72 @@
       "trust": 10,
       "loyalty": 5
     }
+  },
+  {
+    "id": "char.oanh",
+    "name_key": "char.oanh.name",
+    "title_key": "char.oanh.title",
+    "department": "hr",
+    "home_group": "boss",
+    "traits": ["pragmatic", "protective_of_the_company", "tired"],
+    "start": {
+      "trust": 10
+    }
+  },
+  {
+    "id": "char.cuong",
+    "name_key": "char.cuong.name",
+    "title_key": "char.cuong.title",
+    "department": "management",
+    "home_group": "boss",
+    "traits": ["decisive", "numbers_first", "impatient"],
+    "start": {
+      "trust": 0
+    }
+  },
+  {
+    "id": "char.loan",
+    "name_key": "char.loan.name",
+    "title_key": "char.loan.title",
+    "department": "hr",
+    "home_group": "staff",
+    "traits": ["careful", "quiet", "keeps_a_copy"],
+    "start": {
+      "trust": 10,
+      "loyalty": 5
+    }
+  },
+  {
+    "id": "char.vinh",
+    "name_key": "char.vinh.name",
+    "title_key": "char.vinh.title",
+    "department": "sales",
+    "home_group": "staff",
+    "traits": ["charming", "top_performer", "pushy"],
+    "start": {
+      "trust": 5
+    }
+  },
+  {
+    "id": "char.ngoc",
+    "name_key": "char.ngoc.name",
+    "title_key": "char.ngoc.title",
+    "department": "sales",
+    "home_group": "staff",
+    "traits": ["careful", "frightened", "fair"],
+    "start": {
+      "trust": 0
+    }
+  },
+  {
+    "id": "char.tuan",
+    "name_key": "char.tuan.name",
+    "title_key": "char.tuan.title",
+    "department": "logistics",
+    "home_group": "staff",
+    "traits": ["friendly", "underqualified", "well_connected"],
+    "start": {
+      "trust": 0
+    }
   }
 ]

@@ -12,6 +12,7 @@ const ROLE_BY_PREFIX = {
   prod: 'role.prod.planner',
   purch: 'role.purch.buyer',
   inv: 'role.inv.analyst',
+  hr: 'role.hr.hrbp',
 };
 const ROLE_SHORTCUTS = { ...ROLE_BY_PREFIX };
 const VARIABLE_ALIASES = {

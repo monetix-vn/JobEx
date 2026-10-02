@@ -373,5 +373,80 @@
         "delay_weeks": [6, 12]
       }
     ]
+  },
+  {
+    "id": "arc.the_chosen_one",
+    "title_key": "arc.the_chosen_one.title",
+    "stages": [
+      {
+        "id": "ask",
+        "event": "event.hr.long_asks_favour"
+      },
+      {
+        "id": "shortlist",
+        "event": "event.hr.shortlist_pressure",
+        "delay_weeks": [1, 2]
+      },
+      {
+        "id": "offer",
+        "event": "event.hr.salary_exception",
+        "delay_weeks": [1, 2]
+      },
+      {
+        "id": "fallout",
+        "event": "event.hr.tuan_fallout",
+        "delay_weeks": [5, 9]
+      }
+    ]
+  },
+  {
+    "id": "arc.the_complaint",
+    "title_key": "arc.the_complaint.title",
+    "stages": [
+      {
+        "id": "informal",
+        "event": "event.hr.ngoc_comes"
+      },
+      {
+        "id": "response",
+        "event": "event.hr.vinh_responds",
+        "delay_weeks": [1, 2]
+      },
+      {
+        "id": "decision",
+        "event": "event.hr.decision_meeting",
+        "delay_weeks": [2, 3]
+      },
+      {
+        "id": "aftermath",
+        "event": "event.hr.ngoc_after",
+        "delay_weeks": [3, 5]
+      }
+    ]
+  },
+  {
+    "id": "arc.the_list",
+    "title_key": "arc.the_list.title",
+    "stages": [
+      {
+        "id": "target",
+        "event": "event.hr.cost_cut_twist"
+      },
+      {
+        "id": "names",
+        "event": "event.hr.the_names",
+        "delay_weeks": [1, 2]
+      },
+      {
+        "id": "notice",
+        "event": "event.hr.notice_day",
+        "delay_weeks": [2, 3]
+      },
+      {
+        "id": "survivors",
+        "event": "event.hr.survivors",
+        "delay_weeks": [4, 6]
+      }
+    ]
   }
 ]
