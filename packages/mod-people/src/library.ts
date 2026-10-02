@@ -248,6 +248,14 @@ export function assembleLibrary(raw: RawLibrary): LibraryResult {
   coverAges(marRows, ['female', 'male'], 'marital_by_age');
   const childRows = rowsOf('children_by_age');
   coverAges(childRows, ['any'], 'children_by_age');
+  const sexRows = rowsOf('birth_sex_ratio');
+  if (sexRows.some((r) => !isNum(r.male_share) || r.male_share <= 0.4 || r.male_share >= 0.6)) {
+    err('table.value', 'male_share must be between 0.4 and 0.6', 'birth_sex_ratio');
+  }
+  const gapRows = rowsOf('spouse_age_gap');
+  if (gapRows.some((r) => !isNum(r.husband_older_mean) || !isNum(r.spread) || r.spread <= 0)) {
+    err('table.value', 'needs husband_older_mean and a spread above 0', 'spouse_age_gap');
+  }
   const hireRows = rowsOf('hiring_paths');
   for (const p of HIRING_PATHS)
     if (!hireRows.some((x) => x.path === p))

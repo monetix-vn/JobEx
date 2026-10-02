@@ -1,0 +1,16 @@
+{
+  "name": "@je/library-editor",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/server.ts"
+  },
+  "bin": {
+    "library-editor": "./src/cli.ts"
+  },
+  "dependencies": {
+    "@je/contracts": "workspace:*",
+    "@je/mod-people": "workspace:*"
+  }
+}

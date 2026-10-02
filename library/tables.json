@@ -4,11 +4,20 @@
     "source": "General Statistics Office of Vietnam, 2019 Population and Housing Census (regional shares, rounded, merged into three regions)",
     "year": 2019,
     "verified": false,
-    "note": "Approximate. A company can override this with the mix of its own location and its migrant workforce.",
+    "note": "Partly checked 2026-10-02: Red River Delta 23.4 percent and Central Highlands 6.1 percent of the 2019 population. The other four regions and the three-way grouping are estimates; verify. A company can override this with its own location and migrant mix.",
     "rows": [
-      { "region": "north", "weight": 0.37 },
-      { "region": "centre", "weight": 0.27 },
-      { "region": "south", "weight": 0.36 }
+      {
+        "region": "north",
+        "weight": 0.37
+      },
+      {
+        "region": "centre",
+        "weight": 0.27
+      },
+      {
+        "region": "south",
+        "weight": 0.36
+      }
     ]
   },
   "settlement_by_region": {
@@ -16,11 +25,20 @@
     "source": "General Statistics Office of Vietnam, 2019 census (urban population share, rounded)",
     "year": 2019,
     "verified": false,
-    "note": "Approximate national urban share is about 37 percent; workers of an industrial city lean more urban.",
+    "note": "National urban share checked 2026-10-02: 34.4 percent (2019 census, 96,208,984 people). The split by region below is an estimate that reproduces that national figure; verify per region.",
     "rows": [
-      { "region": "north", "urban_share": 0.34 },
-      { "region": "centre", "urban_share": 0.3 },
-      { "region": "south", "urban_share": 0.42 }
+      {
+        "region": "north",
+        "urban_share": 0.32
+      },
+      {
+        "region": "centre",
+        "urban_share": 0.29
+      },
+      {
+        "region": "south",
+        "urban_share": 0.4
+      }
     ]
   },
   "education_by_age": {
@@ -92,7 +110,7 @@
     "source": "General Statistics Office of Vietnam, 2019 census (marital status by age and sex, rounded and regrouped)",
     "year": 2019,
     "verified": false,
-    "note": "Approximate. 'partnered' means living together unmarried.",
+    "note": "Anchors checked 2026-10-02 against the 2019 census: 77.5 percent of people aged 15 and over had ever married; 69.2 percent were currently married; mean age at first marriage 27.2 (men) and 23.1 (women); 9.1 percent of women aged 20-24 married before 18. The age-band rows below are still approximations; verify against the census marital-status table.",
     "rows": [
       {
         "age_from": 18,
@@ -223,12 +241,42 @@
     "verified": false,
     "note": "Approximate means; the generator draws a count around each mean.",
     "rows": [
-      { "age_from": 18, "age_to": 24, "married_mean": 0.4, "other_mean": 0.03 },
-      { "age_from": 25, "age_to": 29, "married_mean": 0.9, "other_mean": 0.08 },
-      { "age_from": 30, "age_to": 34, "married_mean": 1.6, "other_mean": 0.15 },
-      { "age_from": 35, "age_to": 44, "married_mean": 1.9, "other_mean": 0.25 },
-      { "age_from": 45, "age_to": 54, "married_mean": 2.1, "other_mean": 0.3 },
-      { "age_from": 55, "age_to": 70, "married_mean": 2.3, "other_mean": 0.35 }
+      {
+        "age_from": 18,
+        "age_to": 24,
+        "married_mean": 0.4,
+        "other_mean": 0.03
+      },
+      {
+        "age_from": 25,
+        "age_to": 29,
+        "married_mean": 0.9,
+        "other_mean": 0.08
+      },
+      {
+        "age_from": 30,
+        "age_to": 34,
+        "married_mean": 1.6,
+        "other_mean": 0.15
+      },
+      {
+        "age_from": 35,
+        "age_to": 44,
+        "married_mean": 1.9,
+        "other_mean": 0.25
+      },
+      {
+        "age_from": 45,
+        "age_to": 54,
+        "married_mean": 2.1,
+        "other_mean": 0.3
+      },
+      {
+        "age_from": 55,
+        "age_to": 70,
+        "married_mean": 2.3,
+        "other_mean": 0.35
+      }
     ]
   },
   "hiring_paths": {
@@ -238,10 +286,47 @@
     "verified": false,
     "note": "A game parameter, not a measurement.",
     "rows": [
-      { "path": "applied_cold", "weight": 0.55 },
-      { "path": "internal_transfer", "weight": 0.12 },
-      { "path": "recommended", "weight": 0.3 },
-      { "path": "owner_relative", "weight": 0.03 }
+      {
+        "path": "applied_cold",
+        "weight": 0.55
+      },
+      {
+        "path": "internal_transfer",
+        "weight": 0.12
+      },
+      {
+        "path": "recommended",
+        "weight": 0.3
+      },
+      {
+        "path": "owner_relative",
+        "weight": 0.03
+      }
+    ]
+  },
+  "birth_sex_ratio": {
+    "id": "birth_sex_ratio",
+    "source": "UNFPA Viet Nam / General Statistics Office, 2019 Population and Housing Census: sex ratio at birth 111.5 boys per 100 girls (Red River Delta 115.3, Mekong River Delta 106.9)",
+    "year": 2019,
+    "verified": true,
+    "note": "Verified 2026-10-02 against UNFPA Viet Nam census summary (male share = 111.5 / 211.5). Regional ratios differ; a per-region split is a later refinement.",
+    "rows": [
+      {
+        "male_share": 0.527
+      }
+    ]
+  },
+  "spouse_age_gap": {
+    "id": "spouse_age_gap",
+    "source": "General Statistics Office of Vietnam, 2019 census (singulate mean age at marriage by sex: men about 27, women about 23; gap simplified)",
+    "year": 2019,
+    "verified": false,
+    "note": "The census gap in mean age at first marriage is 4.1 years (men 27.2, women 23.1), but couples' age gaps are smaller on average, so this game value is lower; verify with a survey of spouse ages.",
+    "rows": [
+      {
+        "husband_older_mean": 2.5,
+        "spread": 3
+      }
     ]
   }
 }

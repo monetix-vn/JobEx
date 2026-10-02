@@ -277,6 +277,15 @@ importers:
         specifier: workspace:*
         version: link:../../packages/mod-workload
 
+  tools/library-editor:
+    dependencies:
+      '@je/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      '@je/mod-people':
+        specifier: workspace:*
+        version: link:../../packages/mod-people
+
   tools/pack-validator:
     dependencies:
       '@je/contracts':

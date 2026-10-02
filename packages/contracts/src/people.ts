@@ -78,7 +78,8 @@ export interface PersonOrigin {
   age_at_creation: number;
   region: Region;
   settlement: Settlement;
-  education: EducationLevel;
+  /** 'in_school' for children who have not finished school. */
+  education: EducationLevel | 'in_school';
   hiring_path: HiringPath;
   temperament: Temperament;
   values: PersonValue[];
@@ -106,6 +107,13 @@ export interface PersonLife {
   health: number;
 }
 
+/** Links to the people closest to a person; filled in when a household is generated. */
+export interface FamilyLinks {
+  spouse?: string;
+  children: string[];
+  parents: string[];
+}
+
 export interface Person {
   id: string;
   /** The seed this person was drawn from (the first attempt that passed validation). */
@@ -114,6 +122,7 @@ export interface Person {
   controller: Controller;
   origin: PersonOrigin;
   life: PersonLife;
+  family?: FamilyLinks;
 }
 
 /** What a caller (the director or a story arc) asks the generator for. */
@@ -231,6 +240,10 @@ export interface PeopleLibrary {
       other_mean: number;
     }>;
     hiring_paths: DataTable<{ path: HiringPath; weight: number }>;
+    /** Share of boys among births (the sex ratio at birth, as a share). */
+    birth_sex_ratio: DataTable<{ male_share: number }>;
+    /** Mean age gap, husband minus wife, and its spread. */
+    spouse_age_gap: DataTable<{ husband_older_mean: number; spread: number }>;
   };
 }
 

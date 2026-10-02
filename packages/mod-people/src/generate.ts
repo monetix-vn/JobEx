@@ -425,10 +425,11 @@ export function violations(person: Person): string[] {
     out.push('too young to be married');
   if (life.marital === 'widowed' && age < 25) out.push('too young to be widowed');
   if (life.children > 0 && age < 20) out.push('too young to have children');
-  if (life.children > Math.floor((age - 18) / 2) + (age >= 30 ? 1 : 0))
+  if (life.children > 0 && life.children > Math.floor((age - 18) / 2) + (age >= 30 ? 1 : 0))
     out.push('more children than the age allows');
   if (life.tenure_years > Math.max(0, age - 16)) out.push('tenure longer than the working life');
-  if (life.income_vnd <= 0) out.push('no income');
+  const earner = age >= 18 && life.department !== 'household' && life.department !== 'retired';
+  if (earner && life.income_vnd <= 0) out.push('no income');
   if (life.dependents < life.children) out.push('dependents fewer than children');
   for (const axis of TEMPERAMENT_AXES) {
     const v = origin.temperament[axis];

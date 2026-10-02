@@ -128,5 +128,15 @@
     "age_max": 40,
     "min_education": "university",
     "income_base_vnd": 30000000
+  },
+  {
+    "department": "external",
+    "female_share": 0.5,
+    "age_mean": 36,
+    "age_sd": 10,
+    "age_min": 20,
+    "age_max": 70,
+    "min_education": "lower_secondary",
+    "income_base_vnd": 9000000
   }
 ]

@@ -42,6 +42,7 @@
     "sim:fpa": "tsx tools/sim-runner/src/cli.ts check --seed 2026 --scenario fpa-year --content content",
     "sim:sup": "tsx tools/sim-runner/src/cli.ts check --seed 2026 --scenario sup-year --content content",
     "people:validate": "tsx tools/people-workbench/src/cli.ts validate --strict",
+    "library:edit": "tsx tools/library-editor/src/cli.ts",
     "people:generate": "tsx tools/people-workbench/src/cli.ts generate",
     "sim:hr": "tsx tools/sim-runner/src/cli.ts check --seed 2026 --scenario hr-year --content content"
   },
