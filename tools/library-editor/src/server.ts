@@ -48,17 +48,32 @@ function pickRaw(body: unknown): RawLibrary | undefined {
  * The attribute library editor server: offline, local, one page. It never touches anything outside the
  * library folder, and it refuses to save a library that has validation errors. Saves keep a `.bak` copy.
  */
-export function createEditorServer(libraryDir: string): Server {
+export function createEditorServer(libraryDir: string, guideFile?: string): Server {
+  const guide = guideFile ?? join(libraryDir, '..', 'docs', 'design', 'GENERATOR-GUIDE.md');
   return createServer((req, res) => {
-    void handle(req, res, libraryDir).catch((error: unknown) => {
+    void handle(req, res, libraryDir, guide).catch((error: unknown) => {
       send(res, 500, { error: error instanceof Error ? error.message : String(error) });
     });
   });
 }
 
-async function handle(req: IncomingMessage, res: ServerResponse, dir: string): Promise<void> {
+async function handle(
+  req: IncomingMessage,
+  res: ServerResponse,
+  dir: string,
+  guideFile: string,
+): Promise<void> {
   const url = (req.url ?? '/').split('?')[0];
   if (req.method === 'GET' && url === '/') return send(res, 200, EDITOR_HTML, 'text/html');
+  if (req.method === 'GET' && url === '/api/guide') {
+    let markdown = '';
+    try {
+      markdown = readFileSync(guideFile, 'utf8');
+    } catch {
+      /* the guide is optional */
+    }
+    return send(res, 200, { markdown });
+  }
   if (req.method === 'GET' && url === '/api/library') {
     const raw = readRaw(dir);
     return send(res, 200, { raw, diagnostics: assembleLibrary(raw).diagnostics });

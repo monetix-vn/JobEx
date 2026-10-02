@@ -9,7 +9,10 @@ const repoLibrary = join(import.meta.dirname, '..', '..', '..', 'library');
 const dir = mkdtempSync(join(tmpdir(), 'je-library-'));
 cpSync(repoLibrary, dir, { recursive: true });
 
-const server = createEditorServer(dir);
+const server = createEditorServer(
+  dir,
+  join(repoLibrary, '..', 'docs', 'design', 'GENERATOR-GUIDE.md'),
+);
 let base = '';
 beforeAll(async () => {
   await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
@@ -31,7 +34,7 @@ const post = async (path: string, body: unknown): Promise<Record<string, unknown
 describe('the library editor server', () => {
   it('serves the page and the library with no errors', async () => {
     const page = await (await fetch(base + '/')).text();
-    expect(page).toContain('People library editor');
+    expect(page).toContain('People Library Editor');
     const lib = (await (await fetch(base + '/api/library')).json()) as {
       raw: Record<string, unknown>;
       diagnostics: { severity: string }[];
@@ -44,6 +47,12 @@ describe('the library editor server', () => {
       'tables',
     ]);
     expect(lib.diagnostics.filter((d) => d.severity === 'error')).toEqual([]);
+  });
+
+  it('serves the guide (the whitepaper) so authors can read it in the editor', async () => {
+    const guide = (await (await fetch(base + '/api/guide')).json()) as { markdown: string };
+    expect(guide.markdown).toContain('The people generator: a guide and whitepaper');
+    expect(guide.markdown).toContain('Fairness rules');
   });
 
   it('validates a draft and reports a mistake without saving it', async () => {
