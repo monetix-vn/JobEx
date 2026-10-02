@@ -1,4 +1,5 @@
 import {
+  impressionLine,
   mount,
   mountProfileForm,
   mountRolePicker,
@@ -34,6 +35,7 @@ import {
   createInProcessHost,
   fastForward,
   listPlayableRoles,
+  type PeopleSource,
 } from './host';
 import {
   deleteSlot,
@@ -50,6 +52,7 @@ import {
 import {
   SaveHostClient,
   dossierOf,
+  impressionsFromSnapshot,
   libraryFromFiles,
   summariseRun,
   worldIdFrom,
@@ -451,8 +454,8 @@ function showBuildLine(jobs: number, locale: UiLocale): void {
   const when = BUILD ? `build ${BUILD.commit}, ${BUILD.date}` : 'development build';
   line.textContent =
     locale === 'vi'
-      ? `${when} - ${jobs} công việc - chưa có: người trong cảnh game, rút gọn năm`
-      : `${when} - ${jobs} jobs - not in the game yet: people in the scenes, shorter years`;
+      ? `${when} - ${jobs} công việc - chưa có: rút gọn năm`
+      : `${when} - ${jobs} jobs - not in the game yet: shorter years`;
   root.append(line);
 }
 
@@ -482,6 +485,7 @@ async function startGame(
       roleId,
       locale,
       ...(setup.profile ? { profile: setup.profile } : {}),
+      people: peopleSourceOf(setup.world),
     }));
   const { run, turns } = host;
   if (carry) {
@@ -541,12 +545,19 @@ function transportOf(run: Run): Transport {
   };
 }
 
+/** Where the people in scenes come from: the world's roster when there is a world, otherwise made up for the run. */
+function peopleSourceOf(world: World | undefined): PeopleSource {
+  return {
+    library: peopleLibrary(),
+    ...(world ? { worldSeed: world.world_seed, roster: world.people } : {}),
+  };
+}
+
 /** Loads a save: a fresh run replays its inputs and the game continues from the same week. */
 async function loadSave(save: GameSave): Promise<void> {
   endSession();
   picker?.dispose();
   picker = undefined;
-  const host = await restoreGame(contentFiles, save);
   let world: World | undefined;
   if (save.world_id) {
     try {
@@ -555,6 +566,7 @@ async function loadSave(save: GameSave): Promise<void> {
       world = undefined;
     }
   }
+  const host = await restoreGame(contentFiles, save, undefined, peopleSourceOf(world));
   await startGame(
     save.roleId,
     save.locale,
@@ -908,6 +920,9 @@ function renderPeoplePanel(): void {
 
 function rowsFor(world: World, departments: Map<string, string>): HTMLElement[] {
   const t = SHELL[currentLocale];
+  const impressions = session
+    ? impressionsFromSnapshot(session.run.snapshot()['perception'], peopleLibrary())
+    : {};
   const nameOf = (id: string): string => departments.get(id) ?? id.replace(/_/g, ' ');
   return dossierOf(world, currentLocale, nameOf)
     .slice(0, 80)
@@ -922,6 +937,12 @@ function rowsFor(world: World, departments: Map<string, string>): HTMLElement[] 
         .filter(Boolean)
         .join(' - ');
       row.append(head, detail);
+      if (!e.legacy && impressions[e.id]) {
+        const seen = document.createElement('div');
+        seen.style.cssText = 'color:#9fd8a8;font-size:12px';
+        seen.textContent = impressionLine(impressions[e.id], currentLocale);
+        row.append(seen);
+      }
       if (e.legacy) {
         const l = document.createElement('div');
         l.style.cssText = 'color:#ffd166;font-size:12px';

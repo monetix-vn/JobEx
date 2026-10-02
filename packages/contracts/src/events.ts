@@ -97,6 +97,8 @@ export interface ScenePerson {
   character: string;
   name: string;
   title: string;
+  /** Set on a person drawn from the world (a guest): `character` is then their person id. */
+  guest?: boolean;
 }
 
 export interface SceneLine {

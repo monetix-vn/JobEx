@@ -4,10 +4,12 @@ import type {
   PeopleLibrary,
   Person,
   PlayerProfile,
+  TemperamentAxis,
   RunSummary,
   World,
 } from '@je/contracts';
 import type { Run } from '@je/kernel';
+import type { Impression } from '@je/client-web';
 import { formatDiagnostics, hasErrors, loadContent, memorySource } from '@je/mod-content';
 import { ageOf, assembleLibrary, type RawLibrary } from '@je/mod-people';
 
@@ -117,6 +119,37 @@ export function describeLook(a: Appearance | undefined, locale: Locale): string 
   if (a.glasses) parts.push(locale === 'vi' ? 'đeo kính' : 'glasses');
   if (a.facial_hair !== 'none') parts.push(locale === 'vi' ? 'có râu' : 'facial hair');
   return parts.filter(Boolean).join(', ');
+}
+
+/** What the player has worked out about people so far this run, from the perception module's snapshot. */
+export function impressionsFromSnapshot(
+  snapshot: unknown,
+  library: PeopleLibrary,
+): Record<string, Impression> {
+  const rows =
+    (
+      snapshot as {
+        impressions?: {
+          id: string;
+          axes: { axis: TemperamentAxis; estimate: number; confidence: number }[];
+          quirks: string[];
+        }[];
+      } | null
+    )?.impressions ?? [];
+  return Object.fromEntries(
+    rows.map((r) => [
+      r.id,
+      {
+        axes: Object.fromEntries(
+          r.axes.map((a) => [a.axis, { estimate: a.estimate, confidence: a.confidence }]),
+        ),
+        quirks: r.quirks.flatMap((q) => {
+          const quirk = library.quirks.find((x) => x.id === q);
+          return quirk ? [quirk.name] : [];
+        }),
+      },
+    ]),
+  );
 }
 
 export interface DossierEntry {

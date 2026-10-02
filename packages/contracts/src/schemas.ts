@@ -175,6 +175,19 @@ export const sceneSchema = {
     location: idString,
     terms: { type: 'array', items: idString },
     cast: { type: 'array', items: { type: 'string' } },
+    guests: {
+      type: 'array',
+      items: {
+        type: 'object',
+        required: ['slot', 'story_function'],
+        additionalProperties: false,
+        properties: {
+          slot: { type: 'string', pattern: '^[a-z][a-z0-9_]*$' },
+          story_function: { type: 'string' },
+          department: { type: 'string' },
+        },
+      },
+    },
     lines: {
       type: 'array',
       minItems: 1,

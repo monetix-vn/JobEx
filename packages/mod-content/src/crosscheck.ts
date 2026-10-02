@@ -181,6 +181,25 @@ export function crossCheck(
       requireRef('scene', scene.id, 'character', `char.${slug}`, 'cast');
       usedCharacters.add(`char.${slug}`);
     }
+    const slots = new Set((scene.guests ?? []).map((g) => g.slot));
+    if (slots.size !== (scene.guests ?? []).length) {
+      push({
+        severity: 'error',
+        code: 'scene.duplicate_guest',
+        message: `scene "${scene.id}" has two guests with the same slot`,
+        ...at('scene', scene.id),
+      });
+    }
+    for (const line of scene.lines) {
+      if (line.speaker.startsWith('guest:') && !slots.has(line.speaker.slice('guest:'.length))) {
+        push({
+          severity: 'error',
+          code: 'scene.unknown_guest',
+          message: `scene "${scene.id}" has a line spoken by "${line.speaker}" but no guest with that slot`,
+          ...at('scene', scene.id),
+        });
+      }
+    }
     for (const termId of scene.terms ?? []) {
       requireRef('scene', scene.id, 'term', termId, 'terms');
       usedTerms.add(termId);

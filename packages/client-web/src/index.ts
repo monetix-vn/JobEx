@@ -1,6 +1,7 @@
 export { mount, type ClientHandle, type MountOptions, type Transport } from './mount';
 export { mountRolePicker, type PickableRole, type PickerOptions } from './picker';
 export { UI_LOCALES, UI_STRINGS, type UiLocale, type UiStrings } from './strings';
+export { impressionLine, sureWord, traitWord, type Impression } from './impressions';
 export { initialState, reduce, type ClientScene, type ClientState } from './state';
 export { mountProfileForm, type ProfileFormOptions, type WorldChoice } from './profile';
 export { PROFILE_STRINGS, type ProfileStrings } from './profile-strings';

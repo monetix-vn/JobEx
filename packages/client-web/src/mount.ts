@@ -1,5 +1,6 @@
 import type { Envelope } from '@je/contracts';
 import { initialState, reduce, type ClientState } from './state';
+import { impressionLine } from './impressions';
 import { UI_LOCALES, UI_STRINGS, type UiLocale, type UiStrings } from './strings';
 
 /** The client's only connection to the simulation: messages in, commands out. */
@@ -137,7 +138,7 @@ function closeView(state: ClientState, t: UiStrings): HTMLElement | undefined {
 }
 
 /** The people met so far and how they feel about the player; a button hides or shows the list. */
-function castView(state: ClientState, t: UiStrings, ui: Ui): HTMLElement {
+function castView(state: ClientState, t: UiStrings, ui: Ui, locale: UiLocale): HTMLElement {
   const box = el('div', 'je-cast');
   const toggle = el('button', 'je-cast-toggle', ui.castHidden ? t.castShow : t.castHide);
   toggle.setAttribute('type', 'button');
@@ -147,8 +148,13 @@ function castView(state: ClientState, t: UiStrings, ui: Ui): HTMLElement {
   const list = el('ul', 'je-cast-list');
   for (const person of state.cast) {
     const trust = state.feelings[person.character]?.trust ?? 0;
-    const item = el('li', 'je-person', `${person.name} (${person.title}) - ${feelingOf(trust, t)}`);
+    // A person drawn from the world has no scripted feelings; what the player has worked out about them shows instead.
+    const detail = person.guest
+      ? impressionLine(state.impressions[person.character], locale)
+      : feelingOf(trust, t);
+    const item = el('li', 'je-person', `${person.name} (${person.title}) - ${detail}`);
     item.dataset.character = person.character;
+    if (person.guest) item.dataset.guest = 'true';
     list.append(item);
   }
   box.append(list);
@@ -281,7 +287,7 @@ function render(
   }
   const close = closeView(state, t);
   if (close) view.append(close);
-  if (state.cast.length > 0) view.append(castView(state, t, ui));
+  if (state.cast.length > 0) view.append(castView(state, t, ui, locale));
 
   if (state.map) {
     const map = el('div', 'je-map');

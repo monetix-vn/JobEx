@@ -522,6 +522,28 @@ describe('characters and relationships', () => {
     expect(codes(bad.diagnostics, 'error')).toContain('rel.bad_path');
   });
 
+  it('checks that a guest line is spoken by a declared guest, once per slot', async () => {
+    const guest = { slot: 'colleague', story_function: 'tempter' };
+    const line = (who: string) => ({ lines: [{ speaker: who, text_key: 'k.line' }] });
+    const ok = await load(withCast({ cast: [], guests: [guest], ...line('guest:colleague') }));
+    expect(hasErrors(ok.diagnostics)).toBe(false);
+    expect(ok.registry?.get('scene', 'scene.a')?.guests).toEqual([guest]);
+    const unknown = await load(withCast({ cast: [], guests: [guest], ...line('guest:other') }));
+    expect(codes(unknown.diagnostics, 'error')).toContain('scene.unknown_guest');
+    const twice = await load(
+      withCast({ cast: [], guests: [guest, guest], ...line('guest:colleague') }),
+    );
+    expect(codes(twice.diagnostics, 'error')).toContain('scene.duplicate_guest');
+    const badSlot = await load(
+      withCast({
+        cast: [],
+        guests: [{ slot: 'Bad Slot', story_function: 'x' }],
+        ...line('role:boss'),
+      }),
+    );
+    expect(hasErrors(badSlot.diagnostics)).toBe(true);
+  });
+
   it('needs the name and title in both languages, and only notes an unused character', async () => {
     const missing = await load(
       pack({

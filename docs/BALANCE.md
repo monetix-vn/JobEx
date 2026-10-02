@@ -11,86 +11,86 @@ will behave differently.
 
 | Player | Endings | Weeks (min/median/max) | Decisions (min/mean/max) | Final stress | Storylines started |
 | ------ | ------- | ---------------------- | ------------------------ | ------------ | ------------------ |
-| careful | promoted 34, completed 6 | 51 / 51 / 52 | 60 / 75.5 / 84 | 51.3 | discount_spiral 100%, overdue_account 100%, quynh 100%, the_squeeze 100%, trade_fair_lead 100% |
-| random | fired 27, prosecuted 12, completed 1 | 11 / 26 / 52 | 18 / 44.8 / 80 | 43.9 | discount_spiral 100%, overdue_account 98%, quynh 98%, the_squeeze 93%, trade_fair_lead 85% |
-| reckless | fired 40 | 10 / 15 / 29 | 17 / 30.1 / 53 | 41.7 | discount_spiral 98%, overdue_account 90%, quynh 93%, the_squeeze 73%, trade_fair_lead 80% |
+| careful | promoted 34, completed 6 | 51 / 51 / 52 | 72 / 79.4 / 86 | 48.6 | discount_spiral 100%, overdue_account 100%, quynh 100%, the_squeeze 100%, trade_fair_lead 100% |
+| random | fired 25, prosecuted 11, completed 3, promoted 1 | 10 / 30 / 52 | 21 / 55.4 / 102 | 45.7 | discount_spiral 100%, overdue_account 90%, quynh 95%, the_squeeze 95%, trade_fair_lead 88% |
+| reckless | fired 39, prosecuted 1 | 10 / 16 / 32 | 18 / 32.3 / 69 | 42.9 | discount_spiral 95%, overdue_account 83%, quynh 78%, the_squeeze 63%, trade_fair_lead 83% |
 
 ### qc-year
 
 | Player | Endings | Weeks (min/median/max) | Decisions (min/mean/max) | Final stress | Storylines started |
 | ------ | ------- | ---------------------- | ------------------------ | ------------ | ------------------ |
-| careful | promoted 40 | 51 / 51 / 51 | 57 / 64.7 / 69 | 43.5 | cheaper_steel 95%, field_complaint 100%, minh 88%, the_hamper 95%, the_squeeze 98% |
-| random | fired 24, prosecuted 9, completed 7 | 10 / 35 / 52 | 12 / 44.4 / 81 | 34.2 | cheaper_steel 65%, field_complaint 63%, minh 38%, the_hamper 73%, the_squeeze 63% |
-| reckless | fired 34, prosecuted 6 | 10 / 12 / 29 | 13 / 20.1 / 45 | 32.4 | cheaper_steel 23%, field_complaint 3%, the_hamper 28%, the_squeeze 25% |
+| careful | promoted 40 | 51 / 51 / 51 | 59 / 64.3 / 68 | 40.2 | cheaper_steel 95%, field_complaint 100%, minh 75%, the_hamper 95%, the_squeeze 100% |
+| random | fired 26, prosecuted 9, completed 5 | 11 / 32 / 52 | 14 / 43.6 / 80 | 32.3 | cheaper_steel 70%, field_complaint 55%, minh 30%, the_hamper 75%, the_squeeze 73% |
+| reckless | fired 35, prosecuted 5 | 10 / 12 / 34 | 13 / 20.3 / 55 | 31 | cheaper_steel 30%, field_complaint 3%, the_hamper 30%, the_squeeze 30% |
 
 ### fin-year
 
 | Player | Endings | Weeks (min/median/max) | Decisions (min/mean/max) | Final stress | Storylines started |
 | ------ | ------- | ---------------------- | ------------------------ | ------------ | ------------------ |
-| careful | promoted 40 | 51 / 51 / 51 | 68 / 74.1 / 82 | 72.6 | the_cookie_jar 90%, the_cutoff 85%, the_receipt_problem 100%, the_squeeze 100%, thu 93% |
-| random | fired 28, completed 11, prosecuted 1 | 13 / 37 / 52 | 21 / 62.4 / 91 | 11.8 | the_cookie_jar 68%, the_cutoff 78%, the_receipt_problem 98%, the_squeeze 98%, thu 93% |
-| reckless | fired 38, prosecuted 2 | 11 / 19 / 35 | 16 / 33.8 / 62 | 4.3 | the_cookie_jar 10%, the_cutoff 55%, the_receipt_problem 68%, the_squeeze 78%, thu 93% |
+| careful | promoted 40 | 51 / 51 / 51 | 67 / 76.8 / 83 | 75 | the_cookie_jar 63%, the_cutoff 85%, the_receipt_problem 100%, the_squeeze 100%, thu 90% |
+| random | fired 29, completed 11 | 10 / 37 / 52 | 17 / 64 / 94 | 14.2 | the_cookie_jar 57%, the_cutoff 68%, the_receipt_problem 93%, the_squeeze 93%, thu 90% |
+| reckless | fired 38, prosecuted 2 | 11 / 19 / 38 | 15 / 34.9 / 67 | 5.2 | the_cookie_jar 13%, the_cutoff 45%, the_receipt_problem 55%, the_squeeze 60%, thu 90% |
 
 ### prod-year
 
 | Player | Endings | Weeks (min/median/max) | Decisions (min/mean/max) | Final stress | Storylines started |
 | ------ | ------- | ---------------------- | ------------------------ | ------------ | ------------------ |
-| careful | promoted 40 | 51 / 51 / 51 | 40 / 41.3 / 43 | 30.1 | deferred_maintenance 100%, materials 100%, phuc 100%, the_promise 100%, the_squeeze 100% |
-| random | fired 32, completed 8 | 15 / 34 / 52 | 17 / 38.4 / 56 | 29.8 | deferred_maintenance 90%, materials 93%, phuc 100%, the_promise 100%, the_squeeze 100% |
-| reckless | fired 40 | 13 / 17 / 27 | 14 / 23.4 / 35 | 28.6 | deferred_maintenance 57%, materials 70%, phuc 100%, the_promise 98%, the_squeeze 100% |
+| careful | promoted 40 | 51 / 51 / 51 | 47 / 51.1 / 53 | 38.5 | deferred_maintenance 100%, materials 100%, phuc 100%, the_promise 100%, the_squeeze 100% |
+| random | fired 34, completed 6 | 16 / 32 / 52 | 21 / 43.7 / 63 | 38.3 | deferred_maintenance 93%, materials 98%, phuc 100%, the_promise 100%, the_squeeze 100% |
+| reckless | fired 40 | 13 / 18 / 31 | 18 / 26.7 / 53 | 32.1 | deferred_maintenance 45%, materials 73%, phuc 100%, the_promise 95%, the_squeeze 95% |
 
 ### purch-year
 
 | Player | Endings | Weeks (min/median/max) | Decisions (min/mean/max) | Final stress | Storylines started |
 | ------ | ------- | ---------------------- | ------------------------ | ------------ | ------------------ |
-| careful | promoted 40 | 51 / 51 / 52 | 28 / 30.6 / 34 | 19.8 | ghost_stock 100%, single_source 100%, the_squeeze 100%, the_sweetener 100% |
-| random | fired 29, completed 11 | 14 / 41 / 52 | 12 / 29.3 / 46 | 23.6 | ghost_stock 98%, single_source 100%, the_squeeze 100%, the_sweetener 100% |
-| reckless | fired 40 | 13 / 15 / 31 | 13 / 19.2 / 35 | 30.9 | ghost_stock 95%, single_source 98%, the_squeeze 98%, the_sweetener 100% |
+| careful | promoted 40 | 51 / 51 / 51 | 38 / 41.2 / 45 | 34.4 | ghost_stock 100%, single_source 100%, the_squeeze 100%, the_sweetener 100% |
+| random | fired 31, completed 8, promoted 1 | 14 / 41 / 52 | 15 / 37.4 / 54 | 32.3 | ghost_stock 100%, single_source 100%, the_squeeze 100%, the_sweetener 100% |
+| reckless | fired 40 | 13 / 16 / 44 | 15 / 23.3 / 50 | 31.6 | ghost_stock 98%, single_source 100%, the_squeeze 100%, the_sweetener 100% |
 
 ### inv-year
 
 | Player | Endings | Weeks (min/median/max) | Decisions (min/mean/max) | Final stress | Storylines started |
 | ------ | ------- | ---------------------- | ------------------------ | ------------ | ------------------ |
-| careful | promoted 37, completed 3 | 51 / 51 / 52 | 28 / 31.1 / 36 | 37.8 | pitch_error 100%, the_hours 100%, the_tip 100%, the_valuation 100% |
-| random | fired 26, prosecuted 12, completed 2 | 11 / 20 / 52 | 9 / 21.4 / 44 | 52.2 | pitch_error 95%, the_hours 100%, the_tip 100%, the_valuation 100% |
-| reckless | fired 31, prosecuted 9 | 10 / 14 / 20 | 5 / 14.4 / 26 | 57 | pitch_error 65%, the_hours 95%, the_tip 83%, the_valuation 100% |
+| careful | promoted 40 | 51 / 51 / 51 | 39 / 40.9 / 48 | 48.7 | pitch_error 100%, the_hours 100%, the_tip 100%, the_valuation 100% |
+| random | fired 26, prosecuted 11, completed 3 | 12 / 22 / 52 | 8 / 26.8 / 52 | 55.9 | pitch_error 93%, the_hours 98%, the_tip 98%, the_valuation 100% |
+| reckless | fired 33, prosecuted 7 | 11 / 15 / 20 | 9 / 17.3 / 30 | 60.5 | pitch_error 68%, the_hours 95%, the_tip 83%, the_valuation 100% |
 
 ### it-year
 
 | Player | Endings | Weeks (min/median/max) | Decisions (min/mean/max) | Final stress | Storylines started |
 | ------ | ------- | ---------------------- | ------------------------ | ------------ | ------------------ |
-| careful | promoted 40 | 51 / 51 / 51 | 33 / 37.7 / 42 | 48.4 | the_email 100%, the_keys 100%, the_ransom 100%, the_squeeze 100% |
-| random | fired 37, completed 3 | 16 / 34 / 52 | 14 / 29.8 / 54 | 49.5 | the_email 98%, the_keys 100%, the_ransom 55%, the_squeeze 100% |
-| reckless | fired 40 | 14 / 18 / 29 | 10 / 19.7 / 30 | 47.1 | the_email 83%, the_keys 98%, the_ransom 3%, the_squeeze 100% |
+| careful | promoted 39, completed 1 | 51 / 51 / 52 | 41 / 48.1 / 54 | 59.8 | the_email 100%, the_keys 100%, the_ransom 100%, the_squeeze 100% |
+| random | fired 34, completed 6 | 16 / 28 / 52 | 15 / 34.3 / 58 | 51.3 | the_email 93%, the_keys 100%, the_ransom 48%, the_squeeze 95% |
+| reckless | fired 40 | 14 / 18 / 29 | 14 / 23.8 / 40 | 45.9 | the_email 85%, the_keys 100%, the_ransom 8%, the_squeeze 95% |
 
 ### mkt-year
 
 | Player | Endings | Weeks (min/median/max) | Decisions (min/mean/max) | Final stress | Storylines started |
 | ------ | ------- | ---------------------- | ------------------------ | ------------ | ------------------ |
-| careful | promoted 40 | 51 / 51 / 51 | 32 / 37.4 / 41 | 54.5 | the_agency 100%, the_claim 100%, the_reviews 100%, the_squeeze 100% |
-| random | fired 34, completed 6 | 16 / 37 / 52 | 13 / 30.5 / 47 | 41.5 | the_agency 100%, the_claim 60%, the_reviews 100%, the_squeeze 100% |
-| reckless | fired 40 | 14 / 20 / 31 | 14 / 21.2 / 32 | 36.6 | the_agency 100%, the_claim 10%, the_reviews 98%, the_squeeze 100% |
+| careful | promoted 39, completed 1 | 51 / 51 / 52 | 43 / 47.8 / 53 | 66.1 | the_agency 100%, the_claim 100%, the_reviews 100%, the_squeeze 100% |
+| random | fired 33, completed 7 | 18 / 34 / 52 | 19 / 37.3 / 56 | 44.8 | the_agency 100%, the_claim 60%, the_reviews 100%, the_squeeze 100% |
+| reckless | fired 40 | 14 / 21 / 31 | 14 / 24.4 / 35 | 37.7 | the_agency 100%, the_claim 3%, the_reviews 95%, the_squeeze 100% |
 
 ### fpa-year
 
 | Player | Endings | Weeks (min/median/max) | Decisions (min/mean/max) | Final stress | Storylines started |
 | ------ | ------- | ---------------------- | ------------------------ | ------------ | ------------------ |
-| careful | promoted 40 | 51 / 51 / 51 | 34 / 37.6 / 41 | 46.1 | the_budget 100%, the_covenant 100%, the_kpi_pack 100%, the_squeeze 100% |
-| random | fired 28, prosecuted 6, completed 6 | 24 / 42 / 52 | 19 / 34.8 / 45 | 35.9 | the_budget 85%, the_covenant 88%, the_kpi_pack 100%, the_squeeze 100% |
-| reckless | fired 37, prosecuted 3 | 16 / 25 / 46 | 15 / 26.5 / 50 | 25 | the_budget 33%, the_covenant 40%, the_kpi_pack 100%, the_squeeze 100% |
+| careful | promoted 40 | 51 / 51 / 51 | 43 / 46.9 / 50 | 59 | the_budget 100%, the_covenant 100%, the_kpi_pack 100%, the_squeeze 100% |
+| random | fired 25, completed 10, prosecuted 5 | 23 / 42 / 52 | 22 / 43.8 / 62 | 43.1 | the_budget 90%, the_covenant 93%, the_kpi_pack 100%, the_squeeze 100% |
+| reckless | fired 39, prosecuted 1 | 17 / 26 / 42 | 19 / 31.9 / 61 | 28.2 | the_budget 30%, the_covenant 38%, the_kpi_pack 100%, the_squeeze 100% |
 
 ### sup-year
 
 | Player | Endings | Weeks (min/median/max) | Decisions (min/mean/max) | Final stress | Storylines started |
 | ------ | ------- | ---------------------- | ------------------------ | ------------ | ------------------ |
-| careful | promoted 40 | 51 / 51 / 51 | 29 / 35.1 / 42 | 42 | the_hand 100%, the_roster 100%, the_squeeze 100%, the_target 100% |
-| random | fired 33, completed 7 | 18 / 32 / 52 | 20 / 32.9 / 51 | 53.2 | the_hand 100%, the_roster 100%, the_squeeze 100%, the_target 100% |
-| reckless | fired 40 | 14 / 19 / 34 | 15 / 25.6 / 42 | 57.4 | the_hand 100%, the_roster 95%, the_squeeze 95%, the_target 100% |
+| careful | promoted 39, completed 1 | 51 / 51 / 52 | 39 / 45.9 / 54 | 53.9 | the_hand 100%, the_roster 100%, the_squeeze 100%, the_target 100% |
+| random | fired 31, completed 8, walked_away 1 | 14 / 36 / 52 | 13 / 40.9 / 60 | 54.9 | the_hand 98%, the_roster 98%, the_squeeze 98%, the_target 100% |
+| reckless | fired 40 | 15 / 19 / 36 | 17 / 28.5 / 50 | 56.9 | the_hand 95%, the_roster 93%, the_squeeze 80%, the_target 98% |
 
 ### hr-year
 
 | Player | Endings | Weeks (min/median/max) | Decisions (min/mean/max) | Final stress | Storylines started |
 | ------ | ------- | ---------------------- | ------------------------ | ------------ | ------------------ |
-| careful | promoted 40 | 51 / 51 / 51 | 30 / 34.2 / 37 | 40.6 | the_chosen_one 100%, the_complaint 100%, the_list 100%, the_squeeze 100% |
-| random | fired 31, completed 7, prosecuted 2 | 12 / 33 / 52 | 8 / 27.3 / 41 | 31 | the_chosen_one 98%, the_complaint 100%, the_list 63%, the_squeeze 100% |
-| reckless | fired 39, prosecuted 1 | 12 / 19 / 36 | 8 / 21.1 / 33 | 33.1 | the_chosen_one 98%, the_complaint 100%, the_list 15%, the_squeeze 100% |
+| careful | promoted 40 | 51 / 51 / 51 | 41 / 44.2 / 46 | 51.2 | the_chosen_one 100%, the_complaint 100%, the_list 100%, the_squeeze 100% |
+| random | fired 30, prosecuted 5, completed 5 | 15 / 37 / 52 | 16 / 36 / 59 | 38.3 | the_chosen_one 100%, the_complaint 100%, the_list 70%, the_squeeze 98% |
+| reckless | fired 39, prosecuted 1 | 13 / 19 / 34 | 14 / 24.2 / 37 | 34.1 | the_chosen_one 100%, the_complaint 95%, the_list 15%, the_squeeze 100% |

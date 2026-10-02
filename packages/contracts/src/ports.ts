@@ -1,3 +1,4 @@
+import type { Person } from './people';
 import type { ClockSnapshot } from './events';
 
 /** Ports for infrastructure. Modules never call the browser or network directly (plan section 3). */
@@ -45,4 +46,21 @@ export interface Ports {
   telemetry: TelemetryPort;
   storage?: StoragePort;
   content?: ContentSourcePort;
+}
+
+/** A request for a person to appear in a scene (see `Scene.guests`). */
+export interface GuestRequest {
+  sceneId: string;
+  slot: string;
+  story_function: string;
+  department?: string;
+  turn: number;
+}
+
+/**
+ * Supplies the people who appear in scenes. The implementation must be deterministic for a given run:
+ * the same sequence of requests gives the same people, so a replay reproduces the same scenes.
+ */
+export interface GuestPort {
+  appear(request: GuestRequest): Person;
 }

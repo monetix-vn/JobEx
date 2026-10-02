@@ -379,7 +379,12 @@ describe('narrative: glossary terms and risk notices', () => {
 
 describe('narrative: contract', () => {
   it('declares what it uses and needs content', () => {
-    expect(manifest.emits).toEqual(['scene.started', 'scene.ended', 'scene.expired']);
+    expect(manifest.emits).toEqual([
+      'scene.started',
+      'scene.ended',
+      'scene.expired',
+      'guest.appeared',
+    ]);
     expect(() => narrativeModule.createModule({ config: undefined } as never)).toThrow(/config/);
   });
 });

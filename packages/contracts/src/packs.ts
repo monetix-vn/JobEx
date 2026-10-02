@@ -112,12 +112,26 @@ export interface Choice {
   outcomes: Outcome[];
 }
 
+/**
+ * A person the world supplies when the scene starts (a generated colleague, not a fixed character). Text refers
+ * to them as `{slot}`, and a line is spoken by them with the speaker `guest:<slot>`.
+ */
+export interface SceneGuest {
+  slot: string;
+  /** What this person does in the scene (complainant, tempter, rival, mentor...); biases who is drawn. */
+  story_function: string;
+  /** Department they come from; omitted means the player's own. */
+  department?: string;
+}
+
 export interface Scene {
   id: string;
   location: string;
   /** Glossary terms the player can tap while reading this scene. */
   terms?: string[];
   cast?: string[];
+  /** People drawn from the world for this scene (see `GuestPort`). */
+  guests?: SceneGuest[];
   lines: { speaker: string; text_key: string }[];
   choices?: Choice[];
 }

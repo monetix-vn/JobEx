@@ -2,9 +2,12 @@ import type {
   ClockSnapshot,
   CoreEventPayloads,
   Envelope,
+  PerceptionUpdatedPayload,
+  QuirkNoticedPayload,
   SceneTerm,
   StateValue,
 } from '@je/contracts';
+import type { Impression } from './impressions';
 
 export interface ClientScene {
   sceneId: string;
@@ -34,15 +37,25 @@ export interface ClientState {
   /** People met so far (in the order met), and how they feel about the player. */
   cast: CastMember[];
   feelings: Record<string, { trust: number; loyalty: number; owed: number }>;
+  /** What the player believes about each guest (by person id): traits learned over time, never the true numbers. */
+  impressions: Record<string, Impression>;
 }
 
 export interface CastMember {
   character: string;
   name: string;
   title: string;
+  /** A person drawn from the world: `character` is their person id. */
+  guest?: boolean;
 }
 
-export const initialState: ClientState = { ended: false, vars: {}, cast: [], feelings: {} };
+export const initialState: ClientState = {
+  ended: false,
+  vars: {},
+  cast: [],
+  feelings: {},
+  impressions: {},
+};
 
 /** Pure reducer: the client's view is derived entirely from bus messages. */
 export function reduce(state: ClientState, envelope: Envelope): ClientState {
@@ -89,6 +102,32 @@ export function reduce(state: ClientState, envelope: Envelope): ClientState {
       return {
         ...state,
         feelings: { ...state.feelings, [p.character]: { ...now, [p.dimension]: p.to } },
+      };
+    }
+    case 'perception.updated': {
+      const p = envelope.payload as PerceptionUpdatedPayload;
+      const now = state.impressions[p.person_id] ?? { axes: {}, quirks: [] };
+      return {
+        ...state,
+        impressions: {
+          ...state.impressions,
+          [p.person_id]: {
+            ...now,
+            axes: { ...now.axes, [p.axis]: { estimate: p.estimate, confidence: p.confidence } },
+          },
+        },
+      };
+    }
+    case 'perception.quirkNoticed': {
+      const p = envelope.payload as QuirkNoticedPayload;
+      const now = state.impressions[p.person_id] ?? { axes: {}, quirks: [] };
+      const name = p.name ?? { en: p.quirk, vi: p.quirk };
+      return {
+        ...state,
+        impressions: {
+          ...state.impressions,
+          [p.person_id]: { ...now, quirks: [...now.quirks, name] },
+        },
       };
     }
     case 'debrief.ready':

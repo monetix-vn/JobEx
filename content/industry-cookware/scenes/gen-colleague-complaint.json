@@ -1,0 +1,123 @@
+{
+  "id": "scene.gen.colleague_complaint",
+  "location": "loc.meeting_room",
+  "cast": [],
+  "guests": [
+    {
+      "slot": "colleague",
+      "story_function": "complainant"
+    }
+  ],
+  "lines": [
+    {
+      "speaker": "guest:colleague",
+      "text_key": "scene.gen.colleague_complaint.l1"
+    },
+    {
+      "speaker": "guest:colleague",
+      "text_key": "scene.gen.colleague_complaint.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.gen.colleague_complaint.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.gen.colleague_complaint.c1.ok",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.gen.colleague_complaint.c1.fail",
+          "effects": [
+            {
+              "delta": "player.rep.staff",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.gen.colleague_complaint.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.gen.colleague_complaint.c2.ok",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.gen.colleague_complaint.c3",
+      "outcomes": [
+        {
+          "p": 0.75,
+          "narration_key": "scene.gen.colleague_complaint.c3.ok",
+          "effects": [
+            {
+              "delta": "player.rep.staff",
+              "value": 1
+            },
+            {
+              "fact": "fact.spread_a_complaint",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.25,
+          "result": "fail",
+          "narration_key": "scene.gen.colleague_complaint.c3.fail",
+          "effects": [
+            {
+              "delta": "player.rep.staff",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.spread_a_complaint",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

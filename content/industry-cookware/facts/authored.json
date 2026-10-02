@@ -5252,5 +5252,53 @@
         "staff": -12
       }
     }
+  },
+  {
+    "id": "fact.bumped_the_queue",
+    "category": "favor",
+    "severity": 2,
+    "text_key": "fact.bumped_the_queue",
+    "lesson_key": "lesson.bumped_the_queue",
+    "consequences": {
+      "witnessed": {
+        "staff": -3
+      },
+      "public": {
+        "boss": -3,
+        "staff": -5
+      }
+    }
+  },
+  {
+    "id": "fact.spread_a_complaint",
+    "category": "conflict",
+    "severity": 2,
+    "text_key": "fact.spread_a_complaint",
+    "lesson_key": "lesson.spread_a_complaint",
+    "consequences": {
+      "witnessed": {
+        "staff": -4
+      },
+      "public": {
+        "boss": -3,
+        "staff": -6
+      }
+    }
+  },
+  {
+    "id": "fact.undercut_a_rival",
+    "category": "conflict",
+    "severity": 3,
+    "text_key": "fact.undercut_a_rival",
+    "lesson_key": "lesson.undercut_a_rival",
+    "consequences": {
+      "witnessed": {
+        "staff": -4
+      },
+      "public": {
+        "boss": -4,
+        "staff": -6
+      }
+    }
   }
 ]

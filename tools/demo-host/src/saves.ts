@@ -1,7 +1,7 @@
 import type { Locale, PlayerProfile, RecordedInput, WorldSettings } from '@je/contracts';
 import { DEFAULT_WORLD_SETTINGS } from '@je/contracts';
 import type { Run } from '@je/kernel';
-import { createGameHost, fastForward, type GameHost } from './host';
+import { createGameHost, fastForward, type GameHost, type PeopleSource } from './host';
 
 /**
  * Saving a game. A run is its seed plus the player's inputs (ADR 0004 builds on this), so a save is small:
@@ -123,8 +123,10 @@ export async function restoreGame(
   files: Record<string, string>,
   save: GameSave,
   locale?: Locale,
+  people?: PeopleSource,
 ): Promise<GameHost> {
   const host = await createGameHost({
+    ...(people ? { people } : {}),
     files,
     seed: save.seed,
     roleId: save.roleId,

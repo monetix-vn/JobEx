@@ -38,3 +38,10 @@ export {
   type ParsedWorld,
   type RetireResult,
 } from './world';
+export { createGuestPort, type GuestPortConfig } from './guests';
+export {
+  confidenceOf,
+  createPerceptionModule,
+  manifest as perceptionManifest,
+  perceptionModule,
+} from './perception';

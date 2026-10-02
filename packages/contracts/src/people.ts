@@ -347,3 +347,36 @@ export const PERSON_EVENTS = {
   requested: 'person.requested',
   created: 'person.created',
 } as const;
+
+/** A person drawn from the world stepped into a scene. Perception learns from it; the client ignores the traits. */
+export interface GuestAppearedPayload {
+  sceneId: string;
+  slot: string;
+  story_function: string;
+  person: Person;
+}
+
+/** What the player now believes about one trait of one person: an estimate and how sure they are. */
+export interface PerceptionUpdatedPayload {
+  person_id: string;
+  axis: TemperamentAxis;
+  /** 0 to 100, the player's best guess. */
+  estimate: number;
+  /** 0 to 100: how much the player has seen to go on. */
+  confidence: number;
+  observations: number;
+}
+
+/** The player noticed one of a person's quirks. */
+export interface QuirkNoticedPayload {
+  person_id: string;
+  quirk: string;
+  /** The quirk's name in both languages, when the library is known to the module. */
+  name?: BilingualText;
+}
+
+export const PERCEPTION_EVENTS = {
+  guestAppeared: 'guest.appeared',
+  updated: 'perception.updated',
+  quirkNoticed: 'perception.quirkNoticed',
+} as const;

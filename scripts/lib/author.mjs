@@ -193,9 +193,29 @@ export function compileScene(entry) {
       'who (a role like boss, or a character like char:khoa)',
     );
     both(`${sid}.l${i + 1}`, `${here} line ${i + 1}`, line);
-    const speaker = String(line.who).startsWith('char:') ? String(line.who) : `role:${line.who}`;
+    const speaker = /^(char|guest):/.test(String(line.who)) ? String(line.who) : `role:${line.who}`;
     speakers.push(speaker);
     return { speaker, text_key: `${sid}.l${i + 1}` };
+  });
+
+  const guests = (entry.guests ?? []).map((g, gi) => {
+    need(
+      problems,
+      `${here} guest ${gi + 1}`,
+      g.slot,
+      'slot (a lower_snake_case name used as {slot} in text)',
+    );
+    need(
+      problems,
+      `${here} guest ${gi + 1}`,
+      g.function,
+      'function (tempter, rival, mentor, complainant...)',
+    );
+    return {
+      slot: String(g.slot),
+      story_function: String(g.function),
+      ...(g.department ? { department: String(g.department) } : {}),
+    };
   });
 
   const choices = entry.choices ?? [];
@@ -279,7 +299,8 @@ export function compileScene(entry) {
     scene: {
       id: sid,
       location: `loc.${entry.place ?? 'meeting_room'}`,
-      cast: [...new Set(speakers)],
+      cast: [...new Set(speakers.filter((s) => !s.startsWith('guest:')))],
+      ...(guests.length > 0 ? { guests } : {}),
       lines: sceneLines,
       choices: sceneChoices,
       ...(terms.length > 0 ? { terms } : {}),

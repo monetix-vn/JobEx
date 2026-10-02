@@ -1,0 +1,123 @@
+{
+  "id": "scene.gen.colleague_credit",
+  "location": "loc.meeting_room",
+  "cast": [],
+  "guests": [
+    {
+      "slot": "rival",
+      "story_function": "rival"
+    }
+  ],
+  "lines": [
+    {
+      "speaker": "guest:rival",
+      "text_key": "scene.gen.colleague_credit.l1"
+    },
+    {
+      "speaker": "guest:rival",
+      "text_key": "scene.gen.colleague_credit.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.gen.colleague_credit.c1",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 0.75,
+          "narration_key": "scene.gen.colleague_credit.c1.ok",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": -1
+            }
+          ]
+        },
+        {
+          "p": 0.25,
+          "result": "fail",
+          "narration_key": "scene.gen.colleague_credit.c1.fail",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.gen.colleague_credit.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.gen.colleague_credit.c2.ok",
+          "effects": [
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.staff",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.gen.colleague_credit.c3",
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.gen.colleague_credit.c3.ok",
+          "effects": [
+            {
+              "delta": "player.rep.boss",
+              "value": 1
+            },
+            {
+              "fact": "fact.undercut_a_rival",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.gen.colleague_credit.c3.fail",
+          "effects": [
+            {
+              "delta": "player.rep.staff",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.undercut_a_rival",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

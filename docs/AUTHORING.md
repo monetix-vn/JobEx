@@ -100,6 +100,24 @@ witnessed: { production: -2 } # reputation change once witnessed
 public: { boss: -6, buyer: -8 } # and once public
 ```
 
+## A guest (a colleague from the world, not a fixed character)
+
+```yaml
+scene: gen.colleague_favour
+role: any
+guests:
+  - { slot: colleague, function: tempter } # function: tempter, rival, mentor, complainant, whistleblower, witness, accused
+lines:
+  - who: guest:colleague # a line spoken by them
+    en: "A quick favour, if you can."
+    vi: "Nhờ bạn một việc nhỏ."
+```
+
+`{colleague}` in any text (lines, choices, outcomes) is their first name, `{colleague.full}` the full name. The person is drawn
+from the world's roster or generated (`department:` picks another department; default is the player's own), and often
+recurs. Their traits are hidden: the player learns them over time. In Vietnamese avoid third-person pronouns for a guest
+(their gender is not known to the text); repeat the name. Example: `content-src/guests.yml`.
+
 ## A character (a named person who recurs and remembers you)
 
 ```yaml

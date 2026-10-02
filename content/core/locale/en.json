@@ -1,6 +1,7 @@
 {
   "ui.week": "Week",
   "ui.year": "Year",
+  "ui.guest.someone": "Someone from the team",
   "ui.continue": "Continue",
   "ui.notice.rumor": "People are talking about {fact}.",
   "ui.notice.public": "Everyone knows now: {fact}.",

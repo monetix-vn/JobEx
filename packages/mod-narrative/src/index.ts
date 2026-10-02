@@ -3,13 +3,17 @@ import type {
   ContentView,
   CoreEventPayloads,
   EventDraft,
+  GuestAppearedPayload,
+  GuestPort,
   Locale,
   Module,
   ModuleHost,
   ModuleInstance,
   ModuleManifest,
+  Person,
   Scene,
 } from '@je/contracts';
+import { PERCEPTION_EVENTS } from '@je/contracts';
 import { ExpressionError, VarStore, evaluate } from '@je/rules';
 
 export const manifest: ModuleManifest = {
@@ -28,7 +32,7 @@ export const manifest: ModuleManifest = {
     'risk.scapegoated',
     'choice.resolved',
   ],
-  emits: ['scene.started', 'scene.ended', 'scene.expired'],
+  emits: ['scene.started', 'scene.ended', 'scene.expired', PERCEPTION_EVENTS.guestAppeared],
   contractsVersion: CONTRACTS_VERSION,
 };
 
@@ -39,6 +43,14 @@ export interface NarrativeConfig {
   script?: Record<string, string[]>;
   /** A scene left unanswered this many turns expires as ignored. */
   patienceTurns?: number;
+  /** Supplies the people who step into scenes that name guests. Without it, a guest is "someone from the team". */
+  guests?: GuestPort;
+}
+
+/** How a colleague is named in text: the given name, or the full name (family, middle, given) when asked. */
+export function guestNames(person: Person): { short: string; full: string } {
+  const n = person.origin.name;
+  return { short: n.given, full: [n.family, n.middle, n.given].filter(Boolean).join(' ') };
 }
 
 const CONTINUE_CHOICE = '__continue';
@@ -61,13 +73,27 @@ export function createModule(host: ModuleHost): ModuleInstance {
   const world = new VarStore();
   const state = {
     queue: [] as string[],
-    active: null as { sceneId: string; startedTurn: number } | null,
+    active: null as {
+      sceneId: string;
+      startedTurn: number;
+      /** Names of the scene's guests by slot, to fill `{slot}` and `{slot.full}` in its text. */
+      guests: Record<string, { short: string; full: string }>;
+    } | null,
   };
   /** Text of notice scenes waiting in the queue, by their synthetic scene id. */
   const notices = new Map<string, string>();
 
   const text = (key: string): string => content.text(locale, key) ?? `[${key}]`;
-  const speakerName = (speaker: string): string => {
+  const fill = (line: string, guests: Record<string, { short: string; full: string }>): string =>
+    line.replace(/{([a-z][a-z0-9_]*)(.full)?}/g, (whole, slot: string, full?: string) => {
+      const guest = guests[slot];
+      return guest ? (full ? guest.full : guest.short) : whole;
+    });
+  const speakerName = (
+    speaker: string,
+    guests: Record<string, { short: string; full: string }> = {},
+  ): string => {
+    if (speaker.startsWith('guest:')) return guests[speaker.slice('guest:'.length)]?.full ?? '';
     if (speaker.startsWith('char:')) {
       const person = content.get('character', `char.${speaker.slice('char:'.length)}`);
       return (person && content.text(locale, person.name_key)) ?? speaker.slice('char:'.length);
@@ -122,7 +148,7 @@ export function createModule(host: ModuleHost): ModuleInstance {
     const noticeText = notices.get(sceneId);
     if (noticeText !== undefined) {
       notices.delete(sceneId);
-      state.active = { sceneId, startedTurn: host.clock.now().turn };
+      state.active = { sceneId, startedTurn: host.clock.now().turn, guests: {} };
       return [
         {
           type: 'scene.started',
@@ -137,12 +163,47 @@ export function createModule(host: ModuleHost): ModuleInstance {
     }
     const scene = content.get('scene', sceneId);
     if (!scene) throw new Error(`mod-narrative: unknown scene "${sceneId}"`);
-    state.active = { sceneId, startedTurn: host.clock.now().turn };
+    const turn = host.clock.now().turn;
+    const drafts: EventDraft[] = [];
+    const guestNamesBySlot: Record<string, { short: string; full: string }> = {};
+    const guestPeople: { character: string; name: string; title: string; guest: true }[] = [];
+    for (const guest of scene.guests ?? []) {
+      if (!config.guests) {
+        const someone = text('ui.guest.someone');
+        guestNamesBySlot[guest.slot] = { short: someone, full: someone };
+        continue;
+      }
+      const person = config.guests.appear({
+        sceneId,
+        slot: guest.slot,
+        story_function: guest.story_function,
+        ...(guest.department ? { department: guest.department } : {}),
+        turn,
+      });
+      guestNamesBySlot[guest.slot] = guestNames(person);
+      const department = person.life.department;
+      guestPeople.push({
+        character: person.id,
+        name: guestNamesBySlot[guest.slot]!.full,
+        title: content.text(locale, `dept.${department}.title`) ?? department.replace(/_/g, ' '),
+        guest: true,
+      });
+      drafts.push({
+        type: PERCEPTION_EVENTS.guestAppeared,
+        payload: {
+          sceneId,
+          slot: guest.slot,
+          story_function: guest.story_function,
+          person,
+        } satisfies GuestAppearedPayload,
+      });
+    }
+    state.active = { sceneId, startedTurn: turn, guests: guestNamesBySlot };
     const glossary = (scene.terms ?? []).flatMap((id) => {
       const term = content.get('term', id);
       return term ? [{ id, term: text(term.term_key), definition: text(term.definition_key) }] : [];
     });
-    const people = [
+    const named = [
       ...new Set([...(scene.cast ?? []), ...scene.lines.map((l) => l.speaker)]),
     ].flatMap((who) => {
       if (!who.startsWith('char:')) return [];
@@ -152,23 +213,25 @@ export function createModule(host: ModuleHost): ModuleInstance {
         ? [{ character: id, name: text(person.name_key), title: text(person.title_key) }]
         : [];
     });
+    const people = [...named, ...guestPeople];
     const choices =
       scene.choices && scene.choices.length > 0
         ? scene.choices.map((c, i) => ({
             id: c.id,
-            label: text(c.text_key),
+            label: fill(text(c.text_key), guestNamesBySlot),
             disabled: !available(scene, i),
           }))
         : [{ id: CONTINUE_CHOICE, label: text('ui.continue') }];
     return [
+      ...drafts,
       {
         type: 'scene.started',
         payload: {
           sceneId,
           location: scene.location,
           lines: scene.lines.map((l) => ({
-            speaker: speakerName(l.speaker),
-            text: text(l.text_key),
+            speaker: speakerName(l.speaker, guestNamesBySlot),
+            text: fill(text(l.text_key), guestNamesBySlot),
           })),
           choices,
           ...(glossary.length > 0 ? { terms: glossary } : {}),
@@ -239,13 +302,14 @@ export function createModule(host: ModuleHost): ModuleInstance {
       'choice.resolved': (env) => {
         const p = env.payload as CoreEventPayloads['choice.resolved'];
         if (state.active?.sceneId !== p.sceneId) return;
+        const guests = state.active.guests;
         state.active = null;
         return [
           {
             type: 'scene.ended',
             payload: {
               sceneId: p.sceneId,
-              ...(p.narrationKey ? { narration: text(p.narrationKey) } : {}),
+              ...(p.narrationKey ? { narration: fill(text(p.narrationKey), guests) } : {}),
             },
           },
           ...startNext(),

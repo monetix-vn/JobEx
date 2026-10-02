@@ -1,0 +1,200 @@
+# Colleagues from the world step into the scene (docs/design/WORLD-PLAN.md, perception). For every job.
+# {colleague} is a generated person's first name; the story function biases who is drawn, and what the
+# player sees of them (careful, warm, bends the rules...) is learned over time. First drafts: needs review.
+scene: gen.colleague_favour
+role: any
+place: meeting_room
+tags: [people, favour]
+weight: 1
+cooldown: 14
+when:
+  - turn >= 5
+guests:
+  - { slot: colleague, function: tempter }
+lines:
+  - who: guest:colleague
+    en: 'A quick favour, if you can. My request is stuck in the queue behind a pile of others. Could it quietly go to the top? Nobody will ever notice.'
+    vi: 'Nhờ bạn một việc nhỏ. Yêu cầu của mình đang nằm cuối hàng đợi sau cả đống việc khác. Bạn đẩy nó lên đầu một cách lặng lẽ được không? Sẽ chẳng ai để ý đâu.'
+  - who: guest:colleague
+    en: 'I would do the same for you. I remember who helps me.'
+    vi: 'Sau này bạn nhờ, mình cũng giúp lại. Mình nhớ ai đã giúp mình.'
+choices:
+  - en: "Say no kindly: everyone's request waits its turn."
+    vi: 'Từ chối nhẹ nhàng: yêu cầu của ai cũng phải đợi đến lượt.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 0.8
+        en: '{colleague} sighs and takes it well. The request waits its turn.'
+        vi: '{colleague} thở dài nhưng vẫn vui vẻ chấp nhận. Yêu cầu đợi đến lượt.'
+        effects: [rep.boss +1]
+      - p: 0.2
+        ok: false
+        en: '{colleague} is cool with you for a few days and mentions it to others.'
+        vi: '{colleague} lạnh nhạt với bạn mấy ngày và nhắc chuyện này với người khác.'
+        effects: [rep.staff -2, stress +2]
+  - en: 'Offer to ask the boss whether the request can be moved up properly.'
+    vi: 'Đề nghị hỏi sếp xem có thể đẩy yêu cầu lên một cách đàng hoàng không.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: 'The boss agrees to a small exception on the record. {colleague} is grateful and a little embarrassed.'
+        vi: 'Sếp đồng ý một ngoại lệ nhỏ, có ghi lại. {colleague} biết ơn và hơi ngượng.'
+        effects: [rep.boss +1, rep.staff +1]
+  - en: 'Move it up without a word and without a note.'
+    vi: 'Đẩy lên đầu hàng đợi, không nói gì và không để lại ghi chú.'
+    outcomes:
+      - p: 0.85
+        en: 'It works. {colleague} owes you one, and the queue is a little less fair than it was.'
+        vi: 'Xong việc. {colleague} nợ bạn một ân huệ, và hàng đợi bớt công bằng đi một chút.'
+        effects: [rep.staff +2, fact bumped_the_queue private]
+      - p: 0.15
+        ok: false
+        en: 'Someone further back in the queue notices the jump and asks why.'
+        vi: 'Có người xếp sau nhận ra yêu cầu bị chen lên và hỏi lý do.'
+        effects: [rep.staff -3, stress +3, fact bumped_the_queue witnessed]
+---
+scene: gen.colleague_complaint
+role: any
+place: meeting_room
+tags: [people, conflict]
+weight: 1
+cooldown: 14
+when:
+  - turn >= 8
+guests:
+  - { slot: colleague, function: complainant }
+lines:
+  - who: guest:colleague
+    en: 'I have to tell someone. A teammate keeps handing over work with mistakes in it, and I am the one who finds them at the last minute.'
+    vi: 'Mình phải nói với ai đó. Có một đồng nghiệp cứ bàn giao việc còn lỗi, và mình là người phát hiện vào phút chót.'
+  - who: guest:colleague
+    en: 'You are close to the boss. Could you mention it, without my name?'
+    vi: 'Bạn gần gũi với sếp. Bạn nhắc giúp được không, đừng nêu tên mình?'
+choices:
+  - en: 'Ask {colleague} to write down two concrete cases, then go to the boss together.'
+    vi: 'Nhờ {colleague} ghi lại hai trường hợp cụ thể rồi cùng đi gặp sếp.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.8
+        en: 'With two cases on paper the boss takes it seriously and talks to the teammate. It is awkward for a week.'
+        vi: 'Có hai trường hợp bằng giấy trắng mực đen, sếp xem xét nghiêm túc và nói chuyện với người kia. Một tuần sau đó khá gượng gạo.'
+        effects: [rep.boss +2, stress +1]
+      - p: 0.2
+        ok: false
+        en: 'The teammate hears who complained and the team splits quietly into two sides.'
+        vi: 'Người kia biết ai đã phàn nàn và cả nhóm lặng lẽ chia thành hai phe.'
+        effects: [rep.staff -2, stress +3]
+  - en: 'Listen, and raise it with the boss as a general process problem, no names.'
+    vi: 'Lắng nghe, rồi nêu với sếp như một vấn đề quy trình chung, không nêu tên.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'The boss adds a check to the handover. Nobody is blamed, and the problem shrinks without going away.'
+        vi: 'Sếp thêm một bước kiểm tra vào khâu bàn giao. Không ai bị quy lỗi, vấn đề nhỏ đi nhưng chưa hết.'
+        effects: [rep.boss +1]
+  - en: 'Pass the story round informally so the teammate gets the message.'
+    vi: 'Kể lại câu chuyện cho mọi người nghe để người kia tự hiểu.'
+    outcomes:
+      - p: 0.75
+        en: 'The teammate tightens up for a while. {colleague} never asks how word got round.'
+        vi: 'Người kia chặt chẽ hơn một thời gian. {colleague} không bao giờ hỏi tin đồn từ đâu ra.'
+        effects: [rep.staff +1, fact spread_a_complaint private]
+      - p: 0.25
+        ok: false
+        en: 'It comes back to you, and to {colleague}, in a worse form than you told it.'
+        vi: 'Chuyện quay lại đến tai bạn và {colleague}, còn tệ hơn lúc bạn kể.'
+        effects: [rep.staff -4, rep.boss -2, stress +3, fact spread_a_complaint witnessed]
+---
+scene: gen.colleague_credit
+role: any
+place: meeting_room
+tags: [people, rivalry]
+weight: 1
+cooldown: 16
+when:
+  - turn >= 12
+guests:
+  - { slot: rival, function: rival }
+lines:
+  - who: guest:rival
+    en: "...and so the analysis behind this week's numbers is mine. It took some doing, but it was worth it."
+    vi: '...và phần phân tích đằng sau số liệu tuần này là của mình. Làm không dễ, nhưng xứng đáng.'
+  - who: guest:rival
+    en: '{rival} glances your way, and smiles.'
+    vi: '{rival} liếc về phía bạn và mỉm cười.'
+choices:
+  - en: 'Say calmly, in the meeting, which parts you did, and show the file.'
+    vi: 'Bình tĩnh nói ngay trong cuộc họp phần nào là của bạn, và mở tệp ra cho mọi người xem.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 0.75
+        en: 'The boss nods. {rival} backs off with a thin smile; the two of you will be careful around each other now.'
+        vi: 'Sếp gật đầu. {rival} lùi lại với nụ cười gượng; từ nay hai bên cẩn trọng với nhau hơn.'
+        effects: [rep.boss +2, rep.staff -1]
+      - p: 0.25
+        ok: false
+        en: 'It sounds like petty bickering. The boss moves on to the next item.'
+        vi: 'Nghe như cãi vặt. Sếp chuyển sang mục tiếp theo.'
+        effects: [rep.boss -1, stress +3]
+  - en: 'Say nothing now, and talk to {rival} privately afterwards.'
+    vi: 'Lúc này im lặng, họp xong nói riêng với {rival}.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: '{rival} says it was a slip of the tongue. It may have been. The boss never heard your side.'
+        vi: '{rival} bảo chỉ là lỡ lời. Có thể thật. Sếp chưa bao giờ nghe phía bạn.'
+        effects: [stress +2, rep.staff +1]
+  - en: 'Quietly send the boss the file history, and let the dates speak.'
+    vi: 'Lặng lẽ gửi sếp lịch sử chỉnh sửa của tệp, để các mốc thời gian tự nói.'
+    outcomes:
+      - p: 0.8
+        en: 'The boss reads it, says nothing in public, and {rival} is no longer asked to present.'
+        vi: 'Sếp đọc, không nói gì trước mọi người, và {rival} không còn được mời trình bày.'
+        effects: [rep.boss +1, fact undercut_a_rival private]
+      - p: 0.2
+        ok: false
+        en: '{rival} finds out who sent it. From now on every small thing you do gets a cold remark.'
+        vi: '{rival} biết ai đã gửi. Từ đó việc nhỏ nào bạn làm cũng bị buông một câu lạnh lùng.'
+        effects: [rep.staff -3, stress +4, fact undercut_a_rival witnessed]
+---
+fact: bumped_the_queue
+severity: 2
+category: favor
+en: "you moved a colleague's request up the queue without a record"
+vi: 'bạn đẩy yêu cầu của một đồng nghiệp lên đầu hàng đợi mà không để lại ghi chép'
+lesson:
+  en: 'A small favour outside the process feels harmless, but the queue is a promise to everyone in it. The favour also becomes a debt.'
+  vi: 'Một ân huệ nhỏ ngoài quy trình thấy vô hại, nhưng hàng đợi là lời hứa với mọi người trong đó. Ân huệ ấy cũng trở thành một món nợ.'
+witnessed:
+  staff: -3
+public:
+  boss: -3
+  staff: -5
+---
+fact: spread_a_complaint
+severity: 2
+category: conflict
+en: "you passed a colleague's private complaint round the team"
+vi: 'bạn đem lời phàn nàn riêng của một đồng nghiệp đi kể khắp nhóm'
+lesson:
+  en: 'A complaint told in confidence belongs to the person who told it. Spreading it works as pressure, and costs the trust of everyone who wonders what you say about them.'
+  vi: 'Lời phàn nàn kể riêng thuộc về người đã kể. Tung nó ra có tác dụng như một áp lực, nhưng làm mất lòng tin của những ai tự hỏi bạn nói gì về họ.'
+witnessed:
+  staff: -4
+public:
+  boss: -3
+  staff: -6
+---
+fact: undercut_a_rival
+severity: 3
+category: conflict
+en: "you went behind a colleague's back to settle a credit dispute"
+vi: 'bạn đi đường vòng sau lưng một đồng nghiệp để giải quyết tranh chấp công trạng'
+lesson:
+  en: 'The evidence may have been fair, but sending it in secret turns a fair claim into a move in a fight, and the other person remembers.'
+  vi: 'Bằng chứng có thể công bằng, nhưng gửi lén biến một yêu cầu chính đáng thành một nước đi trong cuộc đấu, và người kia sẽ nhớ.'
+witnessed:
+  staff: -4
+public:
+  boss: -4
+  staff: -6

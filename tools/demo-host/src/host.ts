@@ -1,5 +1,12 @@
 import type { Transport } from '@je/client-web';
-import type { Locale, Module, PlayerProfile, RecordedInput } from '@je/contracts';
+import type {
+  Locale,
+  Module,
+  PeopleLibrary,
+  Person,
+  PlayerProfile,
+  RecordedInput,
+} from '@je/contracts';
 import { Run } from '@je/kernel';
 import { choiceModule } from '@je/mod-choice';
 import {
@@ -10,7 +17,7 @@ import {
   memorySource,
 } from '@je/mod-content';
 import { directorModule } from '@je/mod-director';
-import { profileEffects } from '@je/mod-people';
+import { createGuestPort, perceptionModule, profileEffects } from '@je/mod-people';
 import { educationModule } from '@je/mod-education';
 import { knowledgeModule } from '@je/mod-knowledge';
 import { narrativeModule } from '@je/mod-narrative';
@@ -64,6 +71,18 @@ export interface GameHostOptions {
   turns?: number;
   /** Who the player is (age, background, money and home); it sets the start of the run. */
   profile?: PlayerProfile;
+  /**
+   * Where the people in scenes come from. Given this, scenes that name guests draw them from the world's roster or
+   * generate them, and the player learns their traits over time (perception). Without it a guest is "someone".
+   */
+  people?: PeopleSource;
+}
+
+export interface PeopleSource {
+  library: PeopleLibrary;
+  /** The world's seed; a game outside a world uses its own run seed. */
+  worldSeed?: string;
+  roster?: readonly Person[];
 }
 
 export interface GameHost {
@@ -99,6 +118,7 @@ export async function createGameHost(options: GameHostOptions): Promise<GameHost
     riskModule,
     narrativeModule,
     educationModule,
+    ...(options.people ? [perceptionModule] : []),
   ];
   const configs = {
     'mod-content': { registry },
@@ -116,10 +136,27 @@ export async function createGameHost(options: GameHostOptions): Promise<GameHost
     relationships: { content: registry },
     risk: { content: registry },
     education: { content: registry, locale: options.locale ?? 'en' },
+    ...(options.people ? { perception: { library: options.people.library } } : {}),
     narrative: {
       content: registry,
       locale: options.locale ?? 'en',
       patienceTurns: Number.MAX_SAFE_INTEGER,
+      ...(options.people
+        ? {
+            guests: createGuestPort({
+              library: options.people.library,
+              seeds: {
+                world_seed: options.people.worldSeed ?? options.seed,
+                run_seed: options.seed,
+              },
+              department: (registry.get('role', roleId)?.department ?? 'dept.production').replace(
+                /^dept./,
+                '',
+              ),
+              ...(options.people.roster ? { roster: options.people.roster } : {}),
+            }),
+          }
+        : {}),
     },
   };
   const run = new Run({ seed: options.seed, modules, configs });
