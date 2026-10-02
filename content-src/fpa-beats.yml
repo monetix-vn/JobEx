@@ -1,0 +1,357 @@
+# FP&A Analyst (docs/story/fpa.md): cast and beats. Shared from the cookware world: Duc, Hanh, Bao, Lan, Tam, Cuong, Khoa.
+char: khang
+department: fpa
+group: boss
+traits: [precise, dry_humour, protective_of_the_model]
+start: { trust: 10 }
+en: { name: 'Mr Khang', title: 'FP&A Manager' }
+vi: { name: 'Anh Khang', title: 'Trưởng nhóm FP&A' }
+---
+char: giang
+department: board
+group: boss
+traits: [patient, sceptical, reads_footnotes]
+start: { trust: 0 }
+en: { name: 'Ms Giang', title: 'Board representative of the owner family' }
+vi: { name: 'Chị Giang', title: 'Đại diện hội đồng của gia đình chủ sở hữu' }
+---
+char: huy
+department: sales
+group: staff
+traits: [optimistic, friendly, deadline_blind]
+start: { trust: 5 }
+en: { name: 'Huy', title: 'Sales planner' }
+vi: { name: 'Huy', title: 'Nhân viên kế hoạch kinh doanh' }
+---
+char: phat
+department: bank
+traits: [courteous, thorough, risk_averse]
+start: { trust: 0 }
+en: { name: 'Mr Phat', title: "Relationship manager, the company's bank" }
+vi: { name: 'Anh Phát', title: 'Cán bộ quan hệ khách hàng của ngân hàng' }
+---
+char: quoc
+department: audit
+traits: [methodical, patient, fair]
+start: { trust: 0 }
+en: { name: 'Mr Quoc', title: 'Internal auditor' }
+vi: { name: 'Anh Quốc', title: 'Kiểm toán nội bộ' }
+---
+scene: fpa.first_week
+place: finance_office
+tags: [onboarding, people, beat]
+beat: 1-3
+lines:
+  - who: char:khang
+    en: "Welcome. This is the model. Four workbooks, eleven hundred formulas and one cell that nobody dares to touch. Your job is to keep the budget and the forecast honest, and to tell me before a director finds an error. The numbers are not mine. They are the company's, and we only hold them for a while."
+    vi: 'Chào mừng em. Đây là mô hình. Bốn bảng tính, một nghìn một trăm công thức và một ô không ai dám đụng vào. Việc của em là giữ ngân sách và dự báo trung thực, và báo anh trước khi giám đốc tìm ra lỗi. Các con số không phải của anh. Chúng là của công ty, và mình chỉ giữ một thời gian.'
+choices:
+  - en: 'Spend the first week tracing the model end to end: where each input comes from, which cells are hard-coded, and what the untouchable cell does. Write it down.'
+    vi: 'Dành tuần đầu lần theo mô hình từ đầu đến cuối: mỗi đầu vào đến từ đâu, ô nào nhập cứng và ô không ai dám đụng làm gì. Ghi lại.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "The untouchable cell is a hard-coded exchange rate from March, still feeding two reports. You note it and tell Khang. He says: 'Good. Fix it in the open, with the date.' The model has a changelog by Friday."
+        vi: "Ô không ai dám đụng là một tỷ giá nhập cứng từ tháng Ba, vẫn nuôi hai báo cáo. Anh/chị ghi lại và báo anh Khang. Anh nói: 'Tốt. Sửa công khai, kèm ngày.' Đến thứ Sáu mô hình có nhật ký thay đổi."
+        effects: [rel khang trust +5, rep.finance +2, rep.boss +1, stress +1]
+  - en: "Learn the reports first, and leave the model's internals until a quieter week."
+    vi: 'Học các báo cáo trước và để nội bộ mô hình đến một tuần yên hơn.'
+    outcomes:
+      - p: 1
+        en: 'You produce the first weekly report on time. It uses the March exchange rate, which you did not know.'
+        vi: 'Anh/chị làm báo cáo tuần đầu đúng hạn. Nó dùng tỷ giá tháng Ba mà anh/chị không biết.'
+        effects: [rel khang trust +1, stress +1]
+  - en: 'Trust the model, since it has been reviewed, and start on the requests in your inbox.'
+    vi: 'Tin mô hình vì nó đã được rà soát và bắt đầu các yêu cầu trong hộp thư.'
+    outcomes:
+      - p: 0.7
+        en: 'The numbers go out on time. A buyer asks about a currency line that looks odd, and you cannot explain it yet.'
+        vi: 'Các con số ra đúng hạn. Một khách hỏi về dòng tiền tệ trông lạ và anh/chị chưa giải thích được.'
+        effects: [rel khang trust -1, stress +2]
+      - p: 0.3
+        ok: false
+        en: 'Duc finds the March rate in a board slide and asks Khang, mildly, whether anyone has looked at the model since January.'
+        vi: 'Anh Đức thấy tỷ giá tháng Ba trong một slide của hội đồng và hỏi anh Khang, nhẹ nhàng, từ tháng Giêng đã ai xem mô hình chưa.'
+        effects: [rel khang trust -4, rel duc trust -3, rep.finance -2, stress +3]
+---
+scene: fpa.midyear_review
+place: meeting_room
+tags: [people, review, beat]
+beat: 24-28
+lines:
+  - who: char:khang
+    en: 'Half a year. Your forecast accuracy is lower than the target, but your forecasts have not been revised after the fact, and Duc says he can rely on the range you give. The directors only look at the accuracy number. How do you want to handle that?'
+    vi: 'Nửa năm rồi. Độ chính xác dự báo của em thấp hơn chỉ tiêu, nhưng dự báo của em không bị sửa lại sau sự việc, và anh Đức nói anh dựa được vào khoảng giá trị em đưa. Ban giám đốc chỉ nhìn con số chính xác. Em muốn xử lý chuyện đó thế nào?'
+choices:
+  - en: 'Show the accuracy with its bands: how often the actual fell inside your range, the bias, and propose measuring the range, not the single number.'
+    vi: 'Cho xem độ chính xác kèm khoảng dao động: bao nhiêu lần thực tế nằm trong khoảng em đưa, độ lệch và đề xuất đo cả khoảng, không chỉ một con số.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.7
+        en: "Khang takes the page to Duc. 'Hit rate of the range' is added next to accuracy. A small change, and it changes what forecasters are rewarded for."
+        vi: "Anh Khang mang trang giấy lên anh Đức. 'Tỷ lệ trúng khoảng' được thêm cạnh độ chính xác. Một thay đổi nhỏ, và nó đổi điều người dự báo được thưởng."
+        effects: [rel khang trust +4, rel duc trust +2, rep.finance +3, stress +1]
+      - p: 0.3
+        ok: false
+        en: "Duc says a range is what people say when they do not want to be wrong. Khang shrugs: 'I tried.' Your accuracy stays modest."
+        vi: "Anh Đức nói khoảng giá trị là điều người ta nói khi không muốn sai. Anh Khang nhún vai: 'Anh đã thử.' Độ chính xác của em vẫn khiêm tốn."
+        effects: [rel khang trust +2, stress +2]
+  - en: 'Say you will tighten the forecast process, and ask for earlier inputs from sales and production.'
+    vi: 'Nói anh/chị sẽ siết quy trình dự báo và xin đầu vào sớm hơn từ kinh doanh và sản xuất.'
+    outcomes:
+      - p: 1
+        en: 'Khang agrees to ask for the inputs a week earlier. Sales and production grumble, and then deliver, most of the time.'
+        vi: 'Anh Khang đồng ý xin đầu vào sớm hơn một tuần. Kinh doanh và sản xuất càu nhàu rồi nộp, phần lớn đúng hạn.'
+        effects: [rel khang trust +2, stress +2]
+  - en: 'Say you will hit the accuracy number whatever it takes.'
+    vi: 'Nói anh/chị sẽ đạt con số chính xác đó bằng mọi giá.'
+    outcomes:
+      - p: 0.6
+        en: "Khang smiles. 'Good attitude.' A week later you notice that the quickest way to hit the number is to forecast closer to last month's actual, and to revise the forecast after the month closes."
+        vi: "Anh Khang cười. 'Thái độ tốt.' Một tuần sau anh/chị nhận ra cách nhanh nhất để đạt số là dự báo sát thực tế tháng trước và sửa dự báo sau khi chốt tháng."
+        effects: [rel khang trust +3, stress +3]
+      - p: 0.4
+        ok: false
+        en: 'Huy notices that your forecasts now arrive after the month closes, and says so in the weekly meeting. Khang looks at you for a long moment.'
+        vi: 'Huy nhận ra dự báo của anh/chị giờ đến sau khi chốt tháng và nói thẳng trong cuộc họp tuần. Anh Khang nhìn anh/chị một lúc lâu.'
+        effects: [rel khang trust -4, rel huy trust -3, rep.finance -2, stress +3]
+---
+scene: fpa.bank_covenant_twist
+arc: the_covenant
+place: meeting_room
+tags: [pressure, bank, beat]
+beat: 29-32
+lines:
+  - who: char:duc
+    en: 'The bank tests the covenant at the end of the quarter: net debt to EBITDA below three. Steel is up, orders are down, and your latest forecast says three point two. If we breach, the loan is repriced, and Mr Cuong has to explain it to the board. I need you to look again at the numbers.'
+    vi: 'Ngân hàng kiểm tra điều khoản cam kết vào cuối quý: nợ ròng trên EBITDA dưới ba. Thép tăng, đơn hàng giảm, và dự báo mới nhất của em ra ba phẩy hai. Nếu vi phạm, khoản vay bị tính lại lãi, và anh Cường phải giải trình trước hội đồng. Anh cần em xem lại các con số.'
+  - who: char:khang
+    en: 'Look again honestly. If it is three point two, then it is three point two, and we tell the bank before the quarter ends, not after.'
+    vi: 'Xem lại cho trung thực. Nếu là ba phẩy hai thì là ba phẩy hai, và mình báo ngân hàng trước khi hết quý, không phải sau.'
+choices:
+  - en: 'Rebuild the forecast with the real ranges, tell Duc the covenant is at risk by a small margin, and propose approaching the bank early with a waiver request and a recovery plan.'
+    vi: 'Dựng lại dự báo với các khoảng giá trị thật, nói với anh Đức rằng điều khoản có nguy cơ vi phạm với biên nhỏ và đề xuất tiếp cận ngân hàng sớm với đề nghị miễn trừ và kế hoạch phục hồi.'
+    cost: { hours: 4 }
+    outcomes:
+      - p: 0.7
+        en: 'Duc is unhappy and then relieved. The bank is told in the second week. Mr Phat asks for monthly numbers and gives a waiver for one quarter. The conversation was awkward, and was held while there was still a choice.'
+        vi: 'Anh Đức không vui rồi nhẹ nhõm. Ngân hàng được báo trong tuần thứ hai. Anh Phát xin số liệu hằng tháng và cho miễn trừ một quý. Cuộc nói chuyện gượng gạo, và diễn ra khi vẫn còn lựa chọn.'
+        effects:
+          [
+            rel duc trust +2,
+            rel khang trust +4,
+            rel phat trust +3,
+            rep.finance +3,
+            stress +4,
+            fact disclosed_covenant_risk_early witnessed,
+            arc the_covenant reclass,
+          ]
+      - p: 0.3
+        ok: false
+        en: "Mr Phat says the bank's committee will not grant a waiver this quarter, and that the loan will be repriced from the first of the month. Mr Cuong is angry at the number, and not at you."
+        vi: 'Anh Phát nói hội đồng tín dụng của ngân hàng sẽ không cho miễn trừ quý này và khoản vay bị tính lại lãi từ đầu tháng. Anh Cường giận con số, không giận anh/chị.'
+        effects:
+          [
+            rel duc trust +1,
+            rel khang trust +3,
+            rel phat trust +2,
+            rep.finance +1,
+            stress +5,
+            fact disclosed_covenant_risk_early witnessed,
+            arc the_covenant reclass,
+          ]
+  - en: 'Rework the forecast with the most optimistic realistic assumptions, and show Duc the best case that stays below three.'
+    vi: 'Làm lại dự báo với các giả định lạc quan nhất vẫn thực tế và cho anh Đức xem kịch bản tốt nhất vẫn dưới ba.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: "The best case is two point nine five, if steel falls and one big order ships on time. Duc says 'So it is possible.' You say it is possible, and not likely."
+        vi: "Kịch bản tốt nhất là hai phẩy chín lăm, nếu thép giảm và một đơn lớn giao đúng hạn. Anh Đức nói 'Vậy là có thể.' Anh/chị nói có thể, và không chắc."
+        effects: [rel duc trust +1, rel khang trust +1, stress +3, arc the_covenant reclass]
+  - en: 'Adjust the growth and cost assumptions until the forecast comes to two point nine, and send it to Duc.'
+    vi: 'Điều chỉnh các giả định tăng trưởng và chi phí cho đến khi dự báo ra hai phẩy chín và gửi anh Đức.'
+    outcomes:
+      - p: 0.7
+        en: "Duc reads two point nine and says 'I knew it.' You have changed three assumptions that you cannot defend, and written them in the assumptions sheet in a smaller font."
+        vi: "Anh Đức đọc hai phẩy chín và nói 'Anh biết mà.' Anh/chị đã đổi ba giả định mà không bảo vệ nổi và ghi chúng vào bảng giả định bằng cỡ chữ nhỏ hơn."
+        effects:
+          [
+            rel duc trust +5,
+            rel khang trust -3,
+            rep.finance +2,
+            stress +1,
+            fact sweetened_forecast private,
+            arc the_covenant reclass,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'Khang opens the assumptions sheet to prepare for the bank call. He finds the three changes, looks at the version history, and closes the laptop without a word.'
+        vi: 'Anh Khang mở bảng giả định để chuẩn bị cuộc gọi với ngân hàng. Anh thấy ba thay đổi, xem lịch sử phiên bản và gập laptop lại không nói một lời.'
+        effects:
+          [
+            rel duc trust +3,
+            rel khang trust -9,
+            rep.boss -3,
+            rep.finance -4,
+            stress +5,
+            fact sweetened_forecast witnessed,
+            arc the_covenant reclass,
+          ]
+---
+scene: fpa.audit_review
+place: finance_office
+tags: [audit, review, beat]
+beat: 41-44
+lines:
+  - who: char:quoc
+    en: 'I am the internal auditor for the planning cycle. I would like to see the assumptions behind the budget and the covenant forecast, the version history of the model, the reconciliation of the KPI pack to its sources, and the approvals for any changes. I start with the file history, not with the numbers.'
+    vi: 'Tôi là kiểm toán nội bộ cho chu kỳ kế hoạch. Tôi muốn xem các giả định đằng sau ngân sách và dự báo cam kết, lịch sử phiên bản của mô hình, đối chiếu bộ KPI với nguồn và các phê duyệt cho mọi thay đổi. Tôi bắt đầu từ lịch sử tệp, không phải từ các con số.'
+  - who: char:khang
+    en: 'Give him what he asks for. Do not explain more than you are asked, and do not guess.'
+    vi: 'Đưa ông ấy những gì ông ấy yêu cầu. Đừng giải thích nhiều hơn điều được hỏi và đừng đoán.'
+choices:
+  - en: 'Give him the full version history, every assumption change with its reason and approver, and point out the two changes you are least comfortable with.'
+    vi: 'Đưa ông toàn bộ lịch sử phiên bản, mọi thay đổi giả định kèm lý do và người duyệt và chỉ ra hai thay đổi anh/chị thấy khó chịu nhất.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Quoc reads for three hours and writes five observations. None is serious. 'A model whose history matches its numbers. I wish that were less unusual.' Khang nods at you across the room."
+        vi: "Anh Quốc đọc ba giờ và ghi năm nhận xét. Không cái nào nghiêm trọng. 'Một mô hình có lịch sử khớp với các con số. Tôi ước điều đó bớt hiếm.' Anh Khang gật đầu với anh/chị từ phía bên kia phòng."
+        effects: [rel quoc trust +5, rel khang trust +4, rep.finance +3, rep.boss +2, stress +2]
+  - en: 'Answer his questions and give him the files he asks for, without volunteering anything.'
+    vi: 'Trả lời câu hỏi và đưa các tệp ông yêu cầu, không chủ động nói thêm gì.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "A routine review. Quoc notes two items, both already on Khang's list. You come out with nothing to hide and no credit either."
+        vi: 'Một buổi rà soát thường lệ. Anh Quốc ghi hai mục, cả hai đã có trong danh sách của anh Khang. Anh/chị ra về không có gì phải giấu và cũng không được tiếng khen.'
+        effects: [rel quoc trust +1, rel khang trust +1]
+  - en: 'Clean the version history before the review: delete the intermediate versions and rename the final files so that the trail looks tidy.'
+    vi: 'Dọn lịch sử phiên bản trước buổi rà soát: xóa các phiên bản trung gian và đổi tên các tệp cuối để dấu vết trông gọn.'
+    outcomes:
+      - p: 0.45
+        en: 'Quoc sees a tidy trail. He asks why there is no version between the second of the month and the twelfth, when the covenant forecast went through three revisions according to your own email.'
+        vi: 'Anh Quốc thấy một dấu vết gọn gàng. Anh hỏi vì sao không có phiên bản nào từ mùng hai đến ngày mười hai, trong khi dự báo cam kết đã qua ba lần sửa theo email của chính anh/chị.'
+        effects:
+          [rel quoc trust -4, rel khang trust -4, stress +2, fact deleted_model_versions private]
+      - p: 0.55
+        ok: false
+        en: 'The file server keeps a backup of every version. Quoc has the deleted files on his screen, with the date of the deletion and the name of the account.'
+        vi: 'Máy chủ tệp lưu bản sao lưu mọi phiên bản. Anh Quốc có các tệp đã xóa trên màn hình, kèm ngày xóa và tên tài khoản.'
+        effects:
+          [
+            rel quoc trust -10,
+            rel khang trust -8,
+            rep.boss -5,
+            rep.finance -6,
+            stress +6,
+            fact deleted_model_versions public,
+          ]
+---
+scene: fpa.year_end_review
+place: meeting_room
+tags: [people, review, beat]
+beat: 49-50
+lines:
+  - who: char:khang
+    en: 'Annual review. Before I give you my view, tell me how you would rate your own year, and what you would model differently.'
+    vi: 'Đánh giá cuối năm. Trước khi anh cho ý kiến, em hãy tự chấm năm của mình và nói em sẽ lập mô hình khác đi điều gì.'
+choices:
+  - en: 'Give an honest account, including the assumptions you pushed to please someone, the forecast you softened, and what it would have cost to say no earlier.'
+    vi: 'Kể thật lòng, kể cả các giả định em đã đẩy để làm hài lòng ai đó, dự báo em đã làm mềm đi và cái giá của việc nói không sớm hơn.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "Khang is quiet for a long moment. He writes: 'Shows the number, and the risk next to it.' It is the best thing you have read about yourself."
+        vi: "Anh Khang im lặng một lúc lâu. Anh viết: 'Đưa ra con số, và rủi ro bên cạnh nó.' Đó là lời hay nhất anh/chị từng đọc về mình."
+        effects: [rel khang trust +5, rep.boss +4, stress -2]
+  - en: 'Stay modest: list the wins and one thing to improve.'
+    vi: 'Khiêm tốn: nêu các thắng lợi và một điều cần cải thiện.'
+    outcomes:
+      - p: 1
+        en: 'A safe review. Khang nods and moves to the next topic.'
+        vi: 'Một buổi đánh giá an toàn. Anh Khang gật đầu và chuyển chủ đề.'
+        effects: [rel khang trust +1, rep.boss +1]
+  - en: 'Present the year as a success and leave out the revisions that were made to meet the targets.'
+    vi: 'Trình bày cả năm như một thành công và bỏ qua các lần sửa được làm để đạt chỉ tiêu.'
+    outcomes:
+      - p: 0.65
+        en: 'It lands well. You leave with a good rating and a small weight in your chest.'
+        vi: 'Được đón nhận tốt. Anh/chị ra về với điểm cao và một chút nặng nề trong lòng.'
+        effects: [rel khang trust +2, rep.boss +4, stress +1, fact polished_fpa_review private]
+      - p: 0.35
+        ok: false
+        en: 'Khang has the version history of the covenant forecast open on his desk. He turns the screen towards you without a word.'
+        vi: 'Anh Khang có lịch sử phiên bản của dự báo cam kết mở trên bàn. Anh xoay màn hình về phía anh/chị mà không nói một lời.'
+        effects: [rel khang trust -8, rep.boss -5, stress +4, fact polished_fpa_review witnessed]
+---
+scene: fpa.manager_offer
+place: meeting_room
+tags: [people, promotion, beat]
+beat: 51-52
+when: [rel.khang.trust >= 12, rep.boss >= 58]
+lines:
+  - who: char:khang
+    en: 'I am moving up to deputy finance director at the end of the year. Duc asked me who should lead FP&A. I named you. One condition: every month, a director will ask you to adjust a number so that a story works. I need to know what you will say.'
+    vi: 'Cuối năm anh lên phó giám đốc tài chính. Anh Đức hỏi anh ai nên dẫn dắt FP&A. Anh nêu tên em. Một điều kiện: mỗi tháng sẽ có giám đốc nhờ em chỉnh một con số để câu chuyện khớp. Anh cần biết em sẽ nói gì.'
+choices:
+  - en: 'Accept, and say plainly which numbers you will not adjust, and that the directors will hear it from you first, with the range.'
+    vi: 'Nhận lời và nói rõ những con số anh/chị sẽ không chỉnh và ban giám đốc sẽ nghe điều đó từ anh/chị trước, kèm khoảng giá trị.'
+    outcomes:
+      - p: 1
+        en: "Khang smiles. 'Then it is yours. Put the list on the first tab of the model.' You take over FP&A with the limits in writing."
+        vi: "Anh Khang cười. 'Vậy là của em. Đưa danh sách đó lên tab đầu tiên của mô hình.' Anh/chị tiếp quản FP&A với các giới hạn đã viết ra giấy."
+        effects: [rel khang trust +5, rep.boss +5, end promoted]
+  - en: 'Thank him, but decline: you prefer building the model to defending it in the boardroom.'
+    vi: 'Cảm ơn anh nhưng từ chối: anh/chị muốn xây mô hình hơn là bảo vệ nó trong phòng họp hội đồng.'
+    outcomes:
+      - p: 1
+        en: "Khang looks disappointed, then understanding. 'The next manager may not be as careful as you.'"
+        vi: "Anh Khang có vẻ thất vọng rồi thông cảm. 'Người quản lý tiếp theo có thể không cẩn thận như em.'"
+        effects: [rel khang trust +2, stress -3]
+  - en: 'Accept without asking what the condition means in practice.'
+    vi: 'Nhận lời mà không hỏi điều kiện đó thực tế nghĩa là gì.'
+    outcomes:
+      - p: 1
+        en: 'Khang nods slowly and Duc congratulates you a little too warmly. You realise you agreed to something you did not ask about.'
+        vi: 'Anh Khang gật đầu chậm và anh Đức chúc mừng anh/chị hơi quá nồng nhiệt. Anh/chị nhận ra mình đã đồng ý với điều mình không hỏi.'
+        effects: [rep.boss +4, fact accepted_fpa_condition private, end promoted]
+---
+scene: fpa.resignation_thought
+place: finance_office
+tags: [people, pressure]
+weight: 2
+cooldown: 26
+when: [stress >= 75, turn >= 12]
+lines:
+  - who: char:hanh
+    en: 'You look like you have not slept. With respect: I have seen analysts rebuild the same model every weekend, and leave by the summer. Are you all right?'
+    vi: 'Em trông như chưa ngủ. Xin phép nói thẳng: chị từng thấy các bạn phân tích dựng lại cùng một mô hình mỗi cuối tuần và nghỉ vào mùa hè. Em ổn không?'
+choices:
+  - en: 'Talk to Khang about the load, and ask him to take the ad hoc requests off your plate for a month.'
+    vi: 'Nói với anh Khang về khối lượng công việc và xin anh nhận giúp các yêu cầu đột xuất trong một tháng.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 0.8
+        en: 'Khang listens, takes the board requests himself, and says he should have noticed sooner.'
+        vi: 'Anh Khang lắng nghe, tự nhận các yêu cầu của hội đồng và nói lẽ ra anh phải để ý sớm hơn.'
+        effects: [rel khang trust +4, rel hanh trust +2, stress -6, rep.boss +1]
+      - p: 0.2
+        ok: false
+        en: 'Khang nods and says everyone is stretched at budget time. You leave with sympathy and the same load.'
+        vi: 'Anh Khang gật đầu và nói đến mùa ngân sách ai cũng căng. Anh/chị ra về với sự cảm thông và khối lượng cũ.'
+        effects: [rel khang trust +1, stress -1]
+  - en: 'Hand in your resignation, politely, with the notice the contract requires.'
+    vi: 'Nộp đơn xin nghỉ, lịch sự, báo trước đúng như hợp đồng quy định.'
+    outcomes:
+      - p: 1
+        en: 'Khang reads it twice and does not argue. You hand over the model with a changelog, and walk out lighter than you walked in.'
+        vi: 'Anh Khang đọc hai lần và không phản đối. Anh/chị bàn giao mô hình kèm nhật ký thay đổi và bước ra nhẹ nhõm hơn lúc bước vào.'
+        effects: [rel khang trust +2, end walked_away]
+  - en: 'Tell Hanh you are fine and keep going.'
+    vi: 'Nói với chị Hạnh là anh/chị ổn và tiếp tục.'
+    outcomes:
+      - p: 1
+        en: 'Hanh nods and does not push. You feel slightly worse afterwards for having said it.'
+        vi: 'Chị Hạnh gật đầu và không gặng hỏi. Sau đó anh/chị thấy hơi tệ hơn vì đã nói vậy.'
+        effects: [rel hanh trust -1, stress +2]

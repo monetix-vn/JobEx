@@ -1,0 +1,146 @@
+{
+  "id": "scene.fpa.commission_baseline",
+  "location": "loc.finance_office",
+  "cast": ["char:bao"],
+  "lines": [
+    {
+      "speaker": "char:bao",
+      "text_key": "scene.fpa.commission_baseline.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.fpa.commission_baseline.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.fpa.commission_baseline.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.fpa.commission_baseline.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.fpa.commission_baseline.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.fpa.commission_baseline.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.fpa.commission_baseline.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.fpa.commission_baseline.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.adjusted_commission_baseline",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.fpa.commission_baseline.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": -7
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.adjusted_commission_baseline",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

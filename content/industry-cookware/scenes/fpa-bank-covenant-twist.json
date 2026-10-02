@@ -1,0 +1,197 @@
+{
+  "id": "scene.fpa.bank_covenant_twist",
+  "location": "loc.meeting_room",
+  "cast": ["char:duc", "char:khang"],
+  "lines": [
+    {
+      "speaker": "char:duc",
+      "text_key": "scene.fpa.bank_covenant_twist.l1"
+    },
+    {
+      "speaker": "char:khang",
+      "text_key": "scene.fpa.bank_covenant_twist.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.fpa.bank_covenant_twist.c1",
+      "cost": {
+        "hours": 4
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.fpa.bank_covenant_twist.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.phat.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.disclosed_covenant_risk_early",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_covenant",
+              "stage": "reclass"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.fpa.bank_covenant_twist.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.phat.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.disclosed_covenant_risk_early",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_covenant",
+              "stage": "reclass"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.fpa.bank_covenant_twist.c2",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.fpa.bank_covenant_twist.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.the_covenant",
+              "stage": "reclass"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.fpa.bank_covenant_twist.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.fpa.bank_covenant_twist.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.sweetened_forecast",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_covenant",
+              "stage": "reclass"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.fpa.bank_covenant_twist.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": -9
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.sweetened_forecast",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_covenant",
+              "stage": "reclass"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

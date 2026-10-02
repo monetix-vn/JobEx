@@ -1,0 +1,154 @@
+{
+  "id": "scene.fpa.capex_split",
+  "location": "loc.finance_office",
+  "cast": ["char:lan"],
+  "lines": [
+    {
+      "speaker": "char:lan",
+      "text_key": "scene.fpa.capex_split.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.fpa.capex_split.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.fpa.capex_split.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": -1
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.fpa.capex_split.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.fpa.capex_split.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.fpa.capex_split.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.fpa.capex_split.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.fpa.capex_split.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.split_purchase_under_limit",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.fpa.capex_split.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": -5
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.quoc.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.split_purchase_under_limit",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -17,6 +17,7 @@ const SHORT = {
   'role.prod.planner': 'prod',
   'role.purch.buyer': 'purch',
   'role.inv.analyst': 'inv',
+  'role.fpa.analyst': 'fpa',
   'role.prod.supervisor': 'sup',
   'role.hr.hrbp': 'hr',
 };

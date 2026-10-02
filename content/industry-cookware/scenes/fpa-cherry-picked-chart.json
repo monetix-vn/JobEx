@@ -1,0 +1,182 @@
+{
+  "id": "scene.fpa.cherry_picked_chart",
+  "location": "loc.meeting_room",
+  "cast": ["char:cuong"],
+  "lines": [
+    {
+      "speaker": "char:cuong",
+      "text_key": "scene.fpa.cherry_picked_chart.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.fpa.cherry_picked_chart.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.fpa.cherry_picked_chart.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": -1
+            },
+            {
+              "delta": "rel.giang.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.the_kpi_pack",
+              "stage": "challenge"
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.fpa.cherry_picked_chart.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": -2
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.the_kpi_pack",
+              "stage": "challenge"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.fpa.cherry_picked_chart.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.fpa.cherry_picked_chart.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.the_kpi_pack",
+              "stage": "challenge"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.fpa.cherry_picked_chart.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.fpa.cherry_picked_chart.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.giang.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.cherry_picked_chart",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_kpi_pack",
+              "stage": "challenge"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.fpa.cherry_picked_chart.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.giang.trust",
+              "value": -9
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.cherry_picked_chart",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_kpi_pack",
+              "stage": "challenge"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

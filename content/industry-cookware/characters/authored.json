@@ -304,5 +304,58 @@
     "start": {
       "trust": 5
     }
+  },
+  {
+    "id": "char.khang",
+    "name_key": "char.khang.name",
+    "title_key": "char.khang.title",
+    "department": "fpa",
+    "home_group": "boss",
+    "traits": ["precise", "dry_humour", "protective_of_the_model"],
+    "start": {
+      "trust": 10
+    }
+  },
+  {
+    "id": "char.giang",
+    "name_key": "char.giang.name",
+    "title_key": "char.giang.title",
+    "department": "board",
+    "home_group": "boss",
+    "traits": ["patient", "sceptical", "reads_footnotes"],
+    "start": {
+      "trust": 0
+    }
+  },
+  {
+    "id": "char.huy",
+    "name_key": "char.huy.name",
+    "title_key": "char.huy.title",
+    "department": "sales",
+    "home_group": "staff",
+    "traits": ["optimistic", "friendly", "deadline_blind"],
+    "start": {
+      "trust": 5
+    }
+  },
+  {
+    "id": "char.phat",
+    "name_key": "char.phat.name",
+    "title_key": "char.phat.title",
+    "department": "bank",
+    "traits": ["courteous", "thorough", "risk_averse"],
+    "start": {
+      "trust": 0
+    }
+  },
+  {
+    "id": "char.quoc",
+    "name_key": "char.quoc.name",
+    "title_key": "char.quoc.title",
+    "department": "audit",
+    "traits": ["methodical", "patient", "fair"],
+    "start": {
+      "trust": 0
+    }
   }
 ]

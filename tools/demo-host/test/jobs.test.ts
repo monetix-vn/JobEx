@@ -7,6 +7,7 @@ import type { CoreEventPayloads } from '@je/contracts';
 import type { Run } from '@je/kernel';
 import {
   FIN_ROLE,
+  FPA_ROLE,
   HR_ROLE,
   PROD_ROLE,
   SUP_ROLE,
@@ -50,6 +51,7 @@ describe('choosing a job', () => {
     const vi = await listPlayableRoles(readFiles(), 'vi');
     expect(en.map((r) => r.id)).toEqual([
       FIN_ROLE,
+      FPA_ROLE,
       HR_ROLE,
       INV_ROLE,
       PROD_ROLE,
@@ -60,6 +62,7 @@ describe('choosing a job', () => {
     ]);
     expect(en.map((r) => r.title)).toEqual([
       'Finance and Accounting Specialist',
+      'FP&A Analyst',
       'HR Business Partner',
       'Investment Banking Analyst',
       'Production Planner',
@@ -70,6 +73,7 @@ describe('choosing a job', () => {
     ]);
     expect(vi.map((r) => r.title)).toEqual([
       'Chuyên viên Tài chính Kế toán',
+      'Chuyên viên FP&A (Kế hoạch và Phân tích Tài chính)',
       'Chuyên viên Nhân sự Đối tác Kinh doanh (HRBP)',
       'Chuyên viên Phân tích Ngân hàng Đầu tư',
       'Chuyên viên Kế hoạch Sản xuất',

@@ -518,5 +518,75 @@
         "delay_weeks": [2, 4]
       }
     ]
+  },
+  {
+    "id": "arc.the_budget",
+    "title_key": "arc.the_budget.title",
+    "stages": [
+      {
+        "id": "kickoff",
+        "event": "event.fpa.budget_kickoff"
+      },
+      {
+        "id": "sandbag",
+        "event": "event.fpa.sandbagged_targets",
+        "delay_weeks": [1, 2]
+      },
+      {
+        "id": "cut",
+        "event": "event.fpa.directors_cut",
+        "delay_weeks": [2, 3]
+      },
+      {
+        "id": "pack",
+        "event": "event.fpa.board_pack_plug",
+        "delay_weeks": [1, 2]
+      }
+    ]
+  },
+  {
+    "id": "arc.the_covenant",
+    "title_key": "arc.the_covenant.title",
+    "stages": [
+      {
+        "id": "target",
+        "event": "event.fpa.bank_covenant_twist"
+      },
+      {
+        "id": "reclass",
+        "event": "event.fpa.reclassify_ask",
+        "delay_weeks": [1, 2]
+      },
+      {
+        "id": "timing",
+        "event": "event.fpa.quarter_end_timing",
+        "delay_weeks": [2, 3]
+      },
+      {
+        "id": "bank_call",
+        "event": "event.fpa.phat_asks",
+        "delay_weeks": [1, 2]
+      }
+    ]
+  },
+  {
+    "id": "arc.the_kpi_pack",
+    "title_key": "arc.the_kpi_pack.title",
+    "stages": [
+      {
+        "id": "definition",
+        "event": "event.fpa.kpi_definition"
+      },
+      {
+        "id": "chart",
+        "event": "event.fpa.cherry_picked_chart",
+        "delay_weeks": [2, 3]
+      },
+      {
+        "id": "challenge",
+        "event": "event.fpa.kpi_challenge",
+        "delay_weeks": [2, 4]
+      }
+    ]
   }
 ]

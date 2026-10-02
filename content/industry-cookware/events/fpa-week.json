@@ -1,0 +1,428 @@
+[
+  {
+    "id": "event.fpa.first_week",
+    "role": "role.fpa.analyst",
+    "tags": ["onboarding", "people", "beat"],
+    "beat": {
+      "from_week": 1,
+      "to_week": 3
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.fpa.first_week"
+  },
+  {
+    "id": "event.fpa.midyear_review",
+    "role": "role.fpa.analyst",
+    "tags": ["people", "review", "beat"],
+    "beat": {
+      "from_week": 24,
+      "to_week": 28
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.fpa.midyear_review"
+  },
+  {
+    "id": "event.fpa.bank_covenant_twist",
+    "role": "role.fpa.analyst",
+    "arc": "arc.the_covenant",
+    "tags": ["pressure", "bank", "beat"],
+    "beat": {
+      "from_week": 29,
+      "to_week": 32
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.fpa.bank_covenant_twist"
+  },
+  {
+    "id": "event.fpa.audit_review",
+    "role": "role.fpa.analyst",
+    "tags": ["audit", "review", "beat"],
+    "beat": {
+      "from_week": 41,
+      "to_week": 44
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.fpa.audit_review"
+  },
+  {
+    "id": "event.fpa.year_end_review",
+    "role": "role.fpa.analyst",
+    "tags": ["people", "review", "beat"],
+    "beat": {
+      "from_week": 49,
+      "to_week": 50
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.fpa.year_end_review"
+  },
+  {
+    "id": "event.fpa.manager_offer",
+    "role": "role.fpa.analyst",
+    "tags": ["people", "promotion", "beat"],
+    "when": {
+      "all": [
+        {
+          "gte": [
+            {
+              "var": ["rel.khang.trust", 0]
+            },
+            12
+          ]
+        },
+        {
+          "gte": ["player.rep.boss", 58]
+        }
+      ]
+    },
+    "beat": {
+      "from_week": 51,
+      "to_week": 52
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.fpa.manager_offer"
+  },
+  {
+    "id": "event.fpa.resignation_thought",
+    "role": "role.fpa.analyst",
+    "tags": ["people", "pressure"],
+    "when": {
+      "all": [
+        {
+          "gte": ["player.stress", 75]
+        },
+        {
+          "gte": ["world.turn", 12]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 26,
+    "scene": "scene.fpa.resignation_thought"
+  },
+  {
+    "id": "event.fpa.budget_kickoff",
+    "role": "role.fpa.analyst",
+    "arc": "arc.the_budget",
+    "tags": ["budget", "pressure", "dark"],
+    "when": {
+      "all": [
+        {
+          "in": ["world.month_of_year", 8, 9, 10]
+        },
+        {
+          "gte": ["world.turn", 30]
+        }
+      ]
+    },
+    "weight": 3,
+    "cooldown_weeks": 52,
+    "scene": "scene.fpa.budget_kickoff"
+  },
+  {
+    "id": "event.fpa.sandbagged_targets",
+    "role": "role.fpa.analyst",
+    "tags": ["budget", "targets", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.fpa.sandbagged_targets"
+  },
+  {
+    "id": "event.fpa.directors_cut",
+    "role": "role.fpa.analyst",
+    "tags": ["budget", "pressure", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.fpa.directors_cut"
+  },
+  {
+    "id": "event.fpa.board_pack_plug",
+    "role": "role.fpa.analyst",
+    "tags": ["budget", "board", "consequence", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.fpa.board_pack_plug"
+  },
+  {
+    "id": "event.fpa.reclassify_ask",
+    "role": "role.fpa.analyst",
+    "tags": ["bank", "accounting", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.fpa.reclassify_ask"
+  },
+  {
+    "id": "event.fpa.quarter_end_timing",
+    "role": "role.fpa.analyst",
+    "tags": ["bank", "timing", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.fpa.quarter_end_timing"
+  },
+  {
+    "id": "event.fpa.phat_asks",
+    "role": "role.fpa.analyst",
+    "tags": ["bank", "disclosure", "dark", "consequence", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.fpa.phat_asks"
+  },
+  {
+    "id": "event.fpa.kpi_definition",
+    "role": "role.fpa.analyst",
+    "arc": "arc.the_kpi_pack",
+    "tags": ["kpi", "reporting", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 10]
+        },
+        {
+          "lte": ["world.turn", 40]
+        }
+      ]
+    },
+    "weight": 3,
+    "cooldown_weeks": 40,
+    "scene": "scene.fpa.kpi_definition"
+  },
+  {
+    "id": "event.fpa.cherry_picked_chart",
+    "role": "role.fpa.analyst",
+    "tags": ["kpi", "board", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.fpa.cherry_picked_chart"
+  },
+  {
+    "id": "event.fpa.kpi_challenge",
+    "role": "role.fpa.analyst",
+    "tags": ["kpi", "reporting", "consequence", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.fpa.kpi_challenge"
+  },
+  {
+    "id": "event.fpa.variance_explain",
+    "role": "role.fpa.analyst",
+    "tags": ["variance", "reporting", "dark"],
+    "when": {
+      "gte": ["world.turn", 8]
+    },
+    "weight": 3,
+    "cooldown_weeks": 20,
+    "scene": "scene.fpa.variance_explain"
+  },
+  {
+    "id": "event.fpa.excel_error",
+    "role": "role.fpa.analyst",
+    "tags": ["model", "error", "honesty", "dark"],
+    "when": {
+      "gte": ["world.turn", 10]
+    },
+    "weight": 3,
+    "cooldown_weeks": 30,
+    "scene": "scene.fpa.excel_error"
+  },
+  {
+    "id": "event.fpa.rolling_forecast_sweeten",
+    "role": "role.fpa.analyst",
+    "tags": ["forecast", "sales", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 14]
+        },
+        {
+          "in": ["world.month_of_year", 3, 6, 9, 12]
+        }
+      ]
+    },
+    "weight": 3,
+    "cooldown_weeks": 26,
+    "scene": "scene.fpa.rolling_forecast_sweeten"
+  },
+  {
+    "id": "event.fpa.roi_pet_project",
+    "role": "role.fpa.analyst",
+    "tags": ["investment", "roi", "dark"],
+    "when": {
+      "gte": ["world.turn", 12]
+    },
+    "weight": 2,
+    "cooldown_weeks": 40,
+    "scene": "scene.fpa.roi_pet_project"
+  },
+  {
+    "id": "event.fpa.commission_baseline",
+    "role": "role.fpa.analyst",
+    "tags": ["commission", "targets", "dark"],
+    "when": {
+      "gte": ["world.turn", 14]
+    },
+    "weight": 2,
+    "cooldown_weeks": 40,
+    "scene": "scene.fpa.commission_baseline"
+  },
+  {
+    "id": "event.fpa.early_board_numbers",
+    "role": "role.fpa.analyst",
+    "tags": ["confidentiality", "board", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 14]
+        },
+        {
+          "in": ["world.month_of_year", 3, 6, 9, 12]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 40,
+    "scene": "scene.fpa.early_board_numbers"
+  },
+  {
+    "id": "event.fpa.capex_split",
+    "role": "role.fpa.analyst",
+    "tags": ["capex", "approvals", "dark"],
+    "when": {
+      "gte": ["world.turn", 12]
+    },
+    "weight": 2,
+    "cooldown_weeks": 40,
+    "scene": "scene.fpa.capex_split"
+  },
+  {
+    "id": "event.fpa.cost_allocation",
+    "role": "role.fpa.analyst",
+    "tags": ["costing", "allocation", "dark"],
+    "when": {
+      "gte": ["world.turn", 14]
+    },
+    "weight": 2,
+    "cooldown_weeks": 40,
+    "scene": "scene.fpa.cost_allocation"
+  },
+  {
+    "id": "event.fpa.audit_asks",
+    "role": "role.fpa.analyst",
+    "tags": ["audit", "dark", "consequence"],
+    "when": {
+      "all": [
+        {
+          "in": ["world.month_of_year", 10, 11]
+        },
+        {
+          "gte": ["world.turn", 40]
+        },
+        {
+          "any": [
+            {
+              "gte": [
+                {
+                  "var": ["fact.reclassified_costs_to_meet_covenant", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.moved_invoices_across_quarter_end", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.plugged_the_board_pack", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.deleted_model_versions", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.split_purchase_under_limit", 0]
+                },
+                1
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "weight": 6,
+    "cooldown_weeks": 52,
+    "scene": "scene.fpa.audit_asks"
+  },
+  {
+    "id": "event.fpa.board_blame",
+    "role": "role.fpa.analyst",
+    "tags": ["pressure", "consequence"],
+    "when": {
+      "all": [
+        {
+          "in": ["world.month_of_year", 11, 12]
+        },
+        {
+          "gte": ["world.turn", 44]
+        },
+        {
+          "any": [
+            {
+              "gte": [
+                {
+                  "var": ["fact.misled_the_bank", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.misled_the_board", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.sweetened_forecast", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.inflated_roi_case", 0]
+                },
+                1
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "weight": 6,
+    "cooldown_weeks": 52,
+    "scene": "scene.fpa.board_blame"
+  }
+]

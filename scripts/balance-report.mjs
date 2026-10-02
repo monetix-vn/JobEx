@@ -14,6 +14,7 @@ for (const scenario of [
   'prod-year',
   'purch-year',
   'inv-year',
+  'fpa-year',
   'sup-year',
   'hr-year',
 ]) {

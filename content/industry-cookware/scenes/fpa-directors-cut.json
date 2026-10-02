@@ -1,0 +1,178 @@
+{
+  "id": "scene.fpa.directors_cut",
+  "location": "loc.meeting_room",
+  "cast": ["char:cuong"],
+  "lines": [
+    {
+      "speaker": "char:cuong",
+      "text_key": "scene.fpa.directors_cut.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.fpa.directors_cut.c1",
+      "cost": {
+        "hours": 4
+      },
+      "outcomes": [
+        {
+          "p": 0.65,
+          "narration_key": "scene.fpa.directors_cut.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": -1
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.the_budget",
+              "stage": "pack"
+            }
+          ]
+        },
+        {
+          "p": 0.35,
+          "result": "fail",
+          "narration_key": "scene.fpa.directors_cut.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "arc": "arc.the_budget",
+              "stage": "pack"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.fpa.directors_cut.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.fpa.directors_cut.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.the_budget",
+              "stage": "pack"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.fpa.directors_cut.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.fpa.directors_cut.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.plugged_the_board_pack",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_budget",
+              "stage": "pack"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.fpa.directors_cut.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.plugged_the_board_pack",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_budget",
+              "stage": "pack"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

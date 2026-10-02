@@ -1,0 +1,174 @@
+{
+  "id": "scene.fpa.budget_kickoff",
+  "location": "loc.finance_office",
+  "cast": ["char:khang"],
+  "lines": [
+    {
+      "speaker": "char:khang",
+      "text_key": "scene.fpa.budget_kickoff.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.fpa.budget_kickoff.c1",
+      "cost": {
+        "hours": 4
+      },
+      "outcomes": [
+        {
+          "p": 0.75,
+          "narration_key": "scene.fpa.budget_kickoff.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.khang.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -2
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.the_budget",
+              "stage": "sandbag"
+            }
+          ]
+        },
+        {
+          "p": 0.25,
+          "result": "fail",
+          "narration_key": "scene.fpa.budget_kickoff.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.khang.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -5
+            },
+            {
+              "delta": "rel.cuong.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "arc": "arc.the_budget",
+              "stage": "sandbag"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.fpa.budget_kickoff.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.fpa.budget_kickoff.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.khang.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.the_budget",
+              "stage": "sandbag"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.fpa.budget_kickoff.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.fpa.budget_kickoff.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.pre_agreed_budget_deals",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_budget",
+              "stage": "sandbag"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.fpa.budget_kickoff.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.pre_agreed_budget_deals",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_budget",
+              "stage": "sandbag"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

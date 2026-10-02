@@ -29,7 +29,8 @@
       "role.prod.planner",
       "role.purch.buyer",
       "role.hr.hrbp",
-      "role.prod.supervisor"
+      "role.prod.supervisor",
+      "role.fpa.analyst"
     ]
   },
   {
@@ -45,7 +46,8 @@
       "role.prod.planner",
       "role.purch.buyer",
       "role.hr.hrbp",
-      "role.prod.supervisor"
+      "role.prod.supervisor",
+      "role.fpa.analyst"
     ]
   }
 ]

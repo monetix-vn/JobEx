@@ -1,0 +1,186 @@
+{
+  "id": "scene.fpa.board_pack_plug",
+  "location": "loc.meeting_room",
+  "cast": ["char:giang", "char:khang"],
+  "lines": [
+    {
+      "speaker": "char:giang",
+      "text_key": "scene.fpa.board_pack_plug.l1"
+    },
+    {
+      "speaker": "char:khang",
+      "text_key": "scene.fpa.board_pack_plug.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.fpa.board_pack_plug.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.fpa.board_pack_plug.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.giang.trust",
+              "value": 6
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.the_budget",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.fpa.board_pack_plug.c2",
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.fpa.board_pack_plug.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.giang.trust",
+              "value": -1
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.the_budget",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.fpa.board_pack_plug.c2.fail",
+          "effects": [
+            {
+              "delta": "rel.giang.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "arc": "arc.the_budget",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.fpa.board_pack_plug.c3",
+      "outcomes": [
+        {
+          "p": 0.5,
+          "narration_key": "scene.fpa.board_pack_plug.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.giang.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.misled_the_board",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_budget",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.5,
+          "result": "fail",
+          "narration_key": "scene.fpa.board_pack_plug.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.giang.trust",
+              "value": -10
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": -10
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 8
+            },
+            {
+              "fact": "fact.misled_the_board",
+              "visibility": "public"
+            },
+            {
+              "arc": "arc.the_budget",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

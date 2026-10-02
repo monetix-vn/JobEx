@@ -5,6 +5,7 @@ import {
   PROD_ROLE,
   PURCH_ROLE,
   INV_ROLE,
+  FPA_ROLE,
   SUP_ROLE,
   HR_ROLE,
   QC_ROLE,
@@ -25,6 +26,7 @@ const ROLE_SHORTCUTS: Record<string, string> = {
   prod: PROD_ROLE,
   purch: PURCH_ROLE,
   inv: INV_ROLE,
+  fpa: FPA_ROLE,
   sup: SUP_ROLE,
   hr: HR_ROLE,
 };

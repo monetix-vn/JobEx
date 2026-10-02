@@ -1,0 +1,37 @@
+[
+  {
+    "id": "role.fpa.analyst",
+    "department": "dept.fpa",
+    "level": 1,
+    "title_key": "role.fpa.analyst.title",
+    "blurb_key": "role.fpa.analyst.blurb",
+    "reports_to": "role.fpa.manager",
+    "kpis": [
+      { "id": "kpi.forecast_accuracy", "weight": 0.5 },
+      { "id": "kpi.reporting_timeliness", "weight": 0.3 }
+    ],
+    "weekly_demand": [
+      { "task": "task.forecast_updates", "per_week": [3, 5], "effort_h": 2.0 },
+      { "task": "task.variance_reports", "per_week": [2, 4], "effort_h": 2.0 },
+      { "task": "task.ad_hoc_analysis", "per_week": [3, 6], "effort_h": 1.0 }
+    ],
+    "approval_limits": { "budget_change_vnd": 0 },
+    "skills": ["modelling", "analysis", "backbone"],
+    "start_state": {
+      "salary_vnd": 17000000,
+      "stress": 28,
+      "skill.modelling": 45,
+      "skill.analysis": 40,
+      "skill.backbone": 30
+    },
+    "overhead_hours": 19
+  },
+  {
+    "id": "role.fpa.manager",
+    "department": "dept.fpa",
+    "level": 2,
+    "title_key": "role.fpa.manager.title",
+    "approval_limits": { "budget_change_vnd": 50000000 },
+    "start_state": { "salary_vnd": 40000000, "stress": 40 }
+  }
+]

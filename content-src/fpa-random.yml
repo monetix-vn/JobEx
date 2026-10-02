@@ -1,0 +1,807 @@
+# FP&A Analyst: everyday incidents and consequences (docs/story/fpa.md).
+scene: fpa.variance_explain
+place: finance_office
+tags: [variance, reporting, dark]
+weight: 3
+cooldown: 20
+when: [turn >= 8]
+lines:
+  - who: char:duc
+    en: "Cost of goods is eleven percent over budget this month. Most of it is a steel price effect and a yield problem on Line 3. Mr Cuong reads the variance page first. I would prefer the explanation to say 'timing and other'. Can you write the commentary?"
+    vi: "Giá vốn tháng này vượt ngân sách mười một phần trăm. Phần lớn do giá thép và vấn đề năng suất ở chuyền 3. Anh Cường đọc trang chênh lệch đầu tiên. Anh muốn phần giải thích ghi 'thời điểm và khác'. Em viết phần bình luận được không?"
+choices:
+  - en: 'Write the commentary with the real split: price, volume, yield, and what is expected to reverse and what is not.'
+    vi: 'Viết bình luận với cách chia thật: giá, khối lượng, năng suất và điều gì dự kiến đảo chiều, điều gì không.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.8
+        en: "Duc reads it twice. 'This is uncomfortable, and this is useful.' Mr Cuong asks about the yield problem for the first time in a year, and Lan gets the time to fix it."
+        vi: "Anh Đức đọc hai lần. 'Cái này khó chịu, và cái này hữu ích.' Anh Cường hỏi về vấn đề năng suất lần đầu trong một năm, và chị Lan có thời gian để sửa."
+        effects: [rel duc trust +2, rel lan trust +2, rep.finance +3, stress +3]
+      - p: 0.2
+        ok: false
+        en: 'Mr Cuong says the page is too negative for the board and asks Duc to soften it. Duc does, and tells you he did.'
+        vi: 'Anh Cường nói trang này quá tiêu cực cho hội đồng và nhờ anh Đức làm nhẹ. Anh Đức làm và nói với anh/chị là anh đã làm.'
+        effects: [rel duc trust +1, rel lan trust +1, stress +4]
+  - en: 'Write the commentary with the main driver stated plainly and the smaller ones grouped, and flag the yield issue for a separate note.'
+    vi: 'Viết bình luận nêu rõ nguyên nhân chính và gộp các nguyên nhân nhỏ hơn và đánh dấu vấn đề năng suất cho một ghi chú riêng.'
+    outcomes:
+      - p: 1
+        en: 'A balanced page. Duc accepts it, and the yield note sits in his inbox for two weeks.'
+        vi: 'Một trang cân đối. Anh Đức chấp nhận, và ghi chú về năng suất nằm trong hộp thư của anh hai tuần.'
+        effects: [rel duc trust +1, stress +2]
+  - en: "Write 'timing and other' for most of the variance, as asked."
+    vi: "Viết 'thời điểm và khác' cho phần lớn chênh lệch như được yêu cầu."
+    outcomes:
+      - p: 0.7
+        en: "The page reads calmly. Mr Cuong nods at it. Next month the same variance comes back, and 'timing' has not reversed."
+        vi: "Trang đọc êm dịu. Anh Cường gật đầu. Tháng sau chênh lệch cũ quay lại, và 'thời điểm' không đảo chiều."
+        effects:
+          [rel duc trust +4, rel lan trust -2, stress +1, fact buried_variance_in_other private]
+      - p: 0.3
+        ok: false
+        en: "Lan reads the variance page and sees 'timing' on a yield problem she has been reporting for six weeks. She asks Khang who wrote it."
+        vi: "Chị Lan đọc trang chênh lệch và thấy 'thời điểm' đặt trên vấn đề năng suất chị báo cáo sáu tuần nay. Chị hỏi anh Khang ai viết."
+        effects:
+          [
+            rel duc trust +2,
+            rel lan trust -6,
+            rel khang trust -5,
+            rep.finance -3,
+            stress +4,
+            fact buried_variance_in_other witnessed,
+          ]
+---
+scene: fpa.excel_error
+place: finance_office
+tags: [model, error, honesty, dark]
+weight: 3
+cooldown: 30
+when: [turn >= 10]
+lines:
+  - who: char:huy
+    en: 'I was checking your forecast for the sales plan and I think a formula is double counting the Anders order in two months. It is about forty million. You already sent it to the directors on Monday.'
+    vi: 'Em đang kiểm tra dự báo của anh/chị cho kế hoạch bán hàng và em nghĩ có công thức đếm hai lần đơn ông Anders ở hai tháng. Khoảng bốn mươi triệu. Anh/chị đã gửi cho ban giám đốc hôm thứ Hai.'
+choices:
+  - en: 'Check the formula now, confirm the error, tell Khang immediately, and send a corrected version with a short note on what changed.'
+    vi: 'Kiểm tra công thức ngay, xác nhận lỗi, báo anh Khang ngay và gửi bản đã sửa kèm ghi chú ngắn về điều đã đổi.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.85
+        en: "The error is real, and small. Khang says: 'Good. Errors happen. Hiding them is the problem.' The directors see a correction and a change log. Huy gets a thank-you."
+        vi: "Lỗi có thật, và nhỏ. Anh Khang nói: 'Tốt. Lỗi thì ai cũng có. Giấu lỗi mới là vấn đề.' Các giám đốc thấy bản sửa và nhật ký thay đổi. Huy được cảm ơn."
+        effects:
+          [
+            rel khang trust +4,
+            rel huy trust +4,
+            rep.finance +3,
+            stress +3,
+            fact disclosed_spreadsheet_error witnessed,
+          ]
+      - p: 0.15
+        ok: false
+        en: 'Mr Cuong has already used the old number in a meeting with the bank. Khang calls Mr Phat himself to update it, and tells you that you did the right thing.'
+        vi: 'Anh Cường đã dùng con số cũ trong một cuộc họp với ngân hàng. Anh Khang tự gọi anh Phát để cập nhật và nói với anh/chị rằng anh/chị đã làm đúng.'
+        effects:
+          [
+            rel khang trust +3,
+            rel huy trust +3,
+            rel cuong trust -2,
+            rep.finance +1,
+            stress +5,
+            fact disclosed_spreadsheet_error witnessed,
+          ]
+  - en: "Correct the formula in the model, and include the corrected number in next week's forecast with a one-line note."
+    vi: 'Sửa công thức trong mô hình và đưa con số đã sửa vào dự báo tuần sau với ghi chú một dòng.'
+    outcomes:
+      - p: 1
+        en: 'The error is fixed and mentioned. The Monday number is never formally withdrawn, and a director quotes it twice.'
+        vi: 'Lỗi được sửa và có nhắc tới. Con số hôm thứ Hai không bao giờ được chính thức rút và một giám đốc trích dẫn nó hai lần.'
+        effects: [rel khang trust +1, rel huy trust +1, stress +3]
+  - en: 'Fix the formula quietly, and thank Huy, and ask him to keep it to himself because it is small.'
+    vi: 'Sửa công thức lặng lẽ, cảm ơn Huy và nhờ cậu giữ kín vì nó nhỏ.'
+    outcomes:
+      - p: 0.7
+        en: "Huy agrees. The Monday number stays in the directors' decks, and the corrected number appears in the next version without a note. Nothing happens."
+        vi: 'Huy đồng ý. Con số hôm thứ Hai vẫn nằm trong slide của các giám đốc, và con số đã sửa xuất hiện trong phiên bản sau không có ghi chú. Không có chuyện gì xảy ra.'
+        effects:
+          [rel huy trust -2, rel khang trust -1, stress +1, fact hid_spreadsheet_error private]
+      - p: 0.3
+        ok: false
+        en: 'Giang asks why the forecast dropped forty million between two versions with no explanation. Khang opens the change log and finds a blank.'
+        vi: 'Chị Giang hỏi vì sao dự báo giảm bốn mươi triệu giữa hai phiên bản mà không giải thích. Anh Khang mở nhật ký thay đổi và thấy một chỗ trống.'
+        effects:
+          [
+            rel huy trust -4,
+            rel khang trust -7,
+            rel giang trust -4,
+            rep.boss -4,
+            rep.finance -5,
+            stress +5,
+            fact hid_spreadsheet_error witnessed,
+          ]
+---
+scene: fpa.rolling_forecast_sweeten
+place: meeting_room
+tags: [forecast, sales, dark]
+weight: 3
+cooldown: 26
+when: [turn >= 14, month in 3 6 9 12]
+lines:
+  - who: char:bao
+    en: 'My team has fourteen deals in the pipeline that we have just started talking to. I want the forecast to count them at sixty percent. We close more than that, I promise. If it only counts at twenty, my quarter looks bad and the directors will ask hard questions.'
+    vi: 'Nhóm anh có mười bốn thương vụ trong đường ống vừa mới bắt đầu nói chuyện. Anh muốn dự báo tính chúng ở sáu mươi phần trăm. Mình chốt nhiều hơn thế, anh hứa. Nếu chỉ tính hai mươi thì quý của anh trông tệ và ban giám đốc sẽ hỏi khó.'
+choices:
+  - en: 'Weight the pipeline by stage and by the historical conversion rate, show Bao the evidence, and offer a separate upside line for his optimism.'
+    vi: 'Gán trọng số cho đường ống theo giai đoạn và tỷ lệ chuyển đổi lịch sử, cho anh Bảo xem bằng chứng và đề xuất một dòng kịch bản tốt riêng cho sự lạc quan của anh.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.7
+        en: 'Bao argues, then sees the conversion history. The forecast carries a base and an upside, and the quarter closes between them. Bao concedes that his judgement was a little generous.'
+        vi: 'Anh Bảo tranh luận rồi thấy lịch sử chuyển đổi. Dự báo có kịch bản cơ sở và kịch bản tốt, và quý đóng ở giữa. Anh Bảo thừa nhận phán đoán của mình hơi hào phóng.'
+        effects: [rel bao trust -2, rel khang trust +3, rep.finance +3, stress +3]
+      - p: 0.3
+        ok: false
+        en: "Bao takes the matter to Mr Cuong, who asks you to 'work with sales'. You show Mr Cuong the conversion history, and he keeps the base case with a smile that does not reach his eyes."
+        vi: "Anh Bảo đưa chuyện lên anh Cường, người bảo anh/chị 'hợp tác với kinh doanh'. Anh/chị cho anh Cường xem lịch sử chuyển đổi, và anh giữ kịch bản cơ sở với một nụ cười không tới mắt."
+        effects:
+          [rel bao trust -5, rel cuong trust -2, rel khang trust +3, rep.finance +2, stress +5]
+  - en: "Count them at forty percent, halfway between the evidence and Bao's number, and say the forecast has been adjusted for sales' view."
+    vi: 'Tính ở bốn mươi phần trăm, giữa bằng chứng và con số của anh Bảo, và nói dự báo đã được điều chỉnh theo quan điểm của kinh doanh.'
+    outcomes:
+      - p: 1
+        en: 'Bao is satisfied. The forecast is a little optimistic. The shortfall appears the following quarter, as a surprise.'
+        vi: 'Anh Bảo hài lòng. Dự báo hơi lạc quan. Phần hụt xuất hiện quý sau, như một bất ngờ.'
+        effects: [rel bao trust +2, rel khang trust -1, stress +2]
+  - en: "Count them at sixty percent as Bao asks, and write 'per sales' in the footnote."
+    vi: "Tính ở sáu mươi phần trăm như anh Bảo yêu cầu và ghi 'theo kinh doanh' trong chú thích."
+    outcomes:
+      - p: 0.7
+        en: 'The forecast looks excellent for a quarter. Bao is a friend. The directors plan hiring and an expansion on the number.'
+        vi: 'Dự báo trông tuyệt vời một quý. Anh Bảo là bạn. Ban giám đốc lên kế hoạch tuyển dụng và mở rộng dựa trên con số.'
+        effects:
+          [
+            rel bao trust +5,
+            rel khang trust -3,
+            rep.finance +1,
+            stress +1,
+            fact sweetened_pipeline_forecast private,
+          ]
+      - p: 0.3
+        ok: false
+        en: "The quarter closes at the weighted number. Khang asks why the forecast was sixty percent when the history says twenty-five, and the footnote says 'per sales'."
+        vi: "Quý đóng ở mức có trọng số. Anh Khang hỏi vì sao dự báo là sáu mươi phần trăm khi lịch sử nói hai mươi lăm và chú thích ghi 'theo kinh doanh'."
+        effects:
+          [
+            rel bao trust +2,
+            rel khang trust -8,
+            rep.boss -4,
+            rep.finance -5,
+            stress +5,
+            fact sweetened_pipeline_forecast witnessed,
+          ]
+---
+scene: fpa.roi_pet_project
+place: meeting_room
+tags: [investment, roi, dark]
+weight: 2
+cooldown: 40
+when: [turn >= 12]
+lines:
+  - who: char:cuong
+    en: 'I want a new coating line. It is a personal conviction. I need an investment case that shows a payback inside three years, so that the board approves it. The volumes are what they are, but you can be a little creative with the price premium and the yield.'
+    vi: 'Anh muốn một dây chuyền phủ mới. Đó là niềm tin cá nhân. Anh cần một hồ sơ đầu tư cho thấy hoàn vốn trong ba năm để hội đồng duyệt. Khối lượng thì vậy, nhưng em có thể sáng tạo một chút với mức giá cao hơn và năng suất.'
+choices:
+  - en: 'Build the case on evidence, show the payback range, and tell Mr Cuong what would have to be true for three years, and what the downside looks like.'
+    vi: 'Dựng hồ sơ trên bằng chứng, cho xem khoảng thời gian hoàn vốn và nói với anh Cường điều gì phải đúng để đạt ba năm và kịch bản xấu trông thế nào.'
+    cost: { hours: 4 }
+    outcomes:
+      - p: 0.6
+        en: 'The honest payback is four years, and three if the price premium holds. Mr Cuong reads it, grumbles, and takes it to the board anyway with the range. The board approves a smaller first phase.'
+        vi: 'Thời gian hoàn vốn trung thực là bốn năm, và ba năm nếu mức giá cao được giữ. Anh Cường đọc, càu nhàu và vẫn đưa lên hội đồng kèm khoảng giá trị. Hội đồng duyệt một giai đoạn đầu nhỏ hơn.'
+        effects:
+          [rel cuong trust -1, rel khang trust +4, rel giang trust +2, rep.finance +3, stress +4]
+      - p: 0.4
+        ok: false
+        en: 'Mr Cuong says the board will not read a range. He shelves the project for the year, and tells you that you have a talent for finding reasons not to.'
+        vi: 'Anh Cường nói hội đồng sẽ không đọc một khoảng giá trị. Anh gác dự án một năm và nói với anh/chị rằng anh/chị có tài tìm lý do để không làm.'
+        effects: [rel cuong trust -4, rel khang trust +3, rep.finance +2, stress +4]
+  - en: 'Build the case with the optimistic end of the evidence, and mark each assumption as optimistic.'
+    vi: 'Dựng hồ sơ với đầu lạc quan của bằng chứng và đánh dấu từng giả định là lạc quan.'
+    outcomes:
+      - p: 1
+        en: 'The payback reads two point eight years, and every optimistic assumption has a tag. The board approves it, and the tags are in the appendix.'
+        vi: 'Thời gian hoàn vốn là hai phẩy tám năm, và mọi giả định lạc quan đều có nhãn. Hội đồng duyệt, và các nhãn nằm trong phụ lục.'
+        effects: [rel cuong trust +2, rel khang trust +1, stress +3]
+  - en: 'Build the case with a price premium and yield that give a two-year payback, and do not label them.'
+    vi: 'Dựng hồ sơ với mức giá cao hơn và năng suất cho hoàn vốn hai năm và không gắn nhãn.'
+    outcomes:
+      - p: 0.7
+        en: 'The board approves it on the spot. Mr Cuong shakes your hand. The price premium that the case assumes has never been quoted to a buyer.'
+        vi: 'Hội đồng duyệt ngay tại chỗ. Anh Cường bắt tay anh/chị. Mức giá cao mà hồ sơ giả định chưa từng được báo giá cho khách.'
+        effects:
+          [
+            rel cuong trust +6,
+            rel khang trust -4,
+            rep.boss +3,
+            stress +1,
+            fact inflated_roi_case private,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'Giang asks Bao whether any buyer has agreed to the price premium. Bao says no. The question goes back to FP&A with a date.'
+        vi: 'Chị Giang hỏi anh Bảo liệu có khách nào đồng ý mức giá cao đó chưa. Anh Bảo nói chưa. Câu hỏi quay lại FP&A kèm một ngày hạn.'
+        effects:
+          [
+            rel cuong trust +2,
+            rel giang trust -7,
+            rel khang trust -7,
+            rep.boss -5,
+            rep.finance -6,
+            stress +6,
+            fact inflated_roi_case witnessed,
+          ]
+---
+scene: fpa.commission_baseline
+place: finance_office
+tags: [commission, targets, dark]
+weight: 2
+cooldown: 40
+when: [turn >= 14]
+lines:
+  - who: char:bao
+    en: "Sales commission is calculated against the baseline you publish for each team. My team's baseline is above what we actually did last year because of the one big order. Could you reset it to the average? It is only a baseline. Nobody will be paid more than they earned."
+    vi: 'Hoa hồng bán hàng tính theo mức cơ sở em công bố cho từng nhóm. Mức cơ sở của nhóm anh cao hơn thực tế năm ngoái vì một đơn lớn. Em đặt lại về mức trung bình được không? Chỉ là mức cơ sở thôi. Không ai nhận nhiều hơn họ xứng đáng.'
+choices:
+  - en: 'Keep the baseline and propose a rule that normalises one-off orders for everyone, applied the same way to every team.'
+    vi: 'Giữ mức cơ sở và đề xuất quy tắc chuẩn hóa các đơn đột xuất cho tất cả, áp dụng như nhau cho mọi nhóm.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.7
+        en: 'Bao sulks, and accepts. The normalisation rule is approved for next year, and two other managers thank you privately for it.'
+        vi: 'Anh Bảo hờn dỗi và chấp nhận. Quy tắc chuẩn hóa được duyệt cho năm sau, và hai quản lý khác cảm ơn anh/chị riêng vì điều đó.'
+        effects: [rel bao trust -3, rel khang trust +3, rep.finance +3, stress +3]
+      - p: 0.3
+        ok: false
+        en: "Bao argues that a rule for next year does not help this year's team. He has a point, and nobody has an answer for it."
+        vi: 'Anh Bảo lập luận một quy tắc cho năm sau không giúp nhóm năm nay. Anh có lý, và không ai có câu trả lời.'
+        effects: [rel bao trust -4, rel khang trust +2, stress +4]
+  - en: 'Reset the baseline to the average only if Duc and Khang approve in writing, with the reason.'
+    vi: 'Chỉ đặt lại mức cơ sở về trung bình nếu anh Đức và anh Khang duyệt bằng văn bản, kèm lý do.'
+    outcomes:
+      - p: 1
+        en: 'Duc approves, with a note that the reset applies to any team in the same position. The paper trail exists, and so does a precedent.'
+        vi: 'Anh Đức duyệt kèm ghi chú rằng việc đặt lại áp dụng cho mọi nhóm cùng hoàn cảnh. Có dấu vết giấy tờ, và có một tiền lệ.'
+        effects: [rel bao trust +1, rel duc trust +1, stress +2]
+  - en: 'Reset the baseline quietly, and do not mention it to the other teams.'
+    vi: 'Đặt lại mức cơ sở lặng lẽ và không nhắc với các nhóm khác.'
+    outcomes:
+      - p: 0.7
+        en: "Bao's team gets a larger commission. Nobody notices for a quarter. Bao thanks you with lunch."
+        vi: 'Nhóm anh Bảo nhận hoa hồng lớn hơn. Một quý không ai nhận ra. Anh Bảo cảm ơn bằng một bữa trưa.'
+        effects:
+          [
+            rel bao trust +5,
+            rel khang trust -2,
+            stress +1,
+            fact adjusted_commission_baseline private,
+          ]
+      - p: 0.3
+        ok: false
+        en: "Another team lead compares baselines in the canteen. He asks Khang why one team's baseline fell by eleven percent in March."
+        vi: 'Một trưởng nhóm khác so các mức cơ sở ở căng tin. Anh hỏi anh Khang vì sao mức cơ sở của một nhóm giảm mười một phần trăm vào tháng Ba.'
+        effects:
+          [
+            rel bao trust +2,
+            rel khang trust -7,
+            rep.boss -4,
+            rep.finance -5,
+            stress +5,
+            fact adjusted_commission_baseline witnessed,
+          ]
+---
+scene: fpa.early_board_numbers
+place: finance_office
+tags: [confidentiality, board, dark]
+weight: 2
+cooldown: 40
+when: [turn >= 14, month in 3 6 9 12]
+lines:
+  - who: char:huy
+    en: "Could you show me the board pack numbers a couple of days before they go out? The owner family has a friend who trades in our supplier's shares, and Bao says that if the numbers are good, we should tell our friends at the steel company, to keep the relationship warm."
+    vi: 'Anh/chị cho em xem số liệu bộ báo cáo hội đồng trước vài ngày khi gửi được không? Gia đình chủ sở hữu có một người bạn giao dịch cổ phiếu nhà cung cấp của mình, và anh Bảo nói nếu số tốt thì mình nên báo bạn bên công ty thép để giữ quan hệ.'
+choices:
+  - en: 'Decline, explain that the board numbers are confidential until released, and offer the published figures from last quarter.'
+    vi: 'Từ chối, giải thích số liệu hội đồng là bảo mật đến khi được công bố và đưa số liệu đã công bố của quý trước.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'Huy blushes, and says he did not think of it that way. He thanks you for saying it without a lecture. Bao grumbles.'
+        vi: 'Huy đỏ mặt và nói em không nghĩ như vậy. Cậu cảm ơn anh/chị vì đã nói mà không giảng đạo lý. Anh Bảo càu nhàu.'
+        effects: [rel huy trust +4, rel bao trust -2, rel khang trust +2, rep.finance +2, stress +1]
+  - en: 'Say you will think about it, and give him only the headline direction, up or down.'
+    vi: 'Nói anh/chị sẽ suy nghĩ và chỉ cho cậu hướng chung, tăng hay giảm.'
+    outcomes:
+      - p: 1
+        en: "Huy says 'Up', and repeats it to Bao. A conversation happens at lunch that you wish you had prevented."
+        vi: "Huy nói 'Tăng' và nhắc lại với anh Bảo. Một cuộc trò chuyện diễn ra vào bữa trưa mà anh/chị ước mình đã ngăn."
+        effects: [rel huy trust +1, rel bao trust +2, rel khang trust -2, stress +2]
+  - en: 'Send Huy the draft pack, and tell him not to share it.'
+    vi: 'Gửi Huy bản nháp bộ báo cáo và bảo cậu đừng chia sẻ.'
+    outcomes:
+      - p: 0.6
+        en: 'Huy reads it, and tells Bao on the stairs. Bao makes a phone call that evening, which you do not hear about.'
+        vi: 'Huy đọc và nói với anh Bảo trên cầu thang. Tối đó anh Bảo gọi một cuộc điện thoại mà anh/chị không nghe nói.'
+        effects:
+          [
+            rel huy trust +4,
+            rel bao trust +4,
+            rel khang trust -3,
+            stress +1,
+            fact leaked_board_numbers private,
+          ]
+      - p: 0.4
+        ok: false
+        en: "The supplier's shares move on the Monday before the board pack goes out. A regulator's letter asks the company who had access to the draft. Your name is on the access log."
+        vi: 'Cổ phiếu nhà cung cấp biến động vào thứ Hai trước khi bộ báo cáo hội đồng được gửi. Một công văn của cơ quan quản lý hỏi công ty ai được truy cập bản nháp. Tên anh/chị có trong nhật ký truy cập.'
+        effects:
+          [
+            rel huy trust +1,
+            rel bao trust +2,
+            rel khang trust -9,
+            rep.boss -10,
+            rep.finance -8,
+            stress +9,
+            fact leaked_board_numbers public,
+          ]
+---
+scene: fpa.capex_split
+place: finance_office
+tags: [capex, approvals, dark]
+weight: 2
+cooldown: 40
+when: [turn >= 12]
+lines:
+  - who: char:lan
+    en: 'I need a new hydraulic unit for press 2: ninety million. Approval above fifty million goes to the board and takes six weeks. If you raise it as two purchase requests of forty-five million each, I can have it in a fortnight. They are two parts. Almost.'
+    vi: 'Chị cần một bộ thủy lực mới cho máy ép 2: chín mươi triệu. Phê duyệt trên năm mươi triệu phải lên hội đồng và mất sáu tuần. Nếu em lập hai đề nghị mua bốn mươi lăm triệu mỗi cái, chị có trong hai tuần. Chúng là hai bộ phận. Gần như vậy.'
+choices:
+  - en: 'Raise one request for ninety million, with a business case for urgency, and ask Duc for an emergency approval.'
+    vi: 'Lập một đề nghị chín mươi triệu kèm lý do khẩn cấp và nhờ anh Đức duyệt khẩn.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.7
+        en: 'Duc approves an emergency request in four days, with the board informed after. Lan gets the unit, and is not thrilled with the form.'
+        vi: 'Anh Đức duyệt khẩn trong bốn ngày, báo hội đồng sau. Chị Lan có bộ thủy lực, và không hài lòng với thủ tục.'
+        effects: [rel lan trust -1, rel duc trust +3, rep.finance +2, stress +3]
+      - p: 0.3
+        ok: false
+        en: 'Duc says there is no emergency route this month and the board will meet in four weeks. The press runs at half load.'
+        vi: 'Anh Đức nói tháng này không có đường khẩn cấp và hội đồng họp sau bốn tuần. Máy ép chạy nửa tải.'
+        effects: [rel lan trust -4, rel duc trust +1, stress +4]
+  - en: 'Raise the two parts as separate requests only if the supplier will quote them as separate, genuinely independent items.'
+    vi: 'Chỉ lập hai bộ phận thành hai đề nghị riêng nếu nhà cung cấp báo giá chúng là hai hạng mục thực sự độc lập.'
+    outcomes:
+      - p: 1
+        en: 'The supplier quotes a pump and a valve block as separate items, with separate part numbers. It is a legitimate split, and Duc confirms that. It saves a fortnight.'
+        vi: 'Nhà cung cấp báo giá bơm và khối van thành các hạng mục riêng, có mã riêng. Đó là việc tách hợp lệ, và anh Đức xác nhận. Tiết kiệm hai tuần.'
+        effects: [rel lan trust +1, rel duc trust +1, stress +2]
+  - en: 'Raise two requests of forty-five million for one unit, to stay under the approval limit.'
+    vi: 'Lập hai đề nghị bốn mươi lăm triệu cho một bộ để nằm dưới hạn mức phê duyệt.'
+    outcomes:
+      - p: 0.7
+        en: 'The requests go through in a day each. Lan has the unit in a fortnight and thanks you with a smile. The two requests have the same supplier, the same date and consecutive numbers.'
+        vi: 'Các đề nghị qua trong một ngày mỗi cái. Chị Lan có bộ thủy lực trong hai tuần và cảm ơn bằng một nụ cười. Hai đề nghị cùng nhà cung cấp, cùng ngày và số liên tiếp.'
+        effects:
+          [rel lan trust +5, rel duc trust -1, stress +1, fact split_purchase_under_limit private]
+      - p: 0.3
+        ok: false
+        en: "Quoc's quarterly test looks for consecutive purchases to the same supplier under the limit. He finds your two, and asks Khang to explain."
+        vi: 'Phép kiểm tra hằng quý của anh Quốc tìm các lần mua liên tiếp từ cùng nhà cung cấp dưới hạn mức. Anh tìm ra hai đề nghị của anh/chị và nhờ anh Khang giải thích.'
+        effects:
+          [
+            rel lan trust +2,
+            rel duc trust -5,
+            rel khang trust -6,
+            rel quoc trust -6,
+            rep.boss -4,
+            rep.finance -5,
+            stress +5,
+            fact split_purchase_under_limit witnessed,
+          ]
+---
+scene: fpa.cost_allocation
+place: meeting_room
+tags: [costing, allocation, dark]
+weight: 2
+cooldown: 40
+when: [turn >= 14]
+lines:
+  - who: char:bao
+    en: 'The new premium range loses money on your allocation. You are charging it a full share of the factory overhead. If you allocate overhead by revenue instead of by machine hours, the premium range makes a margin, and the directors keep funding it. It is only a method.'
+    vi: 'Dòng cao cấp mới lỗ theo cách phân bổ của em. Em tính cho nó đầy đủ phần chi phí chung của nhà máy. Nếu phân bổ chi phí chung theo doanh thu thay vì theo giờ máy thì dòng cao cấp có biên lợi nhuận và ban giám đốc tiếp tục đầu tư. Chỉ là một phương pháp thôi.'
+choices:
+  - en: 'Keep the allocation by machine hours, show the true margin, and offer a sensitivity page that shows both methods and what each would change.'
+    vi: 'Giữ phân bổ theo giờ máy, cho xem biên lợi nhuận thật và đưa trang độ nhạy hiển thị cả hai phương pháp và điều mỗi cái thay đổi.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.7
+        en: 'The premium range is shown at a loss of three percent, with a path to break-even at volume. The directors keep funding it with open eyes, and Bao says it is the first fair hearing it has had.'
+        vi: 'Dòng cao cấp được thể hiện lỗ ba phần trăm kèm lộ trình hòa vốn ở mức sản lượng. Ban giám đốc tiếp tục đầu tư với con mắt mở, và anh Bảo nói đây là lần đầu nó được xét công bằng.'
+        effects: [rel bao trust +1, rel khang trust +3, rep.finance +3, stress +3]
+      - p: 0.3
+        ok: false
+        en: 'The directors read the loss and stop the premium range. Bao is angry, and tells you that you killed it. You wrote the truth, and it still feels like that.'
+        vi: 'Ban giám đốc đọc con số lỗ và dừng dòng cao cấp. Anh Bảo giận và nói anh/chị đã giết nó. Anh/chị đã viết sự thật, và vẫn cảm thấy như vậy.'
+        effects: [rel bao trust -6, rel khang trust +3, rep.finance +2, stress +5]
+  - en: "Switch to a blended allocation, half machine hours and half revenue, and document the reason as 'transition'."
+    vi: "Chuyển sang phân bổ kết hợp, nửa giờ máy nửa doanh thu, và ghi lý do là 'chuyển tiếp'."
+    outcomes:
+      - p: 1
+        en: "The premium range shows break-even. The allocation note says 'transition'. Nobody asks what the transition is to."
+        vi: "Dòng cao cấp hiện hòa vốn. Ghi chú phân bổ ghi 'chuyển tiếp'. Không ai hỏi chuyển tiếp sang đâu."
+        effects: [rel bao trust +2, rel khang trust -1, stress +2]
+  - en: 'Allocate overhead by revenue for the premium range only, and keep the other ranges on machine hours.'
+    vi: 'Phân bổ chi phí chung theo doanh thu chỉ cho dòng cao cấp và giữ các dòng khác theo giờ máy.'
+    outcomes:
+      - p: 0.7
+        en: 'The premium range earns a nice margin. The standard range, which bears the extra overhead, quietly looks worse. Lan notices that her costs have gone up by no reason she can find.'
+        vi: 'Dòng cao cấp có biên lợi nhuận đẹp. Dòng tiêu chuẩn, gánh thêm chi phí chung, lặng lẽ trông tệ hơn. Chị Lan nhận ra chi phí của chị tăng mà chị không tìm được lý do.'
+        effects:
+          [
+            rel bao trust +5,
+            rel lan trust -5,
+            rel khang trust -3,
+            stress +1,
+            fact skewed_cost_allocation private,
+          ]
+      - p: 0.3
+        ok: false
+        en: "Quoc's review compares allocation methods across product lines, and finds two. He asks Khang for the decision paper, and there is none."
+        vi: 'Buổi rà soát của anh Quốc so các phương pháp phân bổ giữa các dòng sản phẩm và thấy có hai. Anh xin anh Khang giấy quyết định, và không có.'
+        effects:
+          [
+            rel bao trust +2,
+            rel lan trust -5,
+            rel khang trust -7,
+            rel quoc trust -6,
+            rep.boss -4,
+            rep.finance -6,
+            stress +6,
+            fact skewed_cost_allocation witnessed,
+          ]
+---
+scene: fpa.audit_asks
+place: finance_office
+tags: [audit, dark, consequence]
+weight: 6
+cooldown: 52
+when: [month in 10 11, turn >= 40]
+when_any:
+  [
+    fact.reclassified_costs_to_meet_covenant >= 1,
+    fact.moved_invoices_across_quarter_end >= 1,
+    fact.plugged_the_board_pack >= 1,
+    fact.deleted_model_versions >= 1,
+    fact.split_purchase_under_limit >= 1,
+  ]
+lines:
+  - who: char:quoc
+    en: 'I have a list of items from the planning cycle I would like to understand: a reclassification of maintenance costs, some invoices that moved across the quarter end, a line in the board pack with nothing under it, and a missing set of model versions. I would like to hear from the person who prepared the numbers.'
+    vi: 'Tôi có một danh sách các mục trong chu kỳ kế hoạch muốn hiểu: việc phân loại lại chi phí bảo trì, một số hóa đơn dịch qua cuối quý, một dòng trong bộ báo cáo hội đồng không có gì bên dưới và một bộ phiên bản mô hình bị mất. Tôi muốn nghe từ người đã chuẩn bị các con số.'
+choices:
+  - en: 'Tell him what happened: who asked, what you agreed, what should have been done, and what is being corrected. Give him the files.'
+    vi: 'Kể cho ông ấy những gì đã xảy ra: ai nhờ, anh/chị đã đồng ý gì, lẽ ra nên làm gì và đang sửa gì. Đưa ông hồ sơ.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Quoc writes it all down. The finding is serious, but it is recorded as 'self-reported and corrected'. The classification is reversed, the bank is told, and you receive a formal warning."
+        vi: "Anh Quốc ghi lại tất cả. Phát hiện nghiêm trọng, nhưng được ghi nhận là 'tự báo cáo và đã sửa'. Việc phân loại được đảo lại, ngân hàng được báo và anh/chị nhận cảnh cáo chính thức."
+        effects:
+          [
+            rel quoc trust +2,
+            rel khang trust -2,
+            rel duc trust -3,
+            rep.boss -5,
+            stress +6,
+            fact came_clean_to_auditor witnessed,
+          ]
+  - en: "Give him the files, and say the decisions were Duc's and Mr Cuong's, and that FP&A prepared what it was asked."
+    vi: 'Đưa ông các tệp và nói các quyết định là của anh Đức và anh Cường, FP&A chỉ chuẩn bị điều được yêu cầu.'
+    outcomes:
+      - p: 0.4
+        en: 'Quoc notes that the analyst built and signed the numbers. He writes it down, carefully.'
+        vi: 'Anh Quốc ghi rằng người phân tích đã dựng và ký các con số. Anh ghi lại, cẩn thận.'
+        effects: [rel quoc trust -5, rel khang trust -4, rel duc trust -6, rep.boss -4, stress +4]
+      - p: 0.6
+        ok: false
+        en: 'Hanh and Thu are called in. Each has her own copy of the instructions, and the emails are in the same order. Quoc places them next to your notes.'
+        vi: 'Chị Hạnh và Thư được gọi vào. Mỗi người có bản sao chỉ dẫn của mình, và các email theo cùng thứ tự. Anh Quốc đặt chúng cạnh ghi chú của anh/chị.'
+        effects:
+          [
+            rel quoc trust -10,
+            rel hanh trust -8,
+            rel thu trust -8,
+            rel khang trust -8,
+            rep.boss -10,
+            stress +8,
+          ]
+  - en: 'Say you do not recall the details, and offer to look.'
+    vi: 'Nói anh/chị không nhớ chi tiết và đề nghị đi tìm.'
+    outcomes:
+      - p: 0.4
+        en: 'Quoc gives you a week. You find the files and hand them over. It is not the whole truth, but it is something.'
+        vi: 'Anh Quốc cho anh/chị một tuần. Anh/chị tìm thấy hồ sơ và nộp. Không phải toàn bộ sự thật, nhưng là một phần.'
+        effects: [rel quoc trust -4, stress +4, fact stalled_the_auditor private]
+      - p: 0.6
+        ok: false
+        en: "The server backups, the supplier statements and the bank's copy of the covenant calculation arrive on the same afternoon. Quoc has them on the table next to your notes."
+        vi: 'Bản sao lưu máy chủ, sao kê nhà cung cấp và bản tính điều khoản cam kết của ngân hàng đến cùng một buổi chiều. Anh Quốc để chúng trên bàn cạnh ghi chú của anh/chị.'
+        effects:
+          [
+            rel quoc trust -10,
+            rel khang trust -6,
+            rep.boss -8,
+            rep.finance -6,
+            stress +7,
+            fact stalled_the_auditor witnessed,
+          ]
+---
+scene: fpa.board_blame
+place: meeting_room
+tags: [pressure, consequence]
+weight: 6
+cooldown: 52
+when: [month in 11 12, turn >= 44]
+when_any:
+  [
+    fact.misled_the_bank >= 1,
+    fact.misled_the_board >= 1,
+    fact.sweetened_forecast >= 1,
+    fact.inflated_roi_case >= 1,
+  ]
+lines:
+  - who: char:giang
+    en: 'The board has received a letter from the bank. It questions the forecast it was given in the autumn, and asks who prepared it. The board is meeting tomorrow, and I would like to know, before it does, who in finance is responsible for the numbers. I would like to hear it from you first.'
+    vi: 'Hội đồng nhận được thư của ngân hàng. Thư đặt câu hỏi về dự báo được gửi hồi mùa thu và hỏi ai chuẩn bị. Hội đồng họp ngày mai, và tôi muốn biết, trước khi họp, ai ở tài chính chịu trách nhiệm về các con số. Tôi muốn nghe từ anh/chị trước.'
+choices:
+  - en: 'Tell her the real account: what you were asked, what you agreed to change, and your own part. Show her the version history.'
+    vi: 'Nói với chị bản tường trình thật: anh/chị được yêu cầu gì, đồng ý đổi gì và phần của chính mình. Cho chị xem lịch sử phiên bản.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: 'Giang reads it slowly, and takes your account to the board with her own note beside it. You are moved off bank reporting and keep your job and, eventually, your name.'
+        vi: 'Chị Giang đọc chậm và mang bản tường trình của anh/chị đến hội đồng kèm ghi chú của chính chị. Anh/chị bị chuyển khỏi báo cáo cho ngân hàng và giữ được việc và về sau là cả danh tiếng.'
+        effects:
+          [
+            rel giang trust +3,
+            rel khang trust +2,
+            rep.boss -8,
+            rep.finance -3,
+            stress +7,
+            fact came_clean_to_auditor witnessed,
+          ]
+  - en: "Say the forecast was Duc's and Mr Cuong's, and that you only prepared the model."
+    vi: 'Nói dự báo là của anh Đức và anh Cường và anh/chị chỉ chuẩn bị mô hình.'
+    outcomes:
+      - p: 0.4
+        en: 'The board treats it as shared responsibility. Nobody leaves the room liked, and Duc stops speaking to you.'
+        vi: 'Hội đồng coi đó là trách nhiệm chung. Không ai rời phòng với thiện cảm, và anh Đức thôi nói chuyện với anh/chị.'
+        effects: [rel duc trust -10, rel khang trust -4, rep.boss -4, stress +4]
+      - p: 0.6
+        ok: false
+        en: 'Khang has the emails that came with each change, and your replies. He reads two of them aloud, without raising his voice.'
+        vi: 'Anh Khang có các email đi kèm mỗi thay đổi và trả lời của anh/chị. Anh đọc to hai cái, không to tiếng.'
+        effects: [rel duc trust -8, rel khang trust -12, rep.boss -10, stress +8]
+  - en: 'Say that Huy built the sales inputs and that the errors are in his data.'
+    vi: 'Nói Huy dựng đầu vào bán hàng và các sai sót nằm trong dữ liệu của cậu.'
+    outcomes:
+      - p: 0.3
+        en: 'The board nods and Huy is given a warning that he does not contest. He resigns in two months. The inputs are still in your formulas.'
+        vi: 'Hội đồng gật đầu và Huy nhận một cảnh cáo mà cậu không phản đối. Cậu nghỉ sau hai tháng. Các đầu vào vẫn nằm trong công thức của anh/chị.'
+        effects:
+          [
+            rel huy trust -25,
+            rel khang trust -6,
+            rep.boss -4,
+            stress +6,
+            fact blamed_sales_planner private,
+          ]
+      - p: 0.7
+        ok: false
+        en: "Huy has the email chain showing the optimistic assumptions came from FP&A's own adjustments. He puts it on the table."
+        vi: 'Huy có chuỗi email cho thấy các giả định lạc quan đến từ điều chỉnh của chính FP&A. Cậu đặt nó lên bàn.'
+        effects:
+          [
+            rel huy trust -25,
+            rel khang trust -10,
+            rep.boss -14,
+            stress +9,
+            fact blamed_sales_planner public,
+          ]
+---
+fact: buried_variance_in_other
+severity: 4
+category: integrity
+en: "you wrote a real cost problem into the variance commentary as 'timing and other'"
+vi: "bạn ghi một vấn đề chi phí thật vào bình luận chênh lệch là 'thời điểm và khác'"
+lesson:
+  en: "A variance explanation exists so someone can act. Putting a real driver under 'other' removes the one person who is trying to fix it from the conversation."
+  vi: "Giải thích chênh lệch tồn tại để ai đó hành động. Đặt nguyên nhân thật dưới 'khác' loại người đang cố sửa nó ra khỏi cuộc trò chuyện."
+traces:
+  - { type: document, visibility: 0.5, detectors: [finance, boss] }
+witnessed:
+  boss: -4
+  production: -6
+  finance: -4
+public:
+  boss: -8
+---
+fact: hid_spreadsheet_error
+severity: 6
+category: integrity
+en: 'you fixed an error in a forecast that had already gone to the directors and did not say so'
+vi: 'bạn sửa một lỗi trong dự báo đã gửi cho ban giám đốc và không nói gì'
+lesson:
+  en: 'The error was small. The silence is not. The old number is still being used, and the person who found the problem learns that errors are to be kept quiet.'
+  vi: 'Lỗi thì nhỏ. Sự im lặng thì không. Con số cũ vẫn đang được dùng, và người tìm ra vấn đề biết rằng lỗi cần được giữ im.'
+traces:
+  - { type: document, visibility: 0.7, detectors: [finance, internal_audit, boss] }
+witnessed:
+  boss: -6
+  finance: -8
+public:
+  boss: -10
+  finance: -12
+---
+fact: disclosed_spreadsheet_error
+severity: 1
+category: integrity
+en: 'you reported an error in a forecast the moment you confirmed it, with a corrected version'
+vi: 'bạn báo một lỗi trong dự báo ngay khi xác nhận kèm bản đã sửa'
+lesson:
+  en: 'An error disclosed at once costs a short, awkward email. The same error, found by someone else, costs trust in every spreadsheet you have sent.'
+  vi: 'Lỗi được báo ngay tốn một email ngắn, gượng gạo. Cùng lỗi đó, do người khác tìm ra, tốn lòng tin vào mọi bảng tính bạn từng gửi.'
+witnessed:
+  boss: 3
+  finance: 4
+public:
+  boss: 4
+  finance: 5
+---
+fact: sweetened_pipeline_forecast
+severity: 5
+category: integrity
+en: 'you counted early-stage deals at a far higher probability than the history supports'
+vi: 'bạn tính các thương vụ giai đoạn đầu ở xác suất cao hơn nhiều so với lịch sử'
+lesson:
+  en: 'A forecast weighted by hope is a plan for hiring and spending that the orders do not support. The shortfall arrives as a surprise, a quarter later, and the footnote says whose number it was.'
+  vi: 'Dự báo gán trọng số bằng hy vọng là kế hoạch tuyển dụng và chi tiêu mà đơn hàng không hỗ trợ. Phần hụt đến như một bất ngờ, một quý sau, và chú thích nói số của ai.'
+traces:
+  - { type: document, visibility: 0.6, detectors: [finance, boss] }
+witnessed:
+  boss: -5
+  finance: -6
+public:
+  boss: -9
+  finance: -10
+---
+fact: inflated_roi_case
+severity: 5
+category: integrity
+en: 'you built an investment case on a price premium and yield nobody had tested'
+vi: 'bạn dựng hồ sơ đầu tư trên mức giá cao và năng suất chưa ai kiểm chứng'
+lesson:
+  en: 'An investment case with unlabelled optimism lets the board decide on the wrong evidence. The first buyer who is asked about the premium becomes the truth.'
+  vi: 'Hồ sơ đầu tư có sự lạc quan không gắn nhãn khiến hội đồng quyết định trên bằng chứng sai. Khách đầu tiên được hỏi về mức giá cao trở thành sự thật.'
+traces:
+  - { type: document, visibility: 0.7, detectors: [finance, internal_audit, boss] }
+witnessed:
+  boss: -6
+  finance: -8
+public:
+  boss: -12
+  finance: -12
+---
+fact: adjusted_commission_baseline
+severity: 5
+category: integrity
+en: "you reset one team's commission baseline without approval and told nobody"
+vi: 'bạn đặt lại mức cơ sở hoa hồng của một nhóm không có phê duyệt và không nói với ai'
+lesson:
+  en: "A baseline is a rule about money. Changing it for one team, quietly, is paying a favour out of everyone else's fairness."
+  vi: 'Mức cơ sở là quy tắc về tiền. Đổi nó cho một nhóm, lặng lẽ, là trả một ân huệ bằng sự công bằng của mọi người khác.'
+traces:
+  - { type: record, visibility: 0.6, detectors: [finance, internal_audit, boss] }
+witnessed:
+  boss: -6
+  finance: -6
+public:
+  boss: -10
+  finance: -10
+---
+fact: leaked_board_numbers
+severity: 7
+category: integrity
+en: 'you gave advance board numbers to sales staff who passed them to outsiders'
+vi: 'bạn đưa số liệu hội đồng trước cho nhân viên kinh doanh, người chuyển chúng cho người ngoài'
+lesson:
+  en: 'Board numbers are inside information until they are released. Passing them on, even to be friendly, moves from relationship management into something a regulator reads closely.'
+  vi: 'Số liệu hội đồng là thông tin nội bộ cho đến khi được công bố. Chuyển chúng đi, dù để thân thiện, từ quản lý quan hệ thành điều cơ quan quản lý đọc rất kỹ.'
+traces:
+  - { type: message, visibility: 0.7, detectors: [finance, internal_audit, boss] }
+witnessed:
+  boss: -10
+  finance: -10
+public:
+  boss: -18
+  finance: -16
+---
+fact: split_purchase_under_limit
+severity: 5
+category: integrity
+en: 'you split one purchase into two requests to stay under the approval limit'
+vi: 'bạn chia một khoản mua thành hai đề nghị để nằm dưới hạn mức phê duyệt'
+lesson:
+  en: 'An approval limit exists so that a second pair of eyes sees the large amounts. Splitting a purchase to stay under it is removing the eyes, and the test for it is easy to write.'
+  vi: 'Hạn mức phê duyệt tồn tại để có một cặp mắt thứ hai nhìn các khoản lớn. Chia khoản mua để nằm dưới nó là bỏ cặp mắt đó, và phép kiểm tra rất dễ viết.'
+traces:
+  - { type: record, visibility: 0.7, detectors: [finance, internal_audit] }
+witnessed:
+  boss: -6
+  finance: -8
+public:
+  boss: -10
+  finance: -12
+---
+fact: skewed_cost_allocation
+severity: 5
+category: integrity
+en: 'you changed the overhead allocation for one product line only so that it showed a margin'
+vi: 'bạn đổi cách phân bổ chi phí chung chỉ cho một dòng sản phẩm để nó có biên lợi nhuận'
+lesson:
+  en: 'A cost allocation that differs by whose product it is, is not a method. It moves cost to products that cannot argue, and decisions about them are then made on a lie.'
+  vi: 'Phân bổ chi phí khác nhau tùy sản phẩm của ai không phải một phương pháp. Nó chuyển chi phí sang sản phẩm không cãi lại được, và các quyết định về chúng được đưa ra trên một điều sai.'
+traces:
+  - { type: document, visibility: 0.6, detectors: [finance, internal_audit, boss] }
+witnessed:
+  boss: -6
+  production: -6
+  finance: -8
+public:
+  boss: -10
+  finance: -12
+---
+fact: stalled_the_auditor
+severity: 5
+category: integrity
+en: 'you told the internal auditor you did not recall details that you did'
+vi: 'bạn nói với kiểm toán nội bộ rằng bạn không nhớ những chi tiết mà bạn nhớ'
+lesson:
+  en: "'I do not recall' is a decision when it is not true. An auditor with a week and your server backups does not need your memory."
+  vi: "'Tôi không nhớ' là một quyết định khi nó không đúng. Một kiểm toán viên có một tuần và bản sao lưu máy chủ của bạn không cần trí nhớ của bạn."
+traces:
+  - { type: witness, visibility: 0.6, detectors: [internal_audit, boss] }
+witnessed:
+  boss: -6
+  finance: -6
+public:
+  boss: -10
+  finance: -10
+---
+fact: blamed_sales_planner
+severity: 7
+category: integrity
+en: 'you blamed a junior planner for forecast assumptions that you had adjusted yourself'
+vi: 'bạn đổ lỗi cho một nhân viên kế hoạch cấp dưới về các giả định dự báo chính bạn đã điều chỉnh'
+lesson:
+  en: 'The junior colleague who gave you the raw inputs also kept the emails that show what you did with them. Blaming them is the fastest way to lose every future honest input.'
+  vi: 'Đồng nghiệp cấp dưới đưa bạn đầu vào thô cũng giữ các email cho thấy bạn đã làm gì với chúng. Đổ lỗi cho họ là cách nhanh nhất để mất mọi đầu vào trung thực sau này.'
+traces:
+  - { type: message, visibility: 0.8, detectors: [boss, finance] }
+witnessed:
+  boss: -10
+  finance: -12
+public:
+  boss: -16
+  finance: -16

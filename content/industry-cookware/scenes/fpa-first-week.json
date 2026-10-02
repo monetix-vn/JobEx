@@ -1,0 +1,107 @@
+{
+  "id": "scene.fpa.first_week",
+  "location": "loc.finance_office",
+  "cast": ["char:khang"],
+  "lines": [
+    {
+      "speaker": "char:khang",
+      "text_key": "scene.fpa.first_week.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.fpa.first_week.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.fpa.first_week.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.khang.trust",
+              "value": 5
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.fpa.first_week.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.fpa.first_week.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.khang.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.fpa.first_week.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.fpa.first_week.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.khang.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.fpa.first_week.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.khang.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

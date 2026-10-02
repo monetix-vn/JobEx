@@ -96,6 +96,14 @@ source of truth for what scene comes next; update their Status column as you go.
 - [x] First-cut balance check (`sup-year.test.ts`)
 - [ ] More Supervisor scenes and practitioner review (injury recording and speed rating practice especially)
 
+## Job 9: FP&A Analyst (`docs/story/fpa.md`)
+
+- [x] Bible v1 (AI) written with the scenes (owner review pending); same company as Finance and Accounting, a different job (budget, forecast, covenant, KPI pack)
+- [x] Role `role.fpa.analyst` playable (overhead 19 hours), `fpa-year` scenario, CI step `sim:fpa`
+- [x] 27 scenes: beats (first week, midyear review, bank covenant twist, audit review, year-end review, manager offer), arcs The Budget, The Covenant, The KPI Pack, incidents (variance commentary, spreadsheet error, pipeline forecast, ROI case, commission baseline, early board numbers, split purchase, cost allocation), consequences (internal auditor asks, board blame), resignation; 5 new characters, 24 facts
+- [x] First-cut balance check (`fpa-year.test.ts`)
+- [ ] More FP&A scenes and practitioner review (covenant and cut-off practice especially)
+
 ## Later jobs (not yet designed)
 
 - [x] Owner decision 2026-10-02: add HR (HRBP), Production (Line Supervisor), FP&A, Marketing and IT in that order, grouped by department in the picker (`docs/story/JOB-PROPOSALS.md`)

@@ -102,6 +102,7 @@ describe('content lint', () => {
       ['role.prod.planner', 25],
       ['role.purch.buyer', 18],
       ['role.inv.analyst', 18],
+      ['role.fpa.analyst', 18],
       ['role.prod.supervisor', 18],
       ['role.hr.hrbp', 18],
     ] as const) {

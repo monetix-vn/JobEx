@@ -1,0 +1,186 @@
+{
+  "id": "scene.fpa.kpi_definition",
+  "location": "loc.meeting_room",
+  "cast": ["char:lan"],
+  "lines": [
+    {
+      "speaker": "char:lan",
+      "text_key": "scene.fpa.kpi_definition.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.fpa.kpi_definition.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.fpa.kpi_definition.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": -1
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.published_kpi_with_method",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_kpi_pack",
+              "stage": "chart"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.fpa.kpi_definition.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": -1
+            },
+            {
+              "delta": "rel.cuong.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.published_kpi_with_method",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_kpi_pack",
+              "stage": "chart"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.fpa.kpi_definition.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.fpa.kpi_definition.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.the_kpi_pack",
+              "stage": "chart"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.fpa.kpi_definition.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.fpa.kpi_definition.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.redefined_kpi_to_look_better",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_kpi_pack",
+              "stage": "chart"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.fpa.kpi_definition.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.khang.trust",
+              "value": -7
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.redefined_kpi_to_look_better",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_kpi_pack",
+              "stage": "chart"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
