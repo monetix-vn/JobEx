@@ -72,7 +72,8 @@ Order matters; each item ships with tests and a docs/AUTHORING.md update.
 
 ## Phase 6: Identity and world engine (plan: `docs/design/WORLD-PLAN.md`; needs owner sign-off on its open questions)
 
-- [ ] M0 ADRs (identity and world engine, saves and snapshots, content boundaries), performance budget, day-based calendar, world and run seeds
+- [x] M0 ADRs 0003 (identity and world engine), 0004 (saves and snapshots), 0005 (content boundaries) written
+- [ ] M0 performance budget test, day-based calendar, world and run seeds
 - [ ] M1 Generator first: Person schema, data pack v1, attribute library v1, generator (families, inheritance), attribute library editor, generator workbench
 - [ ] M2 World and player: population tiers (50 / 500 / 3000), player profile and settings, folder saves (continue or restart world, new seed), perception and dossier (hidden traits learned over time), minimal ladder, migrate fixed characters
 - [ ] M3 Appraisal for everyone, behaviour engine, life events, full ladder, old protagonist as an autonomous Person
