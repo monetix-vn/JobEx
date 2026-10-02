@@ -1,6 +1,6 @@
 # Status (update this at the end of every block)
 
-Last updated: 2026-10-03, after M3 (appraisal, behaviour, the career ladder, fixed characters with a person underneath). Branch: `feature/story-engine`
+Last updated: 2026-10-03, after M4 slice 1 (text variants, voice registers, Vietnamese forms of address) on top of M3. Branch: `feature/story-engine`
 (all work is pushed there; `main` is Phase 0; no PRs opened). Repo: github.com/monetix-vn/JobEx.
 All text, odds, consequences and library data are AI first drafts and need practitioner review.
 
@@ -52,7 +52,7 @@ Guide tab). Guide: `docs/design/GENERATOR-GUIDE.md`.
 | M2b generated people in scenes, perception (scene sightings) | done |
 | M2b left: 500 / 3000 person tiers, minimal ladder, migrate fixed characters to people, impressions kept in the world, perception from gossip and records | open |
 | M3 appraisal and behaviour engine for everyone, full ladder | done in its first form (see below); the action library is small (3 wants, 4 reactions), NPC-to-NPC actions and gossip as impressions are not built |
-| M4 text realiser (variation, forms of address), Vietnamese culture pack | not started |
+| M4 text realiser (variation, forms of address), Vietnamese culture pack | started: slice 1 done (variants, registers, address, in guest scenes and notices); other scenes not migrated, no repetition memory across scenes beyond the last variant |
 | M5 dark-path engine (motive, opportunity, barrier, risk, justice, retaliation) | not started |
 | M6 romance, family, ageing, death, legacy, lore book | not started |
 | M7 calibration against real data, long-run determinism and performance | not started |
@@ -69,6 +69,13 @@ Suggested next: M3 (guests behave by their traits, so what the player learns mat
   under them (slice 2) adds a smaller extra view (40% of a guest's trust change, through `rel.<slug>.trust`). Their traits
   come from the writers' notes in `packages/mod-people/src/character.ts` (about 50 known words; others are ignored).
   Not yet: replacing the fixed names with generated ones.
+- M4 text: any line can have variants (`key~2`, and `key@warm` for a voice register: blunt, warm, formal, hesitant, smooth). A
+  guest's voice (archetype and quirks) picks the register, one seeded draw picks the variant, and the one shown last time is
+  skipped. Both languages must have the same variants (the validator checks). Text can say `{slot.call}` ("anh Hùng"),
+  `{slot.self}` ("anh", "mình", "I") and `{slot.you}` ("em", "bạn", "you"): Vietnamese forms come from who is older and from
+  gender (peers use bạn and mình, much older is chú or cô, non-binary gets the neutral forms); English is unchanged. The
+  player's age and gender come from their profile. Only the three generic guest scenes and the guest notices use this so far;
+  the other ~300 scenes use fixed names and "bạn".
 - M3 behaviour: once a week (after week 6, at most one scene every 3 weeks, most weeks nothing) a person the player has
   met may bring a scene because they want something: a favour (debt, loose rules), a complaint (fragile, trusts you), or
   credit (ambitious, cold). Wants come from temperament, money and trust; the pick is a seeded softmax. The scene is the

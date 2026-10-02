@@ -118,6 +118,25 @@ from the world's roster or generated (`department:` picks another department; de
 recurs. Their traits are hidden: the player learns them over time. In Vietnamese avoid third-person pronouns for a guest
 (their gender is not known to the text); repeat the name. Example: `content-src/guests.yml`.
 
+### Variants, voice and forms of address (guest scenes)
+
+A line can have other ways to say it. `variants:` lists them; a variant with `voice:` (blunt, warm, formal, hesitant or smooth) is
+preferred when the speaker sounds like that, the others are used otherwise, and the one shown last time is skipped. Give both
+languages the same variants.
+
+```yaml
+  - who: guest:colleague
+    en: "A quick favour, if you can."
+    vi: "Nhờ {colleague.you} một việc nhỏ."
+    variants:
+      - { voice: blunt, en: "Move it up.", vi: "Đẩy nó lên đi." }
+      - { en: "Quick one: could you?", vi: "Việc nhỏ thôi: giúp {colleague.self} nhé?" }
+```
+
+In Vietnamese write `{slot.call}` for how the player refers to them ("anh Hùng"), `{slot.self}` for how they refer to themselves
+and `{slot.you}` for how they address the player. They come out right whoever is older, and are capitalised at the start of
+a sentence. Never write "anh" or "em" for a guest yourself.
+
 ## A character (a named person who recurs and remembers you)
 
 ```yaml

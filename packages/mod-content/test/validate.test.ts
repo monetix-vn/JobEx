@@ -48,6 +48,41 @@ const load = (files: Record<string, string>) => loadContent(memorySource(files))
 const codes = (ds: Diagnostic[], severity?: string): string[] =>
   ds.filter((d) => !severity || d.severity === severity).map((d) => d.code);
 
+describe('text variants', () => {
+  const withLocale = (en: object, vi: object) =>
+    pack({ 'core/locale/en.json': j(en), 'core/locale/vi.json': j(vi) });
+
+  it('accepts the same variants in both languages, with a base and a real register', async () => {
+    const both = {
+      ...locale,
+      'k.line~2': 'hello',
+      'k.line@warm': 'hi there',
+      'k.line@warm~2': 'hey',
+    };
+    const { diagnostics } = await load(withLocale(both, both));
+    expect(hasErrors(diagnostics)).toBe(false);
+  });
+
+  it('rejects a variant that exists in only one language', async () => {
+    const en = { ...locale, 'k.line~2': 'hello' };
+    const one = await load(withLocale(en, locale));
+    expect(codes(one.diagnostics, 'error')).toContain('locale.variant_mismatch');
+    const other = await load(withLocale(locale, en));
+    expect(codes(other.diagnostics, 'error')).toContain('locale.variant_mismatch');
+  });
+
+  it('rejects an unknown voice register and a variant without its base text', async () => {
+    const odd = { ...locale, 'k.line@shouty': 'HEY' };
+    expect(codes((await load(withLocale(odd, odd))).diagnostics, 'error')).toContain(
+      'locale.bad_register',
+    );
+    const orphan = { ...locale, 'k.nothing~2': 'x' };
+    expect(codes((await load(withLocale(orphan, orphan))).diagnostics, 'error')).toContain(
+      'locale.variant_orphan',
+    );
+  });
+});
+
 describe('valid packs', () => {
   it('load into a registry with merged content', async () => {
     const { registry, diagnostics } = await load(pack());

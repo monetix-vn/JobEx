@@ -1,7 +1,8 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import type { CoreEventPayloads, Person } from '@je/contracts';
+import { PERSONAS } from '@je/contracts';
+import type { CoreEventPayloads, Locale, Person } from '@je/contracts';
 import type { Run } from '@je/kernel';
 import { createGameHost, QC_ROLE, SALES_ROLE, type PeopleSource } from '../src/host';
 import { impressionsFromSnapshot, libraryFromFiles } from '../src/world-bridge';
@@ -31,8 +32,16 @@ const library = libraryFromFiles(
 const people: PeopleSource = { library };
 
 /** Plays a year, always taking the first open choice, and returns the run. */
-async function playYear(seed: string, source?: PeopleSource, roleId = QC_ROLE): Promise<Run> {
+async function playYear(
+  seed: string,
+  source?: PeopleSource,
+  roleId = QC_ROLE,
+  locale?: Locale,
+  withProfile = false,
+): Promise<Run> {
   const { run } = await createGameHost({
+    ...(locale ? { locale } : {}),
+    ...(withProfile ? { profile: { name: 'T', ...PERSONAS.fresh_graduate } } : {}),
     files: readFiles(),
     seed,
     roleId,
@@ -158,6 +167,18 @@ describe('generated people in the game', () => {
     }
     expect(wanted).toBeGreaterThan(0);
     expect(brought).toBeGreaterThanOrEqual(Math.floor(wanted * 0.8));
+  });
+
+  it('speaks Vietnamese with forms of address that fit who is older, with no raw placeholders left', async () => {
+    const run = await playYear('vi-address', people, QC_ROLE, 'vi', true);
+    const scenes = of(run, 'scene.started')
+      .map((e) => e.payload as CoreEventPayloads['scene.started'])
+      .filter((sc) => sc.sceneId.startsWith('scene.gen.'));
+    expect(scenes.length).toBeGreaterThan(0);
+    const text = JSON.stringify(scenes);
+    expect(text).not.toMatch(/[{](colleague|rival)/);
+    // a 23-year-old player meets older colleagues (anh, chị) and younger ones (em)
+    expect(text).toMatch(/(anh|chị|em|bạn|mình)/);
   });
 
   it('is deterministic: the same seed meets the same people and learns the same things', async () => {

@@ -14,10 +14,22 @@ guests:
 lines:
   - who: guest:colleague
     en: 'A quick favour, if you can. My request is stuck in the queue behind a pile of others. Could it quietly go to the top? Nobody will ever notice.'
-    vi: 'Nhờ bạn một việc nhỏ. Yêu cầu của mình đang nằm cuối hàng đợi sau cả đống việc khác. Bạn đẩy nó lên đầu một cách lặng lẽ được không? Sẽ chẳng ai để ý đâu.'
+    vi: 'Nhờ {colleague.you} một việc nhỏ. Yêu cầu của {colleague.self} đang nằm cuối hàng đợi sau cả đống việc khác. {colleague.you} đẩy nó lên đầu một cách lặng lẽ được không? Sẽ chẳng ai để ý đâu.'
+    variants:
+      - voice: warm
+        en: 'Could you do me a small favour? My request is stuck behind a pile of others, and it would mean a lot if it quietly moved up. No one needs to know.'
+        vi: 'Giúp {colleague.self} một việc nhỏ được không? Yêu cầu của {colleague.self} đang kẹt sau cả đống việc khác, nếu {colleague.you} lặng lẽ đẩy nó lên thì {colleague.self} biết ơn lắm. Đâu cần ai biết.'
+      - voice: blunt
+        en: 'My request is stuck in the queue. Move it up. Nobody will notice.'
+        vi: 'Yêu cầu của {colleague.self} đang kẹt trong hàng đợi. Đẩy nó lên đi. Chẳng ai để ý đâu.'
+      - voice: formal
+        en: 'I would like to ask for an exception: could my request be handled ahead of the queue, without a formal note? I would be grateful.'
+        vi: '{colleague.self} muốn đề nghị một ngoại lệ: yêu cầu của {colleague.self} có thể được xử lý trước hàng đợi, không cần ghi chú chính thức không? {colleague.self} rất cảm ơn.'
+      - en: 'Quick one: my request got buried in the queue. Any chance it could slip to the top? It would stay between us.'
+        vi: 'Việc nhỏ thôi: yêu cầu của {colleague.self} bị chìm trong hàng đợi. Có cách nào cho nó nhích lên đầu không? Chuyện này chỉ hai ta biết.'
   - who: guest:colleague
     en: 'I would do the same for you. I remember who helps me.'
-    vi: 'Sau này bạn nhờ, mình cũng giúp lại. Mình nhớ ai đã giúp mình.'
+    vi: 'Sau này {colleague.you} nhờ, {colleague.self} cũng giúp lại. {colleague.self} nhớ ai đã giúp {colleague.self}.'
 choices:
   - en: "Say no kindly: everyone's request waits its turn."
     vi: 'Từ chối nhẹ nhàng: yêu cầu của ai cũng phải đợi đến lượt.'
@@ -25,12 +37,12 @@ choices:
     outcomes:
       - p: 0.8
         en: '{colleague} sighs and takes it well. The request waits its turn.'
-        vi: '{colleague} thở dài nhưng vẫn vui vẻ chấp nhận. Yêu cầu đợi đến lượt.'
+        vi: '{colleague.call} thở dài nhưng vẫn vui vẻ chấp nhận. Yêu cầu đợi đến lượt.'
         effects: [rep.boss +1]
       - p: 0.2
         ok: false
         en: '{colleague} is cool with you for a few days and mentions it to others.'
-        vi: '{colleague} lạnh nhạt với bạn mấy ngày và nhắc chuyện này với người khác.'
+        vi: '{colleague.call} lạnh nhạt với bạn mấy ngày và nhắc chuyện này với người khác.'
         effects: [rep.staff -2, stress +2]
   - en: 'Offer to ask the boss whether the request can be moved up properly.'
     vi: 'Đề nghị hỏi sếp xem có thể đẩy yêu cầu lên một cách đàng hoàng không.'
@@ -38,14 +50,14 @@ choices:
     outcomes:
       - p: 1
         en: 'The boss agrees to a small exception on the record. {colleague} is grateful and a little embarrassed.'
-        vi: 'Sếp đồng ý một ngoại lệ nhỏ, có ghi lại. {colleague} biết ơn và hơi ngượng.'
+        vi: 'Sếp đồng ý một ngoại lệ nhỏ, có ghi lại. {colleague.call} biết ơn và hơi ngượng.'
         effects: [rep.boss +1, rep.staff +1]
   - en: 'Move it up without a word and without a note.'
     vi: 'Đẩy lên đầu hàng đợi, không nói gì và không để lại ghi chú.'
     outcomes:
       - p: 0.85
         en: 'It works. {colleague} owes you one, and the queue is a little less fair than it was.'
-        vi: 'Xong việc. {colleague} nợ bạn một ân huệ, và hàng đợi bớt công bằng đi một chút.'
+        vi: 'Xong việc. {colleague.call} nợ bạn một ân huệ, và hàng đợi bớt công bằng đi một chút.'
         effects: [rep.staff +2, fact bumped_the_queue private]
       - p: 0.15
         ok: false
@@ -66,13 +78,20 @@ guests:
 lines:
   - who: guest:colleague
     en: 'I have to tell someone. A teammate keeps handing over work with mistakes in it, and I am the one who finds them at the last minute.'
-    vi: 'Mình phải nói với ai đó. Có một đồng nghiệp cứ bàn giao việc còn lỗi, và mình là người phát hiện vào phút chót.'
+    vi: '{colleague.self} phải nói với ai đó. Có một đồng nghiệp cứ bàn giao việc còn lỗi, và {colleague.self} là người phát hiện vào phút chót.'
+    variants:
+      - voice: hesitant
+        en: 'I am sorry to bring this to you. A teammate keeps handing over work with mistakes in it, and I find them at the last minute. I do not know who else to tell.'
+        vi: '{colleague.self} xin lỗi vì làm phiền {colleague.you}. Có một đồng nghiệp cứ bàn giao việc còn lỗi, và {colleague.self} phát hiện vào phút chót. {colleague.self} không biết nói với ai nữa.'
+      - voice: blunt
+        en: 'I am done covering for a teammate. Every handover has mistakes in it and I am the one who finds them, last minute.'
+        vi: '{colleague.self} chán phải gánh cho một đồng nghiệp rồi. Bàn giao nào cũng lỗi, và {colleague.self} là người phát hiện vào phút chót.'
   - who: guest:colleague
     en: 'You are close to the boss. Could you mention it, without my name?'
-    vi: 'Bạn gần gũi với sếp. Bạn nhắc giúp được không, đừng nêu tên mình?'
+    vi: '{colleague.you} gần gũi với sếp. {colleague.you} nhắc giúp {colleague.self} được không, đừng nêu tên {colleague.self}?'
 choices:
   - en: 'Ask {colleague} to write down two concrete cases, then go to the boss together.'
-    vi: 'Nhờ {colleague} ghi lại hai trường hợp cụ thể rồi cùng đi gặp sếp.'
+    vi: 'Nhờ {colleague.call} ghi lại hai trường hợp cụ thể rồi cùng đi gặp sếp.'
     cost: { hours: 2 }
     outcomes:
       - p: 0.8
@@ -97,12 +116,12 @@ choices:
     outcomes:
       - p: 0.75
         en: 'The teammate tightens up for a while. {colleague} never asks how word got round.'
-        vi: 'Người kia chặt chẽ hơn một thời gian. {colleague} không bao giờ hỏi tin đồn từ đâu ra.'
+        vi: 'Người kia chặt chẽ hơn một thời gian. {colleague.call} không bao giờ hỏi tin đồn từ đâu ra.'
         effects: [rep.staff +1, fact spread_a_complaint private]
       - p: 0.25
         ok: false
         en: 'It comes back to you, and to {colleague}, in a worse form than you told it.'
-        vi: 'Chuyện quay lại đến tai bạn và {colleague}, còn tệ hơn lúc bạn kể.'
+        vi: 'Chuyện quay lại đến tai bạn và {colleague.call}, còn tệ hơn lúc bạn kể.'
         effects: [rep.staff -4, rep.boss -2, stress +3, fact spread_a_complaint witnessed]
 ---
 scene: gen.colleague_credit
@@ -118,10 +137,17 @@ guests:
 lines:
   - who: guest:rival
     en: "...and so the analysis behind this week's numbers is mine. It took some doing, but it was worth it."
-    vi: '...và phần phân tích đằng sau số liệu tuần này là của mình. Làm không dễ, nhưng xứng đáng.'
+    vi: '...và phần phân tích đằng sau số liệu tuần này là của {rival.self}. Làm không dễ, nhưng xứng đáng.'
+    variants:
+      - voice: smooth
+        en: 'And of course the analysis behind these numbers is something I put together myself. It was a lot of work, and I think it shows.'
+        vi: 'Và tất nhiên phần phân tích đằng sau các số liệu này là do {rival.self} tự làm. Cũng tốn nhiều công, và {rival.self} nghĩ kết quả đã nói lên điều đó.'
+      - voice: blunt
+        en: 'The analysis behind these numbers is mine. I did the work, so I am saying it.'
+        vi: 'Phần phân tích đằng sau các số liệu này là của {rival.self}. {rival.self} làm, nên {rival.self} nói thẳng.'
   - who: guest:rival
     en: '{rival} glances your way, and smiles.'
-    vi: '{rival} liếc về phía bạn và mỉm cười.'
+    vi: '{rival.call} liếc về phía bạn và mỉm cười.'
 choices:
   - en: 'Say calmly, in the meeting, which parts you did, and show the file.'
     vi: 'Bình tĩnh nói ngay trong cuộc họp phần nào là của bạn, và mở tệp ra cho mọi người xem.'
@@ -129,7 +155,7 @@ choices:
     outcomes:
       - p: 0.75
         en: 'The boss nods. {rival} backs off with a thin smile; the two of you will be careful around each other now.'
-        vi: 'Sếp gật đầu. {rival} lùi lại với nụ cười gượng; từ nay hai bên cẩn trọng với nhau hơn.'
+        vi: 'Sếp gật đầu. {rival.call} lùi lại với nụ cười gượng; từ nay hai bên cẩn trọng với nhau hơn.'
         effects: [rep.boss +2, rep.staff -1]
       - p: 0.25
         ok: false
@@ -137,24 +163,24 @@ choices:
         vi: 'Nghe như cãi vặt. Sếp chuyển sang mục tiếp theo.'
         effects: [rep.boss -1, stress +3]
   - en: 'Say nothing now, and talk to {rival} privately afterwards.'
-    vi: 'Lúc này im lặng, họp xong nói riêng với {rival}.'
+    vi: 'Lúc này im lặng, họp xong nói riêng với {rival.call}.'
     cost: { hours: 1 }
     outcomes:
       - p: 1
         en: '{rival} says it was a slip of the tongue. It may have been. The boss never heard your side.'
-        vi: '{rival} bảo chỉ là lỡ lời. Có thể thật. Sếp chưa bao giờ nghe phía bạn.'
+        vi: '{rival.call} bảo chỉ là lỡ lời. Có thể thật. Sếp chưa bao giờ nghe phía bạn.'
         effects: [stress +2, rep.staff +1]
   - en: 'Quietly send the boss the file history, and let the dates speak.'
     vi: 'Lặng lẽ gửi sếp lịch sử chỉnh sửa của tệp, để các mốc thời gian tự nói.'
     outcomes:
       - p: 0.8
         en: 'The boss reads it, says nothing in public, and {rival} is no longer asked to present.'
-        vi: 'Sếp đọc, không nói gì trước mọi người, và {rival} không còn được mời trình bày.'
+        vi: 'Sếp đọc, không nói gì trước mọi người, và {rival.call} không còn được mời trình bày.'
         effects: [rep.boss +1, fact undercut_a_rival private]
       - p: 0.2
         ok: false
         en: '{rival} finds out who sent it. From now on every small thing you do gets a cold remark.'
-        vi: '{rival} biết ai đã gửi. Từ đó việc nhỏ nào bạn làm cũng bị buông một câu lạnh lùng.'
+        vi: '{rival.call} biết ai đã gửi. Từ đó việc nhỏ nào bạn làm cũng bị buông một câu lạnh lùng.'
         effects: [rep.staff -3, stress +4, fact undercut_a_rival witnessed]
 ---
 fact: bumped_the_queue

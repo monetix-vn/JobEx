@@ -16,6 +16,10 @@ import type {
 } from '@je/contracts';
 import { PERCEPTION_EVENTS, PERSON_ACTED } from '@je/contracts';
 import { ExpressionError, VarStore, evaluate } from '@je/rules';
+import { VOICE_REGISTERS, registerOf, type VoiceRegister } from '@je/contracts';
+import { addressOf, capitalise, startsSentence, type Viewer } from './address';
+
+export { addressOf, type Address, type Viewer } from './address';
 
 export const manifest: ModuleManifest = {
   id: 'narrative',
@@ -47,12 +51,29 @@ export interface NarrativeConfig {
   patienceTurns?: number;
   /** Supplies the people who step into scenes that name guests. Without it, a guest is "someone from the team". */
   guests?: GuestPort;
+  /** The player's age and gender, for forms of address (Vietnamese "anh", "chị", "em"...). */
+  viewer?: Viewer;
 }
 
-/** How a colleague is named in text: the given name, or the full name (family, middle, given) when asked. */
-export function guestNames(person: Person): { short: string; full: string } {
+/** How a colleague is named in text, and how they and the player address each other. */
+export interface GuestNames {
+  short: string;
+  full: string;
+  call: string;
+  self: string;
+  you: string;
+  register?: VoiceRegister;
+}
+
+export function guestNames(person: Person, viewer?: Viewer, locale: Locale = 'en'): GuestNames {
   const n = person.origin.name;
-  return { short: n.given, full: [n.family, n.middle, n.given].filter(Boolean).join(' ') };
+  const register = registerOf(person.origin.voice ?? []);
+  return {
+    short: n.given,
+    full: [n.family, n.middle, n.given].filter(Boolean).join(' '),
+    ...addressOf(person, viewer, locale),
+    ...(register ? { register } : {}),
+  };
 }
 
 const CONTINUE_CHOICE = '__continue';
@@ -78,23 +99,72 @@ export function createModule(host: ModuleHost): ModuleInstance {
     active: null as {
       sceneId: string;
       startedTurn: number;
-      /** Names of the scene's guests by slot, to fill `{slot}` and `{slot.full}` in its text. */
-      guests: Record<string, { short: string; full: string }>;
+      /** The scene's guests by slot, to fill `{slot}`, `{slot.full}`, `{slot.call}`, `{slot.self}` and `{slot.you}`. */
+      guests: Record<string, GuestNames>;
     } | null,
   };
   /** Text of notice scenes waiting in the queue, by their synthetic scene id. */
   const notices = new Map<string, string>();
 
   const text = (key: string): string => content.text(locale, key) ?? `[${key}]`;
-  const fill = (line: string, guests: Record<string, { short: string; full: string }>): string =>
-    line.replace(/{([a-z][a-z0-9_]*)(.full)?}/g, (whole, slot: string, full?: string) => {
-      const guest = guests[slot];
-      return guest ? (full ? guest.full : guest.short) : whole;
-    });
-  const speakerName = (
-    speaker: string,
-    guests: Record<string, { short: string; full: string }> = {},
-  ): string => {
+  /** The text key's variants: itself and `key~2`, `key~3`..., and the ones for a voice register (`key@warm`, `key@warm~2`). */
+  const variantsOf = (key: string): { plain: string[]; voiced: Map<VoiceRegister, string[]> } => {
+    const chain = (base: string): string[] => {
+      const out = content.text(locale, base) === undefined ? [] : [base];
+      for (let n = 2; n < 12 && content.text(locale, `${base}~${n}`) !== undefined; n++)
+        out.push(`${base}~${n}`);
+      return out;
+    };
+    const voiced = new Map<VoiceRegister, string[]>();
+    for (const register of VOICE_REGISTERS) {
+      const keys = chain(`${key}@${register}`);
+      if (keys.length > 0) voiced.set(register, keys);
+    }
+    return { plain: chain(key), voiced };
+  };
+  /** The last variant shown for each text key, so the same line is not shown twice in a row when there is a choice. */
+  const lastShown = new Map<string, string>();
+  /**
+   * The text for a key. Without variants it is the key's text and nothing is drawn. With variants, one draw from this
+   * module's own stream picks: a variant for the speaker's register when there is one (most of the time), otherwise any;
+   * the one shown last time is skipped. Both languages have the same variants (the validator checks), so the draw count,
+   * and with it the whole run, does not depend on the language.
+   */
+  const pick = (key: string, register?: VoiceRegister): string => {
+    const { plain, voiced } = variantsOf(key);
+    const tagged = register ? (voiced.get(register) ?? []) : [];
+    const all = plain.length + [...voiced.values()].reduce((n, v) => n + v.length, 0);
+    if (all <= 1) return text(plain[0] ?? key);
+    const r = host.rng.next();
+    let pool = plain;
+    let u = r;
+    if (tagged.length > 0) {
+      if (r < 0.7) {
+        pool = tagged;
+        u = r / 0.7;
+      } else u = (r - 0.7) / 0.3;
+    }
+    const last = lastShown.get(key);
+    const fresh = pool.length > 1 ? pool.filter((k) => k !== last) : pool;
+    const chosen =
+      (fresh.length > 0 ? fresh : pool)[
+        Math.min(Math.floor(u * (fresh.length || 1)), (fresh.length || 1) - 1)
+      ] ?? key;
+    lastShown.set(key, chosen);
+    return text(chosen);
+  };
+  type Form = 'full' | 'call' | 'self' | 'you';
+  const fill = (line: string, guests: Record<string, GuestNames>): string =>
+    line.replace(
+      /[{]([a-z][a-z0-9_]*)(?:[.](full|call|self|you))?[}]/g,
+      (whole, slot: string, form: Form | undefined, offset: number) => {
+        const guest = guests[slot];
+        if (!guest) return whole;
+        const word = form ? guest[form] : guest.short;
+        return startsSentence(line.slice(0, offset)) ? capitalise(word) : word;
+      },
+    );
+  const speakerName = (speaker: string, guests: Record<string, GuestNames> = {}): string => {
     if (speaker.startsWith('guest:')) return guests[speaker.slice('guest:'.length)]?.full ?? '';
     if (speaker.startsWith('char:')) {
       const person = content.get('character', `char.${speaker.slice('char:'.length)}`);
@@ -136,7 +206,7 @@ export function createModule(host: ModuleHost): ModuleInstance {
     values: Record<string, string>,
   ): EventDraft[] => {
     noticeCount += 1;
-    const line = text(template).replace(
+    const line = pick(template).replace(
       /\{(\w+)\}/g,
       (whole, name: string) => values[name] ?? whole,
     );
@@ -169,13 +239,19 @@ export function createModule(host: ModuleHost): ModuleInstance {
     if (!scene) throw new Error(`mod-narrative: unknown scene "${sceneId}"`);
     const turn = host.clock.now().turn;
     const drafts: EventDraft[] = [];
-    const guestNamesBySlot: Record<string, { short: string; full: string }> = {};
+    const guestNamesBySlot: Record<string, GuestNames> = {};
     const guestPeople: { character: string; name: string; title: string; guest: true }[] = [];
     let preferred = actor;
     for (const guest of scene.guests ?? []) {
       if (!config.guests) {
         const someone = text('ui.guest.someone');
-        guestNamesBySlot[guest.slot] = { short: someone, full: someone };
+        guestNamesBySlot[guest.slot] = {
+          short: someone,
+          full: someone,
+          call: someone,
+          self: locale === 'vi' ? 'mình' : 'I',
+          you: locale === 'vi' ? 'bạn' : 'you',
+        };
         continue;
       }
       const person = config.guests.appear({
@@ -187,7 +263,7 @@ export function createModule(host: ModuleHost): ModuleInstance {
         turn,
       });
       preferred = undefined;
-      guestNamesBySlot[guest.slot] = guestNames(person);
+      guestNamesBySlot[guest.slot] = guestNames(person, config.viewer, locale);
       const department = person.life.department;
       guestPeople.push({
         character: person.id,
@@ -206,6 +282,7 @@ export function createModule(host: ModuleHost): ModuleInstance {
       });
     }
     state.active = { sceneId, startedTurn: turn, guests: guestNamesBySlot };
+    const sceneRegister = Object.values(guestNamesBySlot)[0]?.register;
     const glossary = (scene.terms ?? []).flatMap((id) => {
       const term = content.get('term', id);
       return term ? [{ id, term: text(term.term_key), definition: text(term.definition_key) }] : [];
@@ -249,7 +326,7 @@ export function createModule(host: ModuleHost): ModuleInstance {
       scene.choices && scene.choices.length > 0
         ? scene.choices.map((c, i) => ({
             id: c.id,
-            label: fill(text(c.text_key), guestNamesBySlot),
+            label: fill(pick(c.text_key, sceneRegister), guestNamesBySlot),
             disabled: !available(scene, i),
           }))
         : [{ id: CONTINUE_CHOICE, label: text('ui.continue') }];
@@ -262,7 +339,15 @@ export function createModule(host: ModuleHost): ModuleInstance {
           location: scene.location,
           lines: scene.lines.map((l) => ({
             speaker: speakerName(l.speaker, guestNamesBySlot),
-            text: fill(text(l.text_key), guestNamesBySlot),
+            text: fill(
+              pick(
+                l.text_key,
+                l.speaker.startsWith('guest:')
+                  ? guestNamesBySlot[l.speaker.slice('guest:'.length)]?.register
+                  : sceneRegister,
+              ),
+              guestNamesBySlot,
+            ),
           })),
           choices,
           ...(glossary.length > 0 ? { terms: glossary } : {}),
@@ -346,7 +431,14 @@ export function createModule(host: ModuleHost): ModuleInstance {
             type: 'scene.ended',
             payload: {
               sceneId: p.sceneId,
-              ...(p.narrationKey ? { narration: fill(text(p.narrationKey), guests) } : {}),
+              ...(p.narrationKey
+                ? {
+                    narration: fill(
+                      pick(p.narrationKey, Object.values(guests)[0]?.register),
+                      guests,
+                    ),
+                  }
+                : {}),
             },
           },
           ...startNext(),

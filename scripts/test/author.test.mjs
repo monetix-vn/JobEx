@@ -179,6 +179,36 @@ vi: { term: Số lô, definition: "Mã nhận diện một lô sản xuất." }
     expect(() => compileScene({ ...base, beat: '9-4' })).toThrow(/beat must be/);
   });
 
+  it('writes line variants (plain and for a voice register) and guests as scene data', () => {
+    const base = parseEntries(example)[0];
+    const lines = [
+      {
+        who: 'guest:pal',
+        en: 'Hello',
+        vi: 'Chào',
+        variants: [
+          { en: 'Hi', vi: 'Xin chào' },
+          { voice: 'warm', en: 'Hi there', vi: 'Chào nhé' },
+          { voice: 'warm', en: 'Hey you', vi: 'Này bạn' },
+        ],
+      },
+    ];
+    const out = compileScene({
+      ...base,
+      guests: [{ slot: 'pal', function: 'mentor' }],
+      lines,
+    });
+    expect(out.scene.guests).toEqual([{ slot: 'pal', story_function: 'mentor' }]);
+    expect(out.scene.lines[0].speaker).toBe('guest:pal');
+    expect(out.scene.cast).not.toContain('guest:pal');
+    const key = out.scene.lines[0].text_key;
+    expect(out.en[key + '~2']).toBe('Hi');
+    expect(out.vi[key + '~2']).toBe('Xin chào');
+    expect(out.en[key + '@warm']).toBe('Hi there');
+    expect(out.en[key + '@warm~2']).toBe('Hey you');
+    expect(() => compileScene({ ...base, guests: [{ slot: 'pal' }], lines })).toThrow(/function/);
+  });
+
   it('sets the role from the prefix, or from an explicit role', () => {
     const base = parseEntries(example)[0];
     expect(compileScene(base).event.role).toBe('role.qc.specialist');

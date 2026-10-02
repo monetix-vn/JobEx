@@ -147,6 +147,9 @@ export async function createGameHost(options: GameHostOptions): Promise<GameHost
       content: registry,
       locale: options.locale ?? 'en',
       patienceTurns: Number.MAX_SAFE_INTEGER,
+      ...(options.profile
+        ? { viewer: { age: options.profile.age, gender: options.profile.gender } }
+        : {}),
       ...(options.people
         ? {
             guests: createGuestPort({

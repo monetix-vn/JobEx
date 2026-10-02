@@ -193,6 +193,18 @@ export function compileScene(entry) {
       'who (a role like boss, or a character like char:khoa)',
     );
     both(`${sid}.l${i + 1}`, `${here} line ${i + 1}`, line);
+    // Other ways to say the same thing: untagged ones (key~2, key~3) and ones for a voice register (key@warm, key@warm~2).
+    const seen = {};
+    (line.variants ?? []).forEach((variant, vi) => {
+      const voice = variant.voice ? String(variant.voice) : '';
+      const n = (seen[voice] = (seen[voice] ?? 0) + 1);
+      const base = `${sid}.l${i + 1}${voice ? `@${voice}` : ''}`;
+      both(
+        voice ? (n === 1 ? base : `${base}~${n}`) : `${base}~${n + 1}`,
+        `${here} line ${i + 1} variant ${vi + 1}`,
+        variant,
+      );
+    });
     const speaker = /^(char|guest):/.test(String(line.who)) ? String(line.who) : `role:${line.who}`;
     speakers.push(speaker);
     return { speaker, text_key: `${sid}.l${i + 1}` };

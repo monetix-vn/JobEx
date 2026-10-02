@@ -1,4 +1,4 @@
-import { LOCALES, type Effect, type PackKind } from '@je/contracts';
+import { LOCALES, VOICE_REGISTERS, type Effect, type PackKind } from '@je/contracts';
 import { collectVars, evaluate, ExpressionError, validate as validateExpr } from '@je/rules';
 import type { Diagnostic } from './diagnostics';
 import type { RegistryData } from './registry';
@@ -267,6 +267,52 @@ export function crossCheck(
           ...at(kind, by),
         });
       }
+    }
+  }
+
+  // Text variants (`key~2`, `key@warm`, `key@warm~2`): the same ones in both languages, for a real voice register, with a base key.
+  const variantKeys = (locale: (typeof LOCALES)[number]): string[] =>
+    [...locales[locale].keys()].filter((k) => /[~@]/.test(k)).sort();
+  const [firstLocale, ...otherLocales] = LOCALES;
+  for (const key of variantKeys(firstLocale!)) {
+    for (const other of otherLocales) {
+      if (!locales[other].has(key)) {
+        push({
+          severity: 'error',
+          code: 'locale.variant_mismatch',
+          message: `text variant "${key}" exists in ${firstLocale} but not in ${other}; both languages need the same variants`,
+        });
+      }
+    }
+  }
+  for (const other of otherLocales) {
+    for (const key of variantKeys(other)) {
+      if (!locales[firstLocale!].has(key)) {
+        push({
+          severity: 'error',
+          code: 'locale.variant_mismatch',
+          message: `text variant "${key}" exists in ${other} but not in ${firstLocale}; both languages need the same variants`,
+        });
+      }
+    }
+  }
+  for (const key of variantKeys(firstLocale!)) {
+    const match = /^(.+?)(?:@([a-z]+))?(?:~([0-9]+))?$/.exec(key);
+    if (!match) continue;
+    const [, base, register] = match;
+    if (register && !(VOICE_REGISTERS as readonly string[]).includes(register)) {
+      push({
+        severity: 'error',
+        code: 'locale.bad_register',
+        message: `text variant "${key}" names the voice register "${register}"; use one of ${VOICE_REGISTERS.join(', ')}`,
+      });
+    }
+    if (!register && !locales[firstLocale!].has(base!)) {
+      push({
+        severity: 'error',
+        code: 'locale.variant_orphan',
+        message: `text variant "${key}" has no base text "${base}"`,
+      });
     }
   }
 

@@ -401,3 +401,87 @@ export interface PersonActedPayload {
 }
 
 export const PERSON_ACTED = 'person.acted';
+
+/**
+ * How a person sounds, in five registers. Text can have a variant for a register (`<key>@warm`); the register comes
+ * from the person's voice tags (their archetype and quirks), so two colleagues say the same thing in their own way.
+ */
+export const VOICE_REGISTERS = ['blunt', 'warm', 'formal', 'hesitant', 'smooth'] as const;
+export type VoiceRegister = (typeof VOICE_REGISTERS)[number];
+
+const REGISTER_TAGS: Record<VoiceRegister, readonly string[]> = {
+  blunt: [
+    'blunt',
+    'curt',
+    'terse',
+    'direct',
+    'brief',
+    'frank',
+    'firm',
+    'sharp',
+    'cold',
+    'demanding',
+    'plain',
+    'dry',
+  ],
+  warm: [
+    'warm',
+    'gentle',
+    'encouraging',
+    'hearty',
+    'cheerful',
+    'soft',
+    'generous',
+    'cosy',
+    'sociable',
+    'friendly',
+    'easygoing',
+    'open',
+  ],
+  formal: [
+    'formal',
+    'exact',
+    'precise',
+    'careful',
+    'measured',
+    'traditional',
+    'punctual',
+    'neat',
+    'reserved',
+  ],
+  hesitant: [
+    'hesitant',
+    'apologetic',
+    'deferential',
+    'modest',
+    'guarded',
+    'vague',
+    'evasive',
+    'defensive',
+    'distracted',
+  ],
+  smooth: [
+    'smooth',
+    'persuasive',
+    'calculating',
+    'showy',
+    'self_promoting',
+    'transactional',
+    'confident',
+    'sardonic',
+  ],
+};
+
+/** The register that fits a voice best (the one most of its tags belong to), or undefined when none fits. */
+export function registerOf(voice: readonly string[]): VoiceRegister | undefined {
+  let best: VoiceRegister | undefined;
+  let bestCount = 0;
+  for (const register of VOICE_REGISTERS) {
+    const count = voice.filter((t) => REGISTER_TAGS[register].includes(t)).length;
+    if (count > bestCount) {
+      best = register;
+      bestCount = count;
+    }
+  }
+  return best;
+}
