@@ -1,6 +1,13 @@
-export { WorldClock, snapshotForTurn } from './clock';
+export { WorldClock, daysBetween, dayOfYear, snapshotForTurn } from './clock';
 export { canonicalize, fingerprint } from './canonical';
-export { SeededRandom, SeededStream, deriveStreamSeed, hashString } from './rng';
+export {
+  SeededRandom,
+  SeededStream,
+  deriveSeed,
+  deriveStreamSeed,
+  generationStream,
+  hashString,
+} from './rng';
 export {
   CLIENT_SOURCE,
   ContractViolation,

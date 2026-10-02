@@ -67,3 +67,21 @@ export class SeededRandom implements RandomPort {
     return s;
   }
 }
+
+/** One 32-bit seed from any number of parts (world seed, run seed, event id, counter...). Order matters. */
+export function deriveSeed(...parts: readonly (string | number)[]): number {
+  return hashString(parts.map(String).join(''));
+}
+
+/**
+ * The stream for a generated thing (a person, a family, a company), so the same world, run, event and
+ * counter always give the same result, and different ones do not share a sequence.
+ */
+export function generationStream(
+  seeds: { world_seed: string; run_seed: string },
+  scope: string,
+  eventId: string,
+  counter: number,
+): SeededStream {
+  return new SeededStream(deriveSeed(seeds.world_seed, seeds.run_seed, scope, eventId, counter));
+}
