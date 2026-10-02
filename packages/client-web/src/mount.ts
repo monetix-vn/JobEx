@@ -27,6 +27,7 @@ export const STYLE = `
 .je-status{display:flex;justify-content:space-between;border:3px solid #eee;padding:4px 8px;margin-bottom:8px}
 .je-name{color:#ffd166}
 .je-langs{display:flex;gap:4px}
+.je-cast-toggle{font:inherit;color:#eee;background:#33335a;border:2px solid #eee;padding:0 6px;cursor:pointer;margin-left:6px}
 .je-lang{font:inherit;color:#eee;background:#33335a;border:2px solid #eee;padding:0 6px;cursor:pointer}
 .je-lang[aria-pressed="true"]{background:#ffd166;color:#111}
 .je-stats{border:3px solid #eee;padding:4px 8px;margin-bottom:8px;font-size:.9em}
@@ -99,6 +100,8 @@ function repsLine(vars: ClientState['vars'], t: UiStrings): string {
 interface Ui {
   openTerm: string | undefined;
   toggleTerm(key: string): void;
+  castHidden: boolean;
+  toggleCast(): void;
 }
 
 /** How a person feels, in words, from their trust (-100 to 100). */
@@ -133,24 +136,16 @@ function closeView(state: ClientState, t: UiStrings): HTMLElement | undefined {
   return box;
 }
 
-const MAX_CAST_SHOWN = 2;
-
-/** The people met so far and how they feel about the player. */
-function castView(state: ClientState, t: UiStrings): HTMLElement {
+/** The people met so far and how they feel about the player; a button hides or shows the list. */
+function castView(state: ClientState, t: UiStrings, ui: Ui): HTMLElement {
   const box = el('div', 'je-cast');
-  box.append(el('b', '', `${t.cast}: `));
+  const toggle = el('button', 'je-cast-toggle', ui.castHidden ? t.castShow : t.castHide);
+  toggle.setAttribute('type', 'button');
+  toggle.addEventListener('click', () => ui.toggleCast());
+  box.append(el('b', '', `${t.cast} `), toggle);
+  if (ui.castHidden) return box;
   const list = el('ul', 'je-cast-list');
-  // Only the two relationships that matter most right now (strongest feeling, either way) are shown.
-  const strength = (character: string): number => Math.abs(state.feelings[character]?.trust ?? 0);
-  const shown = [...state.cast]
-    .map((person, order) => ({ person, order }))
-    .sort(
-      (x, y) => strength(y.person.character) - strength(x.person.character) || x.order - y.order,
-    )
-    .slice(0, MAX_CAST_SHOWN)
-    .sort((x, y) => x.order - y.order)
-    .map((x) => x.person);
-  for (const person of shown) {
+  for (const person of state.cast) {
     const trust = state.feelings[person.character]?.trust ?? 0;
     const item = el('li', 'je-person', `${person.name} (${person.title}) - ${feelingOf(trust, t)}`);
     item.dataset.character = person.character;
@@ -286,7 +281,7 @@ function render(
   }
   const close = closeView(state, t);
   if (close) view.append(close);
-  if (state.cast.length > 0) view.append(castView(state, t));
+  if (state.cast.length > 0) view.append(castView(state, t, ui));
 
   if (state.map) {
     const map = el('div', 'je-map');
@@ -370,6 +365,11 @@ export function mount(
     openTerm: undefined,
     toggleTerm(key) {
       ui.openTerm = ui.openTerm === key ? undefined : key;
+      draw();
+    },
+    castHidden: false,
+    toggleCast() {
+      ui.castHidden = !ui.castHidden;
       draw();
     },
   };

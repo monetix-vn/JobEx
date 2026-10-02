@@ -17,6 +17,8 @@ export interface UiStrings {
   pickHint: string;
   playAgain: string;
   cast: string;
+  castHide: string;
+  castShow: string;
   /** The month-end close checklist (finance). Steps without a label show their id. */
   close: {
     title: string;
@@ -77,6 +79,8 @@ export const UI_STRINGS: Record<UiLocale, UiStrings> = {
     pickHint: 'Different departments, different pressures. You can try the others afterwards.',
     playAgain: 'Choose another job',
     cast: 'People you know',
+    castHide: 'Hide',
+    castShow: 'Show',
     close: {
       title: 'Month-end close',
       due: 'due now',
@@ -140,6 +144,8 @@ export const UI_STRINGS: Record<UiLocale, UiStrings> = {
     pickHint: 'Mỗi phòng ban một áp lực khác nhau. Sau đó bạn có thể thử các vai trò khác.',
     playAgain: 'Chọn công việc khác',
     cast: 'Những người bạn quen',
+    castHide: 'Ẩn',
+    castShow: 'Hiện',
     close: {
       title: 'Khóa sổ cuối tháng',
       due: 'đến hạn',

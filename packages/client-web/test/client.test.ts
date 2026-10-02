@@ -380,7 +380,7 @@ describe('mount', () => {
     expect(vi.querySelector('.je-arcs li')?.textContent).toContain('đã khép lại');
   });
 
-  it('the cast panel shows only the two relationships that matter most', () => {
+  it('the cast panel shows everyone met, and a button hides and shows it', () => {
     const { root, push } = setup();
     const people = ['a', 'b', 'c'].map((id) => ({
       character: `char.${id}`,
@@ -396,14 +396,15 @@ describe('mount', () => {
         people,
       }),
     );
-    push(
-      env('relationship.changed', { character: 'char.b', dimension: 'trust', from: 0, to: -40 }),
-    );
-    push(env('relationship.changed', { character: 'char.c', dimension: 'trust', from: 0, to: 30 }));
-    const names = [...root.querySelectorAll('.je-person')].map((li) => li.textContent ?? '');
-    expect(names).toHaveLength(2);
-    expect(names[0]).toContain('Pb');
-    expect(names[1]).toContain('Pc');
+    const rows = () => root.querySelectorAll('.je-person').length;
+    const button = () => root.querySelector<HTMLButtonElement>('.je-cast-toggle')!;
+    expect(rows()).toBe(3);
+    expect(button().textContent).toBe('Hide');
+    button().click();
+    expect(rows()).toBe(0);
+    expect(button().textContent).toBe('Show');
+    button().click();
+    expect(rows()).toBe(3);
   });
 
   it('the cast panel lists the people met, updates how they feel, and follows the language', () => {
