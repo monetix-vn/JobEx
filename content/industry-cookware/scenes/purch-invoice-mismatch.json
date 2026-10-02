@@ -1,0 +1,138 @@
+{
+  "id": "scene.purch.invoice_mismatch",
+  "location": "loc.finance_office",
+  "cast": ["char:hanh"],
+  "lines": [
+    {
+      "speaker": "char:hanh",
+      "text_key": "scene.purch.invoice_mismatch.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.purch.invoice_mismatch.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.purch.invoice_mismatch.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.hanh.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.purch.invoice_mismatch.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.hanh.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.purch.invoice_mismatch.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.purch.invoice_mismatch.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.hanh.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.purch.invoice_mismatch.c3",
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.purch.invoice_mismatch.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.hanh.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.cash_vnd",
+              "value": 1500000
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.accepted_supplier_rebate",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.purch.invoice_mismatch.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.hanh.trust",
+              "value": -10
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -8
+            },
+            {
+              "delta": "player.cash_vnd",
+              "value": 1500000
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.accepted_supplier_rebate",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

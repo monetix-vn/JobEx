@@ -1,0 +1,142 @@
+{
+  "id": "scene.purch.single_source_ask",
+  "location": "loc.meeting_room",
+  "cast": ["char:tam"],
+  "lines": [
+    {
+      "speaker": "char:tam",
+      "text_key": "scene.purch.single_source_ask.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.purch.single_source_ask.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.75,
+          "narration_key": "scene.purch.single_source_ask.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.linh.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.hung.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.single_source",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.25,
+          "result": "fail",
+          "narration_key": "scene.purch.single_source_ask.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": -2
+            },
+            {
+              "delta": "rel.linh.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.single_source",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.purch.single_source_ask.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.purch.single_source_ask.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.linh.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.hung.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "arc": "arc.single_source",
+              "stage": "shortage"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.purch.single_source_ask.c3",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.purch.single_source_ask.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.linh.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.hung.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 3
+            },
+            {
+              "fact": "fact.single_sourced_without_backup",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.single_source",
+              "stage": "shortage"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

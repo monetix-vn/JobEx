@@ -1,0 +1,62 @@
+[
+  {
+    "id": "role.purch.buyer",
+    "department": "dept.purchasing",
+    "level": 1,
+    "title_key": "role.purch.buyer.title",
+    "blurb_key": "role.purch.buyer.blurb",
+    "reports_to": "role.purch.manager",
+    "kpis": [
+      {
+        "id": "kpi.cost_saving",
+        "weight": 0.5
+      },
+      {
+        "id": "kpi.supplier_on_time",
+        "weight": 0.3
+      }
+    ],
+    "weekly_demand": [
+      {
+        "task": "task.raise_purchase_orders",
+        "per_week": [5, 8],
+        "effort_h": 1.0
+      },
+      {
+        "task": "task.supplier_followup",
+        "per_week": [3, 5],
+        "effort_h": 1.5
+      },
+      {
+        "task": "task.quote_comparison",
+        "per_week": [1, 3],
+        "effort_h": 2.5
+      }
+    ],
+    "approval_limits": {
+      "po_vnd": 50000000
+    },
+    "skills": ["negotiation", "analysis", "backbone"],
+    "start_state": {
+      "salary_vnd": 14500000,
+      "stress": 25,
+      "skill.negotiation": 40,
+      "skill.analysis": 35,
+      "skill.backbone": 30
+    },
+    "overhead_hours": 22
+  },
+  {
+    "id": "role.purch.manager",
+    "department": "dept.purchasing",
+    "level": 2,
+    "title_key": "role.purch.manager.title",
+    "approval_limits": {
+      "po_vnd": 500000000
+    },
+    "start_state": {
+      "salary_vnd": 33000000,
+      "stress": 40
+    }
+  }
+]

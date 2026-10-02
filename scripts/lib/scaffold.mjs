@@ -11,6 +11,7 @@ const ROLE_BY_PREFIX = {
   qc: 'role.qc.specialist',
   fin: 'role.fin.accountant',
   prod: 'role.prod.planner',
+  purch: 'role.purch.buyer',
 };
 
 const readJson = (path, fallback) =>

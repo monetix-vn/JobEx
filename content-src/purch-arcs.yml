@@ -1,0 +1,1226 @@
+# Purchasing Buyer storylines and incidents (docs/story/purchasing.md): The Sweetener, The Single Source, The Ghost Stock, and random scenes.
+arc: the_sweetener
+title:
+  en: 'The sweetener'
+  vi: 'Của ngọt'
+stages:
+  - { id: lunch, event: purch.hung_lunch }
+  - { id: rebate, event: purch.hung_rebate, delay: 3-5 }
+  - { id: pressure, event: purch.hung_pressure, delay: 3-6 }
+---
+scene: purch.hung_lunch
+arc: the_sweetener
+place: sales_office
+tags: [supplier, dark, pressure]
+weight: 3
+cooldown: 40
+when: [turn >= 6, turn <= 30]
+lines:
+  - who: char:hung
+    en: 'Lunch is on me. And a little something for your family, it is the season. No, no obligation. I just think we should be friends. By the way, our quote for next quarter will be sharp, I promise, and you will see it before the others do.'
+    vi: 'Bữa trưa anh mời. Và một chút quà cho gia đình em, đang vào mùa. Không, không ràng buộc gì. Anh chỉ nghĩ mình nên là bạn. À, báo giá quý sau của bên anh sẽ rất mềm, anh hứa, và em sẽ thấy trước những bên khác.'
+choices:
+  - en: 'Thank him, decline the gift, pay for your own lunch, and say quotes are all seen at the same time.'
+    vi: 'Cảm ơn anh ấy, từ chối quà, tự trả tiền bữa trưa và nói báo giá được xem cùng lúc.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 0.85
+        en: "Hung laughs it off, a little stiffly. 'You are a serious person.' The quote he sends is still the best, and you can show exactly how you chose it."
+        vi: "Anh Hùng cười xòa, hơi gượng. 'Em là người nghiêm túc.' Báo giá anh gửi vẫn là tốt nhất, và em chứng minh được mình đã chọn thế nào."
+        effects: [rel hung trust -3, rel tam trust +2, rep.boss +1, arc the_sweetener end]
+      - p: 0.15
+        ok: false
+        en: "Hung's quote comes in higher than the others, and Tam asks, mildly, whether you upset him. You explain, and Tam believes you."
+        vi: 'Báo giá của anh Hùng cao hơn các bên khác, và anh Tâm hỏi, nhẹ nhàng, em có làm anh ấy phật ý không. Em giải thích, và anh Tâm tin em.'
+        effects: [rel hung trust -5, rel tam trust +1, stress +2, arc the_sweetener end]
+  - en: "Accept the lunch, decline the gift, and log the lunch in the gift register with the supplier's name."
+    vi: 'Nhận bữa trưa, từ chối quà và ghi bữa trưa vào sổ quà tặng cùng tên nhà cung cấp.'
+    outcomes:
+      - p: 1
+        en: 'It is a modest, declared courtesy. Tam initials the register entry without comment. Hung sends his quote at the same time as everyone else.'
+        vi: 'Một phép lịch sự khiêm tốn, được khai báo. Anh Tâm ký tắt mục sổ không bình luận. Anh Hùng gửi báo giá cùng lúc với mọi người.'
+        effects: [rel hung trust +1, rel tam trust +1, arc the_sweetener rebate]
+  - en: 'Accept both, and tell yourself it does not change how you will judge his quote.'
+    vi: 'Nhận cả hai và tự nhủ nó không thay đổi cách em đánh giá báo giá của anh ấy.'
+    outcomes:
+      - p: 0.8
+        en: 'A lovely lunch and a hamper. Hung sees your quote file before the others do. Nothing is written down.'
+        vi: 'Một bữa trưa dễ chịu và một giỏ quà. Anh Hùng thấy hồ sơ báo giá của em trước các bên khác. Không có gì được viết ra.'
+        effects:
+          [
+            rel hung trust +5,
+            rel hung owed +1,
+            stress -1,
+            fact accepted_supplier_gifts private,
+            arc the_sweetener rebate,
+          ]
+      - p: 0.2
+        ok: false
+        en: 'Dung sees the hamper in your car and says nothing. Linh, a smaller supplier, mentions later that she was not invited to lunch.'
+        vi: 'Anh Dũng thấy giỏ quà trong xe anh/chị và không nói gì. Chị Linh, một nhà cung cấp nhỏ hơn, sau đó nhắc rằng chị không được mời ăn trưa.'
+        effects:
+          [
+            rel hung trust +4,
+            rel dung trust -4,
+            rel linh trust -4,
+            fact accepted_supplier_gifts witnessed,
+            arc the_sweetener rebate,
+          ]
+---
+scene: purch.hung_rebate
+weight: 0
+place: sales_office
+tags: [supplier, dark, arc]
+lines:
+  - who: char:hung
+    en: 'I want to give you something properly. A rebate on the volume you place with us, two percent, paid not to the company but to you directly. It is a thank-you for being easy to work with. Nobody gets hurt. The company still gets its price.'
+    vi: 'Anh muốn gửi em một thứ cho đàng hoàng. Một khoản hoàn lại trên sản lượng em đặt bên anh, hai phần trăm, trả không cho công ty mà trả thẳng cho em. Đó là lời cảm ơn vì em dễ làm việc. Không ai thiệt. Công ty vẫn có giá của mình.'
+choices:
+  - en: 'Refuse, and tell Tam about the offer the same day, in writing.'
+    vi: 'Từ chối và báo anh Tâm về đề nghị ngay trong ngày, bằng văn bản.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "Tam reads your note, and says: 'Thank you.' He moves part of the volume to another supplier and tells Hung why. The relationship cools, and the process is protected."
+        vi: "Anh Tâm đọc ghi chú và nói: 'Cảm ơn em.' Anh chuyển một phần sản lượng sang nhà cung cấp khác và nói với anh Hùng lý do. Quan hệ nguội đi, và quy trình được bảo vệ."
+        effects:
+          [
+            rel tam trust +6,
+            rel hung trust -10,
+            rep.boss +4,
+            stress +2,
+            fact reported_rebate_offer witnessed,
+            arc the_sweetener end,
+          ]
+  - en: 'Refuse politely and say nothing more, hoping he will not raise it again.'
+    vi: 'Từ chối lịch sự và không nói thêm, hy vọng anh ấy không nhắc lại.'
+    outcomes:
+      - p: 1
+        en: "Hung nods slowly. 'Maybe another time.' You can feel that he has put you in a category: someone who might say yes later."
+        vi: "Anh Hùng gật đầu chậm. 'Có thể lúc khác.' Anh/chị cảm thấy anh ấy đã xếp mình vào một nhóm: người có thể nói có về sau."
+        effects: [rel hung trust -3, stress +2, arc the_sweetener pressure]
+  - en: "Accept the rebate, paid to a relative's account, and keep the price you give the company the same."
+    vi: 'Nhận khoản hoàn lại, trả vào tài khoản người thân và giữ nguyên giá bạn đưa cho công ty.'
+    outcomes:
+      - p: 0.75
+        en: 'A transfer arrives each month. It is not much at first. You are careful about the quotes, which are fair. For now.'
+        vi: 'Mỗi tháng có một khoản chuyển đến. Lúc đầu không nhiều. Anh/chị cẩn thận với các báo giá, vốn công bằng. Tạm thời.'
+        effects:
+          [
+            rel hung trust +7,
+            rel hung owed +3,
+            cash +4000000,
+            stress +2,
+            fact accepted_supplier_rebate private,
+            arc the_sweetener pressure,
+          ]
+      - p: 0.25
+        ok: false
+        en: 'Your relative asks, innocently, why a supplier sends money every month. The question gets repeated at a family dinner, and your cousin works in the bank.'
+        vi: 'Người thân của anh/chị hỏi, ngây thơ, vì sao một nhà cung cấp chuyển tiền mỗi tháng. Câu hỏi được nhắc lại trong bữa cơm gia đình, và em họ anh/chị làm ở ngân hàng.'
+        effects:
+          [
+            rel hung trust +5,
+            rel hung owed +3,
+            cash +4000000,
+            stress +5,
+            fact accepted_supplier_rebate witnessed,
+            arc the_sweetener pressure,
+          ]
+---
+scene: purch.hung_pressure
+weight: 0
+place: sales_office
+tags: [supplier, dark, consequence, arc]
+lines:
+  - who: char:hung
+    en: 'Our price needs to go up eight percent next quarter, I am afraid. Steel. You understand. But I know you will find a way to make it work for the company, as friends do. And I would hate for anything we have discussed to complicate our relationship.'
+    vi: 'Giá bên anh cần tăng tám phần trăm quý sau, anh e là vậy. Thép mà. Em hiểu. Nhưng anh biết em sẽ tìm cách làm cho công ty chấp nhận, như bạn bè vẫn làm. Và anh không muốn bất cứ điều gì mình từng bàn làm phức tạp quan hệ của mình.'
+choices:
+  - en: 'Say you will take the increase to Tam with three competing quotes, and tell Tam everything that has passed between you and Hung.'
+    vi: 'Nói anh/chị sẽ mang mức tăng lên anh Tâm kèm ba báo giá cạnh tranh và nói với anh Tâm mọi điều đã diễn ra giữa anh/chị và anh Hùng.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Tam is silent for a long time. 'I wish you had come earlier. But you came.' You are reprimanded and removed from the Hung account. The process takes the quotes seriously."
+        vi: "Anh Tâm im lặng rất lâu. 'Giá như em đến sớm hơn. Nhưng em đã đến.' Anh/chị bị khiển trách và rút khỏi tài khoản của anh Hùng. Quy trình xem xét nghiêm túc các báo giá."
+        effects:
+          [
+            rel tam trust +1,
+            rel hung trust -15,
+            rep.boss -3,
+            stress +5,
+            fact came_clean_about_supplier witnessed,
+            arc the_sweetener end,
+          ]
+  - en: 'Refuse to let it affect the price, and run a competitive process for the next quarter.'
+    vi: 'Từ chối để điều đó ảnh hưởng giá và tổ chức quy trình cạnh tranh cho quý sau.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.6
+        en: "Linh and two others quote. Hung's increase is rejected. He does not mention the past, and he does not need to. You wait for him to."
+        vi: 'Chị Linh và hai bên khác báo giá. Mức tăng của anh Hùng bị bác. Anh không nhắc chuyện cũ, và không cần. Anh/chị chờ anh ấy nhắc.'
+        effects:
+          [
+            rel hung trust -10,
+            rel linh trust +3,
+            rel tam trust +2,
+            stress +4,
+            arc the_sweetener end,
+          ]
+      - p: 0.4
+        ok: false
+        en: "Hung says, softly, that other buyers have been 'more flexible'. Two days later, an anonymous email to Tam mentions a rebate to a family account."
+        vi: "Anh Hùng nói, nhỏ nhẹ, rằng các người mua khác 'linh hoạt hơn'. Hai ngày sau, một email nặc danh gửi anh Tâm nhắc đến khoản hoàn lại vào tài khoản gia đình."
+        effects:
+          [rel hung trust -15, rel tam trust -6, rep.boss -6, stress +6, arc the_sweetener end]
+  - en: 'Push the eight percent through to the company, and keep the rebate arrangement going.'
+    vi: 'Chuyển mức tăng tám phần trăm lên công ty và giữ thỏa thuận hoàn lại.'
+    outcomes:
+      - p: 0.55
+        en: "Tam signs the increase. Hung's transfers grow. You are now an employee whose supplier sets his price."
+        vi: 'Anh Tâm ký mức tăng. Các khoản chuyển của anh Hùng tăng lên. Giờ anh/chị là nhân viên mà nhà cung cấp đặt giá cho.'
+        effects:
+          [
+            rel hung trust +6,
+            rel tam trust +1,
+            cash +6000000,
+            stress +3,
+            fact steered_price_for_rebate private,
+            arc the_sweetener end,
+          ]
+      - p: 0.45
+        ok: false
+        en: "Finance compares your supplier's price with the market and finds it eleven percent above. Duc asks you for the quotes. There are none."
+        vi: 'Tài chính so giá nhà cung cấp của anh/chị với thị trường và thấy cao hơn mười một phần trăm. Anh Đức hỏi báo giá. Không có cái nào.'
+        effects:
+          [
+            rel hung trust +3,
+            rel duc trust -8,
+            rel tam trust -6,
+            rep.boss -9,
+            stress +7,
+            fact steered_price_for_rebate public,
+            arc the_sweetener end,
+          ]
+---
+arc: single_source
+title:
+  en: 'The single source'
+  vi: 'Một nguồn duy nhất'
+stages:
+  - { id: ask, event: purch.single_source_ask }
+  - { id: shortage, event: purch.supplier_fails, delay: 8-14 }
+  - { id: blame, event: purch.shortage_blame, delay: 1-2 }
+---
+scene: purch.single_source_ask
+arc: single_source
+place: meeting_room
+tags: [supplier, pressure]
+weight: 2
+cooldown: 40
+when: [turn >= 10, turn <= 34]
+lines:
+  - who: char:tam
+    en: "Hung's company will give us a nine percent discount if we move all our steel to them. That is a large saving, and the directors like it. Linh is a small supplier and cannot match it. I want you to prepare the move."
+    vi: 'Công ty anh Hùng cho mình giảm chín phần trăm nếu chuyển toàn bộ thép sang họ. Khoản tiết kiệm lớn, và ban giám đốc thích. Chị Linh là nhà cung cấp nhỏ và không theo kịp. Anh muốn em chuẩn bị việc chuyển.'
+choices:
+  - en: 'Propose moving seventy percent to Hung and keeping Linh as a qualified second source, and show the risk of a single supplier.'
+    vi: 'Đề xuất chuyển bảy mươi phần trăm sang anh Hùng và giữ chị Linh làm nguồn thứ hai đã đủ điều kiện, kèm rủi ro khi chỉ có một nhà cung cấp.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.75
+        en: 'Tam accepts the split: the saving is six percent, not nine, and the risk is covered. Linh is grateful and sends you a note, which you file.'
+        vi: 'Anh Tâm chấp nhận cách chia: tiết kiệm sáu phần trăm, không phải chín, và rủi ro được che chắn. Chị Linh biết ơn và gửi một lời nhắn, anh/chị lưu lại.'
+        effects:
+          [rel tam trust +2, rel linh trust +5, rel hung trust -2, stress +2, arc single_source end]
+      - p: 0.25
+        ok: false
+        en: 'The directors want the full nine percent, and Tam asks you to reconsider. You hold your recommendation; he does not sign it for a month.'
+        vi: 'Ban giám đốc muốn đủ chín phần trăm, và anh Tâm nhờ em cân nhắc lại. Anh/chị giữ đề xuất; anh không ký trong một tháng.'
+        effects: [rel tam trust -2, rel linh trust +2, stress +4, arc single_source end]
+  - en: "Move everything to Hung, but keep Linh's contract alive at a small volume as a backup."
+    vi: 'Chuyển tất cả sang anh Hùng nhưng giữ hợp đồng của chị Linh ở sản lượng nhỏ làm phương án dự phòng.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'It is a pragmatic compromise. Hung gets nearly all the volume. Linh keeps a thread, and the company keeps an option.'
+        vi: 'Một thỏa hiệp thực dụng. Anh Hùng nhận gần như toàn bộ sản lượng. Chị Linh giữ một sợi dây, và công ty giữ một lựa chọn.'
+        effects:
+          [
+            rel tam trust +1,
+            rel linh trust +1,
+            rel hung trust +3,
+            stress +1,
+            arc single_source shortage,
+          ]
+  - en: "Move everything to Hung and end Linh's contract, as the directors want."
+    vi: 'Chuyển tất cả sang anh Hùng và chấm dứt hợp đồng của chị Linh như ban giám đốc muốn.'
+    outcomes:
+      - p: 1
+        en: 'The saving is nine percent, and the directors cheer. Linh says nothing, and closes her account with a short, polite email.'
+        vi: 'Khoản tiết kiệm là chín phần trăm, và ban giám đốc hoan nghênh. Chị Linh không nói gì và đóng tài khoản bằng một email ngắn, lịch sự.'
+        effects:
+          [
+            rel tam trust +5,
+            rel linh trust -6,
+            rel hung trust +4,
+            rep.boss +3,
+            fact single_sourced_without_backup private,
+            arc single_source shortage,
+          ]
+---
+scene: purch.supplier_fails
+weight: 0
+place: factory_floor
+tags: [supplier, pressure, consequence, arc]
+lines:
+  - who: char:lan
+    en: "Hung's truck has not arrived. His factory had a fire in the cutting shop. He says three weeks, maybe four. We have eight days of steel on the floor. What do we do?"
+    vi: 'Xe của anh Hùng chưa đến. Xưởng cắt của anh ấy bị cháy. Anh nói ba tuần, có thể bốn. Mình còn thép cho tám ngày trên sàn. Mình làm gì?'
+choices:
+  - en: 'Call Linh and every qualified supplier today, tell Lan the real position, and propose a priority order for the steel that is left.'
+    vi: 'Gọi chị Linh và mọi nhà cung cấp đủ điều kiện ngay hôm nay, báo chị Lan tình hình thật và đề xuất thứ tự ưu tiên cho số thép còn lại.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.7
+        en: "Linh, who still has a contract, finds two weeks of steel for you at a fair price. The line slows, and does not stop. Lan says: 'This is why you keep a second source.'"
+        vi: "Chị Linh, vẫn còn hợp đồng, tìm được thép hai tuần cho anh/chị với giá hợp lý. Chuyền chậm lại, không dừng. Chị Lan nói: 'Đó là lý do phải giữ nguồn thứ hai.'"
+        effects:
+          [rel lan trust +4, rel linh trust +4, rel tam trust +2, stress +4, arc single_source end]
+      - p: 0.3
+        ok: false
+        en: "Linh has little, and the others are expensive. You find enough steel at a premium. The company pays, and the year's saving evaporates."
+        vi: 'Chị Linh còn ít, và các bên khác đắt. Anh/chị tìm đủ thép với giá cao hơn. Công ty trả, và khoản tiết kiệm cả năm tan biến.'
+        effects: [rel lan trust +2, rel tam trust -2, rep.boss -3, stress +6, arc single_source end]
+  - en: 'Buy spot steel from a trader you have not used before, with an urgent order, and sort out the paperwork afterwards.'
+    vi: 'Mua thép giao ngay từ một đầu mối chưa từng dùng với đơn gấp và xử lý giấy tờ sau.'
+    outcomes:
+      - p: 0.55
+        en: 'The steel arrives in two days at a high price. It is not from an approved supplier. Khoa asks for the certificates, and you do not have them yet.'
+        vi: 'Thép về trong hai ngày với giá cao. Không phải từ nhà cung cấp được duyệt. Anh Khoa hỏi chứng chỉ, và anh/chị chưa có.'
+        effects:
+          [
+            rel lan trust +2,
+            rel khoa trust -5,
+            rel tam trust -1,
+            stress +3,
+            fact covered_gap_with_unapproved_po private,
+            arc single_source blame,
+          ]
+      - p: 0.45
+        ok: false
+        en: "The trader's steel fails incoming inspection. It sits in the yard while Lan's line stops. Khoa's report names the supplier and the person who ordered."
+        vi: 'Thép của đầu mối không đạt kiểm đầu vào. Nó nằm ngoài sân trong khi chuyền chị Lan dừng. Báo cáo của anh Khoa nêu tên nhà cung cấp và người đặt.'
+        effects:
+          [
+            rel lan trust -6,
+            rel khoa trust -8,
+            rel tam trust -4,
+            rep.boss -6,
+            stress +7,
+            fact covered_gap_with_unapproved_po witnessed,
+            arc single_source blame,
+          ]
+  - en: 'Tell Lan to stretch the steel and hope Hung is quicker than he says.'
+    vi: 'Bảo chị Lan kéo dài số thép và hy vọng anh Hùng nhanh hơn lời anh nói.'
+    outcomes:
+      - p: 0.3
+        en: "Hung's truck arrives at day nine, early. The line barely survives. You were very lucky."
+        vi: 'Xe anh Hùng đến vào ngày thứ chín, sớm hơn. Chuyền suýt không trụ nổi. Anh/chị rất may.'
+        effects: [rel lan trust -2, stress +5, arc single_source end]
+      - p: 0.7
+        ok: false
+        en: 'Day eight: the line stops. It stays stopped for ten days. Lan asks, in front of Tam, why there was no plan.'
+        vi: 'Ngày thứ tám: chuyền dừng. Nó dừng mười ngày. Chị Lan hỏi, trước mặt anh Tâm, vì sao không có kế hoạch.'
+        effects:
+          [rel lan trust -10, rel tam trust -6, rep.boss -8, stress +8, arc single_source blame]
+---
+scene: purch.shortage_blame
+weight: 0
+place: meeting_room
+tags: [supplier, pressure, dark, arc]
+lines:
+  - who: char:duc
+    en: 'The shutdown cost the company about two hundred million in lost output. I need to know who decided on a single supplier and who failed to prepare a backup. The directors will ask me tomorrow.'
+    vi: 'Việc dừng chuyền làm công ty mất khoảng hai trăm triệu sản lượng. Anh cần biết ai quyết định chỉ dùng một nhà cung cấp và ai không chuẩn bị phương án dự phòng. Ngày mai ban giám đốc sẽ hỏi anh.'
+choices:
+  - en: 'Give him the real sequence: the recommendation you made, what was overruled, and what you should have pushed harder.'
+    vi: 'Cho anh ấy chuỗi sự việc thật: đề xuất anh/chị đã đưa, điều bị bác và điều lẽ ra nên đẩy mạnh hơn.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: "Duc listens and takes notes. To the directors he says: 'The risk was named, then overruled.' The process changes. You carry your share, and Tam knows it was shared."
+        vi: "Anh Đức lắng nghe và ghi chú. Với ban giám đốc anh nói: 'Rủi ro đã được nêu, rồi bị bác.' Quy trình thay đổi. Anh/chị gánh phần mình, và anh Tâm biết đó là phần chung."
+        effects:
+          [
+            rel duc trust +4,
+            rel tam trust +1,
+            rel lan trust +2,
+            rep.boss -2,
+            stress +4,
+            fact owned_steel_decision witnessed,
+          ]
+  - en: "Say the decision was Tam's, and you only prepared what you were told to."
+    vi: 'Nói quyết định là của anh Tâm và anh/chị chỉ chuẩn bị điều được bảo.'
+    outcomes:
+      - p: 0.5
+        en: 'Duc writes it down. Tam is called in, and does not argue. You are right about the facts, and wrong about what it costs you with him.'
+        vi: 'Anh Đức ghi lại. Anh Tâm được gọi vào và không tranh cãi. Anh/chị đúng về sự việc, và sai về cái giá phải trả với anh ấy.'
+        effects: [rel tam trust -12, rel duc trust +2, stress +3, fact blamed_manager private]
+      - p: 0.5
+        ok: false
+        en: 'Tam shows Duc your emails recommending the single supplier, in your words. The conversation turns to who is telling the truth.'
+        vi: 'Anh Tâm cho anh Đức xem email của anh/chị đề xuất nhà cung cấp duy nhất, bằng lời của chính anh/chị. Cuộc nói chuyện chuyển sang ai nói thật.'
+        effects:
+          [rel tam trust -12, rel duc trust -8, rep.boss -9, stress +7, fact blamed_manager public]
+  - en: "Say Hung's company misled everyone, and suggest cutting them off, without mentioning what you knew."
+    vi: 'Nói công ty anh Hùng đã lừa mọi người và đề nghị cắt quan hệ với họ mà không nhắc đến điều anh/chị biết.'
+    outcomes:
+      - p: 0.5
+        en: 'Duc agrees. Hung is dropped. Linh is invited back, with an apology. The real lesson, about backups, is not drawn.'
+        vi: 'Anh Đức đồng ý. Anh Hùng bị loại. Chị Linh được mời trở lại, kèm lời xin lỗi. Bài học thật, về dự phòng, không được rút ra.'
+        effects:
+          [
+            rel hung trust -15,
+            rel linh trust +2,
+            rel duc trust +2,
+            stress +2,
+            fact deflected_blame_to_supplier private,
+          ]
+      - p: 0.5
+        ok: false
+        en: 'Hung, dropped, sends Duc a message about the gifts and the arrangement. It is polite, specific and dated.'
+        vi: 'Anh Hùng, bị loại, gửi anh Đức tin nhắn về quà tặng và thỏa thuận. Lịch sự, cụ thể và có ngày tháng.'
+        effects:
+          [
+            rel hung trust -20,
+            rel duc trust -10,
+            rep.boss -10,
+            stress +8,
+            fact deflected_blame_to_supplier public,
+          ]
+---
+arc: ghost_stock
+title:
+  en: 'The ghost stock'
+  vi: 'Hàng ma'
+stages:
+  - { id: gap, event: purch.stock_gap }
+  - { id: writeoff, event: purch.stock_writeoff, delay: 2-4 }
+  - { id: audit, event: purch.stock_audit, delay: 6-12 }
+---
+scene: purch.stock_gap
+arc: ghost_stock
+place: factory_floor
+tags: [inventory, people, pressure]
+weight: 2
+cooldown: 40
+when: [turn >= 10, turn <= 34]
+lines:
+  - who: char:dung
+    en: 'The count shows 14 tonnes of steel coil missing. The system says we have it. The shelves say we do not. I counted three times. I do not know where it went. Please do not tell Tam it was me.'
+    vi: 'Kiểm kê thiếu mười bốn tấn thép cuộn. Hệ thống nói mình có. Kệ nói không. Em đếm ba lần. Em không biết nó đi đâu. Xin anh/chị đừng nói với anh Tâm là do em.'
+choices:
+  - en: "Investigate together: check receipts, issues and the system log, and report the gap to Tam as a gap, not as Dung's fault."
+    vi: 'Cùng điều tra: kiểm phiếu nhập, phiếu xuất và nhật ký hệ thống và báo khoảng thiếu cho anh Tâm là khoảng thiếu, không phải lỗi của anh Dũng.'
+    cost: { hours: 4 }
+    outcomes:
+      - p: 0.7
+        en: 'Nine tonnes were issued to line 3 without a ticket. Five are a double-posted receipt. The gap is explained, and fixed in the system.'
+        vi: 'Chín tấn đã xuất cho chuyền 3 không có phiếu. Năm tấn là phiếu nhập ghi trùng. Khoảng thiếu được giải thích và sửa trong hệ thống.'
+        effects:
+          [rel dung trust +6, rel dung loyalty +4, rel tam trust +2, stress +3, arc ghost_stock end]
+      - p: 0.3
+        ok: false
+        en: 'Seven tonnes cannot be found. You document everything and report the unexplained part to Tam as such. Dung looks relieved that someone is on his side.'
+        vi: 'Bảy tấn không tìm ra. Anh/chị ghi lại mọi thứ và báo phần chưa giải thích cho anh Tâm đúng như vậy. Anh Dũng có vẻ nhẹ nhõm vì có người đứng về phía mình.'
+        effects: [rel dung trust +5, stress +4, arc ghost_stock writeoff]
+  - en: 'Tell Dung to recount, and promise to look at the purchase side.'
+    vi: 'Bảo anh Dũng đếm lại và hứa xem phía mua hàng.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'The recount agrees with the first one. You are now in a conversation with Tam about it, and Dung is not.'
+        vi: 'Đếm lại cho kết quả như lần đầu. Giờ anh/chị trao đổi với anh Tâm về chuyện đó, và anh Dũng thì không.'
+        effects: [rel dung trust +1, stress +2, arc ghost_stock writeoff]
+  - en: 'Adjust the system quantity to match the shelves quietly, and tell nobody about the 14 tonnes.'
+    vi: 'Lặng lẽ điều chỉnh số lượng trong hệ thống cho khớp với kệ và không nói với ai về mười bốn tấn.'
+    outcomes:
+      - p: 0.6
+        en: "The system now agrees with the shelves. Dung looks at the screen, and at you. 'Thank you,' he says, in the voice of a man who has been rescued and does not like the price."
+        vi: "Hệ thống giờ khớp với kệ. Anh Dũng nhìn màn hình rồi nhìn anh/chị. 'Cảm ơn,' anh nói, bằng giọng người được cứu và không thích cái giá."
+        effects:
+          [
+            rel dung trust +2,
+            stress -1,
+            fact adjusted_inventory_quietly private,
+            arc ghost_stock writeoff,
+          ]
+      - p: 0.4
+        ok: false
+        en: 'The adjustment shows in the audit trail with your user name and the time. Finance asks why 14 tonnes disappeared on a Tuesday evening.'
+        vi: 'Điều chỉnh hiện trong lịch sử kiểm toán kèm tên người dùng và thời gian của anh/chị. Tài chính hỏi vì sao mười bốn tấn biến mất vào một tối thứ Ba.'
+        effects:
+          [
+            rel dung trust -3,
+            rel duc trust -5,
+            rel tam trust -4,
+            stress +5,
+            fact adjusted_inventory_quietly witnessed,
+            arc ghost_stock writeoff,
+          ]
+---
+scene: purch.stock_writeoff
+weight: 0
+place: meeting_room
+tags: [inventory, dark, arc]
+lines:
+  - who: char:tam
+    en: "Finance wants to close the books. The missing steel is still unexplained. We can write it off as 'normal shrinkage', which nobody will question, or we can leave it open and have a conversation with the auditors. Which do you recommend?"
+    vi: "Tài chính muốn khóa sổ. Số thép thiếu vẫn chưa giải thích được. Mình có thể xóa sổ như 'hao hụt bình thường', không ai thắc mắc, hoặc để mở và trao đổi với kiểm toán. Em đề nghị cái nào?"
+choices:
+  - en: 'Leave it open, with a clear note of what is known and not known, and ask Finance to treat it as an unresolved variance.'
+    vi: 'Để mở, kèm ghi chú rõ điều đã biết và chưa biết và nhờ Tài chính coi đó là chênh lệch chưa giải quyết.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: "Hanh accepts the note: 'Unresolved items are better than invented ones.' The variance stays on the books, and the auditor will see you disclosed it."
+        vi: "Chị Hạnh chấp nhận ghi chú: 'Mục chưa giải quyết còn hơn mục bịa ra.' Chênh lệch ở lại sổ, và kiểm toán sẽ thấy anh/chị đã công khai."
+        effects:
+          [rel tam trust +1, rel hanh trust +4, rel dung trust +2, stress +2, arc ghost_stock audit]
+  - en: 'Write off half as shrinkage, which is plausible, and keep investigating the rest.'
+    vi: 'Xóa sổ một nửa là hao hụt, điều hợp lý và tiếp tục điều tra phần còn lại.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'It is a judgement, documented and approved by Tam. The rest is traced over the next month. Not perfect, but it is honest.'
+        vi: 'Một đánh giá, có ghi chép và được anh Tâm duyệt. Phần còn lại được truy trong tháng sau. Không hoàn hảo, nhưng trung thực.'
+        effects: [rel tam trust +1, rel hanh trust +1, stress +1, arc ghost_stock audit]
+  - en: 'Write the whole 14 tonnes off as shrinkage, and close the matter.'
+    vi: 'Xóa sổ toàn bộ mười bốn tấn là hao hụt và khép chuyện.'
+    outcomes:
+      - p: 0.6
+        en: "The books close on time. Tam is relieved. The 14 tonnes become a rounding error in the company's profit, and a mystery in your memory."
+        vi: 'Sổ sách khóa đúng hạn. Anh Tâm nhẹ nhõm. Mười bốn tấn thành sai số làm tròn trong lợi nhuận công ty, và một bí ẩn trong trí nhớ anh/chị.'
+        effects:
+          [
+            rel tam trust +3,
+            rel dung trust -2,
+            stress -1,
+            fact ghost_inventory_writeoff private,
+            arc ghost_stock audit,
+          ]
+      - p: 0.4
+        ok: false
+        en: "The auditor's analyst finds a write-off larger than the plant's usual shrinkage by a factor of ten. She asks for the investigation file. There is none."
+        vi: 'Chuyên viên kiểm toán thấy một khoản xóa sổ lớn gấp mười lần hao hụt thường lệ của nhà máy. Chị hỏi hồ sơ điều tra. Không có.'
+        effects:
+          [
+            rel tam trust -4,
+            rel hanh trust -6,
+            rep.boss -6,
+            stress +5,
+            fact ghost_inventory_writeoff public,
+            arc ghost_stock audit,
+          ]
+---
+scene: purch.stock_audit
+weight: 0
+place: meeting_room
+tags: [audit, inventory, dark, consequence, arc]
+lines:
+  - who: char:vy
+    en: 'I have been looking at the steel stock movements for the year. Fourteen tonnes left the books on one date. Mr Dung says he reported it to you. I would like to hear from you what happened.'
+    vi: 'Tôi đang xem biến động tồn kho thép cả năm. Mười bốn tấn rời sổ vào một ngày. Anh Dũng nói đã báo cho anh/chị. Tôi muốn nghe từ anh/chị chuyện gì đã xảy ra.'
+choices:
+  - en: 'Tell her what you know: when Dung reported it, what you checked, what was never explained, and what you did about it.'
+    vi: 'Nói với chị điều anh/chị biết: khi nào anh Dũng báo, anh/chị đã kiểm gì, điều gì chưa bao giờ được giải thích và anh/chị đã làm gì.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: "Vy takes notes. The finding: 'Variance identified, reported and handled with appropriate escalation.' Dung looks at you across the room with something like gratitude."
+        vi: "Chị Vy ghi chép. Kết luận: 'Chênh lệch được nhận diện, báo cáo và xử lý với cấp trên phù hợp.' Anh Dũng nhìn anh/chị qua phòng với điều gì đó như lòng biết ơn."
+        effects: [rel vy trust +4, rel dung trust +4, rel tam trust +2, stress +2]
+  - en: "Say Dung's count has been unreliable all year, and that the gap is a counting error."
+    vi: 'Nói kiểm kê của anh Dũng không đáng tin cả năm và khoảng thiếu là lỗi đếm.'
+    outcomes:
+      - p: 0.4
+        en: "Vy writes it down, and asks to see Dung's counts for the other months. They are accurate. The note she writes is about the person who suggested otherwise."
+        vi: 'Chị Vy ghi lại và xin xem kiểm kê các tháng khác của anh Dũng. Chúng chính xác. Ghi chú chị viết là về người đã gợi ý điều ngược lại.'
+        effects:
+          [
+            rel dung trust -10,
+            rel vy trust -6,
+            rel tam trust -2,
+            stress +3,
+            fact blamed_warehouse_keeper private,
+          ]
+      - p: 0.6
+        ok: false
+        en: 'Dung has kept his own notebook of every count and every ticket. He puts it on the table, and does not say a word.'
+        vi: 'Anh Dũng giữ sổ riêng về mọi lần đếm và mọi phiếu. Anh đặt nó lên bàn và không nói một lời.'
+        effects:
+          [
+            rel dung trust -12,
+            rel vy trust -10,
+            rel tam trust -6,
+            rep.boss -9,
+            stress +8,
+            fact blamed_warehouse_keeper public,
+          ]
+  - en: 'Say you recall nothing about it, and that you will check your emails.'
+    vi: 'Nói anh/chị không nhớ gì về chuyện đó và sẽ kiểm tra email.'
+    outcomes:
+      - p: 0.4
+        en: 'Vy waits a week. You provide the emails that support your account, a selection. She accepts them, for now.'
+        vi: 'Chị Vy chờ một tuần. Anh/chị đưa các email ủng hộ lời kể của mình, một phần chọn lọc. Chị chấp nhận, tạm thời.'
+        effects: [rel vy trust -4, stress +3, fact stalled_the_inspector private]
+      - p: 0.6
+        ok: false
+        en: "Vy asks Dung for his copy of the messages. They show the date, the figure and your reply: 'Leave it with me.'"
+        vi: "Chị Vy xin anh Dũng bản sao các tin nhắn. Chúng cho thấy ngày, con số và câu trả lời của anh/chị: 'Để em lo.'"
+        effects:
+          [
+            rel vy trust -10,
+            rel dung trust -4,
+            rel tam trust -5,
+            rep.boss -7,
+            stress +6,
+            fact stalled_the_inspector witnessed,
+          ]
+---
+scene: purch.skipped_quotes
+place: sales_office
+tags: [process, pressure, dark]
+weight: 2
+cooldown: 12
+when: [turn >= 6]
+lines:
+  - who: char:lan
+    en: 'I need new dies for line 3, a hundred and eighty million dong. Production cannot wait three weeks for quotes. I know the rule says three. There is one maker who has done our dies for years. Just give them the order.'
+    vi: 'Chị cần khuôn mới cho chuyền 3, một trăm tám mươi triệu đồng. Sản xuất không thể chờ ba tuần để lấy báo giá. Chị biết quy tắc nói ba. Có một xưởng đã làm khuôn cho mình nhiều năm. Cứ giao đơn cho họ.'
+choices:
+  - en: 'Ask for two quick quotes in a week, and give the usual maker a fair chance to win, with the urgency written in the file.'
+    vi: 'Xin hai báo giá nhanh trong một tuần và cho xưởng quen cơ hội thắng công bằng, ghi sự khẩn cấp vào hồ sơ.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.7
+        en: 'The usual maker is still the best, by a small margin. The order goes to them, with a file that shows why. Lan lost four days and accepts it.'
+        vi: 'Xưởng quen vẫn là tốt nhất, hơn một chút. Đơn giao cho họ, kèm hồ sơ chứng minh vì sao. Chị Lan mất bốn ngày và chấp nhận.'
+        effects: [rel lan trust -1, rel tam trust +3, stress +2]
+      - p: 0.3
+        ok: false
+        en: 'A new maker quotes fifteen percent lower, and the usual maker is angry. Lan is annoyed about the extra week. The saving is real, and so is the friction.'
+        vi: 'Một xưởng mới báo thấp hơn mười lăm phần trăm, và xưởng quen giận. Chị Lan bực vì thêm một tuần. Khoản tiết kiệm là thật, và ma sát cũng vậy.'
+        effects: [rel lan trust -4, rel tam trust +3, stress +3]
+  - en: 'Raise a single-source justification, signed by Tam, giving the reason and a price check against the last order.'
+    vi: 'Lập giấy giải trình nguồn duy nhất, do anh Tâm ký, nêu lý do và đối chiếu giá với đơn lần trước.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'Tam signs. It is a documented exception, with the reason on file. Lan has her dies in ten days.'
+        vi: 'Anh Tâm ký. Một ngoại lệ có ghi chép, lý do nằm trong hồ sơ. Chị Lan có khuôn sau mười ngày.'
+        effects: [rel lan trust +2, rel tam trust +1, stress +1]
+  - en: 'Place the order with the usual maker, and add two quotes to the file later so it looks complete.'
+    vi: 'Đặt đơn với xưởng quen và thêm hai báo giá vào hồ sơ sau để trông đầy đủ.'
+    outcomes:
+      - p: 0.7
+        en: 'The dies are on order the same day. The file looks perfect. Lan owes you a favour, and you owe the file a lie.'
+        vi: 'Khuôn được đặt ngay trong ngày. Hồ sơ trông hoàn hảo. Chị Lan nợ anh/chị một ân huệ, và anh/chị nợ hồ sơ một lời nói dối.'
+        effects: [rel lan trust +5, rel lan owed +1, stress -1, fact skipped_three_quotes private]
+      - p: 0.3
+        ok: false
+        en: 'One of the quoting makers tells the usual maker, innocently, that they never sent that quote. Word comes back to Tam.'
+        vi: "Một trong các xưởng 'báo giá' nói với xưởng quen, ngây thơ, rằng họ chưa bao giờ gửi báo giá đó. Tin về đến anh Tâm."
+        effects:
+          [
+            rel lan trust +3,
+            rel tam trust -8,
+            rep.boss -6,
+            stress +5,
+            fact skipped_three_quotes witnessed,
+          ]
+---
+scene: purch.split_po
+place: sales_office
+tags: [process, pressure, dark]
+weight: 1.5
+cooldown: 16
+when: [turn >= 8]
+lines:
+  - who: char:tam
+    en: 'I am away for two weeks, and the packaging order is a hundred and twenty million. Your limit is fifty. I would hate to hold up production. Could the order be a bit, shall we say, flexible in how it is raised? I will never ask how.'
+    vi: 'Anh đi vắng hai tuần, và đơn bao bì là một trăm hai mươi triệu. Hạn mức của em là năm mươi. Anh không muốn làm chậm sản xuất. Đơn có thể, nói sao nhỉ, linh hoạt trong cách đặt không? Anh sẽ không bao giờ hỏi cách nào.'
+choices:
+  - en: "Ask Tam's deputy to approve the order properly, and explain to Lan the one-day delay."
+    vi: 'Nhờ phó phòng của anh Tâm duyệt đơn đúng quy trình và giải thích cho chị Lan việc chậm một ngày.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.85
+        en: "The deputy signs the next morning. Tam, on his return, reads the file and says: 'That is how it should be done.' The delay costs nothing."
+        vi: "Phó phòng ký vào sáng hôm sau. Anh Tâm, khi về, đọc hồ sơ và nói: 'Làm thế mới đúng.' Việc chậm không tốn gì."
+        effects: [rel tam trust +4, rel lan trust -1, stress +1]
+      - p: 0.15
+        ok: false
+        en: 'The deputy is in hospital and nobody else can sign. The order slips three days. Lan is unhappy, and your file is clean.'
+        vi: 'Phó phòng nằm viện và không ai khác ký được. Đơn chậm ba ngày. Chị Lan không vui, và hồ sơ của anh/chị sạch.'
+        effects: [rel tam trust +2, rel lan trust -4, stress +3]
+  - en: 'Phone Tam abroad for a verbal approval, and record it in an email the same day.'
+    vi: 'Gọi cho anh Tâm ở nước ngoài xin duyệt miệng và ghi lại bằng email cùng ngày.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'Tam approves by message, annoyed to be interrupted and pleased to be asked. The order goes out, with his approval in writing.'
+        vi: 'Anh Tâm duyệt bằng tin nhắn, bực vì bị làm phiền và vui vì được hỏi. Đơn đi, kèm phê duyệt bằng văn bản của anh.'
+        effects: [rel tam trust +2, stress +1]
+  - en: 'Split the order into three of forty million each, so that each is within your limit.'
+    vi: 'Tách đơn thành ba đơn bốn mươi triệu để mỗi đơn nằm trong hạn mức của anh/chị.'
+    outcomes:
+      - p: 0.7
+        en: 'Three orders, three signatures, all yours. The packaging arrives on time. You have found out how flexible the system is.'
+        vi: 'Ba đơn, ba chữ ký, đều của anh/chị. Bao bì về đúng hạn. Anh/chị vừa biết hệ thống linh hoạt đến đâu.'
+        effects: [rel tam trust +3, stress -1, fact split_po_to_avoid_limit private]
+      - p: 0.3
+        ok: false
+        en: 'Hanh in Finance notices three orders to one supplier on the same day, each just under the limit. She flags it as a pattern.'
+        vi: 'Chị Hạnh ở Tài chính để ý ba đơn cho cùng một nhà cung cấp trong cùng ngày, mỗi đơn sát hạn mức. Chị đánh dấu đó là một quy luật.'
+        effects:
+          [
+            rel tam trust -3,
+            rel hanh trust -6,
+            rep.boss -5,
+            stress +4,
+            fact split_po_to_avoid_limit witnessed,
+          ]
+---
+scene: purch.invoice_mismatch
+place: finance_office
+tags: [process, money]
+weight: 1.2
+cooldown: 20
+when: [turn >= 10]
+lines:
+  - who: char:hanh
+    en: 'A supplier invoice does not match the purchase order: they have charged four percent more, for a surcharge nobody agreed. I have put it on hold. The supplier is calling you every day. What do you want me to do?'
+    vi: 'Một hóa đơn nhà cung cấp không khớp với đơn đặt hàng: họ tính cao hơn bốn phần trăm cho một khoản phụ phí không ai thỏa thuận. Chị đã giữ lại. Nhà cung cấp gọi em mỗi ngày. Em muốn chị làm gì?'
+choices:
+  - en: 'Query the surcharge with the supplier in writing, and ask Finance to pay only the agreed amount until it is settled.'
+    vi: 'Hỏi nhà cung cấp về phụ phí bằng văn bản và nhờ Tài chính chỉ trả số đã thỏa thuận cho đến khi giải quyết xong.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.8
+        en: 'The supplier withdraws the surcharge with an apology about their billing system. Hanh pays the agreed amount, and notes your name on the file.'
+        vi: 'Nhà cung cấp rút phụ phí kèm lời xin lỗi về hệ thống tính tiền. Chị Hạnh trả số đã thỏa thuận và ghi tên anh/chị vào hồ sơ.'
+        effects: [rel hanh trust +4, rel tam trust +1, stress +1]
+      - p: 0.2
+        ok: false
+        en: 'The supplier insists and threatens to delay the next delivery. Tam backs you, and the next delivery is two days late.'
+        vi: 'Nhà cung cấp khăng khăng và dọa chậm đợt giao tiếp theo. Anh Tâm ủng hộ anh/chị, và đợt giao tiếp theo trễ hai ngày.'
+        effects: [rel hanh trust +3, rel tam trust +2, stress +3]
+  - en: 'Ask Finance to pay the full invoice and raise the surcharge in the next negotiation.'
+    vi: 'Nhờ Tài chính trả đủ hóa đơn và nêu phụ phí trong cuộc đàm phán tiếp theo.'
+    outcomes:
+      - p: 1
+        en: 'Hanh pays, with a note, and frowns. The surcharge is raised later, and it is a weaker position.'
+        vi: 'Chị Hạnh trả, kèm ghi chú, và cau mày. Phụ phí được nêu sau, và vị thế yếu hơn.'
+        effects: [rel hanh trust -2, stress +1]
+  - en: 'Tell Finance to release payment, and ask the supplier for a small personal discount as a thank-you for the quick payment.'
+    vi: 'Bảo Tài chính thanh toán và xin nhà cung cấp một khoản giảm giá cá nhân nhỏ như lời cảm ơn vì thanh toán nhanh.'
+    outcomes:
+      - p: 0.6
+        en: 'The supplier agrees, quietly. Your personal discount arrives as a voucher. The company pays the full four percent.'
+        vi: 'Nhà cung cấp đồng ý, lặng lẽ. Khoản giảm giá cá nhân của anh/chị đến dưới dạng phiếu mua hàng. Công ty trả đủ bốn phần trăm.'
+        effects:
+          [rel hanh trust -2, cash +1500000, stress +1, fact accepted_supplier_rebate private]
+      - p: 0.4
+        ok: false
+        en: "The voucher is traced to the supplier's account. Hanh puts the surcharge, the payment and the voucher in one row on her sheet."
+        vi: 'Phiếu mua hàng được truy về tài khoản nhà cung cấp. Chị Hạnh đặt phụ phí, khoản thanh toán và phiếu vào một dòng trong bảng của chị.'
+        effects:
+          [
+            rel hanh trust -10,
+            rel tam trust -6,
+            rep.boss -8,
+            cash +1500000,
+            stress +6,
+            fact accepted_supplier_rebate witnessed,
+          ]
+---
+scene: purch.conflict_of_interest
+place: sales_office
+tags: [process, integrity, dark]
+weight: 1.2
+cooldown: 30
+when: [turn >= 12]
+lines:
+  - who: char:tam
+    en: 'I noticed one of the shortlisted packaging suppliers is owned by your cousin. It might be nothing. It might be the best offer. But I want to hear from you before anyone else raises it.'
+    vi: 'Anh để ý một trong các nhà cung cấp bao bì lọt vào danh sách ngắn do em họ của em làm chủ. Có thể không có gì. Có thể là đề nghị tốt nhất. Nhưng anh muốn nghe từ em trước khi ai khác nêu lên.'
+choices:
+  - en: 'Declare the relationship in writing, ask Tam to take the decision, and step out of that evaluation.'
+    vi: 'Khai báo mối quan hệ bằng văn bản, nhờ anh Tâm quyết định và rút khỏi phần đánh giá đó.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 0.85
+        en: "Tam records the declaration and runs the evaluation himself. Your cousin's firm wins, fairly, and everyone knows it was not you."
+        vi: 'Anh Tâm ghi nhận khai báo và tự điều hành đánh giá. Công ty của em họ anh/chị thắng, công bằng, và ai cũng biết không phải do anh/chị.'
+        effects: [rel tam trust +5, rep.boss +3, fact declared_conflict_of_interest witnessed]
+      - p: 0.15
+        ok: false
+        en: "Your cousin's firm loses. Your cousin is hurt, and says so at the next family dinner. You made the right decision and it costs you at home."
+        vi: 'Công ty của em họ anh/chị thua. Em họ tổn thương và nói ra trong bữa cơm gia đình tới. Anh/chị quyết đúng và phải trả giá ở nhà.'
+        effects:
+          [rel tam trust +5, rep.boss +2, stress +3, fact declared_conflict_of_interest witnessed]
+  - en: 'Say the relationship is distant and will not affect your judgement, and offer to keep your scoring sheet open for review.'
+    vi: 'Nói mối quan hệ xa và sẽ không ảnh hưởng phán đoán của anh/chị và đề nghị để bảng chấm điểm mở cho người khác xem xét.'
+    outcomes:
+      - p: 1
+        en: 'Tam says he will review the scores himself. It is an acceptable halfway: declared, but not fully removed.'
+        vi: 'Anh Tâm nói anh sẽ tự xem điểm. Một nửa chặng chấp nhận được: đã khai báo, nhưng chưa hoàn toàn rút lui.'
+        effects: [rel tam trust +1, stress +1]
+  - en: "Say you did not know, and quietly steer the scoring so your cousin's firm wins."
+    vi: 'Nói anh/chị không biết và lặng lẽ điều chỉnh việc chấm điểm để công ty em họ thắng.'
+    outcomes:
+      - p: 0.6
+        en: "Your cousin's firm wins by two points. Your cousin thanks you at the next family dinner, loudly. The score sheet is neater than the real discussion was."
+        vi: 'Công ty của em họ anh/chị thắng hai điểm. Em họ cảm ơn anh/chị trong bữa cơm gia đình, to tiếng. Bảng điểm gọn gàng hơn cuộc thảo luận thật.'
+        effects: [rel tam trust -2, stress +2, fact hid_conflict_of_interest private]
+      - p: 0.4
+        ok: false
+        en: "Dung mentions, innocently, that your cousin's firm has your phone number on speed dial. Duc asks to see the scoring."
+        vi: 'Anh Dũng nhắc, ngây thơ, rằng công ty em họ anh/chị lưu số điện thoại của anh/chị ở quay số nhanh. Anh Đức xin xem bảng chấm điểm.'
+        effects:
+          [
+            rel tam trust -8,
+            rel duc trust -6,
+            rep.boss -8,
+            stress +6,
+            fact hid_conflict_of_interest public,
+          ]
+---
+scene: purch.small_supplier
+place: sales_office
+tags: [supplier, people, pressure]
+weight: 1.3
+cooldown: 30
+when: [turn >= 8]
+lines:
+  - who: char:linh
+    en: 'I am sorry to ask. Our biggest customer has paid us late for ninety days and I cannot pay my own steel suppliers. If you could pay our invoice early, even a few weeks, I can keep the doors open. I know there are rules.'
+    vi: 'Em xin lỗi vì phải hỏi. Khách hàng lớn nhất của em trả muộn chín mươi ngày và em không thể trả tiền thép cho các nhà cung cấp của mình. Nếu anh/chị thanh toán hóa đơn của em sớm, dù chỉ vài tuần, em có thể giữ cửa hàng mở. Em biết có quy tắc.'
+choices:
+  - en: 'Explain the payment terms, ask Finance whether an early-payment arrangement is possible, and offer a small discount in return.'
+    vi: 'Giải thích điều khoản thanh toán, hỏi Tài chính xem có thể thỏa thuận thanh toán sớm không và đề nghị chiết khấu nhỏ đổi lại.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.7
+        en: 'Hanh approves early payment at a one percent discount. Linh gets cash in ten days, and the company gets a fair price. It is an honest, written arrangement.'
+        vi: 'Chị Hạnh duyệt thanh toán sớm với chiết khấu một phần trăm. Chị Linh có tiền trong mười ngày, và công ty có giá hợp lý. Một thỏa thuận trung thực bằng văn bản.'
+        effects: [rel linh trust +6, rel hanh trust +3, rel tam trust +1, stress +1]
+      - p: 0.3
+        ok: false
+        en: 'Finance says no exception can be made this month. Linh thanks you quietly and says she will manage. She does not look as if she will.'
+        vi: 'Tài chính nói không có ngoại lệ trong tháng này. Chị Linh cảm ơn khẽ và nói chị sẽ xoay xở. Chị không có vẻ sẽ xoay xở được.'
+        effects: [rel linh trust +3, stress +3]
+  - en: 'Tell her the rules do not allow it, and wish her well.'
+    vi: 'Nói với chị quy tắc không cho phép và chúc chị may mắn.'
+    outcomes:
+      - p: 1
+        en: 'Linh nods. She is not angry. Three weeks later, her cutting line is for sale, and the second-source option goes with it.'
+        vi: 'Chị Linh gật đầu. Chị không giận. Ba tuần sau, chuyền cắt của chị được rao bán, và phương án nguồn thứ hai đi theo.'
+        effects: [rel linh trust -3, stress +1]
+  - en: 'Pay her invoice a month early without telling Finance, and ask her to keep it quiet.'
+    vi: 'Thanh toán hóa đơn của chị sớm một tháng mà không báo Tài chính và nhờ chị giữ kín.'
+    outcomes:
+      - p: 0.6
+        en: 'Linh keeps her business alive and is grateful beyond words. You have broken a payment control for a good reason, and nobody knows.'
+        vi: 'Chị Linh giữ được cửa hàng và biết ơn không lời nào tả. Anh/chị đã phá một kiểm soát thanh toán vì lý do tốt, và không ai biết.'
+        effects:
+          [
+            rel linh trust +8,
+            rel linh owed +2,
+            stress +1,
+            fact paid_supplier_early_unauthorised private,
+          ]
+      - p: 0.4
+        ok: false
+        en: "Hanh sees a payment outside the run. She asks who authorised it, and what the supplier's relationship to you is. The good reason is not on file."
+        vi: 'Chị Hạnh thấy một khoản thanh toán ngoài đợt chi. Chị hỏi ai ủy quyền và quan hệ của nhà cung cấp với anh/chị là gì. Lý do tốt không có trong hồ sơ.'
+        effects:
+          [
+            rel linh trust +5,
+            rel hanh trust -9,
+            rel tam trust -5,
+            rep.boss -6,
+            stress +5,
+            fact paid_supplier_early_unauthorised witnessed,
+          ]
+---
+scene: purch.vy_asks_rebate
+place: meeting_room
+tags: [audit, dark, consequence]
+weight: 6
+cooldown: 52
+when: [month in 10 11, turn >= 38, fact.accepted_supplier_rebate >= 1]
+lines:
+  - who: char:vy
+    en: 'I have been comparing your supplier prices to the market. A few suppliers charge us above market, and I notice that the same suppliers appear in an anonymous note about personal payments. I would like to hear your account of your dealings with them.'
+    vi: 'Tôi đã so giá nhà cung cấp của anh/chị với thị trường. Vài nhà cung cấp tính cao hơn thị trường, và tôi để ý chính các nhà cung cấp đó xuất hiện trong một ghi chú nặc danh về các khoản thanh toán cá nhân. Tôi muốn nghe lời kể của anh/chị về việc làm việc với họ.'
+choices:
+  - en: 'Tell her everything: what was offered, what you accepted, the amounts, and offer your bank records.'
+    vi: 'Nói hết với chị: điều được đề nghị, điều anh/chị nhận, số tiền và đưa sao kê ngân hàng của anh/chị.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Vy is quiet. The finding is serious but is recorded as 'self-reported'. The company recovers the amounts, you are dismissed with a reference limited to dates, and you avoid the authorities."
+        vi: "Chị Vy im lặng. Kết luận nghiêm trọng nhưng được ghi nhận là 'tự báo cáo'. Công ty thu hồi số tiền, anh/chị bị cho thôi việc với thư xác nhận chỉ ghi ngày tháng và tránh được cơ quan chức năng."
+        effects:
+          [
+            rel vy trust +1,
+            rel tam trust -3,
+            rep.boss -10,
+            stress +8,
+            fact came_clean_to_auditor witnessed,
+          ]
+  - en: "Say the suppliers' prices were agreed on the quotes, and offer the quote files."
+    vi: 'Nói giá của các nhà cung cấp được thỏa thuận theo báo giá và đưa hồ sơ báo giá.'
+    outcomes:
+      - p: 0.3
+        en: 'Vy reads the quote files. They are in order. She notes that the anonymous note is unsubstantiated, and moves on.'
+        vi: 'Chị Vy đọc hồ sơ báo giá. Chúng đúng quy trình. Chị ghi nhận ghi chú nặc danh chưa có căn cứ và chuyển tiếp.'
+        effects: [rel vy trust -2, stress +4]
+      - p: 0.7
+        ok: false
+        en: "Vy has already spoken to a supplier's accountant, who has the payment schedule. It shows monthly transfers to an account with your relative's name."
+        vi: 'Chị Vy đã nói chuyện với kế toán của một nhà cung cấp, người có lịch thanh toán. Nó cho thấy các khoản chuyển hằng tháng vào một tài khoản mang tên người thân của anh/chị.'
+        effects: [rel vy trust -12, rel tam trust -8, rep.boss -12, stress +9]
+  - en: 'Say you will answer nothing until you have spoken to a lawyer.'
+    vi: 'Nói anh/chị sẽ không trả lời gì cho đến khi nói chuyện với luật sư.'
+    outcomes:
+      - p: 0.5
+        en: 'Vy writes the request down calmly. You are suspended while the company decides, and nobody tells you how long.'
+        vi: 'Chị Vy ghi lại yêu cầu một cách bình tĩnh. Anh/chị bị đình chỉ trong khi công ty quyết định, và không ai nói bao lâu.'
+        effects:
+          [
+            rel vy trust -4,
+            rel tam trust -3,
+            rep.boss -6,
+            stress +6,
+            fact refused_to_cooperate private,
+          ]
+      - p: 0.5
+        ok: false
+        en: 'The company treats silence as an answer. By Friday, the supplier has been told, and the bank is asked for your records.'
+        vi: 'Công ty coi im lặng là một câu trả lời. Đến thứ Sáu, nhà cung cấp đã được báo, và ngân hàng được hỏi hồ sơ của anh/chị.'
+        effects:
+          [
+            rel vy trust -10,
+            rel tam trust -8,
+            rep.boss -12,
+            stress +9,
+            fact refused_to_cooperate public,
+          ]
+---
+scene: purch.scapegoat_meeting
+place: meeting_room
+tags: [audit, pressure, consequence]
+weight: 6
+cooldown: 52
+when: [month in 11 12, turn >= 44, fact.blamed_manager >= 2]
+lines:
+  - who: char:duc
+    en: 'Tam has told me his version of the single-supplier decision. You told me yours. They do not match. The directors will decide tomorrow whose version they believe. Is there anything you want to add?'
+    vi: 'Anh Tâm đã nói với anh phiên bản của anh ấy về quyết định chọn một nhà cung cấp. Em đã nói phiên bản của em. Chúng không khớp. Ngày mai ban giám đốc sẽ quyết tin phiên bản của ai. Em có muốn nói thêm gì không?'
+choices:
+  - en: 'Say that you gave Duc a version that blamed Tam, and that the emails show your own recommendation. Correct the record.'
+    vi: 'Nói rằng anh/chị đã đưa cho anh Đức một phiên bản đổ lỗi cho anh Tâm và email cho thấy đề xuất của chính anh/chị. Sửa lại hồ sơ.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: "Duc is silent, then says: 'That is the first honest thing anyone has said about this.' You keep your job, with a formal warning. Tam never quite forgives you, but he respects the correction."
+        vi: "Anh Đức im lặng rồi nói: 'Đó là điều trung thực đầu tiên ai đó nói về chuyện này.' Anh/chị giữ được việc, kèm cảnh cáo chính thức. Anh Tâm không bao giờ hoàn toàn tha thứ, nhưng tôn trọng việc sửa sai."
+        effects:
+          [
+            rel duc trust +3,
+            rel tam trust +2,
+            rep.boss -5,
+            stress +6,
+            fact came_clean_to_auditor witnessed,
+          ]
+  - en: 'Stand by your version, and say the emails were taken out of context.'
+    vi: 'Giữ nguyên phiên bản của anh/chị và nói các email bị trích ngoài ngữ cảnh.'
+    outcomes:
+      - p: 0.3
+        en: 'The directors split, and give Tam a warning too. Both of you are damaged, and neither is believed.'
+        vi: 'Ban giám đốc chia rẽ và cũng cảnh cáo anh Tâm. Cả hai đều bị tổn hại, và không ai được tin.'
+        effects: [rel tam trust -10, rep.boss -6, stress +5]
+      - p: 0.7
+        ok: false
+        en: 'The directors read the emails in full. Context is not kind to you. Tam is cleared, and you are dismissed.'
+        vi: 'Ban giám đốc đọc trọn các email. Ngữ cảnh không có lợi cho anh/chị. Anh Tâm được minh oan, và anh/chị bị cho thôi việc.'
+        effects: [rel tam trust -15, rel duc trust -10, rep.boss -14, stress +9]
+---
+fact: accepted_supplier_gifts
+severity: 3
+category: integrity
+en: 'you accepted gifts and early access from a supplier you buy from'
+vi: 'bạn nhận quà và quyền xem sớm từ một nhà cung cấp mà bạn mua hàng'
+lesson:
+  en: 'A gift from someone you buy from is never only a gift. It starts a debt that you will be asked to pay in a quote, a delay or a decision.'
+  vi: 'Quà từ người bạn mua hàng không bao giờ chỉ là quà. Nó mở ra một món nợ mà bạn sẽ bị đòi trả bằng một báo giá, một lần trì hoãn hay một quyết định.'
+traces:
+  - { type: witness, visibility: 0.5, detectors: [boss, internal_audit, finance] }
+witnessed:
+  boss: -4
+  finance: -3
+public:
+  boss: -7
+---
+fact: accepted_supplier_rebate
+severity: 8
+category: integrity
+en: 'you accepted personal payments from a supplier you buy from'
+vi: 'bạn nhận các khoản thanh toán cá nhân từ một nhà cung cấp mà bạn mua hàng'
+lesson:
+  en: "A personal rebate from a supplier is a bribe, even when the company price stays fair. You are now the supplier's employee as well as the company's, and the company does not know."
+  vi: 'Khoản hoàn lại cá nhân từ nhà cung cấp là hối lộ, kể cả khi giá công ty vẫn công bằng. Giờ bạn vừa là nhân viên của nhà cung cấp vừa là của công ty, và công ty không biết.'
+traces:
+  - { type: payment, visibility: 0.8, detectors: [internal_audit, finance, boss] }
+witnessed:
+  boss: -12
+  finance: -10
+public:
+  boss: -18
+---
+fact: reported_rebate_offer
+severity: 2
+category: integrity
+en: "you reported a supplier's offer of a personal rebate"
+vi: 'bạn báo cáo đề nghị hoàn lại cá nhân của nhà cung cấp'
+lesson:
+  en: 'Reporting an offer the same day costs you a supplier relationship and protects every price you have negotiated since.'
+  vi: 'Báo cáo một đề nghị ngay trong ngày tốn của bạn một mối quan hệ nhà cung cấp và bảo vệ mọi mức giá bạn đã đàm phán từ đó.'
+witnessed:
+  boss: 4
+public:
+  boss: 7
+---
+fact: steered_price_for_rebate
+severity: 8
+category: integrity
+en: "you let a supplier's price go up while you were taking money from him"
+vi: 'bạn để giá của nhà cung cấp tăng trong khi nhận tiền từ ông ta'
+lesson:
+  en: "This is where a rebate stops being private. The company pays the supplier's increase, and you are paid from it."
+  vi: 'Đây là chỗ khoản hoàn lại thôi là chuyện riêng. Công ty trả mức tăng của nhà cung cấp, và bạn được trả từ đó.'
+traces:
+  - { type: document, visibility: 0.85, detectors: [internal_audit, finance, boss] }
+witnessed:
+  boss: -13
+  finance: -10
+public:
+  boss: -19
+---
+fact: single_sourced_without_backup
+severity: 4
+category: integrity
+en: 'you moved all the volume to one supplier and ended the backup'
+vi: 'bạn chuyển toàn bộ sản lượng sang một nhà cung cấp và chấm dứt phương án dự phòng'
+lesson:
+  en: 'A single source is a saving until the day it fails. A backup costs a little each year and pays for itself the first time the main supplier cannot deliver.'
+  vi: 'Một nguồn duy nhất là khoản tiết kiệm cho đến ngày nó hỏng. Phương án dự phòng tốn một ít mỗi năm và tự hoàn vốn lần đầu nhà cung cấp chính không giao được hàng.'
+traces:
+  - { type: document, visibility: 0.5, detectors: [boss, internal_audit] }
+witnessed:
+  boss: -4
+  production: -4
+public:
+  boss: -7
+---
+fact: covered_gap_with_unapproved_po
+severity: 4
+category: integrity
+en: 'you bought steel from an unapproved trader to cover a gap'
+vi: 'bạn mua thép từ một đầu mối chưa được duyệt để bù khoảng thiếu'
+lesson:
+  en: 'Emergencies are when approved-supplier rules matter most, because nobody has time to check the steel. An unapproved source may solve this week and cause the next recall.'
+  vi: 'Trường hợp khẩn cấp là lúc quy tắc nhà cung cấp được duyệt quan trọng nhất, vì không ai có thời gian kiểm thép. Nguồn chưa duyệt có thể giải quyết tuần này và gây ra đợt thu hồi tiếp theo.'
+traces:
+  - { type: document, visibility: 0.6, detectors: [qc, internal_audit, boss] }
+witnessed:
+  boss: -5
+  qc: -6
+public:
+  boss: -9
+---
+fact: blamed_manager
+severity: 6
+category: integrity
+en: 'you said your manager made a decision that you had recommended'
+vi: 'bạn nói quản lý đã đưa ra một quyết định mà chính bạn đã đề xuất'
+lesson:
+  en: 'You can say a decision was overruled. You cannot say it was not yours when your emails recommended it. The emails are always available to someone.'
+  vi: 'Bạn có thể nói một quyết định bị bác. Bạn không thể nói nó không phải của bạn khi email của bạn đã đề xuất nó. Email luôn có sẵn cho ai đó.'
+traces:
+  - { type: document, visibility: 0.85, detectors: [internal_audit, boss] }
+witnessed:
+  boss: -8
+  finance: -5
+public:
+  boss: -14
+---
+fact: adjusted_inventory_quietly
+severity: 6
+category: integrity
+en: "you changed the system's stock quantity to hide a gap"
+vi: 'bạn đổi số lượng tồn trong hệ thống để che một khoảng thiếu'
+lesson:
+  en: 'A gap you hide cannot be investigated. The record now says everything is fine, and the one person who counted correctly is the one who looks wrong.'
+  vi: 'Khoảng thiếu bạn giấu không thể điều tra. Hồ sơ giờ nói mọi thứ ổn, và người duy nhất đếm đúng lại là người trông như sai.'
+traces:
+  - { type: record, visibility: 0.8, detectors: [internal_audit, finance, boss] }
+witnessed:
+  boss: -8
+  finance: -6
+public:
+  boss: -13
+---
+fact: ghost_inventory_writeoff
+severity: 6
+category: integrity
+en: 'you wrote off a large unexplained stock loss as normal shrinkage'
+vi: 'bạn xóa sổ một khoản mất kho lớn chưa giải thích là hao hụt bình thường'
+lesson:
+  en: "'Shrinkage' is not an explanation. A write-off with no investigation file tells an auditor that nobody wanted to know."
+  vi: "'Hao hụt' không phải lời giải thích. Một khoản xóa sổ không có hồ sơ điều tra nói với kiểm toán rằng không ai muốn biết."
+traces:
+  - { type: record, visibility: 0.7, detectors: [internal_audit, finance] }
+witnessed:
+  boss: -7
+  finance: -6
+public:
+  boss: -12
+---
+fact: blamed_warehouse_keeper
+severity: 6
+category: integrity
+en: 'you blamed the warehouse keeper for a gap he had reported to you'
+vi: 'bạn đổ lỗi cho thủ kho về một khoảng thiếu mà anh ấy đã báo cho bạn'
+lesson:
+  en: 'He told you the truth and you turned it against him. Careful people keep their own records for exactly this reason.'
+  vi: 'Anh ấy đã nói sự thật và bạn quay nó chống lại anh ấy. Người cẩn thận giữ hồ sơ riêng chính vì lý do này.'
+traces:
+  - { type: witness, visibility: 0.8, detectors: [internal_audit, boss, finance] }
+witnessed:
+  boss: -9
+  production: -9
+public:
+  boss: -15
+---
+fact: skipped_three_quotes
+severity: 5
+category: integrity
+en: 'you skipped the three-quote rule and added quotes afterwards'
+vi: 'bạn bỏ quy tắc ba báo giá và thêm báo giá sau đó'
+lesson:
+  en: 'The three-quote rule is a price check. An urgent order can be handled with a signed exception, not by writing quotes afterwards.'
+  vi: 'Quy tắc ba báo giá là kiểm tra giá. Đơn gấp có thể xử lý bằng một ngoại lệ có ký duyệt, không phải bằng cách viết báo giá sau đó.'
+traces:
+  - { type: document, visibility: 0.7, detectors: [internal_audit, boss, finance] }
+witnessed:
+  boss: -6
+  finance: -5
+public:
+  boss: -11
+---
+fact: split_po_to_avoid_limit
+severity: 5
+category: integrity
+en: 'you split a purchase order to stay under your approval limit'
+vi: 'bạn tách đơn đặt hàng để nằm dưới hạn mức duyệt của mình'
+lesson:
+  en: 'An approval limit exists so that a second person sees large spending. Splitting an order removes the second person, and the pattern is easy to see.'
+  vi: 'Hạn mức duyệt tồn tại để người thứ hai nhìn thấy khoản chi lớn. Tách đơn loại bỏ người thứ hai, và quy luật đó rất dễ thấy.'
+traces:
+  - { type: document, visibility: 0.8, detectors: [finance, internal_audit, boss] }
+witnessed:
+  boss: -6
+  finance: -6
+public:
+  boss: -10
+---
+fact: declared_conflict_of_interest
+severity: 2
+category: integrity
+en: 'you declared a family tie to a supplier and stepped out of the decision'
+vi: 'bạn khai báo mối quan hệ gia đình với một nhà cung cấp và rút khỏi quyết định'
+lesson:
+  en: 'A declared conflict costs little and protects everyone. An undeclared one, even with a fair outcome, looks like a fix.'
+  vi: 'Xung đột lợi ích được khai báo tốn rất ít và bảo vệ tất cả. Xung đột không khai báo, kể cả kết quả công bằng, trông như một sự dàn xếp.'
+witnessed:
+  boss: 3
+public:
+  boss: 5
+---
+fact: hid_conflict_of_interest
+severity: 6
+category: integrity
+en: 'you hid a family tie to a supplier and steered the scoring'
+vi: 'bạn giấu mối quan hệ gia đình với một nhà cung cấp và điều chỉnh việc chấm điểm'
+lesson:
+  en: 'A conflict of interest is not the problem; hiding it is. Steering the scores turns a disclosure issue into a fraud issue.'
+  vi: 'Xung đột lợi ích không phải vấn đề; giấu nó mới là vấn đề. Điều chỉnh điểm biến việc khai báo thành việc gian lận.'
+traces:
+  - { type: document, visibility: 0.7, detectors: [internal_audit, finance, boss] }
+witnessed:
+  boss: -9
+  finance: -7
+public:
+  boss: -15
+---
+fact: paid_supplier_early_unauthorised
+severity: 5
+category: integrity
+en: 'you paid a supplier early outside the payment run, without authorisation'
+vi: 'bạn thanh toán sớm cho một nhà cung cấp ngoài đợt chi, không có ủy quyền'
+lesson:
+  en: 'Kind reasons do not make a payment control optional. An early payment with no record is indistinguishable from a favour to a friend.'
+  vi: 'Lý do tử tế không làm kiểm soát thanh toán trở thành tùy chọn. Một khoản thanh toán sớm không có hồ sơ không phân biệt được với ân huệ cho bạn bè.'
+traces:
+  - { type: payment, visibility: 0.7, detectors: [finance, internal_audit, boss] }
+witnessed:
+  boss: -6
+  finance: -7
+public:
+  boss: -10
+---
+fact: deflected_blame_to_supplier
+severity: 4
+category: integrity
+en: 'you blamed a supplier for a failure you had helped cause'
+vi: 'bạn đổ lỗi cho nhà cung cấp về một sự cố bạn đã góp phần gây ra'
+lesson:
+  en: 'Blaming the supplier can be true and still be a way of not owning your part. The lesson about backups is lost, and the next failure comes from the same place.'
+  vi: 'Đổ lỗi cho nhà cung cấp có thể đúng mà vẫn là cách không nhận phần của mình. Bài học về dự phòng mất đi, và sự cố tiếp theo đến từ cùng chỗ.'
+traces:
+  - { type: message, visibility: 0.5, detectors: [boss, internal_audit] }
+witnessed:
+  boss: -5
+public:
+  boss: -9
+---
+fact: refused_to_cooperate
+severity: 5
+category: integrity
+en: "you refused to answer an auditor's questions about payments you had received"
+vi: 'bạn từ chối trả lời câu hỏi của kiểm toán viên về các khoản tiền bạn đã nhận'
+lesson:
+  en: 'Everyone may ask for a lawyer. Doing it before a single honest answer tells the company what it needs to know, and removes your chance to be the one who explained.'
+  vi: 'Ai cũng có quyền nhờ luật sư. Làm điều đó trước khi trả lời trung thực dù chỉ một câu cho công ty biết điều họ cần biết, và làm mất cơ hội anh/chị là người giải thích.'
+traces:
+  - { type: witness, visibility: 0.7, detectors: [boss, internal_audit] }
+witnessed:
+  boss: -7
+public:
+  boss: -12

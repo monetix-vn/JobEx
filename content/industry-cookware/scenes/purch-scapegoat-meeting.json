@@ -1,0 +1,95 @@
+{
+  "id": "scene.purch.scapegoat_meeting",
+  "location": "loc.meeting_room",
+  "cast": ["char:duc"],
+  "lines": [
+    {
+      "speaker": "char:duc",
+      "text_key": "scene.purch.scapegoat_meeting.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.purch.scapegoat_meeting.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.purch.scapegoat_meeting.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.came_clean_to_auditor",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.purch.scapegoat_meeting.c2",
+      "outcomes": [
+        {
+          "p": 0.3,
+          "narration_key": "scene.purch.scapegoat_meeting.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": -10
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            }
+          ]
+        },
+        {
+          "p": 0.7,
+          "result": "fail",
+          "narration_key": "scene.purch.scapegoat_meeting.c2.fail",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": -15
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": -10
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -14
+            },
+            {
+              "delta": "player.stress",
+              "value": 9
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "id": "scene.purch.conflict_of_interest",
+  "location": "loc.sales_office",
+  "cast": ["char:tam"],
+  "lines": [
+    {
+      "speaker": "char:tam",
+      "text_key": "scene.purch.conflict_of_interest.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.purch.conflict_of_interest.c1",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 0.85,
+          "narration_key": "scene.purch.conflict_of_interest.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": 5
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 3
+            },
+            {
+              "fact": "fact.declared_conflict_of_interest",
+              "visibility": "witnessed"
+            }
+          ]
+        },
+        {
+          "p": 0.15,
+          "result": "fail",
+          "narration_key": "scene.purch.conflict_of_interest.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": 5
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.declared_conflict_of_interest",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.purch.conflict_of_interest.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.purch.conflict_of_interest.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.purch.conflict_of_interest.c3",
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.purch.conflict_of_interest.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.hid_conflict_of_interest",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.purch.conflict_of_interest.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -8
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.hid_conflict_of_interest",
+              "visibility": "public"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

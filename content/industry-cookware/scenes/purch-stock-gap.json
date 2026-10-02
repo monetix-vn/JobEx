@@ -1,0 +1,153 @@
+{
+  "id": "scene.purch.stock_gap",
+  "location": "loc.factory_floor",
+  "cast": ["char:dung"],
+  "lines": [
+    {
+      "speaker": "char:dung",
+      "text_key": "scene.purch.stock_gap.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.purch.stock_gap.c1",
+      "cost": {
+        "hours": 4
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.purch.stock_gap.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.dung.trust",
+              "value": 6
+            },
+            {
+              "delta": "rel.dung.loyalty",
+              "value": 4
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.ghost_stock",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.purch.stock_gap.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.dung.trust",
+              "value": 5
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.ghost_stock",
+              "stage": "writeoff"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.purch.stock_gap.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.purch.stock_gap.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.dung.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.ghost_stock",
+              "stage": "writeoff"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.purch.stock_gap.c3",
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.purch.stock_gap.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.dung.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": -1
+            },
+            {
+              "fact": "fact.adjusted_inventory_quietly",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.ghost_stock",
+              "stage": "writeoff"
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.purch.stock_gap.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.dung.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": -5
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.adjusted_inventory_quietly",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.ghost_stock",
+              "stage": "writeoff"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

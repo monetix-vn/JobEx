@@ -1,0 +1,133 @@
+{
+  "id": "scene.purch.steel_price_twist",
+  "location": "loc.meeting_room",
+  "cast": ["char:tam"],
+  "lines": [
+    {
+      "speaker": "char:tam",
+      "text_key": "scene.purch.steel_price_twist.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.purch.steel_price_twist.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.purch.steel_price_twist.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 4
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.purch.steel_price_twist.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.purch.steel_price_twist.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.purch.steel_price_twist.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.purch.steel_price_twist.c3",
+      "outcomes": [
+        {
+          "p": 0.5,
+          "narration_key": "scene.purch.steel_price_twist.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 5
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.overstated_price_forecast",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.5,
+          "result": "fail",
+          "narration_key": "scene.purch.steel_price_twist.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.overstated_price_forecast",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

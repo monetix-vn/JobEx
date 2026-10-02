@@ -313,5 +313,65 @@
         "delay_weeks": [1, 2]
       }
     ]
+  },
+  {
+    "id": "arc.the_sweetener",
+    "title_key": "arc.the_sweetener.title",
+    "stages": [
+      {
+        "id": "lunch",
+        "event": "event.purch.hung_lunch"
+      },
+      {
+        "id": "rebate",
+        "event": "event.purch.hung_rebate",
+        "delay_weeks": [3, 5]
+      },
+      {
+        "id": "pressure",
+        "event": "event.purch.hung_pressure",
+        "delay_weeks": [3, 6]
+      }
+    ]
+  },
+  {
+    "id": "arc.single_source",
+    "title_key": "arc.single_source.title",
+    "stages": [
+      {
+        "id": "ask",
+        "event": "event.purch.single_source_ask"
+      },
+      {
+        "id": "shortage",
+        "event": "event.purch.supplier_fails",
+        "delay_weeks": [8, 14]
+      },
+      {
+        "id": "blame",
+        "event": "event.purch.shortage_blame",
+        "delay_weeks": [1, 2]
+      }
+    ]
+  },
+  {
+    "id": "arc.ghost_stock",
+    "title_key": "arc.ghost_stock.title",
+    "stages": [
+      {
+        "id": "gap",
+        "event": "event.purch.stock_gap"
+      },
+      {
+        "id": "writeoff",
+        "event": "event.purch.stock_writeoff",
+        "delay_weeks": [2, 4]
+      },
+      {
+        "id": "audit",
+        "event": "event.purch.stock_audit",
+        "delay_weeks": [6, 12]
+      }
+    ]
   }
 ]

@@ -8,6 +8,7 @@ import type { Run } from '@je/kernel';
 import {
   FIN_ROLE,
   PROD_ROLE,
+  PURCH_ROLE,
   QC_ROLE,
   SALES_ROLE,
   createGameHost,
@@ -44,16 +45,18 @@ describe('choosing a job', () => {
   it('lists the playable jobs with their text in the chosen language', async () => {
     const en = await listPlayableRoles(readFiles(), 'en');
     const vi = await listPlayableRoles(readFiles(), 'vi');
-    expect(en.map((r) => r.id)).toEqual([FIN_ROLE, PROD_ROLE, QC_ROLE, SALES_ROLE]);
+    expect(en.map((r) => r.id)).toEqual([FIN_ROLE, PROD_ROLE, PURCH_ROLE, QC_ROLE, SALES_ROLE]);
     expect(en.map((r) => r.title)).toEqual([
       'Finance and Accounting Specialist',
       'Production Planner',
+      'Purchasing Buyer',
       'Quality Control Specialist',
       'Export Sales Specialist',
     ]);
     expect(vi.map((r) => r.title)).toEqual([
       'Chuyên viên Tài chính Kế toán',
       'Chuyên viên Kế hoạch Sản xuất',
+      'Chuyên viên Mua hàng',
       'Chuyên viên Kiểm soát Chất lượng',
       'Chuyên viên Kinh doanh Xuất khẩu',
     ]);

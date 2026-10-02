@@ -1,0 +1,133 @@
+{
+  "id": "scene.purch.split_po",
+  "location": "loc.sales_office",
+  "cast": ["char:tam"],
+  "lines": [
+    {
+      "speaker": "char:tam",
+      "text_key": "scene.purch.split_po.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.purch.split_po.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.85,
+          "narration_key": "scene.purch.split_po.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "p": 0.15,
+          "result": "fail",
+          "narration_key": "scene.purch.split_po.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.purch.split_po.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.purch.split_po.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.purch.split_po.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.purch.split_po.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": -1
+            },
+            {
+              "fact": "fact.split_po_to_avoid_limit",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.purch.split_po.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.hanh.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.split_po_to_avoid_limit",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

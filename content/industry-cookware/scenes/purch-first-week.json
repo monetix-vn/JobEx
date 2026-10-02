@@ -1,0 +1,111 @@
+{
+  "id": "scene.purch.first_week",
+  "location": "loc.sales_office",
+  "cast": ["char:tam", "char:dung"],
+  "lines": [
+    {
+      "speaker": "char:tam",
+      "text_key": "scene.purch.first_week.l1"
+    },
+    {
+      "speaker": "char:dung",
+      "text_key": "scene.purch.first_week.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.purch.first_week.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.purch.first_week.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.dung.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.purch.first_week.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.purch.first_week.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.purch.first_week.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.purch.first_week.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.dung.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.purch.first_week.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.dung.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

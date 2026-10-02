@@ -170,5 +170,27 @@
     "title_key": "char.sang.title",
     "department": "labour_inspection",
     "traits": ["dry", "looks_at_the_floor_first"]
+  },
+  {
+    "id": "char.linh",
+    "name_key": "char.linh.name",
+    "title_key": "char.linh.title",
+    "department": "supplier",
+    "traits": ["honest", "small_business", "overstretched"],
+    "start": {
+      "trust": 10
+    }
+  },
+  {
+    "id": "char.dung",
+    "name_key": "char.dung.name",
+    "title_key": "char.dung.title",
+    "department": "warehouse",
+    "home_group": "production",
+    "traits": ["careful", "quiet", "keeps_a_count"],
+    "start": {
+      "trust": 10,
+      "loyalty": 5
+    }
   }
 ]

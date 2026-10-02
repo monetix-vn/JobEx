@@ -100,6 +100,7 @@ describe('content lint', () => {
       ['role.qc.specialist', 30],
       ['role.fin.accountant', 30],
       ['role.prod.planner', 25],
+      ['role.purch.buyer', 18],
     ] as const) {
       const mine = events.filter((e) => e.role === role);
       expect(mine.length, role).toBeGreaterThanOrEqual(min);

@@ -1,0 +1,197 @@
+{
+  "id": "scene.purch.supplier_fails",
+  "location": "loc.factory_floor",
+  "cast": ["char:lan"],
+  "lines": [
+    {
+      "speaker": "char:lan",
+      "text_key": "scene.purch.supplier_fails.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.purch.supplier_fails.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.purch.supplier_fails.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.linh.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.single_source",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.purch.supplier_fails.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "arc": "arc.single_source",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.purch.supplier_fails.c2",
+      "outcomes": [
+        {
+          "p": 0.55,
+          "narration_key": "scene.purch.supplier_fails.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": -5
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.covered_gap_with_unapproved_po",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.single_source",
+              "stage": "blame"
+            }
+          ]
+        },
+        {
+          "p": 0.45,
+          "result": "fail",
+          "narration_key": "scene.purch.supplier_fails.c2.fail",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 7
+            },
+            {
+              "fact": "fact.covered_gap_with_unapproved_po",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.single_source",
+              "stage": "blame"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.purch.supplier_fails.c3",
+      "outcomes": [
+        {
+          "p": 0.3,
+          "narration_key": "scene.purch.supplier_fails.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "arc": "arc.single_source",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.7,
+          "result": "fail",
+          "narration_key": "scene.purch.supplier_fails.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": -10
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -8
+            },
+            {
+              "delta": "player.stress",
+              "value": 8
+            },
+            {
+              "arc": "arc.single_source",
+              "stage": "blame"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

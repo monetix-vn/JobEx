@@ -12,6 +12,7 @@ export { balanceMarkdown, balanceStats, type PolicyStats } from './balance';
 export {
   FIN_ROLE,
   PROD_ROLE,
+  PURCH_ROLE,
   QC_ROLE,
   SALES_ROLE,
   SALES_WEEK_SCENES,

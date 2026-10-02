@@ -1,0 +1,141 @@
+{
+  "id": "scene.purch.skipped_quotes",
+  "location": "loc.sales_office",
+  "cast": ["char:lan"],
+  "lines": [
+    {
+      "speaker": "char:lan",
+      "text_key": "scene.purch.skipped_quotes.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.purch.skipped_quotes.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.purch.skipped_quotes.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": -1
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.purch.skipped_quotes.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.purch.skipped_quotes.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.purch.skipped_quotes.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.purch.skipped_quotes.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.purch.skipped_quotes.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.lan.owed",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": -1
+            },
+            {
+              "fact": "fact.skipped_three_quotes",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.purch.skipped_quotes.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.lan.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.skipped_three_quotes",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

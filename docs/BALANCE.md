@@ -38,3 +38,11 @@ will behave differently.
 | careful | promoted 40 | 51 / 51 / 51 | 40 / 41.3 / 43 | 30.1 | deferred_maintenance 100%, materials 100%, phuc 100%, the_promise 100%, the_squeeze 100% |
 | random | fired 32, completed 8 | 15 / 34 / 52 | 17 / 38.4 / 56 | 29.8 | deferred_maintenance 90%, materials 93%, phuc 100%, the_promise 100%, the_squeeze 100% |
 | reckless | fired 40 | 13 / 17 / 27 | 14 / 23.4 / 35 | 28.6 | deferred_maintenance 57%, materials 70%, phuc 100%, the_promise 98%, the_squeeze 100% |
+
+### purch-year
+
+| Player | Endings | Weeks (min/median/max) | Decisions (min/mean/max) | Final stress | Storylines started |
+| ------ | ------- | ---------------------- | ------------------------ | ------------ | ------------------ |
+| careful | promoted 40 | 51 / 51 / 52 | 28 / 30.6 / 34 | 19.8 | ghost_stock 100%, single_source 100%, the_squeeze 100%, the_sweetener 100% |
+| random | fired 29, completed 11 | 14 / 41 / 52 | 12 / 29.3 / 46 | 23.6 | ghost_stock 98%, single_source 100%, the_squeeze 100%, the_sweetener 100% |
+| reckless | fired 40 | 13 / 15 / 31 | 13 / 19.2 / 35 | 30.9 | ghost_stock 95%, single_source 98%, the_squeeze 98%, the_sweetener 100% |

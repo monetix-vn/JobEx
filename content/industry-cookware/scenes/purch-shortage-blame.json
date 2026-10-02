@@ -1,0 +1,166 @@
+{
+  "id": "scene.purch.shortage_blame",
+  "location": "loc.meeting_room",
+  "cast": ["char:duc"],
+  "lines": [
+    {
+      "speaker": "char:duc",
+      "text_key": "scene.purch.shortage_blame.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.purch.shortage_blame.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.purch.shortage_blame.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.tam.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.lan.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.owned_steel_decision",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.purch.shortage_blame.c2",
+      "outcomes": [
+        {
+          "p": 0.5,
+          "narration_key": "scene.purch.shortage_blame.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": -12
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.blamed_manager",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.5,
+          "result": "fail",
+          "narration_key": "scene.purch.shortage_blame.c2.fail",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": -12
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -9
+            },
+            {
+              "delta": "player.stress",
+              "value": 7
+            },
+            {
+              "fact": "fact.blamed_manager",
+              "visibility": "public"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.purch.shortage_blame.c3",
+      "outcomes": [
+        {
+          "p": 0.5,
+          "narration_key": "scene.purch.shortage_blame.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.hung.trust",
+              "value": -15
+            },
+            {
+              "delta": "rel.linh.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.deflected_blame_to_supplier",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.5,
+          "result": "fail",
+          "narration_key": "scene.purch.shortage_blame.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.hung.trust",
+              "value": -20
+            },
+            {
+              "delta": "rel.duc.trust",
+              "value": -10
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -10
+            },
+            {
+              "delta": "player.stress",
+              "value": 8
+            },
+            {
+              "fact": "fact.deflected_blame_to_supplier",
+              "visibility": "public"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,319 @@
+[
+  {
+    "id": "event.purch.first_week",
+    "role": "role.purch.buyer",
+    "tags": ["onboarding", "people", "beat"],
+    "beat": {
+      "from_week": 1,
+      "to_week": 3
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.purch.first_week"
+  },
+  {
+    "id": "event.purch.midyear_review",
+    "role": "role.purch.buyer",
+    "tags": ["people", "review", "beat"],
+    "beat": {
+      "from_week": 24,
+      "to_week": 28
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.purch.midyear_review"
+  },
+  {
+    "id": "event.purch.steel_price_twist",
+    "role": "role.purch.buyer",
+    "tags": ["pressure", "price", "beat"],
+    "beat": {
+      "from_week": 29,
+      "to_week": 32
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.purch.steel_price_twist"
+  },
+  {
+    "id": "event.purch.vendor_audit",
+    "role": "role.purch.buyer",
+    "tags": ["audit", "people", "beat"],
+    "beat": {
+      "from_week": 41,
+      "to_week": 44
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.purch.vendor_audit"
+  },
+  {
+    "id": "event.purch.year_end_review",
+    "role": "role.purch.buyer",
+    "tags": ["people", "review", "beat"],
+    "beat": {
+      "from_week": 49,
+      "to_week": 50
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.purch.year_end_review"
+  },
+  {
+    "id": "event.purch.manager_offer",
+    "role": "role.purch.buyer",
+    "tags": ["people", "promotion", "beat"],
+    "when": {
+      "all": [
+        {
+          "gte": [
+            {
+              "var": ["rel.tam.trust", 0]
+            },
+            25
+          ]
+        },
+        {
+          "gte": ["player.rep.boss", 58]
+        }
+      ]
+    },
+    "beat": {
+      "from_week": 51,
+      "to_week": 52
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.purch.manager_offer"
+  },
+  {
+    "id": "event.purch.resignation_thought",
+    "role": "role.purch.buyer",
+    "tags": ["people", "pressure"],
+    "when": {
+      "all": [
+        {
+          "gte": ["player.stress", 75]
+        },
+        {
+          "gte": ["world.turn", 12]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 9,
+    "scene": "scene.purch.resignation_thought"
+  },
+  {
+    "id": "event.purch.hung_lunch",
+    "role": "role.purch.buyer",
+    "arc": "arc.the_sweetener",
+    "tags": ["supplier", "dark", "pressure"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 6]
+        },
+        {
+          "lte": ["world.turn", 30]
+        }
+      ]
+    },
+    "weight": 3,
+    "cooldown_weeks": 40,
+    "scene": "scene.purch.hung_lunch"
+  },
+  {
+    "id": "event.purch.hung_rebate",
+    "role": "role.purch.buyer",
+    "tags": ["supplier", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.purch.hung_rebate"
+  },
+  {
+    "id": "event.purch.hung_pressure",
+    "role": "role.purch.buyer",
+    "tags": ["supplier", "dark", "consequence", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.purch.hung_pressure"
+  },
+  {
+    "id": "event.purch.single_source_ask",
+    "role": "role.purch.buyer",
+    "arc": "arc.single_source",
+    "tags": ["supplier", "pressure"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 10]
+        },
+        {
+          "lte": ["world.turn", 34]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 40,
+    "scene": "scene.purch.single_source_ask"
+  },
+  {
+    "id": "event.purch.supplier_fails",
+    "role": "role.purch.buyer",
+    "tags": ["supplier", "pressure", "consequence", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.purch.supplier_fails"
+  },
+  {
+    "id": "event.purch.shortage_blame",
+    "role": "role.purch.buyer",
+    "tags": ["supplier", "pressure", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.purch.shortage_blame"
+  },
+  {
+    "id": "event.purch.stock_gap",
+    "role": "role.purch.buyer",
+    "arc": "arc.ghost_stock",
+    "tags": ["inventory", "people", "pressure"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 10]
+        },
+        {
+          "lte": ["world.turn", 34]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 40,
+    "scene": "scene.purch.stock_gap"
+  },
+  {
+    "id": "event.purch.stock_writeoff",
+    "role": "role.purch.buyer",
+    "tags": ["inventory", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.purch.stock_writeoff"
+  },
+  {
+    "id": "event.purch.stock_audit",
+    "role": "role.purch.buyer",
+    "tags": ["audit", "inventory", "dark", "consequence", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.purch.stock_audit"
+  },
+  {
+    "id": "event.purch.skipped_quotes",
+    "role": "role.purch.buyer",
+    "tags": ["process", "pressure", "dark"],
+    "when": {
+      "gte": ["world.turn", 6]
+    },
+    "weight": 2,
+    "cooldown_weeks": 12,
+    "scene": "scene.purch.skipped_quotes"
+  },
+  {
+    "id": "event.purch.split_po",
+    "role": "role.purch.buyer",
+    "tags": ["process", "pressure", "dark"],
+    "when": {
+      "gte": ["world.turn", 8]
+    },
+    "weight": 1.5,
+    "cooldown_weeks": 16,
+    "scene": "scene.purch.split_po"
+  },
+  {
+    "id": "event.purch.invoice_mismatch",
+    "role": "role.purch.buyer",
+    "tags": ["process", "money"],
+    "when": {
+      "gte": ["world.turn", 10]
+    },
+    "weight": 1.2,
+    "cooldown_weeks": 20,
+    "scene": "scene.purch.invoice_mismatch"
+  },
+  {
+    "id": "event.purch.conflict_of_interest",
+    "role": "role.purch.buyer",
+    "tags": ["process", "integrity", "dark"],
+    "when": {
+      "gte": ["world.turn", 12]
+    },
+    "weight": 1.2,
+    "cooldown_weeks": 30,
+    "scene": "scene.purch.conflict_of_interest"
+  },
+  {
+    "id": "event.purch.small_supplier",
+    "role": "role.purch.buyer",
+    "tags": ["supplier", "people", "pressure"],
+    "when": {
+      "gte": ["world.turn", 8]
+    },
+    "weight": 1.3,
+    "cooldown_weeks": 30,
+    "scene": "scene.purch.small_supplier"
+  },
+  {
+    "id": "event.purch.vy_asks_rebate",
+    "role": "role.purch.buyer",
+    "tags": ["audit", "dark", "consequence"],
+    "when": {
+      "all": [
+        {
+          "in": ["world.month_of_year", 10, 11]
+        },
+        {
+          "gte": ["world.turn", 38]
+        },
+        {
+          "gte": [
+            {
+              "var": ["fact.accepted_supplier_rebate", 0]
+            },
+            1
+          ]
+        }
+      ]
+    },
+    "weight": 6,
+    "cooldown_weeks": 52,
+    "scene": "scene.purch.vy_asks_rebate"
+  },
+  {
+    "id": "event.purch.scapegoat_meeting",
+    "role": "role.purch.buyer",
+    "tags": ["audit", "pressure", "consequence"],
+    "when": {
+      "all": [
+        {
+          "in": ["world.month_of_year", 11, 12]
+        },
+        {
+          "gte": ["world.turn", 44]
+        },
+        {
+          "gte": [
+            {
+              "var": ["fact.blamed_manager", 0]
+            },
+            2
+          ]
+        }
+      ]
+    },
+    "weight": 6,
+    "cooldown_weeks": 52,
+    "scene": "scene.purch.scapegoat_meeting"
+  }
+]

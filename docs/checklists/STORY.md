@@ -64,9 +64,17 @@ source of truth for what scene comes next; update their Status column as you go.
 - [x] First-cut balance check (`prod-year.test.ts`)
 - [ ] More Production scenes (the rows still planned in the bible) and practitioner review
 
+## Job 5: Purchasing Buyer (`docs/story/purchasing.md`)
+
+- [x] Bible v1 (AI) written with the scenes (owner review pending)
+- [x] Role `role.purch.buyer` playable (overhead 22 hours), `purch-year` scenario, CI step `sim:purch`
+- [x] 23 scenes: beats (first week, midyear review, steel price twist, vendor audit, year-end review, manager offer), arcs The Sweetener, The Single Source, The Ghost Stock, random incidents, consequences (auditor asks about rebates, blame meeting), resignation; 2 new characters, 25 facts
+- [x] First-cut balance check (`purch-year.test.ts`)
+- [ ] More Purchasing scenes (about 10 listed in the bible) and practitioner review
+
 ## Later jobs (not yet designed)
 
-- [ ] Choose the next jobs (Purchasing? HR? Logistics? Warehouse?) (needs owner)
+- [ ] Choose the next jobs (HR? Logistics? Warehouse? Quality systems?) (needs owner)
 - [ ] For each: bible, then scenes (same steps as above)
 
 ## Story-writing loop (each session)

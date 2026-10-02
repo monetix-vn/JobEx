@@ -1,0 +1,143 @@
+{
+  "id": "scene.purch.hung_rebate",
+  "location": "loc.sales_office",
+  "cast": ["char:hung"],
+  "lines": [
+    {
+      "speaker": "char:hung",
+      "text_key": "scene.purch.hung_rebate.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.purch.hung_rebate.c1",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.purch.hung_rebate.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.tam.trust",
+              "value": 6
+            },
+            {
+              "delta": "rel.hung.trust",
+              "value": -10
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 4
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.reported_rebate_offer",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_sweetener",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.purch.hung_rebate.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.purch.hung_rebate.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.hung.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.the_sweetener",
+              "stage": "pressure"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.purch.hung_rebate.c3",
+      "outcomes": [
+        {
+          "p": 0.75,
+          "narration_key": "scene.purch.hung_rebate.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.hung.trust",
+              "value": 7
+            },
+            {
+              "delta": "rel.hung.owed",
+              "value": 3
+            },
+            {
+              "delta": "player.cash_vnd",
+              "value": 4000000
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.accepted_supplier_rebate",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_sweetener",
+              "stage": "pressure"
+            }
+          ]
+        },
+        {
+          "p": 0.25,
+          "result": "fail",
+          "narration_key": "scene.purch.hung_rebate.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.hung.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.hung.owed",
+              "value": 3
+            },
+            {
+              "delta": "player.cash_vnd",
+              "value": 4000000
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.accepted_supplier_rebate",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_sweetener",
+              "stage": "pressure"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

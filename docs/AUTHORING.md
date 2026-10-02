@@ -20,7 +20,7 @@ Importing an entry again updates it in place.
 
 ```yaml
 scene: qc.rush_release # <job prefix>.<name>; prefix qc or sales picks the job
-role: qc # optional: qc | sales | any, or a full role id
+role: qc # optional: qc | sales | fin | prod | purch | any, or a full role id
 place: qc_lab # qc_lab, meeting_room, sales_office, factory_floor, finance_office
 tags: [quality, pressure]
 weight: 1 # how likely, relative to other events

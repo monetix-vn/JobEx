@@ -15,6 +15,7 @@ const SHORT = {
   'role.qc.specialist': 'qc',
   'role.fin.accountant': 'fin',
   'role.prod.planner': 'prod',
+  'role.purch.buyer': 'purch',
 };
 const ALIAS = {
   'player.stress': 'stress',

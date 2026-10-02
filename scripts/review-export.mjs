@@ -1,5 +1,5 @@
 /* global process, console */
-// `pnpm review:export [--role qc|sales|fin|prod|all]` writes one reviewable markdown file per job into
+// `pnpm review:export [--role qc|sales|fin|prod|purch|all]` writes one reviewable markdown file per job into
 // docs/review/: every scene with English and Vietnamese side by side, outcomes and the facts they create,
 // and a checklist line for a practitioner. Send the file to someone who has done the job.
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
@@ -15,6 +15,7 @@ const ROLES = {
   qc: ['role.qc.specialist', 'Quality Control Specialist'],
   fin: ['role.fin.accountant', 'Finance and Accounting Specialist'],
   prod: ['role.prod.planner', 'Production Planner'],
+  purch: ['role.purch.buyer', 'Purchasing Buyer'],
 };
 const want = opt('role') ?? 'all';
 const jobs = want === 'all' ? Object.keys(ROLES) : [want];
