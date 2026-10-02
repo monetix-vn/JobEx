@@ -30,6 +30,7 @@ jobs:
 
       # 4. Pack validation: schemas, references, missing VI/EN strings, unreachable events
       - run: pnpm validate:packs
+      - run: pnpm people:validate
 
       # 5. Determinism gate: same seed twice plus replay from the log must match exactly
       - run: pnpm sim:determinism

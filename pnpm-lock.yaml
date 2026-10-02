@@ -140,6 +140,15 @@ importers:
         specifier: workspace:*
         version: link:../rules
 
+  packages/mod-people:
+    dependencies:
+      '@je/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@je/kernel':
+        specifier: workspace:*
+        version: link:../kernel
+
   packages/mod-relationships:
     dependencies:
       '@je/contracts':
@@ -276,6 +285,15 @@ importers:
       '@je/mod-content':
         specifier: workspace:*
         version: link:../../packages/mod-content
+
+  tools/people-workbench:
+    dependencies:
+      '@je/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      '@je/mod-people':
+        specifier: workspace:*
+        version: link:../../packages/mod-people
 
   tools/sim-runner:
     dependencies:

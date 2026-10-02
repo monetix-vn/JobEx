@@ -1,0 +1,230 @@
+[
+  {
+    "id": "ambitious_climber",
+    "name": { "en": "Ambitious climber", "vi": "Người leo cao" },
+    "weight": 1.2,
+    "temperament": {
+      "ambition": [78, 12],
+      "caution": [42, 16],
+      "integrity": [48, 20],
+      "resilience": [62, 14]
+    },
+    "value_affinity": { "status": 3, "money": 2, "craft": 1.2 },
+    "quirk_affinity": { "takes_credit": 2, "networks_constantly": 3, "works_late_to_be_seen": 2 },
+    "function_bias": { "rival": 3, "tempter": 1.5, "mentor": 0.4 },
+    "voice": ["confident", "future_oriented"]
+  },
+  {
+    "id": "tired_veteran",
+    "name": { "en": "Tired veteran", "vi": "Người kỳ cựu mệt mỏi" },
+    "weight": 1.2,
+    "temperament": {
+      "ambition": [28, 14],
+      "resilience": [55, 16],
+      "caution": [64, 14],
+      "warmth": [52, 18]
+    },
+    "value_affinity": { "security": 3, "loyalty": 2, "family": 1.5 },
+    "quirk_affinity": {
+      "proud_of_the_old_way": 3,
+      "keeps_a_notebook": 2,
+      "never_says_no_to_the_boss": 1.5
+    },
+    "function_bias": { "mentor": 2.5, "whistleblower": 0.8, "tempter": 0.5 },
+    "voice": ["weary", "dry"]
+  },
+  {
+    "id": "idealist_newcomer",
+    "name": { "en": "Idealist newcomer", "vi": "Người mới giàu lý tưởng" },
+    "weight": 1,
+    "temperament": {
+      "integrity": [74, 14],
+      "ambition": [58, 18],
+      "warmth": [64, 16],
+      "caution": [38, 16],
+      "resilience": [44, 16]
+    },
+    "value_affinity": { "fairness": 3, "craft": 2, "freedom": 1.5 },
+    "quirk_affinity": { "says_what_others_avoid": 2.5, "clicks_first": 1.5, "asks_why": 3 },
+    "function_bias": { "whistleblower": 3, "complainant": 1.8, "tempter": 0.2 },
+    "voice": ["earnest", "direct"]
+  },
+  {
+    "id": "quiet_fixer",
+    "name": { "en": "Quiet fixer", "vi": "Người lặng lẽ xử lý" },
+    "weight": 1,
+    "temperament": {
+      "caution": [66, 14],
+      "warmth": [48, 16],
+      "integrity": [58, 18],
+      "resilience": [66, 14],
+      "ambition": [40, 16]
+    },
+    "value_affinity": { "craft": 3, "security": 1.5, "loyalty": 1.5 },
+    "quirk_affinity": {
+      "keeps_a_notebook": 2,
+      "knows_where_everything_is": 3,
+      "avoids_meetings": 2
+    },
+    "function_bias": { "mentor": 1.5, "witness": 2, "whistleblower": 1.2 },
+    "voice": ["measured", "brief"]
+  },
+  {
+    "id": "charming_operator",
+    "name": { "en": "Charming operator", "vi": "Người khéo léo duyên dáng" },
+    "weight": 0.9,
+    "temperament": {
+      "warmth": [74, 12],
+      "integrity": [38, 18],
+      "impulsivity": [58, 16],
+      "ambition": [64, 16],
+      "caution": [38, 16]
+    },
+    "value_affinity": { "status": 2, "money": 2.5, "freedom": 1.5 },
+    "quirk_affinity": {
+      "remembers_birthdays": 3,
+      "gossips": 2,
+      "sends_messages_at_night": 1.5,
+      "bends_the_rules_for_friends": 3
+    },
+    "function_bias": { "tempter": 3, "accused": 2, "rival": 1.5, "whistleblower": 0.2 },
+    "voice": ["warm", "persuasive"]
+  },
+  {
+    "id": "loyal_workhorse",
+    "name": { "en": "Loyal workhorse", "vi": "Người chăm chỉ trung thành" },
+    "weight": 1.3,
+    "temperament": {
+      "resilience": [66, 14],
+      "warmth": [58, 16],
+      "ambition": [34, 16],
+      "integrity": [60, 16],
+      "caution": [56, 16]
+    },
+    "value_affinity": { "loyalty": 3, "security": 2, "family": 2 },
+    "quirk_affinity": {
+      "never_says_no_to_the_boss": 3,
+      "works_late_to_be_seen": 1.5,
+      "brings_food_for_the_team": 2
+    },
+    "function_bias": { "witness": 1.5, "complainant": 0.8 },
+    "voice": ["modest", "willing"]
+  },
+  {
+    "id": "cynical_pragmatist",
+    "name": { "en": "Cynical pragmatist", "vi": "Người thực dụng hoài nghi" },
+    "weight": 1,
+    "temperament": {
+      "integrity": [42, 18],
+      "caution": [58, 16],
+      "warmth": [38, 16],
+      "ambition": [50, 18],
+      "resilience": [60, 14]
+    },
+    "value_affinity": { "money": 2, "security": 2, "freedom": 1.5 },
+    "quirk_affinity": {
+      "keeps_score": 3,
+      "jokes_about_the_company": 2,
+      "bends_the_rules_for_friends": 1.5
+    },
+    "function_bias": { "tempter": 1.5, "accused": 1.2, "mentor": 0.8 },
+    "voice": ["sardonic", "plain"]
+  },
+  {
+    "id": "anxious_perfectionist",
+    "name": { "en": "Anxious perfectionist", "vi": "Người cầu toàn hay lo" },
+    "weight": 0.9,
+    "temperament": {
+      "caution": [76, 12],
+      "resilience": [34, 16],
+      "integrity": [64, 16],
+      "impulsivity": [30, 14],
+      "warmth": [50, 16]
+    },
+    "value_affinity": { "craft": 3, "security": 2, "fairness": 1.5 },
+    "quirk_affinity": {
+      "double_checks_everything": 3,
+      "apologises_too_much": 2,
+      "clicks_first": 0.3
+    },
+    "function_bias": { "complainant": 1.5, "witness": 1.5, "tempter": 0.2 },
+    "voice": ["careful", "hesitant"]
+  },
+  {
+    "id": "family_first_steady",
+    "name": { "en": "Family-first steady", "vi": "Người ổn định vì gia đình" },
+    "weight": 1.3,
+    "temperament": {
+      "caution": [62, 14],
+      "warmth": [66, 14],
+      "ambition": [38, 16],
+      "integrity": [62, 16],
+      "resilience": [58, 14]
+    },
+    "value_affinity": { "family": 4, "security": 2, "loyalty": 1.5 },
+    "quirk_affinity": {
+      "leaves_on_the_dot": 2,
+      "brings_food_for_the_team": 1.5,
+      "talks_about_the_children": 3
+    },
+    "function_bias": { "witness": 1.2, "complainant": 0.8 },
+    "voice": ["gentle", "practical"]
+  },
+  {
+    "id": "restless_talent",
+    "name": { "en": "Restless talent", "vi": "Tài năng không yên" },
+    "weight": 0.8,
+    "temperament": {
+      "ambition": [66, 16],
+      "impulsivity": [64, 14],
+      "caution": [36, 14],
+      "resilience": [52, 16],
+      "warmth": [50, 18]
+    },
+    "value_affinity": { "freedom": 3, "craft": 2.5, "status": 1.5 },
+    "quirk_affinity": { "asks_why": 2, "gets_bored_fast": 3, "clicks_first": 2 },
+    "function_bias": { "rival": 1.5, "whistleblower": 1.2 },
+    "voice": ["quick", "restless"]
+  },
+  {
+    "id": "rule_keeper",
+    "name": { "en": "Rule keeper", "vi": "Người giữ quy tắc" },
+    "weight": 1,
+    "temperament": {
+      "integrity": [78, 12],
+      "caution": [68, 14],
+      "warmth": [44, 16],
+      "impulsivity": [28, 14],
+      "ambition": [44, 16]
+    },
+    "value_affinity": { "fairness": 3, "security": 2, "craft": 1.5 },
+    "quirk_affinity": {
+      "quotes_the_policy": 3,
+      "double_checks_everything": 2,
+      "keeps_a_notebook": 1.5
+    },
+    "function_bias": { "whistleblower": 2, "complainant": 1.3, "tempter": 0.1 },
+    "voice": ["formal", "exact"]
+  },
+  {
+    "id": "opportunist",
+    "name": { "en": "Opportunist", "vi": "Kẻ chộp thời cơ" },
+    "weight": 0.8,
+    "temperament": {
+      "integrity": [30, 16],
+      "ambition": [70, 14],
+      "caution": [46, 16],
+      "warmth": [46, 18],
+      "impulsivity": [56, 16]
+    },
+    "value_affinity": { "money": 3, "status": 2.5 },
+    "quirk_affinity": {
+      "takes_credit": 3,
+      "networks_constantly": 2,
+      "bends_the_rules_for_friends": 2,
+      "keeps_score": 1.5
+    },
+    "function_bias": { "tempter": 3, "accused": 2.5, "rival": 2, "whistleblower": 0.1 },
+    "voice": ["smooth", "calculating"]
+  }
+]

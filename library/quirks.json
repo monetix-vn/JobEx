@@ -1,0 +1,281 @@
+[
+  {
+    "id": "keeps_a_notebook",
+    "name": { "en": "Keeps a notebook of everything", "vi": "Ghi chép mọi thứ vào sổ tay" },
+    "weight": 1,
+    "tags": ["records"],
+    "temperament_shift": { "caution": 4 },
+    "voice": ["precise"]
+  },
+  {
+    "id": "never_says_no_to_the_boss",
+    "name": { "en": "Never says no to the boss", "vi": "Không bao giờ nói không với sếp" },
+    "weight": 1,
+    "tags": ["deference"],
+    "incompatible_with": ["says_what_others_avoid", "asks_why"],
+    "temperament_shift": { "integrity": -3 },
+    "voice": ["deferential"]
+  },
+  {
+    "id": "says_what_others_avoid",
+    "name": { "en": "Says what others avoid", "vi": "Nói điều người khác tránh" },
+    "weight": 0.8,
+    "tags": ["candour"],
+    "incompatible_with": ["never_says_no_to_the_boss", "avoids_conflict"],
+    "temperament_shift": { "integrity": 3, "impulsivity": 3 },
+    "voice": ["blunt"]
+  },
+  {
+    "id": "asks_why",
+    "name": { "en": "Always asks why", "vi": "Luôn hỏi vì sao" },
+    "weight": 1,
+    "tags": ["candour"],
+    "incompatible_with": ["never_says_no_to_the_boss"],
+    "voice": ["questioning"]
+  },
+  {
+    "id": "gossips",
+    "name": { "en": "Gossips", "vi": "Hay buôn chuyện" },
+    "weight": 1.2,
+    "tags": ["social", "leaky"],
+    "incompatible_with": ["keeps_secrets"],
+    "temperament_shift": { "warmth": 2 },
+    "voice": ["chatty"]
+  },
+  {
+    "id": "keeps_secrets",
+    "name": { "en": "Keeps secrets", "vi": "Giữ kín bí mật" },
+    "weight": 1,
+    "tags": ["discreet"],
+    "incompatible_with": ["gossips"],
+    "temperament_shift": { "caution": 3 },
+    "voice": ["reserved"]
+  },
+  {
+    "id": "clicks_first",
+    "name": { "en": "Clicks first, thinks later", "vi": "Bấm trước, nghĩ sau" },
+    "weight": 0.8,
+    "tags": ["rash"],
+    "incompatible_with": ["double_checks_everything"],
+    "temperament_shift": { "impulsivity": 6 },
+    "voice": ["hurried"]
+  },
+  {
+    "id": "double_checks_everything",
+    "name": { "en": "Double-checks everything", "vi": "Kiểm tra lại mọi thứ hai lần" },
+    "weight": 1,
+    "tags": ["careful"],
+    "incompatible_with": ["clicks_first"],
+    "temperament_shift": { "caution": 6 },
+    "voice": ["precise"]
+  },
+  {
+    "id": "sends_messages_at_night",
+    "name": { "en": "Sends messages late at night", "vi": "Nhắn tin lúc nửa đêm" },
+    "weight": 0.9,
+    "tags": ["boundaries"],
+    "voice": ["intrusive"]
+  },
+  {
+    "id": "proud_of_the_old_way",
+    "name": { "en": "Proud of the old way", "vi": "Tự hào về cách làm cũ" },
+    "weight": 0.9,
+    "tags": ["tradition"],
+    "incompatible_with": ["gets_bored_fast"],
+    "voice": ["traditional"]
+  },
+  {
+    "id": "networks_constantly",
+    "name": { "en": "Networks constantly", "vi": "Lúc nào cũng xây quan hệ" },
+    "weight": 0.9,
+    "tags": ["social", "status"],
+    "temperament_shift": { "ambition": 3, "warmth": 2 },
+    "voice": ["sociable"]
+  },
+  {
+    "id": "takes_credit",
+    "name": { "en": "Takes the credit", "vi": "Nhận công về mình" },
+    "weight": 0.6,
+    "tags": ["status", "unfair"],
+    "temperament_shift": { "integrity": -6 },
+    "voice": ["self_promoting"]
+  },
+  {
+    "id": "works_late_to_be_seen",
+    "name": { "en": "Works late to be seen", "vi": "Ở lại muộn cho người ta thấy" },
+    "weight": 1,
+    "tags": ["status"],
+    "incompatible_with": ["leaves_on_the_dot"],
+    "voice": ["driven"]
+  },
+  {
+    "id": "leaves_on_the_dot",
+    "name": { "en": "Leaves on the dot", "vi": "Hết giờ là về" },
+    "weight": 1,
+    "tags": ["boundaries"],
+    "incompatible_with": ["works_late_to_be_seen"],
+    "temperament_shift": { "ambition": -3 },
+    "voice": ["firm"]
+  },
+  {
+    "id": "remembers_birthdays",
+    "name": { "en": "Remembers everyone's birthday", "vi": "Nhớ sinh nhật mọi người" },
+    "weight": 1,
+    "tags": ["social", "warm"],
+    "temperament_shift": { "warmth": 4 },
+    "voice": ["warm"]
+  },
+  {
+    "id": "brings_food_for_the_team",
+    "name": { "en": "Brings food for the team", "vi": "Mang đồ ăn cho cả nhóm" },
+    "weight": 1,
+    "tags": ["social", "warm"],
+    "temperament_shift": { "warmth": 4 },
+    "voice": ["generous"]
+  },
+  {
+    "id": "bends_the_rules_for_friends",
+    "name": { "en": "Bends the rules for friends", "vi": "Châm chước luật cho bạn bè" },
+    "weight": 0.8,
+    "tags": ["favouritism"],
+    "incompatible_with": ["quotes_the_policy"],
+    "temperament_shift": { "integrity": -5, "warmth": 2 },
+    "voice": ["cosy"]
+  },
+  {
+    "id": "quotes_the_policy",
+    "name": { "en": "Quotes the policy", "vi": "Dẫn quy định ra mà nói" },
+    "weight": 0.9,
+    "tags": ["rules"],
+    "incompatible_with": ["bends_the_rules_for_friends"],
+    "temperament_shift": { "integrity": 3, "warmth": -2 },
+    "voice": ["formal"]
+  },
+  {
+    "id": "keeps_score",
+    "name": { "en": "Keeps score of favours", "vi": "Ghi nhớ ai nợ ai" },
+    "weight": 0.9,
+    "tags": ["debts"],
+    "voice": ["transactional"]
+  },
+  {
+    "id": "jokes_about_the_company",
+    "name": { "en": "Jokes about the company", "vi": "Hay đùa về công ty" },
+    "weight": 0.9,
+    "tags": ["humour"],
+    "voice": ["ironic"]
+  },
+  {
+    "id": "apologises_too_much",
+    "name": { "en": "Apologises too much", "vi": "Xin lỗi quá nhiều" },
+    "weight": 0.8,
+    "tags": ["anxious"],
+    "temperament_shift": { "resilience": -4 },
+    "voice": ["apologetic"]
+  },
+  {
+    "id": "avoids_conflict",
+    "name": { "en": "Avoids conflict", "vi": "Né tránh xung đột" },
+    "weight": 1,
+    "tags": ["peaceful"],
+    "incompatible_with": ["says_what_others_avoid", "picks_fights"],
+    "temperament_shift": { "caution": 3 },
+    "voice": ["soft"]
+  },
+  {
+    "id": "picks_fights",
+    "name": { "en": "Picks fights", "vi": "Hay gây gổ" },
+    "weight": 0.5,
+    "tags": ["conflict"],
+    "incompatible_with": ["avoids_conflict"],
+    "temperament_shift": { "impulsivity": 5, "warmth": -5 },
+    "voice": ["sharp"]
+  },
+  {
+    "id": "knows_where_everything_is",
+    "name": { "en": "Knows where everything is", "vi": "Biết mọi thứ nằm ở đâu" },
+    "weight": 0.9,
+    "tags": ["competence"],
+    "voice": ["practical"]
+  },
+  {
+    "id": "avoids_meetings",
+    "name": { "en": "Avoids meetings", "vi": "Né các cuộc họp" },
+    "weight": 0.8,
+    "tags": ["introvert"],
+    "voice": ["brief"]
+  },
+  {
+    "id": "talks_about_the_children",
+    "name": { "en": "Talks about the children", "vi": "Hay kể chuyện con cái" },
+    "weight": 1,
+    "tags": ["family"],
+    "voice": ["homely"]
+  },
+  {
+    "id": "gets_bored_fast",
+    "name": { "en": "Gets bored fast", "vi": "Nhanh chán" },
+    "weight": 0.8,
+    "tags": ["restless"],
+    "incompatible_with": ["proud_of_the_old_way"],
+    "temperament_shift": { "impulsivity": 3 },
+    "voice": ["restless"]
+  },
+  {
+    "id": "sends_money_home",
+    "name": { "en": "Sends money home every month", "vi": "Tháng nào cũng gửi tiền về quê" },
+    "weight": 1,
+    "tags": ["family", "money"],
+    "voice": ["thrifty"]
+  },
+  {
+    "id": "supports_the_family_business",
+    "name": {
+      "en": "Helps at the family shop on weekends",
+      "vi": "Cuối tuần phụ việc ở cửa hàng nhà"
+    },
+    "weight": 0.7,
+    "tags": ["family"],
+    "voice": ["practical"]
+  },
+  {
+    "id": "religious_routine",
+    "name": { "en": "Keeps religious routines", "vi": "Giữ nếp cúng bái, lễ chùa" },
+    "weight": 1,
+    "tags": ["tradition", "calm"],
+    "voice": ["calm"]
+  },
+  {
+    "id": "gambles_a_little",
+    "name": { "en": "Gambles a little", "vi": "Hay cá cược chút ít" },
+    "weight": 0.5,
+    "tags": ["risk", "money"],
+    "temperament_shift": { "impulsivity": 4, "caution": -4 },
+    "voice": ["breezy"]
+  },
+  {
+    "id": "drinks_with_clients",
+    "name": { "en": "Drinks with the clients", "vi": "Nhậu với khách" },
+    "weight": 0.8,
+    "tags": ["social", "risk"],
+    "voice": ["hearty"]
+  },
+  {
+    "id": "holds_grudges",
+    "name": { "en": "Holds grudges", "vi": "Hay để bụng" },
+    "weight": 0.7,
+    "tags": ["resentment"],
+    "incompatible_with": ["forgives_quickly"],
+    "temperament_shift": { "warmth": -3 },
+    "voice": ["cold"]
+  },
+  {
+    "id": "forgives_quickly",
+    "name": { "en": "Forgives quickly", "vi": "Mau quên mau tha" },
+    "weight": 0.9,
+    "tags": ["warm"],
+    "incompatible_with": ["holds_grudges"],
+    "temperament_shift": { "warmth": 3 },
+    "voice": ["easy"]
+  }
+]

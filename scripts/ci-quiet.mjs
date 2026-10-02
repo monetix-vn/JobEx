@@ -10,6 +10,7 @@ const STEPS = [
   ['boundaries', 'check:boundaries'],
   ['tests', 'test -- --reporter=dot'],
   ['content', 'validate:packs'],
+  ['people library', 'people:validate'],
   ['determinism', 'sim:determinism'],
   ['smoke', 'sim:smoke'],
   ['sales year', 'sim:sales'],

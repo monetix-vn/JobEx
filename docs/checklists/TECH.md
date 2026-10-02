@@ -74,7 +74,8 @@ Order matters; each item ships with tests and a docs/AUTHORING.md update.
 
 - [x] M0 ADRs 0003 (identity and world engine), 0004 (saves and snapshots), 0005 (content boundaries) written
 - [x] M0 performance guard (`perf-budget.test.ts`), day-based calendar helpers (`dayOfYear`, `daysBetween`), world and run seeds (`deriveSeed`, `generationStream`), world settings and limits in `contracts/src/world.ts`
-- [ ] M1 Generator first: Person schema, data pack v1, attribute library v1, generator (families, inheritance), attribute library editor, generator workbench
+- [x] M1a Person schema (`contracts/src/people.ts`), people library v0 (`library/`: 12 archetypes, 34 quirks, names, 13 departments, 6 data tables flagged unverified), generator, people module, workbench (`pnpm people:validate`, `pnpm people:generate`), tests
+- [ ] M1b Family generation and inheritance, more quirks and life events, data tables verified against sources, attribute library editor
 - [ ] M2 World and player: population tiers (50 / 500 / 3000), player profile and settings, folder saves (continue or restart world, new seed), perception and dossier (hidden traits learned over time), minimal ladder, migrate fixed characters
 - [ ] M3 Appraisal for everyone, behaviour engine, life events, full ladder, old protagonist as an autonomous Person
 - [ ] M4 Text realiser (variation, forms of address), scene text as slots and pools, Vietnamese culture pack v1

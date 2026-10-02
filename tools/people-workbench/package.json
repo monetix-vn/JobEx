@@ -1,0 +1,13 @@
+{
+  "name": "@je/people-workbench",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/cli.ts"
+  },
+  "dependencies": {
+    "@je/contracts": "workspace:*",
+    "@je/mod-people": "workspace:*"
+  }
+}
