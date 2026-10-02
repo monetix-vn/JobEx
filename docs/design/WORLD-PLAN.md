@@ -1,6 +1,6 @@
 # Plan: the persistent world, people and dark-path engine
 
-Status: PLAN v1 (2026-10-02), from the owner's answers to the identity-engine questions
+Status: PLAN v2 (2026-10-02, updated for decisions 12 and 13: library editor, generator first), from the owner's answers to the identity-engine questions
 (`docs/design/IDENTITY-ENGINE.md`, section 12). It turns those decisions into milestones. Nothing is built
 yet. Read `docs/design/PROFILE-AND-TIME.md` and `IDENTITY-ENGINE.md` first.
 
@@ -19,6 +19,8 @@ yet. Read `docs/design/PROFILE-AND-TIME.md` and `IDENTITY-ENGINE.md` first.
 | 9 | Gender and age mix use **real-world data**. |
 | 10 | **Vietnamese cultural depth as deep as possible.** |
 | 11 | Saves live in **a folder, offline**. |
+| 12 | Build an **attribute library editor**. |
+| 13 | **Generator first**. |
 
 ## 2. Content boundaries I will keep (stated now so there are no surprises)
 
@@ -139,10 +141,10 @@ force surveys, census, health and demographic surveys):
 Data is versioned, validated and documented; tables with weak sources are labelled. The generator reads
 them; it does not hard-code any number.
 
-## 7. Milestones
+## 7. Milestones (generator first, as decided)
 
-Each milestone ends with something the owner can play and with green CI. Items marked (ADR) need a written
-decision record first (`docs/adr/0003-...`).
+Each milestone ends with something the owner can see or play and with green CI. Items marked (ADR) need a
+written decision record first (`docs/adr/0003-...`).
 
 ### M0: Decisions and groundwork
 
@@ -150,26 +152,36 @@ decision record first (`docs/adr/0003-...`).
 - Performance budget (a weekly tick for 50 people, a monthly pass for 500, a yearly pass for 3000, each well
   under a second) and a test that guards it.
 - Calendar with a day base unit; settings model (year length, speed, intensity); world and run seeds.
-- Owner sign-off on this plan and the remaining questions (section 9).
 
-### M1: The player as a Person, the profile, the settings, saves (playable)
+### M1: The generator and the library (first deliverable)
 
-- Person schema and people store (player only at first), profile screens and quick-start personas,
-  Vietnamese address forms from the profile.
-- Settings: game length (one year, several years, a career), speed and pause, intensity.
-- **Saves:** world folder, snapshots plus log chunks, local save host, "continue world" and "new world"
-  screens, a **new run in an old world with a new seed**.
-- A minimal ladder for the player (steps, eligibility, a sponsor) replacing the hand-placed manager offers.
-- Debrief section "your situation".
+- Person schema and people store (origin, life state, memory, intent) in the contracts and a new `identity`
+  module, with the event `person.created` in the log.
+- **Data pack v1** (demographics, marriage, fertility, mortality, education, occupation and income tables with
+  sources) and the **attribute library v1** (temperaments, values, about 60 quirks, backgrounds, names,
+  archetypes, forms of address), validated like other content, in Vietnamese and English.
+- **Generator** (4.2): seeded conditional sampling, archetype priors, quirk compatibility, rejection and
+  validation, story-function casting, family generation with inheritance.
+- **Attribute library editor** (12): a tool (local web page, offline, writes the pack files) to browse and
+  edit quirks, values, backgrounds, archetypes, life events, name lists and weights; live validation;
+  "generate 20 people with these weights" preview and distribution charts so authors see what the library
+  produces; export to the content pack. This is how non-programmers extend the world.
+- **Generator workbench** (CLI and the editor's preview): `pnpm people:generate --n 200 --company factory`
+  prints demographic and trait distributions against the real-world tables, and flags contradictions.
+- Tests: determinism (same seed, same people), distribution tests against the data pack, no impossible
+  combinations, performance of generating thousands.
 
-### M2: The world exists
+### M2: The world, the player's profile, saves (playable)
 
-- Data pack v1 and the attribute library v1 (temperaments, values, quirks, backgrounds, names, archetypes).
-- Generator (section 4.2), tiers A, B, C, company staffing from distributions, families (inheritance), births,
-  deaths, migration, the 3000 cap.
-- People store holds the whole world; dossier screen with **impressions** (perception, 4.4).
-- The old fixed characters are migrated to ordinary generated Persons or to role-cast slots; existing arcs
-  keep working (pilot: HR and Production).
+- Population tiers A, B, C, company staffing from distributions, births, deaths, migration, the 3000 cap.
+- The player as a Person: profile screens, quick-start personas, Vietnamese address forms, settings (game
+  length, speed, intensity).
+- **Saves:** world folder, snapshots plus log chunks, local save host, "continue world" and "new world",
+  a **new run in an old world with a new seed**.
+- Dossier screen with **impressions** (perception, 4.4); hidden traits learned over time.
+- A minimal ladder for the player replacing the hand-placed manager offers.
+- The old fixed characters are migrated to ordinary generated Persons or role-cast slots (pilot: HR and
+  Production), with the old fixed-people mode kept as a legacy option until migration is done (question 7).
 
 ### M3: People act
 
@@ -184,7 +196,7 @@ decision record first (`docs/adr/0003-...`).
 
 - Text realiser with grammar, voice tags, forms of address, a repetition memory and paraphrase sets.
 - Migrate scene text to slots and pools: pilot on two jobs, then all (a long authoring workstream, with
-  practitioner review).
+  practitioner review). The editor gains a text-pool view.
 - Culture pack v1 wired into address, scenes and probabilities.
 
 ### M5: The dark path
@@ -233,7 +245,7 @@ decision record first (`docs/adr/0003-...`).
    crime and misconduct rates as priors where data is weak? Do you have preferred sources?
 4. **Reviewers:** who can review the Vietnamese cultural pack and the dark-path content (people with the
    right knowledge)? Reviews are built into M4, M5 and M7.
-5. **Order:** is M1 (player, profile, settings, saves, minimal ladder) the right first milestone?
+5. ~~Order~~ decided: the generator and the library editor come first (M1).
 6. **Language:** keep Vietnamese and English for everything, including the new libraries and text pools?
 7. **Existing content:** the eleven jobs are written around fixed named people. Re-casting them takes time:
    migrate all of them in M2 to M4, or keep the old fixed-people mode as a legacy "classic" option while the
