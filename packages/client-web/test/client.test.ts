@@ -380,6 +380,32 @@ describe('mount', () => {
     expect(vi.querySelector('.je-arcs li')?.textContent).toContain('đã khép lại');
   });
 
+  it('the cast panel shows only the two relationships that matter most', () => {
+    const { root, push } = setup();
+    const people = ['a', 'b', 'c'].map((id) => ({
+      character: `char.${id}`,
+      name: `P${id}`,
+      title: 'Staff',
+    }));
+    push(
+      env('scene.started', {
+        sceneId: 's1',
+        location: 'l',
+        lines: [{ speaker: 'Pa', text: 'Hi.' }],
+        choices: [{ id: 'a', label: 'Go' }],
+        people,
+      }),
+    );
+    push(
+      env('relationship.changed', { character: 'char.b', dimension: 'trust', from: 0, to: -40 }),
+    );
+    push(env('relationship.changed', { character: 'char.c', dimension: 'trust', from: 0, to: 30 }));
+    const names = [...root.querySelectorAll('.je-person')].map((li) => li.textContent ?? '');
+    expect(names).toHaveLength(2);
+    expect(names[0]).toContain('Pb');
+    expect(names[1]).toContain('Pc');
+  });
+
   it('the cast panel lists the people met, updates how they feel, and follows the language', () => {
     const { root, push } = setup();
     expect(root.querySelector('.je-cast')).toBeNull();

@@ -133,12 +133,24 @@ function closeView(state: ClientState, t: UiStrings): HTMLElement | undefined {
   return box;
 }
 
+const MAX_CAST_SHOWN = 2;
+
 /** The people met so far and how they feel about the player. */
 function castView(state: ClientState, t: UiStrings): HTMLElement {
   const box = el('div', 'je-cast');
   box.append(el('b', '', `${t.cast}: `));
   const list = el('ul', 'je-cast-list');
-  for (const person of state.cast) {
+  // Only the two relationships that matter most right now (strongest feeling, either way) are shown.
+  const strength = (character: string): number => Math.abs(state.feelings[character]?.trust ?? 0);
+  const shown = [...state.cast]
+    .map((person, order) => ({ person, order }))
+    .sort(
+      (x, y) => strength(y.person.character) - strength(x.person.character) || x.order - y.order,
+    )
+    .slice(0, MAX_CAST_SHOWN)
+    .sort((x, y) => x.order - y.order)
+    .map((x) => x.person);
+  for (const person of shown) {
     const trust = state.feelings[person.character]?.trust ?? 0;
     const item = el('li', 'je-person', `${person.name} (${person.title}) - ${feelingOf(trust, t)}`);
     item.dataset.character = person.character;
