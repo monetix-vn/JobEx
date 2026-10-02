@@ -220,6 +220,33 @@ written decision record first (`docs/adr/0003-...`).
 - Long-horizon determinism checks, snapshot equals replay, performance at the 3000 cap.
 - Cultural and professional review passes; accessibility; save migration across versions.
 - Spatial layer prototype (places, schedules, movement) behind a flag, as the doorway to an open-world client.
+- Appearance layer on every Person from M1c (section 7a); sprite-layer manifest and validator when art starts.
+
+## 7a. Appearance and sprites (added 2026-10-02, owner question)
+
+There is no blocker for sprites later, but one cheap thing must be done early: give every Person an
+**appearance layer** now, so saved worlds do not need a migration when graphics arrive.
+
+- **Appearance is data, not pixels.** `appearance` is a small set of traits (body build, height class, skin tone range,
+  face shape, hair style and colour, facial hair, glasses, one or two marks) plus an `appearance_seed`.
+  A sprite renderer later composes layers (body, head, hair, clothes, accessories) from these traits.
+- **Drawn from its own seeded stream** (`scope: appearance`), so adding it never changes existing generation results.
+- **Derived from identity honestly:** age drives body class and grey hair; gender drives the body base and
+  clothing options; family members **resemble each other** (children inherit traits from both parents with noise);
+  region and background shape clothing and style; money and role shape clothes (uniform, office wear, ao dai on
+  occasions, Tet clothes); health, stress and sleep show as visible **tells** (tired eyes, weight change).
+- **Appearance is independent of temperament.** A face never tells you someone is dishonest. The only links to
+  personality are through state a real person could show (grooming, fatigue, nervous habits from quirks), which
+  also gives the player fair, learnable clues for the hidden traits.
+- **Ageing and change over years:** sprites are layered so a person can age, change hair, gain or lose weight, and dress for
+  a new job without redrawing a whole character.
+- **Level of detail:** only the roughly 50 people near the player need sprites on screen; the rest keep their traits and
+  render on demand.
+- **Asset pipeline (later):** a sprite-layer manifest (which layer files exist per trait), a validator that every
+  trait value has art (so the generator never produces a combination with no sprite), and an editor tab to preview
+  a person as a sprite. Art can be hand-drawn or generated offline and reviewed; the engine does not care.
+- **Open-world readiness:** people already carry location and schedule fields (section 3); animation states
+  (idle, walk, talk, work) are a renderer concern and do not touch the simulation.
 
 ## 8. Dependencies and risks
 
