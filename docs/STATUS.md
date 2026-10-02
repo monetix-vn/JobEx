@@ -1,6 +1,6 @@
 # Status (update this at the end of every block)
 
-Design proposals (profile and time, identity engine, world plan) are in `docs/design/`; the plan is Phase 6 of `docs/checklists/TECH.md`, awaiting sign-off. Last updated after the authoring toolchain. Repo: github.com/monetix-vn/JobEx.
+The game now has a new-game flow (player profile and settings), a control bar and save and load (M2a in `docs/checklists/TECH.md`). Design proposals (profile and time, identity engine, world plan) are in `docs/design/`; the plan is Phase 6 of `docs/checklists/TECH.md`, awaiting sign-off. Last updated after the authoring toolchain. Repo: github.com/monetix-vn/JobEx.
 
 ## Done
 

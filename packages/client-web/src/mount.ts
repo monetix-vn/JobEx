@@ -25,6 +25,7 @@ export interface ClientHandle {
 export const STYLE = `
 .je{font-family:ui-monospace,Menlo,Consolas,monospace;background:#1b1b2f;color:#eee;max-width:560px;margin:0 auto;padding:12px;image-rendering:pixelated}
 .je-status{display:flex;justify-content:space-between;border:3px solid #eee;padding:4px 8px;margin-bottom:8px}
+.je-name{color:#ffd166}
 .je-langs{display:flex;gap:4px}
 .je-lang{font:inherit;color:#eee;background:#33335a;border:2px solid #eee;padding:0 6px;cursor:pointer}
 .je-lang[aria-pressed="true"]{background:#ffd166;color:#111}
@@ -236,7 +237,9 @@ function render(
 
   const status = el('div', 'je-status');
   const clock = state.clock;
+  const playerName = state.vars['player.name'];
   status.append(
+    ...(typeof playerName === 'string' ? [el('span', 'je-name', playerName)] : []),
     el('span', '', clock ? `${t.year} ${clock.year + 1}` : `${t.year} -`),
     el('span', '', clock ? `${t.week} ${clock.week_of_year + 1}` : `${t.week} -`),
     el('span', '', state.ended ? t.runEnded : ''),

@@ -131,3 +131,7 @@ three scenes), or play it in the browser.
 
 `play.bat` plays; `build-play.bat` rebuilds the play pages; `library-editor.bat` opens the people library editor. They use
 `npx -y pnpm@9.15.9` because plain `pnpm` can hang on some machines.
+
+## Saving, profile and settings
+
+After you pick a job you choose who you are (a quick-start person or your own: age, background, money and home) and how the year runs. The bar above the game has pause, speed (or Next week in Thoughtful mode), **Save / Load** (three slots plus an autosave every four weeks, and export or import of a save file) and Menu. A save is the seed and your choices, so loading replays them to the same moment, in either language. Folder saves and the people world come next (`docs/design/WORLD-PLAN.md`).

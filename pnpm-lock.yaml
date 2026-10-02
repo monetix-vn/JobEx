@@ -258,6 +258,9 @@ importers:
       '@je/mod-narrative':
         specifier: workspace:*
         version: link:../../packages/mod-narrative
+      '@je/mod-people':
+        specifier: workspace:*
+        version: link:../../packages/mod-people
       '@je/mod-relationships':
         specifier: workspace:*
         version: link:../../packages/mod-relationships

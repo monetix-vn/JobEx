@@ -14,3 +14,4 @@ export {
 export { summarisePeople, type PeopleSummary } from './stats';
 export { createModule, manifest, peopleModule, type PeopleConfig } from './module';
 export { HERITABILITY, generateHousehold, inheritTemperament, type Household } from './household';
+export { profileEffects } from './profile';

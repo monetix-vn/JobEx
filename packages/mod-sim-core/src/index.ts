@@ -7,6 +7,7 @@ import type {
   ModuleHost,
   ModuleInstance,
   ModuleManifest,
+  StartAdjustments,
   StateValue,
 } from '@je/contracts';
 
@@ -24,10 +25,12 @@ export interface SimCoreConfig {
   roleId: string;
   /** Company variables (paths under `company.`) layered over the defaults. */
   company?: Record<string, number>;
+  /** What the player's profile changes at the start (computed by mod-people, applied here). */
+  start?: StartAdjustments;
 }
 
 /** Only these namespaces may be created on demand by a delta; anything else is rejected. */
-const OPEN_NAMESPACES = ['player.', 'company.', 'skill.', 'fact.', 'rel.', 'close.'];
+const OPEN_NAMESPACES = ['player.', 'company.', 'skill.', 'fact.', 'rel.', 'close.', 'profile.'];
 const PERCENT_LIMITS = [
   /^player\.(stress|energy|health)$/,
   /^player\.rep\./,
@@ -93,6 +96,7 @@ export function createModule(host: ModuleHost): ModuleInstance {
         for (const [key, value] of Object.entries(role.start_state ?? {})) {
           vars.set(key.includes('.') ? key : `player.${key}`, value);
         }
+        applyStart(vars, config.start);
         return [
           {
             type: 'sim.stateChanged',
@@ -148,3 +152,21 @@ export function createModule(host: ModuleHost): ModuleInstance {
 }
 
 export const simCoreModule: Module = { manifest, createModule };
+
+/** Applies a profile's start adjustments: set values, one amount on every job skill, then specific additions. */
+function applyStart(vars: Map<string, StateValue>, start: StartAdjustments | undefined): void {
+  if (!start) return;
+  for (const [path, value] of Object.entries(start.set)) vars.set(path, value);
+  if (start.skill_all !== 0) {
+    for (const [path, value] of [...vars.entries()]) {
+      if (path.startsWith('skill.') && path !== 'skill.backbone' && typeof value === 'number') {
+        vars.set(path, Math.min(100, Math.max(0, value + start.skill_all)));
+      }
+    }
+  }
+  for (const [path, amount] of Object.entries(start.add)) {
+    const current = vars.get(path);
+    const base = typeof current === 'number' ? current : initialFor(path);
+    vars.set(path, clamp(path, base + amount));
+  }
+}

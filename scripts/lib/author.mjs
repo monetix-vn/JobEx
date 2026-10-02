@@ -28,6 +28,9 @@ const VARIABLE_ALIASES = {
   quarter: 'world.quarter',
   week: 'world.week_of_year',
   turn: 'world.turn',
+  money_pressure: 'profile.money_pressure',
+  age: 'profile.age',
+  dependents: 'profile.dependents',
 };
 const COMPARE = {
   '>=': 'gte',
@@ -51,7 +54,7 @@ export function resolveVariable(name) {
 
 /** Facts and skills may not exist yet, so conditions on them read 0 until they do. */
 function variable(path) {
-  return /^(fact|skill|rel|close)\./.test(path) ? { var: [path, 0] } : path;
+  return /^(fact|skill|rel|close|profile)\./.test(path) ? { var: [path, 0] } : path;
 }
 
 /**

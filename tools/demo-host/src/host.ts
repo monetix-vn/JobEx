@@ -1,5 +1,5 @@
 import type { Transport } from '@je/client-web';
-import type { Locale, Module, RecordedInput } from '@je/contracts';
+import type { Locale, Module, PlayerProfile, RecordedInput } from '@je/contracts';
 import { Run } from '@je/kernel';
 import { choiceModule } from '@je/mod-choice';
 import {
@@ -10,6 +10,7 @@ import {
   memorySource,
 } from '@je/mod-content';
 import { directorModule } from '@je/mod-director';
+import { profileEffects } from '@je/mod-people';
 import { educationModule } from '@je/mod-education';
 import { knowledgeModule } from '@je/mod-knowledge';
 import { narrativeModule } from '@je/mod-narrative';
@@ -61,6 +62,8 @@ export interface GameHostOptions {
   roleId?: string;
   locale?: Locale;
   turns?: number;
+  /** Who the player is (age, background, money and home); it sets the start of the run. */
+  profile?: PlayerProfile;
 }
 
 export interface GameHost {
@@ -99,7 +102,11 @@ export async function createGameHost(options: GameHostOptions): Promise<GameHost
   ];
   const configs = {
     'mod-content': { registry },
-    'sim-core': { content: registry, roleId },
+    'sim-core': {
+      content: registry,
+      roleId,
+      ...(options.profile ? { start: profileEffects(options.profile) } : {}),
+    },
     workload: { content: registry, roleId },
     close: { content: registry, roleId },
     choice: { content: registry },

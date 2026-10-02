@@ -60,6 +60,7 @@ export const UI_STRINGS: Record<UiLocale, UiStrings> = {
       ['player.energy', 'Energy'],
       ['player.health', 'Health'],
       ['player.cash_vnd', 'Bonus (VND)'],
+      ['profile.money_pressure', 'Money pressure'],
     ],
     reputation: 'Standing',
     reps: [
@@ -122,6 +123,7 @@ export const UI_STRINGS: Record<UiLocale, UiStrings> = {
       ['player.energy', 'Năng lượng'],
       ['player.health', 'Sức khỏe'],
       ['player.cash_vnd', 'Thưởng (VND)'],
+      ['profile.money_pressure', 'Áp lực tiền bạc'],
     ],
     reputation: 'Uy tín',
     reps: [
