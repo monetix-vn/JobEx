@@ -1,6 +1,8 @@
 import { CONTRACTS_VERSION } from '@je/contracts';
 import type {
+  BlockedReason,
   ContentView,
+  PersonLook,
   CoreEventPayloads,
   EventDraft,
   GuestAppearedPayload,
@@ -53,6 +55,21 @@ export interface NarrativeConfig {
   guests?: GuestPort;
   /** The player's age and gender, for forms of address (Vietnamese "anh", "chị", "em"...). */
   viewer?: Viewer;
+}
+
+/** How to draw a person: appearance traits only. */
+export function lookOf(person: Person): PersonLook | undefined {
+  const a = person.appearance;
+  return a
+    ? {
+        skin_tone: a.skin_tone,
+        hair_style: a.hair_style,
+        hair_colour: a.hair_colour,
+        facial_hair: a.facial_hair,
+        glasses: a.glasses,
+        build: a.build,
+      }
+    : undefined;
 }
 
 /** How a colleague is named in text, and how they and the player address each other. */
@@ -174,6 +191,23 @@ export function createModule(host: ModuleHost): ModuleInstance {
     return content.text(locale, `speaker.${name}`) ?? name;
   };
 
+  /** What is missing for a choice: the requirement that fails (a plain "at least" check), or energy. Undefined when nothing is. */
+  const blockedBy = (scene: Scene, choiceIndex: number): BlockedReason | undefined => {
+    const choice = scene.choices?.[choiceIndex];
+    if (!choice) return undefined;
+    const requires = choice.requires as { gte?: [unknown, unknown] } | undefined;
+    if (!available(scene, choiceIndex)) {
+      const [path, need] = requires?.gte ?? [];
+      return typeof path === 'string' && typeof need === 'number'
+        ? { kind: 'requirement', path, need }
+        : undefined;
+    }
+    const energy = choice.cost?.energy ?? 0;
+    if (energy > world.number('player.energy', Number.MAX_SAFE_INTEGER))
+      return { kind: 'energy', need: energy };
+    return undefined;
+  };
+
   const available = (scene: Scene, choiceIndex: number): boolean => {
     const requires = scene.choices?.[choiceIndex]?.requires;
     if (requires === undefined) return true;
@@ -240,7 +274,14 @@ export function createModule(host: ModuleHost): ModuleInstance {
     const turn = host.clock.now().turn;
     const drafts: EventDraft[] = [];
     const guestNamesBySlot: Record<string, GuestNames> = {};
-    const guestPeople: { character: string; name: string; title: string; guest: true }[] = [];
+    const guestPeople: {
+      character: string;
+      name: string;
+      title: string;
+      guest: true;
+      look?: PersonLook;
+    }[] = [];
+    const looks = new Map<string, PersonLook>();
     let preferred = actor;
     for (const guest of scene.guests ?? []) {
       if (!config.guests) {
@@ -270,6 +311,7 @@ export function createModule(host: ModuleHost): ModuleInstance {
         name: guestNamesBySlot[guest.slot]!.full,
         title: content.text(locale, `dept.${department}.title`) ?? department.replace(/_/g, ' '),
         guest: true,
+        ...(lookOf(person) ? { look: lookOf(person)! } : {}),
       });
       drafts.push({
         type: PERCEPTION_EVENTS.guestAppeared,
@@ -306,6 +348,8 @@ export function createModule(host: ModuleHost): ModuleInstance {
           ...(character.traits ? { traits: character.traits } : {}),
           turn,
         });
+        const look = lookOf(person);
+        if (look) looks.set(who.character, look);
         drafts.push({
           type: PERCEPTION_EVENTS.guestAppeared,
           payload: {
@@ -319,7 +363,15 @@ export function createModule(host: ModuleHost): ModuleInstance {
       }
     }
     const people = [
-      ...named.map((n) => (config.guests ? { ...n, guest: true as const } : n)),
+      ...named.map((n) =>
+        config.guests
+          ? {
+              ...n,
+              guest: true as const,
+              ...(looks.get(n.character) ? { look: looks.get(n.character)! } : {}),
+            }
+          : n,
+      ),
       ...guestPeople,
     ];
     const choices =
@@ -327,7 +379,16 @@ export function createModule(host: ModuleHost): ModuleInstance {
         ? scene.choices.map((c, i) => ({
             id: c.id,
             label: fill(pick(c.text_key, sceneRegister), guestNamesBySlot),
-            disabled: !available(scene, i),
+            disabled: !available(scene, i) || blockedBy(scene, i)?.kind === 'energy',
+            ...(c.cost && (c.cost.hours || c.cost.energy)
+              ? {
+                  cost: {
+                    ...(c.cost.hours ? { hours: c.cost.hours } : {}),
+                    ...(c.cost.energy ? { energy: c.cost.energy } : {}),
+                  },
+                }
+              : {}),
+            ...(blockedBy(scene, i) ? { blocked: blockedBy(scene, i) } : {}),
           }))
         : [{ id: CONTINUE_CHOICE, label: text('ui.continue') }];
     return [

@@ -67,7 +67,7 @@ export function mountProfileForm(
 .je-form h3{margin:14px 0 4px;color:#ffd166;font-size:1em;text-transform:uppercase;letter-spacing:1px}
 .je-form p{margin:4px 0;color:#bbb}
 .je-field{display:grid;grid-template-columns:150px 1fr;gap:6px;align-items:center;margin:6px 0}
-.je-field input,.je-field select{font:inherit;color:#eee;background:#0d0d1a;border:3px solid #eee;padding:3px 6px;width:100%;border-radius:0}
+.je-field input,.je-field select{box-sizing:border-box;font:inherit;color:#eee;background:#0d0d1a;border:3px solid #eee;padding:3px 6px;width:100%;border-radius:0}
 .je-personas{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .je-persona{font:inherit;text-align:left;color:#eee;background:#33335a;border:3px solid #eee;padding:6px;cursor:pointer}
 .je-persona b{display:block;color:#ffd166}

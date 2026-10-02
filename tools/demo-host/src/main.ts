@@ -154,6 +154,10 @@ const SHELL = {
   en: {
     pause: 'Pause',
     resume: 'Resume',
+    running: 'RUNNING',
+    paused: 'PAUSED',
+    stay: 'Stay',
+    leaveYes: 'Back to menu',
     speed: 'Speed',
     nextWeek: 'Next week',
     save: 'Save / Load',
@@ -192,6 +196,10 @@ const SHELL = {
   vi: {
     pause: 'Tạm dừng',
     resume: 'Tiếp tục',
+    running: 'ĐANG CHẠY',
+    paused: 'ĐANG DỪNG',
+    stay: 'Ở lại',
+    leaveYes: 'Về menu',
     speed: 'Tốc độ',
     nextWeek: 'Tuần sau',
     save: 'Lưu / Tải',
@@ -583,13 +591,19 @@ async function loadSave(save: GameSave): Promise<void> {
 
 /* ------------------------------------------------------------------ the control bar and the save panel */
 
+const barStyle = document.createElement('style');
+barStyle.textContent =
+  '.je-barwrap{max-width:560px;margin:0 auto}@media (min-width:900px){.je-barwrap[data-wide="true"]{max-width:1000px}}';
+document.head.append(barStyle);
 const bar = document.createElement('div');
+bar.className = 'je-barwrap';
 bar.style.cssText =
-  'max-width:560px;margin:0 auto;padding:8px 12px 0;font:13px ui-monospace,Menlo,Consolas,monospace;display:flex;gap:6px;flex-wrap:wrap;align-items:center';
+  'padding:8px 12px 0;font:13px ui-monospace,Menlo,Consolas,monospace;display:flex;gap:6px;flex-wrap:wrap;align-items:center;box-sizing:border-box';
 root.before(bar);
 const panel = document.createElement('div');
+panel.className = 'je-barwrap';
 panel.style.cssText =
-  'max-width:560px;margin:8px auto 0;padding:0 12px;font:13px ui-monospace,Menlo,Consolas,monospace;color:#eee';
+  'margin-top:8px;padding:0 12px;font:13px ui-monospace,Menlo,Consolas,monospace;color:#eee;box-sizing:border-box';
 root.before(panel);
 
 function barButton(
@@ -611,6 +625,8 @@ function renderBar(): void {
   const t = SHELL[currentLocale];
   bar.replaceChildren();
   const s = session;
+  bar.dataset.wide = String(Boolean(s));
+  panel.dataset.wide = String(Boolean(s));
   if (s && !s.run.isEnded) {
     const thoughtful = s.setup.settings.time_mode === 'thoughtful';
     if (thoughtful) {
@@ -621,7 +637,11 @@ function renderBar(): void {
         }),
       );
     } else {
+      const state = document.createElement('span');
+      state.textContent = s.pacer.paused() ? t.paused : `${t.running} ${s.pacer.speed()}x`;
+      state.style.cssText = `padding:2px 6px;border:3px solid ${s.pacer.paused() ? '#ff6b6b' : '#8fe388'};color:${s.pacer.paused() ? '#ff6b6b' : '#8fe388'}`;
       bar.append(
+        state,
         barButton(
           s.pacer.paused() ? t.resume : t.pause,
           () => {
@@ -630,7 +650,7 @@ function renderBar(): void {
           },
           s.pacer.paused(),
         ),
-        barButton(s.pacer.speed() === 2 ? '2x' : '1x', () => {
+        barButton(`${t.speed} ${s.pacer.speed() === 2 ? '2x' : '1x'}`, () => {
           s.pacer.setSpeed(s.pacer.speed() === 1 ? 2 : 1);
           renderBar();
         }),
@@ -641,20 +661,18 @@ function renderBar(): void {
     ...(s?.setup.world ? [barButton(t.people, () => togglePanel('people'))] : []),
     barButton(t.save, () => togglePanel('saves')),
     barButton(t.menu, () => {
-      if (session) {
-        if (!window.confirm(t.leave)) return;
-        autosave();
-      }
-      void showPicker(currentLocale);
+      // Leaving a game asks first, in the page (a browser dialog can be blocked and looks like a dead button).
+      if (session) togglePanel('leave');
+      else void showPicker(currentLocale);
     }),
   );
 }
 
 let panelOpen = false;
-let panelView: 'saves' | 'people' | 'news' = 'saves';
+let panelView: 'saves' | 'people' | 'news' | 'leave' = 'saves';
 let panelMessage = '';
 let newsLines: string[] = [];
-function togglePanel(view: 'saves' | 'people' | 'news' = 'saves'): void {
+function togglePanel(view: 'saves' | 'people' | 'news' | 'leave' = 'saves'): void {
   panelOpen = panelOpen && panelView === view ? false : true;
   panelView = view;
   panelMessage = '';
@@ -671,6 +689,7 @@ function renderPanel(): void {
   if (!panelOpen) return;
   if (panelView === 'people') return renderPeoplePanel();
   if (panelView === 'news') return renderNewsPanel();
+  if (panelView === 'leave') return renderLeavePanel();
   renderSavePanel();
 }
 
@@ -876,6 +895,25 @@ function panelBox(title: string): HTMLElement {
   heading.style.color = '#ffd166';
   box.append(heading);
   return box;
+}
+
+function renderLeavePanel(): void {
+  const t = SHELL[currentLocale];
+  const box = panelBox(t.menu);
+  box.append(note(t.leave));
+  const row = document.createElement('div');
+  row.style.cssText = 'display:flex;gap:6px;margin-top:8px';
+  row.append(
+    barButton(t.leaveYes, () => {
+      panelOpen = false;
+      renderPanel();
+      autosave();
+      void showPicker(currentLocale);
+    }),
+    barButton(t.stay, () => togglePanel('leave')),
+  );
+  box.append(row);
+  panel.append(box);
 }
 
 function renderNewsPanel(): void {

@@ -1,7 +1,14 @@
 import type { Envelope } from '@je/contracts';
+import type { ClientScene } from './state';
 import { initialState, reduce, type ClientState } from './state';
 import { actedLine, impressionLine } from './impressions';
 import { UI_LOCALES, UI_STRINGS, type UiLocale, type UiStrings } from './strings';
+import { GUI_STRINGS, pathLabel } from './gui-strings';
+import { cells, portrait, lookFromName, stage } from './pixel';
+import { STYLE } from './style';
+import { topTrait } from './impressions';
+
+export { STYLE };
 
 /** The client's only connection to the simulation: messages in, commands out. */
 export interface Transport {
@@ -22,51 +29,6 @@ export interface ClientHandle {
   state(): ClientState;
   dispose(): void;
 }
-
-export const STYLE = `
-.je{font-family:ui-monospace,Menlo,Consolas,monospace;background:#1b1b2f;color:#eee;max-width:560px;margin:0 auto;padding:12px;image-rendering:pixelated}
-.je-status{display:flex;justify-content:space-between;border:3px solid #eee;padding:4px 8px;margin-bottom:8px}
-.je-name{color:#ffd166}
-.je-langs{display:flex;gap:4px}
-.je-cast-toggle{font:inherit;color:#eee;background:#33335a;border:2px solid #eee;padding:0 6px;cursor:pointer;margin-left:6px}
-.je-lang{font:inherit;color:#eee;background:#33335a;border:2px solid #eee;padding:0 6px;cursor:pointer}
-.je-lang[aria-pressed="true"]{background:#ffd166;color:#111}
-.je-stats{border:3px solid #eee;padding:4px 8px;margin-bottom:8px;font-size:.9em}
-.je-cast{border:3px solid #eee;padding:4px 8px;margin-bottom:8px;font-size:.85em}
-.je-cast ul{margin:2px 0 0;padding-left:18px}
-.je-close{border:3px solid #ffd166;padding:4px 8px;margin-bottom:8px;font-size:.85em}
-.je-close ul{margin:2px 0 0;padding-left:18px}
-.je-step[data-state="2"]{color:#8fe388}
-.je-step[data-state="1"]{color:#ffd166}
-.je-map{display:grid;gap:0;border:3px solid #eee;margin-bottom:8px}
-.je-tile{aspect-ratio:1;background:#3a3a55}
-.je-tile[data-tile="#"]{background:#111}
-.je-tile[data-tile="d"]{background:#8a5a2b}
-.je-tile[data-tile="m"]{background:#4e7d4e}
-.je-dialogue{border:3px solid #eee;background:#0d0d1a;padding:8px;min-height:96px}
-.je-previous{border-left:3px solid #ffd166;padding-left:8px;margin-bottom:8px;color:#bbb;font-style:italic}
-.je-line b{color:#ffd166}
-.je-picker h2{margin:0 0 6px;font-size:1.15em;color:#ffd166}
-.je-job{display:block;width:100%;text-align:left;margin-top:8px;padding:10px;font:inherit;color:#eee;background:#33335a;border:3px solid #eee;cursor:pointer}
-.je-job:hover,.je-job:focus{background:#4a4a80}
-.je-dept{margin:16px 0 0;font-size:14px;color:#9ad;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid #556}
-.je-job b{display:block;color:#ffd166;margin-bottom:4px}
-.je-again{margin-top:12px;padding:8px 12px;font:inherit;color:#111;background:#ffd166;border:3px solid #eee;cursor:pointer}
-.je-terms{margin-top:8px;font-size:.9em}
-.je-terms-hint{color:#999;margin-right:6px}
-.je-term{font:inherit;color:#9ad1ff;background:none;border:0;border-bottom:1px dashed #9ad1ff;margin-right:8px;padding:0;cursor:pointer}
-.je-term[aria-expanded="true"]{color:#111;background:#9ad1ff}
-.je-definition{margin-top:6px;padding:6px;border:2px solid #9ad1ff;background:#13233a}
-.je-debrief{border:3px solid #eee;background:#0d0d1a;padding:10px}
-.je-debrief h2,.je-debrief h3{margin:10px 0 6px;font-size:1em;color:#ffd166}
-.je-debrief h2{font-size:1.15em;margin-top:0}
-.je-debrief ol,.je-debrief ul{margin:0;padding-left:20px}
-.je-debrief li{margin-bottom:4px}
-.je-entry-ending{color:#ffd166}
-.je-choice{display:block;width:100%;text-align:left;margin-top:6px;padding:6px;font:inherit;color:#eee;background:#33335a;border:2px solid #eee;cursor:pointer}
-.je-choice:hover,.je-choice:focus{background:#4a4a80}
-.je-choice:disabled{opacity:.45;cursor:not-allowed}
-`;
 
 export function el<K extends keyof HTMLElementTagNameMap>(
   tag: K,
@@ -103,6 +65,9 @@ interface Ui {
   toggleTerm(key: string): void;
   castHidden: boolean;
   toggleCast(): void;
+  /** The person card that is open (by person id). */
+  openPerson: string | undefined;
+  togglePerson(id: string): void;
 }
 
 /** How a person feels, in words, from their trust (-100 to 100). */
@@ -139,6 +104,7 @@ function closeView(state: ClientState, t: UiStrings): HTMLElement | undefined {
 
 /** The people met so far and how they feel about the player; a button hides or shows the list. */
 function castView(state: ClientState, t: UiStrings, ui: Ui, locale: UiLocale): HTMLElement {
+  const g = GUI_STRINGS[locale];
   const box = el('div', 'je-cast');
   const toggle = el('button', 'je-cast-toggle', ui.castHidden ? t.castShow : t.castHide);
   toggle.setAttribute('type', 'button');
@@ -148,19 +114,61 @@ function castView(state: ClientState, t: UiStrings, ui: Ui, locale: UiLocale): H
   const list = el('ul', 'je-cast-list');
   for (const person of state.cast) {
     const trust = state.feelings[person.character]?.trust ?? 0;
-    // A person drawn from the world has no scripted feelings; what the player has worked out about them shows instead.
-    const detail = person.guest
-      ? [
-          feelingOf(trust, t),
-          actedLine(state.acted[person.character], locale),
-          impressionLine(state.impressions[person.character], locale),
-        ]
-          .filter(Boolean)
-          .join('. ')
-      : feelingOf(trust, t);
-    const item = el('li', 'je-person', `${person.name} (${person.title}) - ${detail}`);
+    if (!person.guest) {
+      // A scripted character: name, role, and how they feel about the player.
+      const item = el(
+        'li',
+        'je-person je-plain',
+        `${person.name} (${person.title}) - ${feelingOf(trust, t)}`,
+      );
+      item.dataset.character = person.character;
+      list.append(item);
+      continue;
+    }
+    // A person with hidden traits: a face, one trait the player is surest of, and how they feel; tap for the rest.
+    const open = ui.openPerson === person.character;
+    const impression = state.impressions[person.character];
+    const item = el('li', 'je-person je-card');
     item.dataset.character = person.character;
-    if (person.guest) item.dataset.guest = 'true';
+    item.dataset.guest = 'true';
+    item.dataset.open = String(open);
+    item.tabIndex = 0;
+    item.setAttribute('role', 'button');
+    item.setAttribute('aria-expanded', String(open));
+    item.append(portrait(person.look ?? lookFromName(person.name), person.character));
+    const body = el('div', 'je-body');
+    body.append(el('div', 'je-who', person.name), el('div', 'je-sub', person.title));
+    const tags = el('div', 'je-tags');
+    const feel = trust >= 20 ? 'good' : trust <= -20 ? 'bad' : 'none';
+    const feelTag = el(
+      'span',
+      'je-tag',
+      trust >= 20 ? g.person.feelsGood : trust <= -20 ? g.person.feelsBad : g.person.feelsNone,
+    );
+    feelTag.dataset.feel = feel;
+    tags.append(feelTag);
+    const top = topTrait(impression, locale);
+    if (top) tags.append(el('span', 'je-tag', `${top.word} ${top.mark}`));
+    body.append(tags);
+    if (open) {
+      const detail = [
+        feelingOf(trust, t),
+        actedLine(state.acted[person.character], locale),
+        impressionLine(impression, locale),
+      ]
+        .filter(Boolean)
+        .join('. ');
+      body.append(el('div', 'je-more', detail));
+    }
+    item.append(body);
+    const flip = (): void => ui.togglePerson(person.character);
+    item.addEventListener('click', flip);
+    item.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        flip();
+      }
+    });
     list.append(item);
   }
   box.append(list);
@@ -241,6 +249,146 @@ function debriefView(
   return box;
 }
 
+/** A VND amount for the result strip: 250000 becomes 250k, 1500000 becomes 1.5M. */
+function money(v: number): string {
+  const a = Math.abs(v);
+  return a >= 1_000_000
+    ? `${Math.round(a / 100_000) / 10}M`
+    : a >= 1000
+      ? `${Math.round(a / 1000)}k`
+      : String(a);
+}
+
+/** The bar colour: how worrying a value is, for a stat where high is bad, or where high is good. */
+function toneOf(value: number, highIsBad: boolean): 'good' | 'mid' | 'bad' {
+  const worry = highIsBad ? value : 100 - value;
+  return worry >= 70 ? 'bad' : worry >= 40 ? 'mid' : 'good';
+}
+
+/** Segmented pixel bars for the player's numbers and the standing with each group. Text for screen readers is in `.je-stats`. */
+function barsView(
+  state: ClientState,
+  t: UiStrings,
+  g: (typeof GUI_STRINGS)[UiLocale],
+): HTMLElement | undefined {
+  const rows: HTMLElement[] = [];
+  const flash = new Set(state.flash);
+  const bar = (path: string, label: string, value: number, highIsBad: boolean): HTMLElement => {
+    const row = el('div', 'je-bar');
+    row.dataset.path = path;
+    row.dataset.tone = toneOf(value, highIsBad);
+    if (flash.has(path)) row.classList.add('je-flash');
+    row.append(
+      el('span', 'je-lab', label),
+      cells(10, Math.round(Math.min(100, Math.max(0, value)) / 10), 'je-cells'),
+      el('span', 'je-val', String(Math.round(value))),
+    );
+    return row;
+  };
+  for (const [path, label] of t.stats) {
+    const value = state.vars[path];
+    if (typeof value !== 'number') continue;
+    if (path === 'player.cash_vnd') {
+      const row = el('div', 'je-bar');
+      row.dataset.path = path;
+      if (flash.has(path)) row.classList.add('je-flash');
+      row.append(el('span', 'je-lab', label), el('span', ''), el('span', 'je-val', money(value)));
+      rows.push(row);
+    } else rows.push(bar(path, label, value, g.worseWhenUp.includes(path)));
+  }
+  const standing = t.reps.flatMap(([path, label]) => {
+    const value = state.vars[path];
+    return typeof value === 'number' ? [bar(path, label, value, false)] : [];
+  });
+  if (rows.length === 0 && standing.length === 0) return undefined;
+  const box = el('div', 'je-bars');
+  box.setAttribute('aria-hidden', 'true');
+  box.append(...rows);
+  if (standing.length > 0) {
+    const group = el('div', 'je-standing');
+    group.append(...standing);
+    box.append(el('h4', '', t.reputation), group);
+  }
+  return box;
+}
+
+/** The year as 52 pixel cells and the months under them; the current week is the last filled cell. */
+function yearView(state: ClientState, locale: UiLocale): HTMLElement | undefined {
+  if (!state.clock) return undefined;
+  const g = GUI_STRINGS[locale];
+  const week = state.clock.week_of_year + 1;
+  const box = el('div', 'je-year');
+  box.setAttribute('role', 'img');
+  box.setAttribute('aria-label', `${g.yearBar} ${state.clock.year + 1}: ${week}/52`);
+  box.append(cells(52, Math.min(52, week), 'je-yearcells'));
+  const months = el('div', 'je-months');
+  g.months.forEach((m, i) => {
+    const span = el('span', '', m);
+    span.dataset.now = String(state.clock!.month_of_year === i + 1);
+    months.append(span);
+  });
+  box.append(months);
+  return box;
+}
+
+/** What a choice changed, as small coloured chips. */
+function changesView(
+  changes: readonly { path: string; delta: number }[],
+  t: UiStrings,
+  locale: UiLocale,
+): HTMLElement | undefined {
+  const g = GUI_STRINGS[locale];
+  const labels = new Map<string, string>([...t.stats, ...t.reps]);
+  const chips = changes.flatMap((c) => {
+    if (c.delta === 0) return [];
+    const sign = c.delta > 0 ? '+' : '-';
+    let text: string;
+    let good: boolean;
+    if (c.path === 'hours') {
+      text = `${sign}${Math.abs(Math.round(c.delta * 10) / 10)}${g.hours}`;
+      good = false;
+    } else {
+      const label = labels.get(c.path) ?? pathLabel(c.path, locale);
+      const amount =
+        c.path === 'player.cash_vnd' ? money(c.delta) : String(Math.abs(Math.round(c.delta)));
+      text = `${label} ${sign}${amount}`;
+      good = g.worseWhenUp.includes(c.path) ? c.delta < 0 : c.delta > 0;
+    }
+    const chip = el('span', 'je-chip', text);
+    chip.dataset.tone = c.path === 'hours' ? 'none' : good ? 'good' : 'bad';
+    chip.dataset.path = c.path;
+    return [chip];
+  });
+  if (chips.length === 0) return undefined;
+  const box = el('div', 'je-changes');
+  box.append(el('span', 'je-label', g.result), ...chips);
+  return box;
+}
+
+/** What a choice takes, and what is missing when it cannot be picked. */
+function choiceTags(
+  choice: ClientScene['choices'][number],
+  locale: UiLocale,
+): HTMLElement | undefined {
+  const g = GUI_STRINGS[locale];
+  const parts: string[] = [];
+  if (choice.cost?.hours) parts.push(`${choice.cost.hours}${g.hours}`);
+  if (choice.cost?.energy) parts.push(`${choice.cost.energy} ${g.energy}`);
+  const blocked = choice.blocked
+    ? choice.blocked.kind === 'energy'
+      ? g.needsEnergy(choice.blocked.need)
+      : g.needsSkill(pathLabel(choice.blocked.path, locale), choice.blocked.need)
+    : undefined;
+  if (parts.length === 0 && !blocked) return undefined;
+  const tags = el('span', 'je-tags');
+  if (parts.length > 0) tags.append(document.createTextNode(`[${parts.join(' · ')}]`));
+  if (blocked) {
+    if (parts.length > 0) tags.append(document.createTextNode(' '));
+    tags.append(el('span', 'je-blocked', `(${blocked})`));
+  }
+  return tags;
+}
+
 /** Draws the state. Text goes in through textContent only, never innerHTML. */
 function render(
   root: HTMLElement,
@@ -252,7 +400,8 @@ function render(
   ui: Ui,
 ): void {
   const t = UI_STRINGS[locale];
-  const view = el('div', 'je');
+  const g = GUI_STRINGS[locale];
+  const view = el('div', 'je je-game');
 
   const status = el('div', 'je-status');
   const clock = state.clock;
@@ -280,20 +429,33 @@ function render(
     status.append(langs);
   }
   view.append(status);
+  const year = yearView(state, locale);
+  if (year) view.append(year);
 
+  const layout = el('div', 'je-layout');
+  const side = el('div', 'je-side');
+  const main = el('div', 'je-main');
+  layout.append(main, side);
+  view.append(layout);
+
+  // Numbers: bars for the eye, plain text for screen readers.
+  const bars = barsView(state, t, g);
+  if (bars) side.append(bars);
   const stats = statsLine(state.vars, t);
-  if (stats) view.append(el('div', 'je-stats', stats));
+  if (stats) side.append(el('div', 'je-stats', stats));
   const reps = repsLine(state.vars, t);
-  if (reps) view.append(el('div', 'je-stats je-reps', reps));
+  if (reps) side.append(el('div', 'je-stats je-reps', reps));
 
   if (state.debrief) {
-    view.append(debriefView(state.debrief, t, onRestart));
+    const banner = el('div', 'je-banner', g.ending[state.debrief.ending] ?? '');
+    banner.dataset.ending = state.debrief.ending;
+    main.append(banner, debriefView(state.debrief, t, onRestart));
     root.replaceChildren(view);
     return;
   }
   const close = closeView(state, t);
-  if (close) view.append(close);
-  if (state.cast.length > 0) view.append(castView(state, t, ui, locale));
+  if (close) side.append(close);
+  if (state.cast.length > 0) side.append(castView(state, t, ui, locale));
 
   if (state.map) {
     const map = el('div', 'je-map');
@@ -307,17 +469,30 @@ function render(
         map.append(cell);
       }
     }
-    view.append(map);
+    main.append(map);
+  }
+
+  const scene = state.scene;
+  if (scene) {
+    // The room and the people in it: named people with their faces, other speakers drawn from their names.
+    const seen = new Set<string>();
+    const present = [
+      ...(scene.people ?? []).map((p) => ({ name: p.name, ...(p.look ? { look: p.look } : {}) })),
+      ...scene.lines.filter((l) => l.speaker).map((l) => ({ name: l.speaker })),
+    ].filter((p) => (seen.has(p.name) ? false : (seen.add(p.name), true)));
+    main.append(stage(scene.location, present));
   }
 
   const dialogue = el('div', 'je-dialogue');
   dialogue.setAttribute('aria-live', 'polite');
-  const scene = state.scene;
   if (!scene) {
     dialogue.append(el('div', 'je-line', t.idle));
   } else {
-    if (scene.previousNarration && !scene.outcome)
+    if (scene.previousNarration && !scene.outcome) {
       dialogue.append(el('div', 'je-previous', scene.previousNarration));
+      const before = changesView(scene.previousChanges ?? [], t, locale);
+      if (before) dialogue.append(before);
+    }
     for (const line of scene.lines) {
       const row = el('div', 'je-line');
       if (line.speaker) row.append(el('b', '', `${line.speaker}: `));
@@ -344,12 +519,16 @@ function render(
     }
     if (scene.outcome) {
       dialogue.append(el('div', 'je-outcome', scene.narration ?? t.outcome[scene.outcome]));
+      const result = changesView(scene.changes ?? [], t, locale);
+      if (result) dialogue.append(result);
     } else {
       for (const choice of scene.choices) {
         const button = el('button', 'je-choice', choice.label);
         button.type = 'button';
         button.dataset.choice = choice.id;
         button.disabled = choice.disabled === true;
+        const tags = choiceTags(choice, locale);
+        if (tags) button.append(tags);
         button.addEventListener('click', () =>
           send('choice.made', { sceneId: scene.sceneId, choiceId: choice.id }),
         );
@@ -357,7 +536,7 @@ function render(
       }
     }
   }
-  view.append(dialogue);
+  main.append(dialogue);
   root.replaceChildren(view);
 }
 
@@ -377,6 +556,11 @@ export function mount(
     openTerm: undefined,
     toggleTerm(key) {
       ui.openTerm = ui.openTerm === key ? undefined : key;
+      draw();
+    },
+    openPerson: undefined,
+    togglePerson(id) {
+      ui.openPerson = ui.openPerson === id ? undefined : id;
       draw();
     },
     castHidden: false,

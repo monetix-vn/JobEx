@@ -3,6 +3,7 @@ import type {
   CoreEventPayloads,
   Envelope,
   PerceptionUpdatedPayload,
+  PersonLook,
   PersonActedPayload,
   PersonAction,
   QuirkNoticedPayload,
@@ -10,6 +11,20 @@ import type {
   StateValue,
 } from '@je/contracts';
 import type { Impression } from './impressions';
+
+/** One number that moved because of a choice (path as in the simulation, or "hours" for time spent). */
+export interface Change {
+  path: string;
+  delta: number;
+}
+
+const TRACKED = (path: string): boolean =>
+  path === 'player.stress' ||
+  path === 'player.energy' ||
+  path === 'player.health' ||
+  path === 'player.cash_vnd' ||
+  path === 'profile.money_pressure' ||
+  path.startsWith('player.rep.');
 
 export interface ClientScene {
   sceneId: string;
@@ -23,8 +38,14 @@ export interface ClientScene {
   narration?: string;
   /** Glossary words in this scene, tappable, with their definitions. */
   terms?: SceneTerm[];
+  /** Named people in the scene, with how to draw them. */
+  people?: CoreEventPayloads['scene.started']['people'];
   /** Narration of the scene just before this one, so the outcome stays readable. */
   previousNarration?: string;
+  /** What the choice changed, shown with the outcome. */
+  changes?: Change[];
+  /** What the previous scene's choice changed, shown with its narration. */
+  previousChanges?: Change[];
 }
 
 export interface ClientState {
@@ -43,6 +64,11 @@ export interface ClientState {
   impressions: Record<string, Impression>;
   /** What a guest has visibly done about the player (vouched, ran them down), latest last, by person id. */
   acted: Record<string, PersonAction[]>;
+  /** True from a choice being resolved until its scene ends: number changes in this window belong to the choice. */
+  collecting: boolean;
+  changes: Change[];
+  /** Paths that just changed, so the screen can flash them once. */
+  flash: string[];
 }
 
 export interface CastMember {
@@ -51,6 +77,8 @@ export interface CastMember {
   title: string;
   /** A person drawn from the world: `character` is their person id. */
   guest?: boolean;
+  /** How to draw them. */
+  look?: PersonLook;
 }
 
 export const initialState: ClientState = {
@@ -60,13 +88,21 @@ export const initialState: ClientState = {
   feelings: {},
   impressions: {},
   acted: {},
+  collecting: false,
+  changes: [],
+  flash: [],
 };
 
 /** Pure reducer: the client's view is derived entirely from bus messages. */
 export function reduce(state: ClientState, envelope: Envelope): ClientState {
   switch (envelope.type) {
     case 'clock.ticked':
-      return { ...state, clock: envelope.payload as ClockSnapshot };
+      return {
+        ...state,
+        clock: envelope.payload as ClockSnapshot,
+        collecting: false,
+        ...(state.flash.length > 0 ? { flash: [] } : {}),
+      };
     case 'map.loaded':
       return { ...state, map: envelope.payload as CoreEventPayloads['map.loaded'] };
     case 'scene.started': {
@@ -77,27 +113,72 @@ export function reduce(state: ClientState, envelope: Envelope): ClientState {
       return {
         ...state,
         cast: [...known.values()],
+        collecting: false,
+        changes: [],
+        ...(state.flash.length > 0 ? { flash: [] } : {}),
         scene: {
           sceneId: p.sceneId,
           location: p.location,
           lines: p.lines,
           choices: p.choices,
           ...(p.terms && p.terms.length > 0 ? { terms: p.terms } : {}),
+          ...(p.people && p.people.length > 0 ? { people: p.people } : {}),
           ...(state.scene?.narration ? { previousNarration: state.scene.narration } : {}),
+          ...(state.scene?.narration && state.scene.changes && state.scene.changes.length > 0
+            ? { previousChanges: state.scene.changes }
+            : {}),
         },
       };
     }
     case 'choice.resolved': {
       const p = envelope.payload as CoreEventPayloads['choice.resolved'];
       if (state.scene?.sceneId !== p.sceneId) return state;
-      return { ...state, scene: { ...state.scene, outcome: p.outcome, chosen: p.choiceId } };
+      const hours = p.cost?.hours ?? 0;
+      return {
+        ...state,
+        collecting: true,
+        changes: hours > 0 ? [{ path: 'hours', delta: hours }] : [],
+        scene: { ...state.scene, outcome: p.outcome, chosen: p.choiceId },
+      };
     }
     case 'sim.stateChanged': {
       const p = envelope.payload as CoreEventPayloads['sim.stateChanged'];
-      return { ...state, vars: p.full ? { ...p.vars } : { ...state.vars, ...p.vars } };
+      const vars = p.full ? { ...p.vars } : { ...state.vars, ...p.vars };
+      if (p.full) return { ...state, vars };
+      // What moved: only numbers worth showing, and only against a value we already had.
+      const moved: Change[] = [];
+      for (const [path, value] of Object.entries(p.vars)) {
+        const before = state.vars[path];
+        if (
+          TRACKED(path) &&
+          typeof value === 'number' &&
+          typeof before === 'number' &&
+          value !== before
+        )
+          moved.push({ path, delta: value - before });
+      }
+      if (moved.length === 0) return { ...state, vars };
+      const changes = state.collecting
+        ? [
+            ...state.changes.filter((c) => !moved.some((m) => m.path === c.path)),
+            ...moved.map((m) => ({
+              ...m,
+              delta: m.delta + (state.changes.find((c) => c.path === m.path)?.delta ?? 0),
+            })),
+          ].filter((c) => c.delta !== 0)
+        : state.changes;
+      return {
+        ...state,
+        vars,
+        changes,
+        flash: moved.map((m) => m.path),
+        ...(state.collecting && state.scene ? { scene: { ...state.scene, changes } } : {}),
+      };
     }
     case 'scene.ended': {
       const p = envelope.payload as CoreEventPayloads['scene.ended'];
+      // Numbers settle just after the scene ends, so the window for "what this choice changed" stays open
+      // until the next scene or the next week.
       if (state.scene?.sceneId !== p.sceneId || p.narration === undefined) return state;
       return { ...state, scene: { ...state.scene, narration: p.narration } };
     }

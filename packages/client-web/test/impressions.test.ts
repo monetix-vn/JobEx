@@ -111,9 +111,13 @@ describe('impressions in the client', () => {
     for (const e of [guestScene, seen('integrity', 15, 60), feel, quiet, loud])
       listeners.forEach((l) => l(e));
     const item = root.querySelector<HTMLElement>('.je-person[data-guest="true"]')!;
-    expect(item.textContent).toBe(
-      'Nguyen Van Hung (QC) - trusts you. has spoken well of you. What you make of them: bends the rules (fairly sure).',
+    // closed: name, role, how they feel, and the one trait the player is surest of
+    expect(item.textContent).toBe('Nguyen Van HungQCfriendlybends the rules !');
+    item.click();
+    const open = root.querySelector<HTMLElement>('.je-person[data-guest="true"]')!;
+    expect(open.textContent).toContain(
+      'trusts you. has spoken well of you. What you make of them: bends the rules (fairly sure).',
     );
-    expect(item.textContent).not.toContain('reported');
+    expect(open.textContent).not.toContain('reported');
   });
 });

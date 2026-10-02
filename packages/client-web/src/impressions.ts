@@ -89,3 +89,20 @@ export function impressionLine(impression: Impression | undefined, locale: UiLoc
       : '';
   return `${text.label}: ${traits}.${quirks}`;
 }
+
+/** The one trait the player is surest of, as a word and a mark (? a guess, ~ an impression, ! fairly sure). */
+export function topTrait(
+  impression: Impression | undefined,
+  locale: UiLocale,
+): { word: string; mark: string } | undefined {
+  const axes = Object.entries(impression?.axes ?? {}) as [
+    TemperamentAxis,
+    { estimate: number; confidence: number },
+  ][];
+  if (axes.length === 0) return undefined;
+  const [axis, best] = axes.sort((a, b) => b[1].confidence - a[1].confidence)[0]!;
+  return {
+    word: traitWord(axis, best.estimate, locale),
+    mark: best.confidence < 35 ? '?' : best.confidence < 60 ? '~' : '!',
+  };
+}

@@ -44,11 +44,30 @@ export interface ClockSnapshot {
   quarter: number;
 }
 
+/** Why a choice cannot be picked now. */
+export type BlockedReason =
+  { kind: 'requirement'; path: string; need: number } | { kind: 'energy'; need: number };
+
 export interface SceneChoice {
   id: string;
   label: string;
   /** True when the player cannot pick it now (requirement or cost not met). */
   disabled?: boolean;
+  /** What picking it takes: hours of work and energy. */
+  cost?: { hours?: number; energy?: number };
+  /** Set with `disabled`: what is missing. */
+  blocked?: BlockedReason;
+}
+
+/** What a person looks like, for drawing them (traits only; never anything about character). */
+export interface PersonLook {
+  skin_tone: number;
+  hair_style: string;
+  hair_colour: string;
+  facial_hair: string;
+  glasses: boolean;
+  /** Build: slim, average, sturdy, heavy. */
+  build: string;
 }
 
 export type StateValue = number | string | boolean;
@@ -99,6 +118,8 @@ export interface ScenePerson {
   title: string;
   /** Set when a person with hidden traits stands behind this name (a guest, or a fixed character's person). */
   guest?: boolean;
+  /** How to draw them, when the person's appearance is known. */
+  look?: PersonLook;
 }
 
 export interface SceneLine {

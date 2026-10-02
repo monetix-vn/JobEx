@@ -1,6 +1,6 @@
 # Status (update this at the end of every block)
 
-Last updated: 2026-10-03, after M4 slice 1 (text variants, voice registers, Vietnamese forms of address) on top of M3. Branch: `feature/story-engine`
+Last updated: 2026-10-03, after the GUI upgrade (stat bars, result strip, cost tags, pixel stage and faces) on top of M4 slice 1 and M3. Branch: `feature/story-engine`
 (all work is pushed there; `main` is Phase 0; no PRs opened). Repo: github.com/monetix-vn/JobEx.
 All text, odds, consequences and library data are AI first drafts and need practitioner review.
 
@@ -69,6 +69,15 @@ Suggested next: M3 (guests behave by their traits, so what the player learns mat
   under them (slice 2) adds a smaller extra view (40% of a guest's trust change, through `rel.<slug>.trust`). Their traits
   come from the writers' notes in `packages/mod-people/src/character.ts` (about 50 known words; others are ignored).
   Not yet: replacing the fixed names with generated ones.
+- GUI (8-bit kept): a two-column game screen on a wide window (scene left; stats, standing, people right) and one column on a phone;
+  segmented pixel bars for stress, energy, health, money pressure and the standing with each group (colour by how worrying,
+  a flash when a number moves, plain text kept for screen readers); a year strip (52 cells and months); a pixel room for
+  every scene (qc_lab, meeting_room, sales_office, factory_floor, finance_office, a default) with the people standing in it,
+  drawn from their appearance (skin, hair, glasses, beard, build; fixed characters too) or from their name; a result strip
+  after each choice (+2h, Stress +1, Boss -2, Cash -200k, red or green); cost tags on choices ([3h · 10 energy]) and the reason
+  when blocked (needs analysis 30, needs 40 energy); people cards with a face, how they feel and the one trait you are surest
+  of (tap for more); labelled controls (RUNNING 1x, Pause, Speed 1x) and an in-page leave confirm; an ending banner (PROMOTED,
+  FIRED...). Art is hand-placed first-draft pixel art in `packages/client-web/src/pixel.ts`; the art style is still open.
 - M4 text: any line can have variants (`key~2`, and `key@warm` for a voice register: blunt, warm, formal, hesitant, smooth). A
   guest's voice (archetype and quirks) picks the register, one seeded draw picks the variant, and the one shown last time is
   skipped. Both languages must have the same variants (the validator checks). Text can say `{slot.call}` ("anh Hùng"),
@@ -86,7 +95,8 @@ Suggested next: M3 (guests behave by their traits, so what the player learns mat
   shows each person's position. The steps, tenure, performance and shares are first drafts, not data from a source. Impressions live in a run and are not saved into the world. A save
   reloaded after the world changed may meet different roster people in the same scenes (the choices still replay).
 - Only 3 guest scenes exist; every other scene still uses fixed characters or roles. More are content work.
-- Blocked (greyed) choices do not say why (a requirement not met, or not enough energy). Candidate fix.
+- GUI not done: no sound or animation beyond a flash and the banner pop; the pixel art is simple; no calendar markers for
+  audit, Tet or peak weeks (the strip shows only the year and month); the sim does not send a map, so there is none in the game.
 - Year length 26/12 weeks is shown as "coming soon". Sprites and art style are undecided.
 - Worlds need the save host running; without it the game plays without a world.
 - Not built: Playwright tests, cloud saves, mobile build, practitioner sign-off records.
