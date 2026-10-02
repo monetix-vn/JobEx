@@ -20,6 +20,8 @@ import {
 
 const TURN_INTERVAL_MS = 1500;
 const STORAGE_KEY = 'jobex.lang';
+declare const __BUILD_INFO__: { commit: string; date: string } | undefined;
+
 /** Short names for ?role= links. */
 const ROLE_SHORTCUTS: Record<string, string> = {
   sales: SALES_ROLE,
@@ -129,6 +131,20 @@ async function showPicker(locale: UiLocale): Promise<void> {
       void showPicker(next);
     },
   });
+  showBuildLine(roles.length, locale);
+}
+
+/** A small line under the picker: which build this is, how many jobs it has, and what is not there yet. */
+function showBuildLine(jobs: number, locale: UiLocale): void {
+  const info = typeof __BUILD_INFO__ === 'undefined' ? undefined : __BUILD_INFO__;
+  const line = document.createElement('p');
+  line.style.cssText = 'font:12px monospace;color:#9a9ac0;text-align:center;margin:14px 8px';
+  const when = info ? `build ${info.commit}, ${info.date}` : 'development build';
+  line.textContent =
+    locale === 'vi'
+      ? `${when} - ${jobs} công việc - chưa có: lưu game, hồ sơ nhân vật, thế giới người chơi`
+      : `${when} - ${jobs} jobs - not in the game yet: saving, player profile, the people world`;
+  root.append(line);
 }
 
 /**
