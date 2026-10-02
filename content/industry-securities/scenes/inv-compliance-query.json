@@ -1,0 +1,163 @@
+{
+  "id": "scene.inv.compliance_query",
+  "location": "loc.meeting_room",
+  "cast": ["char:thao"],
+  "lines": [
+    {
+      "speaker": "char:thao",
+      "text_key": "scene.inv.compliance_query.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.inv.compliance_query.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.inv.compliance_query.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.thao.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.quang.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.reported_insider_trading",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_tip",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.inv.compliance_query.c2",
+      "outcomes": [
+        {
+          "p": 0.4,
+          "narration_key": "scene.inv.compliance_query.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.thao.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "arc": "arc.the_tip",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.6,
+          "result": "fail",
+          "narration_key": "scene.inv.compliance_query.c2.fail",
+          "effects": [
+            {
+              "delta": "rel.thao.trust",
+              "value": -12
+            },
+            {
+              "delta": "rel.quang.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -12
+            },
+            {
+              "delta": "player.stress",
+              "value": 9
+            },
+            {
+              "arc": "arc.the_tip",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.inv.compliance_query.c3",
+      "outcomes": [
+        {
+          "p": 0.3,
+          "narration_key": "scene.inv.compliance_query.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.thao.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.destroyed_evidence",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_tip",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.7,
+          "result": "fail",
+          "narration_key": "scene.inv.compliance_query.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.thao.trust",
+              "value": -15
+            },
+            {
+              "delta": "rel.quang.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -15
+            },
+            {
+              "delta": "player.stress",
+              "value": 10
+            },
+            {
+              "fact": "fact.destroyed_evidence",
+              "visibility": "public"
+            },
+            {
+              "arc": "arc.the_tip",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": ["term.mnpi", "term.chinese_wall"]
+}

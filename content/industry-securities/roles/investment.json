@@ -1,0 +1,59 @@
+[
+  {
+    "id": "role.inv.analyst",
+    "department": "dept.investment_banking",
+    "level": 1,
+    "title_key": "role.inv.analyst.title",
+    "blurb_key": "role.inv.analyst.blurb",
+    "reports_to": "role.inv.associate",
+    "kpis": [
+      {
+        "id": "kpi.deals_supported",
+        "weight": 0.5
+      },
+      {
+        "id": "kpi.model_accuracy",
+        "weight": 0.3
+      }
+    ],
+    "weekly_demand": [
+      {
+        "task": "task.build_models",
+        "per_week": [5, 8],
+        "effort_h": 2.0
+      },
+      {
+        "task": "task.pitch_decks",
+        "per_week": [2, 4],
+        "effort_h": 3.0
+      },
+      {
+        "task": "task.client_requests",
+        "per_week": [4, 7],
+        "effort_h": 1.0
+      }
+    ],
+    "approval_limits": {
+      "personal_trade_vnd": 0
+    },
+    "skills": ["modelling", "analysis", "backbone"],
+    "start_state": {
+      "salary_vnd": 30000000,
+      "stress": 35,
+      "skill.modelling": 45,
+      "skill.analysis": 40,
+      "skill.backbone": 30
+    },
+    "overhead_hours": 10
+  },
+  {
+    "id": "role.inv.associate",
+    "department": "dept.investment_banking",
+    "level": 2,
+    "title_key": "role.inv.associate.title",
+    "start_state": {
+      "salary_vnd": 70000000,
+      "stress": 45
+    }
+  }
+]

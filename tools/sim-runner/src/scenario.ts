@@ -19,6 +19,7 @@ export const QC_ROLE = 'role.qc.specialist';
 export const FIN_ROLE = 'role.fin.accountant';
 export const PROD_ROLE = 'role.prod.planner';
 export const PURCH_ROLE = 'role.purch.buyer';
+export const INV_ROLE = 'role.inv.analyst';
 
 /** The three pressure scenes of the Sales Specialist's week (Monday, Wednesday, Friday). */
 export const SALES_WEEK_SCENES = [
@@ -54,6 +55,7 @@ const SCENARIOS: Record<string, { roleId: string; turns: number; directed: boole
   'fin-year': { roleId: FIN_ROLE, turns: 52, directed: true },
   'prod-year': { roleId: PROD_ROLE, turns: 52, directed: true },
   'purch-year': { roleId: PURCH_ROLE, turns: 52, directed: true },
+  'inv-year': { roleId: INV_ROLE, turns: 52, directed: true },
 };
 
 /**

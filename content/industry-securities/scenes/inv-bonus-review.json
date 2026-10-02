@@ -1,0 +1,119 @@
+{
+  "id": "scene.inv.bonus_review",
+  "location": "loc.meeting_room",
+  "cast": ["char:trang"],
+  "lines": [
+    {
+      "speaker": "char:trang",
+      "text_key": "scene.inv.bonus_review.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.inv.bonus_review.c1",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.inv.bonus_review.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.trang.trust",
+              "value": 5
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 4
+            },
+            {
+              "delta": "player.stress",
+              "value": -2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.inv.bonus_review.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.inv.bonus_review.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.trang.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.inv.bonus_review.c3",
+      "outcomes": [
+        {
+          "p": 0.65,
+          "narration_key": "scene.inv.bonus_review.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.trang.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.hieu.trust",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 4
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.took_credit_for_peers_work",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.35,
+          "result": "fail",
+          "narration_key": "scene.inv.bonus_review.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.trang.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.hieu.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.took_credit_for_peers_work",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

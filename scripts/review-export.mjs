@@ -1,5 +1,5 @@
 /* global process, console */
-// `pnpm review:export [--role qc|sales|fin|prod|purch|all]` writes one reviewable markdown file per job into
+// `pnpm review:export [--role qc|sales|fin|prod|purch|inv|all]` writes one reviewable markdown file per job into
 // docs/review/: every scene with English and Vietnamese side by side, outcomes and the facts they create,
 // and a checklist line for a practitioner. Send the file to someone who has done the job.
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
@@ -16,6 +16,7 @@ const ROLES = {
   fin: ['role.fin.accountant', 'Finance and Accounting Specialist'],
   prod: ['role.prod.planner', 'Production Planner'],
   purch: ['role.purch.buyer', 'Purchasing Buyer'],
+  inv: ['role.inv.analyst', 'Investment Banking Analyst'],
 };
 const want = opt('role') ?? 'all';
 const jobs = want === 'all' ? Object.keys(ROLES) : [want];
@@ -64,7 +65,7 @@ const summary = (effects = []) =>
 mkdirSync('docs/review', { recursive: true });
 for (const job of jobs) {
   const [roleId, title] = ROLES[job];
-  const mine = events.filter((e) => e.role === roleId);
+  const mine = events.filter((e) => e.role === roleId || e.roles?.includes(roleId));
   const out = [
     `# Review pack: ${title}`,
     '',

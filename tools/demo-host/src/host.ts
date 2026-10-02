@@ -46,6 +46,7 @@ export const QC_ROLE = 'role.qc.specialist';
 export const FIN_ROLE = 'role.fin.accountant';
 export const PROD_ROLE = 'role.prod.planner';
 export const PURCH_ROLE = 'role.purch.buyer';
+export const INV_ROLE = 'role.inv.analyst';
 
 export interface GameHostOptions {
   /** Content pack files by path relative to the content root, e.g. "core/manifest.json". */

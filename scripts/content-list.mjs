@@ -16,6 +16,7 @@ const SHORT = {
   'role.fin.accountant': 'fin',
   'role.prod.planner': 'prod',
   'role.purch.buyer': 'purch',
+  'role.inv.analyst': 'inv',
 };
 const ALIAS = {
   'player.stress': 'stress',
@@ -75,11 +76,11 @@ if (args.includes('--facts')) {
   const role = opt('role');
   const tag = opt('tag');
   const shown = events.filter((e) => {
-    const short = e.role ? (SHORT[e.role] ?? e.role) : 'any';
+    const short = e.role ? (SHORT[e.role] ?? e.role) : e.roles ? 'shared' : 'any';
     return (!role || short === role) && (!tag || (e.tags ?? []).includes(tag));
   });
   for (const e of shown) {
-    const short = e.role ? (SHORT[e.role] ?? e.role) : 'any';
+    const short = e.role ? (SHORT[e.role] ?? e.role) : e.roles ? 'shared' : 'any';
     const choices = lookup(e).choices?.length ?? 0;
     console.log(
       `${e.id}  ${short}  w${e.weight} cd${e.cooldown_weeks}w  ${choices} choices  [${(e.tags ?? []).join(', ')}]`,
@@ -88,7 +89,7 @@ if (args.includes('--facts')) {
   }
   const by = {};
   for (const e of shown) {
-    const short = e.role ? (SHORT[e.role] ?? e.role) : 'any';
+    const short = e.role ? (SHORT[e.role] ?? e.role) : e.roles ? 'shared' : 'any';
     by[short] = (by[short] ?? 0) + 1;
   }
   console.log(

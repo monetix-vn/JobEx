@@ -1,0 +1,162 @@
+{
+  "id": "scene.inv.assumptions_push",
+  "location": "loc.meeting_room",
+  "cast": ["char:trang"],
+  "lines": [
+    {
+      "speaker": "char:trang",
+      "text_key": "scene.inv.assumptions_push.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.inv.assumptions_push.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.65,
+          "narration_key": "scene.inv.assumptions_push.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.trang.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.quang.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.the_valuation",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.35,
+          "result": "fail",
+          "narration_key": "scene.inv.assumptions_push.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.trang.trust",
+              "value": -5
+            },
+            {
+              "delta": "rel.quang.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.objected_to_assumptions",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_valuation",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.inv.assumptions_push.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.inv.assumptions_push.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.trang.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.the_valuation",
+              "stage": "roadshow"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.inv.assumptions_push.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.inv.assumptions_push.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.trang.trust",
+              "value": 5
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.inflated_growth_assumption",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_valuation",
+              "stage": "roadshow"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.inv.assumptions_push.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.trang.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.thao.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.inflated_growth_assumption",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_valuation",
+              "stage": "roadshow"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": ["term.valuation"]
+}

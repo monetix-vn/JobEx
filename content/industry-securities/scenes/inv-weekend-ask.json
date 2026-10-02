@@ -1,0 +1,153 @@
+{
+  "id": "scene.inv.weekend_ask",
+  "location": "loc.meeting_room",
+  "cast": ["char:quang"],
+  "lines": [
+    {
+      "speaker": "char:quang",
+      "text_key": "scene.inv.weekend_ask.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.inv.weekend_ask.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.inv.weekend_ask.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.quang.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.hieu.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.the_hours",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.inv.weekend_ask.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.quang.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.quang.owed",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 7
+            },
+            {
+              "arc": "arc.the_hours",
+              "stage": "cancelled"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.inv.weekend_ask.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.inv.weekend_ask.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.quang.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.the_hours",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.inv.weekend_ask.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.inv.weekend_ask.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.quang.trust",
+              "value": 6
+            },
+            {
+              "delta": "player.stress",
+              "value": 9
+            },
+            {
+              "fact": "fact.worked_to_exhaustion",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_hours",
+              "stage": "cancelled"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.inv.weekend_ask.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.quang.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.phong.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 9
+            },
+            {
+              "fact": "fact.worked_to_exhaustion",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_hours",
+              "stage": "cancelled"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

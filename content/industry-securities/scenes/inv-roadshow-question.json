@@ -1,0 +1,171 @@
+{
+  "id": "scene.inv.roadshow_question",
+  "location": "loc.meeting_room",
+  "cast": ["char:phong"],
+  "lines": [
+    {
+      "speaker": "char:phong",
+      "text_key": "scene.inv.roadshow_question.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.inv.roadshow_question.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.inv.roadshow_question.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.phong.trust",
+              "value": -2
+            },
+            {
+              "delta": "rel.trang.trust",
+              "value": -1
+            },
+            {
+              "delta": "rel.quang.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.corrected_the_model",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_valuation",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.inv.roadshow_question.c2",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.inv.roadshow_question.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.phong.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.trang.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.the_valuation",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.inv.roadshow_question.c2.fail",
+          "effects": [
+            {
+              "delta": "rel.phong.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.trang.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "arc": "arc.the_valuation",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.inv.roadshow_question.c3",
+      "outcomes": [
+        {
+          "p": 0.5,
+          "narration_key": "scene.inv.roadshow_question.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.phong.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.trang.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.misled_investor",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_valuation",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.5,
+          "result": "fail",
+          "narration_key": "scene.inv.roadshow_question.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.phong.trust",
+              "value": -5
+            },
+            {
+              "delta": "rel.trang.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -8
+            },
+            {
+              "delta": "player.stress",
+              "value": 7
+            },
+            {
+              "fact": "fact.misled_investor",
+              "visibility": "public"
+            },
+            {
+              "arc": "arc.the_valuation",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": ["term.valuation"]
+}

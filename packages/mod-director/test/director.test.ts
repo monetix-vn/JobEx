@@ -384,6 +384,22 @@ describe('director: storylines (arcs)', () => {
   });
 });
 
+describe('director: events for several jobs (roles)', () => {
+  const shared = ev('event.shared', { roles: ['role.a', 'role.b'] });
+  const only = ev('event.only', { role: 'role.a' });
+  const week = (role: string) => {
+    const d = driver([shared, only], { eventsPerWeek: [2, 2], defaultCooldownWeeks: 0 }, 'multi');
+    d.state({ 'player.role': role });
+    return d.plan(0).sort();
+  };
+
+  it('gives a shared event to every listed job and to no other', () => {
+    expect(week('role.a')).toEqual(['event.only', 'event.shared']);
+    expect(week('role.b')).toEqual(['event.shared']);
+    expect(week('role.c')).toEqual([]);
+  });
+});
+
 describe('director: roles', () => {
   const events = [
     ev('event.any'),

@@ -46,3 +46,11 @@ will behave differently.
 | careful | promoted 40 | 51 / 51 / 52 | 28 / 30.6 / 34 | 19.8 | ghost_stock 100%, single_source 100%, the_squeeze 100%, the_sweetener 100% |
 | random | fired 29, completed 11 | 14 / 41 / 52 | 12 / 29.3 / 46 | 23.6 | ghost_stock 98%, single_source 100%, the_squeeze 100%, the_sweetener 100% |
 | reckless | fired 40 | 13 / 15 / 31 | 13 / 19.2 / 35 | 30.9 | ghost_stock 95%, single_source 98%, the_squeeze 98%, the_sweetener 100% |
+
+### inv-year
+
+| Player | Endings | Weeks (min/median/max) | Decisions (min/mean/max) | Final stress | Storylines started |
+| ------ | ------- | ---------------------- | ------------------------ | ------------ | ------------------ |
+| careful | promoted 37, completed 3 | 51 / 51 / 52 | 28 / 31.1 / 36 | 37.8 | pitch_error 100%, the_hours 100%, the_tip 100%, the_valuation 100% |
+| random | fired 26, prosecuted 12, completed 2 | 11 / 20 / 52 | 9 / 21.4 / 44 | 52.2 | pitch_error 95%, the_hours 100%, the_tip 100%, the_valuation 100% |
+| reckless | fired 31, prosecuted 9 | 10 / 14 / 20 | 5 / 14.4 / 26 | 57 | pitch_error 65%, the_hours 95%, the_tip 83%, the_valuation 100% |

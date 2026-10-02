@@ -1,0 +1,17 @@
+[
+  {
+    "id": "term.mnpi",
+    "term_key": "term.mnpi.term",
+    "definition_key": "term.mnpi.def"
+  },
+  {
+    "id": "term.valuation",
+    "term_key": "term.valuation.term",
+    "definition_key": "term.valuation.def"
+  },
+  {
+    "id": "term.chinese_wall",
+    "term_key": "term.chinese_wall.term",
+    "definition_key": "term.chinese_wall.def"
+  }
+]

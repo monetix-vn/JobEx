@@ -4,7 +4,48 @@ AI first draft. Please read as someone who has done this job. For each scene mar
 pressure believable), tone (grey, not cartoonish), Vietnamese natural (not a translation). Write notes
 under each scene. Names and places are invented.
 
-46 scenes. Facts created are listed under each outcome.
+48 scenes. Facts created are listed under each outcome.
+
+## buyer_audit_notice
+
+*random; tags: buyer, audit, pressure*
+
+- **Boss:** The buyer just sent an audit notice. They will inspect the plant in about a month.
+  - *VI* **Sếp:** Khách hàng vừa gửi thông báo đánh giá. Khoảng một tháng nữa họ sẽ đến kiểm tra nhà máy.
+- **QC lead:** Our batch records have gaps. Someone has to reconcile them before the audit.
+  - *VI* **Trưởng QC:** Hồ sơ lô hàng của mình còn thiếu. Phải có người đối chiếu lại trước ngày đánh giá.
+
+**c1.** Volunteer to rebuild the records from the source documents, honestly.  
+*VI:* Xung phong dựng lại hồ sơ từ chứng từ gốc, làm trung thực.
+
+- (60%) It takes six long hours, but the records hold together and QC notices.
+  - *VI:* Mất sáu tiếng vất vả, nhưng hồ sơ khớp và phòng QC ghi nhận.
+  - effects: rep.qc +5, fact records_prepared_honestly (witnessed)
+- (40%, goes badly) You find more gaps than expected and lose the evening to them.
+  - *VI:* Bạn phát hiện nhiều chỗ thiếu hơn dự tính và mất cả buổi tối cho việc này.
+  - effects: stress +8
+
+**c2.** Say nothing and hope the auditors do not look closely.  
+*VI:* Im lặng và hy vọng đoàn đánh giá không soi kỹ.
+
+- (100%) The meeting moves on. The gaps are still there.
+  - *VI:* Cuộc họp chuyển sang việc khác. Những chỗ thiếu vẫn còn đó.
+  - effects: company.audit_readiness -5
+
+Review: [ ] realistic  [ ] tone  [ ] Vietnamese natural. Notes:
+
+---
+
+## audit_day
+
+*comes from a storyline; tags: buyer, audit*
+
+- **QC lead:** The auditors are on the floor. Keep your answers short and accurate.
+  - *VI* **Trưởng QC:** Đoàn đánh giá đang ở xưởng. Trả lời ngắn gọn và chính xác.
+
+Review: [ ] realistic  [ ] tone  [ ] Vietnamese natural. Notes:
+
+---
 
 ## fin.close_bank_rec_a
 
@@ -1752,6 +1793,8 @@ Review: [ ] realistic  [ ] tone  [ ] Vietnamese natural. Notes:
   - *VI:* Khoản dự phòng lớn hơn bằng chứng là lợi nhuận bị giấu để dành cho sau. Nó tồn tại để được giải phóng khi cần số đẹp, và đó chính là lý do nó sai.
 - **you presented your year as cleaner than it was** (severity 2): A review is a chance to be believed. Leaving out what you know will surface costs more trust than admitting it.
   - *VI:* Buổi đánh giá là cơ hội để được tin. Bỏ qua điều bạn biết sẽ lộ ra làm mất nhiều niềm tin hơn việc thừa nhận.
+- **the records you rebuilt honestly** (severity 2): Clean records are boring, and that is the point: they let anyone audit you calmly.
+  - *VI:* Hồ sơ sạch thì nhàm chán, và đó chính là mục đích: ai kiểm tra bạn cũng có thể bình tĩnh.
 - **you released a reserve to reach a profit target** (severity 8): Earnings management: moving profit between periods to meet a number. The bank, the owner and the auditor all rely on those numbers being an honest picture.
   - *VI:* Điều chỉnh lợi nhuận: chuyển lợi nhuận giữa các kỳ để đạt một con số. Ngân hàng, chủ sở hữu và kiểm toán đều dựa vào việc những con số đó là bức tranh trung thực.
 - **you set an accrual to suit the numbers rather than the facts** (severity 2): Accruals are estimates, but they must be honest ones. Steering an estimate to smooth profit is how small adjustments become misstatements.

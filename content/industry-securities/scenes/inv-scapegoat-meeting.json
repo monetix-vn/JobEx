@@ -1,0 +1,107 @@
+{
+  "id": "scene.inv.scapegoat_meeting",
+  "location": "loc.meeting_room",
+  "cast": ["char:trang"],
+  "lines": [
+    {
+      "speaker": "char:trang",
+      "text_key": "scene.inv.scapegoat_meeting.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.inv.scapegoat_meeting.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.inv.scapegoat_meeting.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.trang.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.quang.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 7
+            },
+            {
+              "fact": "fact.came_clean_to_auditor",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.inv.scapegoat_meeting.c2",
+      "outcomes": [
+        {
+          "p": 0.4,
+          "narration_key": "scene.inv.scapegoat_meeting.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.trang.trust",
+              "value": -15
+            },
+            {
+              "delta": "rel.quang.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.blamed_the_md",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.6,
+          "result": "fail",
+          "narration_key": "scene.inv.scapegoat_meeting.c2.fail",
+          "effects": [
+            {
+              "delta": "rel.trang.trust",
+              "value": -15
+            },
+            {
+              "delta": "rel.quang.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -14
+            },
+            {
+              "delta": "player.stress",
+              "value": 10
+            },
+            {
+              "fact": "fact.blamed_the_md",
+              "visibility": "public"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

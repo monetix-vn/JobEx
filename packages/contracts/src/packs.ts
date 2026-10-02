@@ -82,6 +82,8 @@ export interface GameEvent {
   when?: Expr;
   /** Only this role can get the event. Omit for events any role can meet. */
   role?: string;
+  /** Several jobs can get the event (use instead of `role`); omit both for events every job can meet. */
+  roles?: string[];
   weight?: number;
   cooldown_weeks?: number;
   arc?: string;

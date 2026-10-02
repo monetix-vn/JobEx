@@ -1,0 +1,471 @@
+[
+  {
+    "id": "fact.sent_client_file_home",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.sent_client_file_home",
+    "lesson_key": "lesson.sent_client_file_home",
+    "traces": [
+      {
+        "type": "message",
+        "visibility": 0.8,
+        "detectors": ["internal_audit", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -4
+      },
+      "public": {
+        "boss": -8
+      }
+    }
+  },
+  {
+    "id": "fact.softened_risk_disclosure",
+    "category": "integrity",
+    "severity": 8,
+    "text_key": "fact.softened_risk_disclosure",
+    "lesson_key": "lesson.softened_risk_disclosure",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.85,
+        "detectors": ["internal_audit", "boss", "buyer"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -12,
+        "buyer": -12
+      },
+      "public": {
+        "boss": -18,
+        "buyer": -18
+      }
+    }
+  },
+  {
+    "id": "fact.incomplete_compliance_disclosure",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.incomplete_compliance_disclosure",
+    "lesson_key": "lesson.incomplete_compliance_disclosure",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.75,
+        "detectors": ["internal_audit", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8
+      },
+      "public": {
+        "boss": -14
+      }
+    }
+  },
+  {
+    "id": "fact.took_credit_for_peers_work",
+    "category": "integrity",
+    "severity": 3,
+    "text_key": "fact.took_credit_for_peers_work",
+    "lesson_key": "lesson.took_credit_for_peers_work",
+    "traces": [
+      {
+        "type": "message",
+        "visibility": 0.6,
+        "detectors": ["boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -4
+      },
+      "public": {
+        "boss": -7
+      }
+    }
+  },
+  {
+    "id": "fact.inflated_growth_assumption",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.inflated_growth_assumption",
+    "lesson_key": "lesson.inflated_growth_assumption",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.8,
+        "detectors": ["internal_audit", "buyer", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8,
+        "buyer": -8
+      },
+      "public": {
+        "boss": -14,
+        "buyer": -14
+      }
+    }
+  },
+  {
+    "id": "fact.objected_to_assumptions",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.objected_to_assumptions",
+    "lesson_key": "lesson.objected_to_assumptions",
+    "consequences": {
+      "witnessed": {
+        "boss": 2
+      },
+      "public": {
+        "boss": 4
+      }
+    }
+  },
+  {
+    "id": "fact.corrected_the_model",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.corrected_the_model",
+    "lesson_key": "lesson.corrected_the_model",
+    "consequences": {
+      "witnessed": {
+        "boss": 3,
+        "buyer": 3
+      },
+      "public": {
+        "boss": 5,
+        "buyer": 5
+      }
+    }
+  },
+  {
+    "id": "fact.misled_investor",
+    "category": "integrity",
+    "severity": 8,
+    "text_key": "fact.misled_investor",
+    "lesson_key": "lesson.misled_investor",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.85,
+        "detectors": ["internal_audit", "buyer", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -12,
+        "buyer": -12
+      },
+      "public": {
+        "boss": -18,
+        "buyer": -18
+      }
+    }
+  },
+  {
+    "id": "fact.refused_to_join_insider_trade",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.refused_to_join_insider_trade",
+    "lesson_key": "lesson.refused_to_join_insider_trade",
+    "consequences": {
+      "witnessed": {
+        "boss": 3
+      },
+      "public": {
+        "boss": 5
+      }
+    }
+  },
+  {
+    "id": "fact.traded_on_tip",
+    "category": "integrity",
+    "severity": 9,
+    "text_key": "fact.traded_on_tip",
+    "lesson_key": "lesson.traded_on_tip",
+    "traces": [
+      {
+        "type": "payment",
+        "visibility": 0.9,
+        "detectors": ["internal_audit", "finance", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -15,
+        "buyer": -10
+      },
+      "public": {
+        "boss": -22,
+        "buyer": -15
+      }
+    }
+  },
+  {
+    "id": "fact.tipped_a_friend",
+    "category": "integrity",
+    "severity": 9,
+    "text_key": "fact.tipped_a_friend",
+    "lesson_key": "lesson.tipped_a_friend",
+    "traces": [
+      {
+        "type": "payment",
+        "visibility": 0.9,
+        "detectors": ["internal_audit", "finance", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -16,
+        "buyer": -10
+      },
+      "public": {
+        "boss": -24,
+        "buyer": -15
+      }
+    }
+  },
+  {
+    "id": "fact.reported_insider_trading",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.reported_insider_trading",
+    "lesson_key": "lesson.reported_insider_trading",
+    "consequences": {
+      "witnessed": {
+        "boss": 6
+      },
+      "public": {
+        "boss": 10
+      }
+    }
+  },
+  {
+    "id": "fact.destroyed_evidence",
+    "category": "integrity",
+    "severity": 9,
+    "text_key": "fact.destroyed_evidence",
+    "lesson_key": "lesson.destroyed_evidence",
+    "traces": [
+      {
+        "type": "message",
+        "visibility": 0.9,
+        "detectors": ["internal_audit", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -16
+      },
+      "public": {
+        "boss": -24
+      }
+    }
+  },
+  {
+    "id": "fact.worked_to_exhaustion",
+    "category": "performance",
+    "severity": 3,
+    "text_key": "fact.worked_to_exhaustion",
+    "lesson_key": "lesson.worked_to_exhaustion",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.4,
+        "detectors": ["boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": 2
+      },
+      "public": {
+        "boss": 0
+      }
+    }
+  },
+  {
+    "id": "fact.sacrificed_family_for_deal",
+    "category": "performance",
+    "severity": 3,
+    "text_key": "fact.sacrificed_family_for_deal",
+    "lesson_key": "lesson.sacrificed_family_for_deal",
+    "consequences": {
+      "witnessed": {
+        "boss": 1
+      },
+      "public": {
+        "boss": 0
+      }
+    }
+  },
+  {
+    "id": "fact.hid_model_error",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.hid_model_error",
+    "lesson_key": "lesson.hid_model_error",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.8,
+        "detectors": ["internal_audit", "buyer", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -9,
+        "buyer": -9
+      },
+      "public": {
+        "boss": -16,
+        "buyer": -16
+      }
+    }
+  },
+  {
+    "id": "fact.left_pitch_error_uncorrected",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.left_pitch_error_uncorrected",
+    "lesson_key": "lesson.left_pitch_error_uncorrected",
+    "traces": [
+      {
+        "type": "message",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "buyer", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8,
+        "buyer": -8
+      },
+      "public": {
+        "boss": -14,
+        "buyer": -14
+      }
+    }
+  },
+  {
+    "id": "fact.padded_client_entertainment",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.padded_client_entertainment",
+    "lesson_key": "lesson.padded_client_entertainment",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.7,
+        "detectors": ["internal_audit", "finance", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -5,
+        "finance": -5
+      },
+      "public": {
+        "boss": -9
+      }
+    }
+  },
+  {
+    "id": "fact.traded_restricted_security",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.traded_restricted_security",
+    "lesson_key": "lesson.traded_restricted_security",
+    "traces": [
+      {
+        "type": "payment",
+        "visibility": 0.85,
+        "detectors": ["internal_audit", "finance", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -10,
+        "finance": -8
+      },
+      "public": {
+        "boss": -16
+      }
+    }
+  },
+  {
+    "id": "fact.leaked_client_list",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.leaked_client_list",
+    "lesson_key": "lesson.leaked_client_list",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.85,
+        "detectors": ["internal_audit", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -10
+      },
+      "public": {
+        "boss": -18
+      }
+    }
+  },
+  {
+    "id": "fact.smoothed_earnings_slide",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.smoothed_earnings_slide",
+    "lesson_key": "lesson.smoothed_earnings_slide",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.75,
+        "detectors": ["internal_audit", "buyer", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8,
+        "buyer": -8
+      },
+      "public": {
+        "boss": -14,
+        "buyer": -14
+      }
+    }
+  },
+  {
+    "id": "fact.blamed_the_md",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.blamed_the_md",
+    "lesson_key": "lesson.blamed_the_md",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.85,
+        "detectors": ["internal_audit", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -9
+      },
+      "public": {
+        "boss": -16
+      }
+    }
+  }
+]

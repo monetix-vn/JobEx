@@ -1,0 +1,8 @@
+{
+  "id": "industry-securities",
+  "version": "0.1.0",
+  "layer": "industry",
+  "engine_min_version": "0.1.0",
+  "depends_on": ["core"],
+  "description": "A securities and investment banking firm: the finance-bro job."
+}

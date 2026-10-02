@@ -21,6 +21,13 @@
         "arc": "arc.the_squeeze",
         "stage": "audit"
       }
+    ],
+    "roles": [
+      "role.sales.export.specialist",
+      "role.qc.specialist",
+      "role.fin.accountant",
+      "role.prod.planner",
+      "role.purch.buyer"
     ]
   },
   {
@@ -28,6 +35,13 @@
     "tags": ["buyer", "audit"],
     "weight": 0,
     "arc": "arc.the_squeeze",
-    "scene": "scene.audit_day"
+    "scene": "scene.audit_day",
+    "roles": [
+      "role.sales.export.specialist",
+      "role.qc.specialist",
+      "role.fin.accountant",
+      "role.prod.planner",
+      "role.purch.buyer"
+    ]
   }
 ]

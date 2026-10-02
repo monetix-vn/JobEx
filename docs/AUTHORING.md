@@ -20,7 +20,7 @@ Importing an entry again updates it in place.
 
 ```yaml
 scene: qc.rush_release # <job prefix>.<name>; prefix qc or sales picks the job
-role: qc # optional: qc | sales | fin | prod | purch | any, or a full role id
+role: qc # optional: qc | sales | fin | prod | purch | inv | any, or a full role id
 place: qc_lab # qc_lab, meeting_room, sales_office, factory_floor, finance_office
 tags: [quality, pressure]
 weight: 1 # how likely, relative to other events
@@ -61,6 +61,14 @@ variable name. For something the list cannot say, use `when_raw:` with the JSON 
 
 `rel khoa trust +5` (trust, loyalty or owed) · `favor khoa +1` (favours they owe you) · `rep.boss +5` · `stress +3` · `cash -800000` · `delta company.audit_readiness -5` ·
 `end promoted` / `end walked_away` (ends the run with that ending: accepting a promotion, resigning) · `close bank_rec +2` (finance month-end close step: 2 done properly, 1 rushed) · `fact accepted_kickback private` (private, witnessed, rumor, public) · `schedule event.qc.x 4-6`.
+
+## Another company (pack) and events for several jobs
+
+A job in a different company lives in its own pack, e.g. `content/industry-securities` (copy a
+`manifest.json`, layer `industry`, `depends_on: [core]`). Import into it with
+`pnpm author file.yml --pack industry-securities`. An event can be limited to one job (`role`) or a few
+(`roles: [..]` in JSON; the shared cookware audit events use it), so jobs in different companies never
+meet each other's events.
 
 ## The month-end close (finance)
 

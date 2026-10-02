@@ -1,0 +1,82 @@
+[
+  {
+    "id": "arc.the_valuation",
+    "title_key": "arc.the_valuation.title",
+    "stages": [
+      {
+        "id": "ask",
+        "event": "event.inv.valuation_ask"
+      },
+      {
+        "id": "push",
+        "event": "event.inv.assumptions_push",
+        "delay_weeks": [2, 3]
+      },
+      {
+        "id": "roadshow",
+        "event": "event.inv.roadshow_question",
+        "delay_weeks": [4, 7]
+      }
+    ]
+  },
+  {
+    "id": "arc.the_tip",
+    "title_key": "arc.the_tip.title",
+    "stages": [
+      {
+        "id": "overheard",
+        "event": "event.inv.tip_overheard"
+      },
+      {
+        "id": "trade",
+        "event": "event.inv.friend_trades",
+        "delay_weeks": [2, 4]
+      },
+      {
+        "id": "inquiry",
+        "event": "event.inv.compliance_query",
+        "delay_weeks": [4, 8]
+      }
+    ]
+  },
+  {
+    "id": "arc.the_hours",
+    "title_key": "arc.the_hours.title",
+    "stages": [
+      {
+        "id": "ask",
+        "event": "event.inv.weekend_ask"
+      },
+      {
+        "id": "cancelled",
+        "event": "event.inv.leave_cancelled",
+        "delay_weeks": [2, 4]
+      },
+      {
+        "id": "collapse",
+        "event": "event.inv.model_error_at_dawn",
+        "delay_weeks": [3, 6]
+      }
+    ]
+  },
+  {
+    "id": "arc.pitch_error",
+    "title_key": "arc.pitch_error.title",
+    "stages": [
+      {
+        "id": "found",
+        "event": "event.inv.error_found"
+      },
+      {
+        "id": "decide",
+        "event": "event.inv.fix_or_hide",
+        "delay_weeks": [1, 2]
+      },
+      {
+        "id": "client",
+        "event": "event.inv.client_notices",
+        "delay_weeks": [3, 6]
+      }
+    ]
+  }
+]

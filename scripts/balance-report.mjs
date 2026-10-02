@@ -7,7 +7,14 @@ import { q, run, tail } from './lib/run.mjs';
 const i = process.argv.indexOf('--runs');
 const runs = i >= 0 ? process.argv[i + 1] : '40';
 const sections = [];
-for (const scenario of ['sales-year', 'qc-year', 'fin-year', 'prod-year', 'purch-year']) {
+for (const scenario of [
+  'sales-year',
+  'qc-year',
+  'fin-year',
+  'prod-year',
+  'purch-year',
+  'inv-year',
+]) {
   const result = run(
     `npx tsx tools/sim-runner/src/cli.ts balance --scenario ${scenario} --runs ${runs} --content ${q('content')}`,
   );

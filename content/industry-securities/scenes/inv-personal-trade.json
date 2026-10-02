@@ -1,0 +1,135 @@
+{
+  "id": "scene.inv.personal_trade",
+  "location": "loc.meeting_room",
+  "cast": ["char:hieu"],
+  "lines": [
+    {
+      "speaker": "char:hieu",
+      "text_key": "scene.inv.personal_trade.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.inv.personal_trade.c1",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 0.85,
+          "narration_key": "scene.inv.personal_trade.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.hieu.trust",
+              "value": -1
+            },
+            {
+              "delta": "rel.thao.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "p": 0.15,
+          "result": "fail",
+          "narration_key": "scene.inv.personal_trade.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.hieu.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.inv.personal_trade.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.inv.personal_trade.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.thao.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.inv.personal_trade.c3",
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.inv.personal_trade.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.hieu.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.cash_vnd",
+              "value": 12000000
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.traded_restricted_security",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.inv.personal_trade.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.hieu.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.thao.trust",
+              "value": -10
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -8
+            },
+            {
+              "delta": "player.cash_vnd",
+              "value": 12000000
+            },
+            {
+              "delta": "player.stress",
+              "value": 7
+            },
+            {
+              "fact": "fact.traded_restricted_security",
+              "visibility": "public"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": ["term.chinese_wall"]
+}

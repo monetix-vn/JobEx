@@ -12,6 +12,7 @@ const ROLE_BY_PREFIX = {
   fin: 'role.fin.accountant',
   prod: 'role.prod.planner',
   purch: 'role.purch.buyer',
+  inv: 'role.inv.analyst',
 };
 
 const readJson = (path, fallback) =>

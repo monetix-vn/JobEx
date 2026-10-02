@@ -1,0 +1,161 @@
+{
+  "id": "scene.inv.error_found",
+  "location": "loc.meeting_room",
+  "cast": ["char:hieu"],
+  "lines": [
+    {
+      "speaker": "char:hieu",
+      "text_key": "scene.inv.error_found.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.inv.error_found.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.inv.error_found.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.quang.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.hieu.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.phong.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.pitch_error",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.inv.error_found.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.quang.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.trang.trust",
+              "value": -1
+            },
+            {
+              "delta": "rel.phong.trust",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "arc": "arc.pitch_error",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.inv.error_found.c2",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.inv.error_found.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.hieu.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.pitch_error",
+              "stage": "decide"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.inv.error_found.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.inv.error_found.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.hieu.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.left_pitch_error_uncorrected",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.pitch_error",
+              "stage": "client"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.inv.error_found.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.hieu.trust",
+              "value": -2
+            },
+            {
+              "delta": "rel.quang.trust",
+              "value": -5
+            },
+            {
+              "delta": "rel.phong.trust",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.left_pitch_error_uncorrected",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.pitch_error",
+              "stage": "client"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

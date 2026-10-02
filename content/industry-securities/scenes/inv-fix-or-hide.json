@@ -1,0 +1,169 @@
+{
+  "id": "scene.inv.fix_or_hide",
+  "location": "loc.meeting_room",
+  "cast": ["char:quang"],
+  "lines": [
+    {
+      "speaker": "char:quang",
+      "text_key": "scene.inv.fix_or_hide.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.inv.fix_or_hide.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.inv.fix_or_hide.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.quang.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.trang.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.phong.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.pitch_error",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.inv.fix_or_hide.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.inv.fix_or_hide.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.quang.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.trang.trust",
+              "value": -1
+            },
+            {
+              "delta": "rel.phong.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.pitch_error",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.inv.fix_or_hide.c2.fail",
+          "effects": [
+            {
+              "delta": "rel.quang.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.trang.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.phong.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.pitch_error",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.inv.fix_or_hide.c3",
+      "outcomes": [
+        {
+          "p": 0.55,
+          "narration_key": "scene.inv.fix_or_hide.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.quang.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.hid_model_error",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.pitch_error",
+              "stage": "client"
+            }
+          ]
+        },
+        {
+          "p": 0.45,
+          "result": "fail",
+          "narration_key": "scene.inv.fix_or_hide.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.quang.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.phong.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.hid_model_error",
+              "visibility": "public"
+            },
+            {
+              "arc": "arc.pitch_error",
+              "stage": "client"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

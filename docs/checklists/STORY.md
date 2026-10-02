@@ -72,9 +72,17 @@ source of truth for what scene comes next; update their Status column as you go.
 - [x] First-cut balance check (`purch-year.test.ts`)
 - [ ] More Purchasing scenes (about 10 listed in the bible) and practitioner review
 
+## Job 6: Investment Banking Analyst, the "finance bro" (`docs/story/investment.md`)
+
+- [x] Bible v1 (AI) written with the scenes (owner review pending); own company and pack `content/industry-securities`
+- [x] Role `role.inv.analyst` playable (overhead 10 hours), `inv-year` scenario, CI step `sim:inv`
+- [x] 25 scenes: beats (first week, midyear review, market twist, compliance review, bonus review, associate offer), arcs The Valuation, The Tip, The Hours, The Error in the Pitch, incidents (client dinner, personal trade, headhunter, late edit), consequences (compliance asks about trades, blame meeting), resignation; 5 new characters, 3 terms, 20 facts
+- [x] First-cut balance check (`inv-year.test.ts`)
+- [ ] More Investment scenes (see the bible) and practitioner review
+
 ## Later jobs (not yet designed)
 
-- [ ] Choose the next jobs (HR? Logistics? Warehouse? Quality systems?) (needs owner)
+- [ ] Choose the next jobs (HR? Logistics? Warehouse? a bank branch? a start-up?) (needs owner)
 - [ ] For each: bible, then scenes (same steps as above)
 
 ## Story-writing loop (each session)

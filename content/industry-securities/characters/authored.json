@@ -1,0 +1,51 @@
+[
+  {
+    "id": "char.quang",
+    "name_key": "char.quang.name",
+    "title_key": "char.quang.title",
+    "department": "investment_banking",
+    "home_group": "boss",
+    "traits": ["driven", "sleeps_four_hours", "loyal_to_the_deal"],
+    "start": {
+      "trust": 10
+    }
+  },
+  {
+    "id": "char.trang",
+    "name_key": "char.trang.name",
+    "title_key": "char.trang.title",
+    "department": "investment_banking",
+    "home_group": "boss",
+    "traits": ["charismatic", "relentless", "rewards_closers"],
+    "start": {
+      "trust": 5
+    }
+  },
+  {
+    "id": "char.phong",
+    "name_key": "char.phong.name",
+    "title_key": "char.phong.title",
+    "department": "client",
+    "home_group": "buyer",
+    "traits": ["confident", "wants_a_big_number", "impatient"]
+  },
+  {
+    "id": "char.hieu",
+    "name_key": "char.hieu.name",
+    "title_key": "char.hieu.title",
+    "department": "investment_banking",
+    "home_group": "boss",
+    "traits": ["funny", "ambitious", "thinks_rules_are_for_others"],
+    "start": {
+      "trust": 15,
+      "loyalty": 10
+    }
+  },
+  {
+    "id": "char.thao",
+    "name_key": "char.thao.name",
+    "title_key": "char.thao.title",
+    "department": "compliance",
+    "traits": ["calm", "thorough", "never_raises_her_voice"]
+  }
+]

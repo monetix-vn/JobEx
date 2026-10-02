@@ -147,6 +147,7 @@ export const eventSchema = {
     tags: { type: 'array', items: { type: 'string' } },
     when: expr,
     role: idString,
+    roles: { type: 'array', items: idString, minItems: 1, uniqueItems: true },
     weight: { type: 'number', minimum: 0 },
     cooldown_weeks: { type: 'integer', minimum: 0 },
     arc: idString,

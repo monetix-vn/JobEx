@@ -85,7 +85,11 @@ describe('valid packs', () => {
     walk(root, '');
     const { registry, diagnostics } = await load(files);
     expect(diagnostics.filter((d) => d.severity !== 'info').map(formatDiagnostic)).toEqual([]);
-    expect(registry?.packs.map((p) => p.id)).toEqual(['core', 'industry-cookware']);
+    expect(registry?.packs.map((p) => p.id)).toEqual([
+      'core',
+      'industry-cookware',
+      'industry-securities',
+    ]);
     expect(registry?.get('role', 'role.sales.export.specialist')?.reports_to).toBe(
       'role.sales.export.manager',
     );
@@ -649,6 +653,37 @@ describe('endings and close steps', () => {
     expect(codes((await load(withSteps(['a', 'a']))).diagnostics, 'error')).toContain(
       'schema.invalid',
     );
+  });
+});
+
+describe('events for several jobs', () => {
+  const role = (id: string) => ({ id, department: 'dept.t', level: 1, title_key: 'k.t' });
+  const withRoles = (events: unknown) =>
+    pack({
+      'core/roles/r.json': j([role('role.t.one'), role('role.t.two')]),
+      'core/events/a.json': j(events),
+      'core/locale/en.json': j({ ...locale, 'k.t': 'T' }),
+      'core/locale/vi.json': j({ ...locale, 'k.t': 'T' }),
+    });
+
+  it('accepts a list of existing roles', async () => {
+    const { diagnostics } = await load(withRoles(event({ roles: ['role.t.one', 'role.t.two'] })));
+    expect(hasErrors(diagnostics)).toBe(false);
+  });
+
+  it('rejects an unknown role, an empty list, and role together with roles', async () => {
+    expect(
+      codes((await load(withRoles(event({ roles: ['role.t.nope'] })))).diagnostics, 'error'),
+    ).toContain('ref.missing');
+    expect(codes((await load(withRoles(event({ roles: [] })))).diagnostics, 'error')).toContain(
+      'schema.invalid',
+    );
+    expect(
+      codes(
+        (await load(withRoles(event({ role: 'role.t.one', roles: ['role.t.two'] })))).diagnostics,
+        'error',
+      ),
+    ).toContain('event.role_and_roles');
   });
 });
 

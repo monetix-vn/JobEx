@@ -67,6 +67,12 @@ export function createModule(host: ModuleHost): ModuleInstance {
   const playedBeats = new Set<string>();
   let fired = 0;
 
+  /** An event with no role is for every job; `role` or `roles` limit it. */
+  const forRole = (event: GameEvent, player: unknown): boolean => {
+    if (event.roles) return event.roles.includes(String(player));
+    return event.role === undefined || event.role === player;
+  };
+
   const holds = (event: GameEvent): boolean => {
     if (event.when === undefined) return true;
     try {
@@ -168,7 +174,7 @@ export function createModule(host: ModuleHost): ModuleInstance {
           .all('event')
           .filter((e) => e.beat && !playedBeats.has(e.id) && !taken.has(e.id))
           .filter((e) => turn + 1 >= e.beat!.from_week && turn + 1 <= e.beat!.to_week)
-          .filter((e) => e.role === undefined || e.role === world.get('player.role'))
+          .filter((e) => forRole(e, world.get('player.role')))
           .filter(holds)
           .sort((a, b) => a.beat!.from_week - b.beat!.from_week || (a.id < b.id ? -1 : 1))[0];
         if (beat) {
@@ -186,7 +192,7 @@ export function createModule(host: ModuleHost): ModuleInstance {
         const pool = content
           .all('event')
           .filter((e) => !taken.has(e.id) && !e.beat && (e.weight ?? 1) > 0)
-          .filter((e) => e.role === undefined || e.role === world.get('player.role'))
+          .filter((e) => forRole(e, world.get('player.role')))
           .filter((e) => {
             const last = lastFired[e.id];
             return last === undefined || turn - last >= (e.cooldown_weeks ?? defaultCooldown);

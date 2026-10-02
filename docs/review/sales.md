@@ -4,7 +4,48 @@ AI first draft. Please read as someone who has done this job. For each scene mar
 pressure believable), tone (grey, not cartoonish), Vietnamese natural (not a translation). Write notes
 under each scene. Names and places are invented.
 
-39 scenes. Facts created are listed under each outcome.
+41 scenes. Facts created are listed under each outcome.
+
+## buyer_audit_notice
+
+*random; tags: buyer, audit, pressure*
+
+- **Boss:** The buyer just sent an audit notice. They will inspect the plant in about a month.
+  - *VI* **Sếp:** Khách hàng vừa gửi thông báo đánh giá. Khoảng một tháng nữa họ sẽ đến kiểm tra nhà máy.
+- **QC lead:** Our batch records have gaps. Someone has to reconcile them before the audit.
+  - *VI* **Trưởng QC:** Hồ sơ lô hàng của mình còn thiếu. Phải có người đối chiếu lại trước ngày đánh giá.
+
+**c1.** Volunteer to rebuild the records from the source documents, honestly.  
+*VI:* Xung phong dựng lại hồ sơ từ chứng từ gốc, làm trung thực.
+
+- (60%) It takes six long hours, but the records hold together and QC notices.
+  - *VI:* Mất sáu tiếng vất vả, nhưng hồ sơ khớp và phòng QC ghi nhận.
+  - effects: rep.qc +5, fact records_prepared_honestly (witnessed)
+- (40%, goes badly) You find more gaps than expected and lose the evening to them.
+  - *VI:* Bạn phát hiện nhiều chỗ thiếu hơn dự tính và mất cả buổi tối cho việc này.
+  - effects: stress +8
+
+**c2.** Say nothing and hope the auditors do not look closely.  
+*VI:* Im lặng và hy vọng đoàn đánh giá không soi kỹ.
+
+- (100%) The meeting moves on. The gaps are still there.
+  - *VI:* Cuộc họp chuyển sang việc khác. Những chỗ thiếu vẫn còn đó.
+  - effects: company.audit_readiness -5
+
+Review: [ ] realistic  [ ] tone  [ ] Vietnamese natural. Notes:
+
+---
+
+## audit_day
+
+*comes from a storyline; tags: buyer, audit*
+
+- **QC lead:** The auditors are on the floor. Keep your answers short and accurate.
+  - *VI* **Trưởng QC:** Đoàn đánh giá đang ở xưởng. Trả lời ngắn gọn và chính xác.
+
+Review: [ ] realistic  [ ] tone  [ ] Vietnamese natural. Notes:
+
+---
 
 ## sales.shipment_pull_in
 
@@ -1611,6 +1652,8 @@ Review: [ ] realistic  [ ] tone  [ ] Vietnamese natural. Notes:
   - *VI:* Lời hứa không giữ được là một món nợ: khách lập kế hoạch theo ngày giao, và niềm tin chính là thứ bạn bán.
 - **you shipped an order early, without the buyer knowing, to reach a number** (severity 5): Moving shipments between periods to fix a number is revenue management, not sales. The buyer's warehouse, not your spreadsheet, is where it is tested.
   - *VI:* Chuyển đơn giao giữa các kỳ để chỉnh con số là điều chỉnh doanh thu, không phải bán hàng. Kho của khách, chứ không phải bảng tính của bạn, là nơi nó bị kiểm tra.
+- **the records you rebuilt honestly** (severity 2): Clean records are boring, and that is the point: they let anyone audit you calmly.
+  - *VI:* Hồ sơ sạch thì nhàm chán, và đó chính là mục đích: ai kiểm tra bạn cũng có thể bình tĩnh.
 - **the backdating you refused** (severity 2): Dates on documents are facts. Refusing to change them is uncomfortable once and keeps you safe for years.
   - *VI:* Ngày tháng trên chứng từ là sự thật. Từ chối sửa chúng khó chịu một lần và giúp bạn an toàn nhiều năm.
 - **the offer you reported** (severity 3): Reporting an offer early feels costly and is cheap: it ends the pressure and puts the risk on the people who should carry it.

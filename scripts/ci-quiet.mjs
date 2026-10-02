@@ -17,6 +17,7 @@ const STEPS = [
   ['fin year', 'sim:fin'],
   ['prod year', 'sim:prod'],
   ['purch year', 'sim:purch'],
+  ['inv year', 'sim:inv'],
   ['web build', 'build:web'],
 ];
 

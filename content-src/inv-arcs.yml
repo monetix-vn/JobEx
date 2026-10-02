@@ -1,0 +1,592 @@
+# Investment Banking Analyst storylines and incidents (pack industry-securities).
+# Import with: pnpm author content-src/inv-arcs.yml --pack industry-securities
+arc: the_valuation
+title:
+  en: 'The valuation'
+  vi: 'Định giá'
+stages:
+  - { id: ask, event: inv.valuation_ask }
+  - { id: push, event: inv.assumptions_push, delay: 2-3 }
+  - { id: roadshow, event: inv.roadshow_question, delay: 4-7 }
+---
+scene: inv.valuation_ask
+arc: the_valuation
+place: meeting_room
+tags: [pressure, client, dark]
+weight: 3
+cooldown: 40
+terms: [valuation]
+when: [turn >= 8, turn <= 34]
+lines:
+  - who: char:phong
+    en: 'My company is worth at least forty trillion dong. My competitor listed at thirty-five and they are smaller. I do not want to hear about discounts and multiples. I want the model to say forty. You are the person who builds the model.'
+    vi: 'Công ty của tôi trị giá ít nhất bốn mươi nghìn tỷ đồng. Đối thủ niêm yết ở ba mươi lăm và họ nhỏ hơn. Tôi không muốn nghe về chiết khấu và bội số. Tôi muốn mô hình nói bốn mươi. Anh/chị là người dựng mô hình.'
+  - who: char:quang
+    en: 'He is the client. Say something reasonable.'
+    vi: 'Ông ấy là khách hàng. Nói điều gì hợp lý đi.'
+choices:
+  - en: 'Show Phong the range your model supports with the assumptions visible, and explain what would have to be true for forty.'
+    vi: 'Cho ông Phong xem khoảng giá trị mô hình hỗ trợ, với các giả định hiển thị, và giải thích điều gì phải đúng để đạt bốn mươi.'
+    cost: { hours: 4 }
+    outcomes:
+      - p: 0.7
+        en: "The range is thirty-one to thirty-six. Phong frowns, then asks, genuinely, what the competitor's growth looked like at their listing. He settles on thirty-four, and the deck says why."
+        vi: 'Khoảng là ba mươi mốt đến ba mươi sáu. Ông Phong cau mày rồi hỏi, thật lòng, tăng trưởng của đối thủ lúc niêm yết ra sao. Ông chốt ba mươi bốn, và hồ sơ ghi rõ vì sao.'
+        effects:
+          [
+            rel phong trust +2,
+            rel quang trust +3,
+            rel trang trust +1,
+            stress +3,
+            arc the_valuation end,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'Phong says another bank will give him forty, and walks out. Trang is not pleased. You have a defensible number and no mandate.'
+        vi: 'Ông Phong nói ngân hàng khác sẽ cho ông bốn mươi và bỏ ra ngoài. Chị Trang không vui. Anh/chị có một con số bảo vệ được và không có ủy thác.'
+        effects:
+          [
+            rel phong trust -6,
+            rel trang trust -4,
+            rel quang trust +2,
+            stress +5,
+            arc the_valuation end,
+          ]
+  - en: 'Build a case at the top of the defensible range, with the growth assumption stated, and flag it as optimistic.'
+    vi: 'Dựng một phương án ở đầu trên của khoảng bảo vệ được, nêu rõ giả định tăng trưởng và đánh dấu đó là lạc quan.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: "Thirty-seven, labelled 'management case'. Phong is not delighted, and not insulted. Trang says it is a fair way to disagree in public."
+        vi: "Ba mươi bảy, ghi rõ 'phương án của ban quản lý'. Ông Phong không hài lòng, và không bị xúc phạm. Chị Trang nói đó là cách bất đồng công khai hợp lý."
+        effects: [rel phong trust +1, rel trang trust +2, stress +2, arc the_valuation push]
+  - en: 'Adjust the growth and margin assumptions until the model says forty, and say nothing about it.'
+    vi: 'Điều chỉnh các giả định tăng trưởng và biên lợi nhuận cho đến khi mô hình nói bốn mươi và không nói gì về điều đó.'
+    outcomes:
+      - p: 0.75
+        en: 'The model says forty. Phong shakes your hand. The growth rate in cell F9 is eight points higher than the company has ever achieved.'
+        vi: 'Mô hình nói bốn mươi. Ông Phong bắt tay anh/chị. Tốc độ tăng trưởng ở ô F9 cao hơn tám điểm so với bất cứ lần nào công ty từng đạt.'
+        effects:
+          [
+            rel phong trust +6,
+            rel trang trust +4,
+            stress +1,
+            fact inflated_growth_assumption private,
+            arc the_valuation push,
+          ]
+      - p: 0.25
+        ok: false
+        en: 'Hieu, reviewing the model for another deal, spots cell F9 and the history next to it. He says nothing yet, and looks at you.'
+        vi: 'Anh Hiếu, rà soát mô hình cho thương vụ khác, thấy ô F9 và lịch sử bên cạnh. Anh chưa nói gì, và nhìn anh/chị.'
+        effects:
+          [
+            rel phong trust +4,
+            rel trang trust +3,
+            rel hieu trust -5,
+            stress +3,
+            fact inflated_growth_assumption witnessed,
+            arc the_valuation push,
+          ]
+---
+scene: inv.assumptions_push
+weight: 0
+place: meeting_room
+tags: [pressure, dark, arc]
+terms: [valuation]
+lines:
+  - who: char:trang
+    en: 'The IPO needs a price range investors will believe, and a story they will buy. The growth assumption is the story. I need it a point or two higher and the discount rate a bit lower. Nothing outrageous. The client will be happier, and so will the fee.'
+    vi: 'Đợt IPO cần một khung giá nhà đầu tư tin và một câu chuyện họ mua. Giả định tăng trưởng là câu chuyện. Chị cần nó cao hơn một hai điểm và tỷ lệ chiết khấu thấp hơn chút. Không có gì quá đáng. Khách sẽ vui hơn, và phí cũng vậy.'
+choices:
+  - en: 'Say the model cannot support it, show what each point is worth, and offer a sensitivity table so investors can see the range.'
+    vi: 'Nói mô hình không hỗ trợ, cho xem mỗi điểm đáng giá bao nhiêu và đề xuất bảng độ nhạy để nhà đầu tư thấy khoảng giá trị.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.65
+        en: "Trang looks at the table. 'A sensitivity table is a sales tool too.' She accepts a lower range with the table in the prospectus. The fee is smaller, and the document is clean."
+        vi: "Chị Trang nhìn bảng. 'Bảng độ nhạy cũng là công cụ bán hàng.' Chị chấp nhận khung thấp hơn kèm bảng trong bản cáo bạch. Phí nhỏ hơn, và tài liệu sạch."
+        effects: [rel trang trust +2, rel quang trust +3, stress +3, arc the_valuation end]
+      - p: 0.35
+        ok: false
+        en: 'Trang says the decision is hers, and has another analyst change the cells. You are taken off the deal, and your objection is on file.'
+        vi: 'Chị Trang nói quyết định là của chị và nhờ một chuyên viên khác đổi các ô. Anh/chị bị đưa khỏi thương vụ, và phản biện của anh/chị nằm trong hồ sơ.'
+        effects:
+          [
+            rel trang trust -5,
+            rel quang trust +3,
+            rep.boss -2,
+            stress +4,
+            fact objected_to_assumptions witnessed,
+            arc the_valuation end,
+          ]
+  - en: 'Agree to a smaller change, one defensible point on growth, and write down the basis.'
+    vi: 'Đồng ý một thay đổi nhỏ hơn, một điểm tăng trưởng bảo vệ được, và viết rõ cơ sở.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'It is within the range of reasonable judgement, with a note. Trang accepts, and the model stays honest.'
+        vi: 'Nằm trong khoảng đánh giá hợp lý, kèm ghi chú. Chị Trang chấp nhận, và mô hình vẫn trung thực.'
+        effects: [rel trang trust +1, stress +2, arc the_valuation roadshow]
+  - en: 'Make the changes she asks for, and keep the old version in a file only you have.'
+    vi: 'Thực hiện các thay đổi chị yêu cầu và giữ bản cũ trong một tệp chỉ mình anh/chị có.'
+    outcomes:
+      - p: 0.7
+        en: 'The range goes up. Trang is pleased. Your private file is a diary of what you knew, and you are the only one who has it.'
+        vi: 'Khung giá tăng. Chị Trang hài lòng. Tệp riêng của anh/chị là nhật ký về điều anh/chị biết, và chỉ anh/chị có.'
+        effects:
+          [
+            rel trang trust +5,
+            stress +1,
+            fact inflated_growth_assumption private,
+            arc the_valuation roadshow,
+          ]
+      - p: 0.3
+        ok: false
+        en: "The file's name and modification date turn up in an IT backup. Compliance asks why an analyst keeps a shadow model."
+        vi: 'Tên và ngày sửa tệp xuất hiện trong bản sao lưu của IT. Bộ phận Tuân thủ hỏi vì sao một chuyên viên giữ mô hình bóng.'
+        effects:
+          [
+            rel trang trust +3,
+            rel thao trust -6,
+            rep.boss -4,
+            stress +4,
+            fact inflated_growth_assumption witnessed,
+            arc the_valuation roadshow,
+          ]
+---
+scene: inv.roadshow_question
+weight: 0
+place: meeting_room
+tags: [client, dark, consequence, arc]
+terms: [valuation]
+lines:
+  - who: char:phong
+    en: 'At the roadshow, an investor from a pension fund asked where the eighteen percent growth rate came from, because the company has averaged nine. I did not have an answer. You built the model. What do I say?'
+    vi: 'Ở buổi gặp nhà đầu tư, một nhà đầu tư từ quỹ hưu trí hỏi tốc độ tăng trưởng mười tám phần trăm từ đâu ra, vì công ty trung bình chín. Tôi không có câu trả lời. Anh/chị dựng mô hình. Tôi nói gì?'
+choices:
+  - en: 'Tell him the truth: the growth rate was an assumption, not a forecast the company has delivered, and help him present the real range to the investor.'
+    vi: 'Nói thật với ông: tốc độ tăng trưởng là giả định, không phải dự báo công ty đã đạt, và giúp ông trình bày khoảng thật cho nhà đầu tư.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Phong is not pleased. The range is reissued with the real growth, and the IPO is priced lower. The pension fund buys a large block. 'That is why we trust you,' its manager says."
+        vi: "Ông Phong không vui. Khung giá được phát hành lại với mức tăng trưởng thật, và IPO được định giá thấp hơn. Quỹ hưu trí mua một khối lớn. 'Đó là lý do chúng tôi tin anh/chị,' người quản lý quỹ nói."
+        effects:
+          [
+            rel phong trust -2,
+            rel trang trust -1,
+            rel quang trust +4,
+            rep.boss +2,
+            stress +4,
+            fact corrected_the_model witnessed,
+            arc the_valuation end,
+          ]
+  - en: "Suggest he say the figure reflects the management plan, and that it is not the firm's forecast."
+    vi: 'Gợi ý ông nói con số phản ánh kế hoạch của ban quản lý và không phải dự báo của công ty.'
+    outcomes:
+      - p: 0.7
+        en: 'The investor accepts the distinction, for now. The prospectus language holds. You have bought time.'
+        vi: 'Nhà đầu tư chấp nhận sự phân biệt, tạm thời. Ngôn từ trong bản cáo bạch giữ được. Anh/chị đã mua được thời gian.'
+        effects: [rel phong trust +1, rel trang trust +1, stress +3, arc the_valuation end]
+      - p: 0.3
+        ok: false
+        en: "The investor asks which analyst built the plan numbers. The word 'management' stops working."
+        vi: "Nhà đầu tư hỏi chuyên viên nào dựng số kế hoạch. Từ 'ban quản lý' ngừng có tác dụng."
+        effects: [rel phong trust -3, rel trang trust -2, stress +5, arc the_valuation end]
+  - en: "Tell him to say it comes from the sector's long-term growth outlook, which is roughly true if you squint."
+    vi: 'Bảo ông nói nó đến từ triển vọng tăng trưởng dài hạn của ngành, điều đúng một cách tương đối nếu nhìn nheo mắt.'
+    outcomes:
+      - p: 0.5
+        en: 'It gets through the meeting. The fund buys a small block, which will lose money. You feel it in your stomach for a week.'
+        vi: 'Nó vượt qua buổi gặp. Quỹ mua một khối nhỏ và sẽ lỗ. Anh/chị thấy nó trong bụng cả tuần.'
+        effects:
+          [
+            rel phong trust +3,
+            rel trang trust +2,
+            stress +3,
+            fact misled_investor private,
+            arc the_valuation end,
+          ]
+      - p: 0.5
+        ok: false
+        en: "The fund's analyst compares the sector outlook to the model's source notes. The two do not match, and the question goes in writing to Trang."
+        vi: 'Chuyên viên của quỹ so triển vọng ngành với ghi chú nguồn của mô hình. Hai bên không khớp, và câu hỏi gửi bằng văn bản cho chị Trang.'
+        effects:
+          [
+            rel phong trust -5,
+            rel trang trust -6,
+            rep.boss -8,
+            stress +7,
+            fact misled_investor public,
+            arc the_valuation end,
+          ]
+---
+arc: the_tip
+title:
+  en: 'The tip'
+  vi: 'Tin mật'
+stages:
+  - { id: overheard, event: inv.tip_overheard }
+  - { id: trade, event: inv.friend_trades, delay: 2-4 }
+  - { id: inquiry, event: inv.compliance_query, delay: 4-8 }
+---
+scene: inv.tip_overheard
+arc: the_tip
+place: meeting_room
+tags: [integrity, dark, people]
+weight: 3
+cooldown: 40
+terms: [mnpi, chinese_wall]
+when: [turn >= 10, turn <= 34]
+lines:
+  - who: char:hieu
+    en: "Do not tell anyone, but I was in the deal room last night. The company we are advising will announce an acquisition on Monday. The target's share price will jump thirty percent. I am thinking of buying some on Friday. A few thousand. Nobody will ever notice."
+    vi: 'Đừng nói với ai, nhưng tối qua em ở phòng thương vụ. Công ty mình tư vấn sẽ công bố một thương vụ mua lại vào thứ Hai. Giá cổ phiếu của công ty mục tiêu sẽ nhảy ba mươi phần trăm. Em định mua một ít vào thứ Sáu. Vài nghìn thôi. Sẽ không ai để ý.'
+choices:
+  - en: 'Tell Hieu this is illegal inside information, that you will not be involved, and urge him not to trade.'
+    vi: 'Nói với anh Hiếu đây là thông tin nội bộ bất hợp pháp, anh/chị sẽ không dính vào và khuyên anh đừng giao dịch.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 0.8
+        en: "Hieu laughs, then goes quiet. 'You are probably right.' On Friday he does not buy. On Monday the price jumps, and he does not speak to you all day."
+        vi: "Anh Hiếu cười rồi im lặng. 'Có lẽ anh/chị đúng.' Thứ Sáu anh không mua. Thứ Hai giá nhảy, và cả ngày anh không nói chuyện với anh/chị."
+        effects:
+          [
+            rel hieu trust -2,
+            stress +2,
+            fact refused_to_join_insider_trade private,
+            arc the_tip end,
+          ]
+      - p: 0.2
+        ok: false
+        en: "Hieu trades anyway, in his sister's name. You know, and you did not stop it. You said the right thing, and it did not work."
+        vi: 'Anh Hiếu vẫn giao dịch, bằng tên em gái. Anh/chị biết, và anh/chị không ngăn được. Anh/chị đã nói điều đúng, và nó không có tác dụng.'
+        effects: [rel hieu trust -4, stress +4, arc the_tip trade]
+  - en: 'Say nothing, and do not trade. It is not your business.'
+    vi: 'Không nói gì và không giao dịch. Không phải việc của anh/chị.'
+    outcomes:
+      - p: 1
+        en: 'You stay out of it. Hieu trades. You now know about an offence, and have told nobody.'
+        vi: 'Anh/chị đứng ngoài. Anh Hiếu giao dịch. Giờ anh/chị biết một hành vi vi phạm, và chưa nói ai.'
+        effects: [rel hieu trust +1, stress +2, arc the_tip trade]
+  - en: 'Ask Hieu which stock, and buy some yourself on Friday.'
+    vi: 'Hỏi anh Hiếu mã nào và tự mua một ít vào thứ Sáu.'
+    outcomes:
+      - p: 0.7
+        en: "On Monday the price jumps thirty-one percent. You make four months' salary in a morning. It feels like nothing at all."
+        vi: 'Thứ Hai giá nhảy ba mươi mốt phần trăm. Anh/chị kiếm được lương bốn tháng trong một buổi sáng. Cảm giác chẳng là gì cả.'
+        effects:
+          [
+            rel hieu trust +6,
+            rel hieu owed +1,
+            cash +40000000,
+            stress +1,
+            fact traded_on_tip private,
+            arc the_tip trade,
+          ]
+      - p: 0.3
+        ok: false
+        en: "The exchange's surveillance system flags unusual buying ahead of the announcement. Two accounts bought, and one of them is yours."
+        vi: 'Hệ thống giám sát của sở giao dịch đánh dấu việc mua bất thường trước thông báo. Hai tài khoản mua, và một trong số đó là của anh/chị.'
+        effects:
+          [
+            rel hieu trust +4,
+            cash +40000000,
+            stress +8,
+            fact traded_on_tip witnessed,
+            arc the_tip trade,
+          ]
+---
+scene: inv.friend_trades
+weight: 0
+place: meeting_room
+tags: [integrity, dark, arc]
+terms: [mnpi]
+lines:
+  - who: char:hieu
+    en: 'It worked. I made a lot of money, and I am buying something I should not be able to afford. I have another one, from the same deal team, for next month. You are in or out. I would hate for us to be on different sides of this.'
+    vi: 'Hiệu quả rồi. Em kiếm được nhiều tiền, và đang mua thứ lẽ ra em không đủ khả năng. Em có thêm một tin nữa, từ cùng nhóm thương vụ, cho tháng sau. Anh/chị tham gia hay không. Em không muốn mình đứng hai phía của chuyện này.'
+choices:
+  - en: 'Say you are out and will not discuss it again, and tell Hieu you think he should talk to Compliance before someone finds out.'
+    vi: 'Nói anh/chị không tham gia và sẽ không bàn lại, và nói với anh Hiếu anh nên gặp bộ phận Tuân thủ trước khi ai đó phát hiện.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 0.8
+        en: "Hieu stares at you. 'You are being very righteous.' He does not talk to Compliance. He also does not ask you again."
+        vi: "Anh Hiếu nhìn anh/chị chằm chằm. 'Anh/chị đang rất đạo đức.' Anh không nói chuyện với bộ phận Tuân thủ. Anh cũng không hỏi lại."
+        effects: [rel hieu trust -6, stress +3, arc the_tip inquiry]
+      - p: 0.2
+        ok: false
+        en: "Hieu tells another analyst that you are 'a boy scout'. By Friday, several people have mentioned it. Quang asks what is going on."
+        vi: "Anh Hiếu nói với một chuyên viên khác anh/chị là 'hướng đạo sinh'. Đến thứ Sáu nhiều người đã nhắc. Anh Quang hỏi chuyện gì đang xảy ra."
+        effects: [rel hieu trust -8, rel quang trust -1, stress +4, arc the_tip inquiry]
+  - en: 'Report what you know to Thao, in writing, and accept what follows for your friend.'
+    vi: 'Báo cho chị Thảo những gì anh/chị biết, bằng văn bản, và chấp nhận điều sẽ đến với người bạn.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: "Thao reads your note slowly. 'Thank you. This is the hardest thing in this building to do.' Hieu is escorted out within two days. He sends one message: 'I did not think it would be you.'"
+        vi: "Chị Thảo đọc ghi chú của anh/chị chậm rãi. 'Cảm ơn em. Đây là việc khó nhất trong tòa nhà này.' Anh Hiếu bị đưa ra ngoài trong hai ngày. Anh gửi một tin duy nhất: 'Anh không nghĩ sẽ là em.'"
+        effects:
+          [
+            rel thao trust +8,
+            rel hieu trust -20,
+            rel quang trust +3,
+            rep.boss +5,
+            stress +7,
+            fact reported_insider_trading witnessed,
+            arc the_tip end,
+          ]
+  - en: 'Go in on the next tip, since you are already involved.'
+    vi: 'Tham gia tin tiếp theo vì anh/chị đã dính vào.'
+    outcomes:
+      - p: 0.6
+        en: "A second win. You are now part of something with a pattern. You open a second account in a relative's name."
+        vi: 'Thắng lần hai. Giờ anh/chị là một phần của điều có quy luật. Anh/chị mở tài khoản thứ hai bằng tên người thân.'
+        effects:
+          [
+            rel hieu trust +6,
+            cash +80000000,
+            stress +3,
+            fact tipped_a_friend private,
+            fact traded_on_tip private,
+            arc the_tip inquiry,
+          ]
+      - p: 0.4
+        ok: false
+        en: "The regulator's data-analysis team has already linked the accounts through a shared device. Hieu is not the only name on their list."
+        vi: 'Nhóm phân tích dữ liệu của cơ quan quản lý đã liên kết các tài khoản qua một thiết bị dùng chung. Anh Hiếu không phải cái tên duy nhất trong danh sách.'
+        effects:
+          [
+            rel hieu trust +3,
+            cash +80000000,
+            stress +9,
+            fact tipped_a_friend public,
+            fact traded_on_tip public,
+            arc the_tip inquiry,
+          ]
+---
+scene: inv.compliance_query
+weight: 0
+place: meeting_room
+tags: [audit, integrity, dark, consequence, arc]
+terms: [mnpi, chinese_wall]
+lines:
+  - who: char:thao
+    en: 'The exchange has sent us a surveillance alert about trading ahead of an announcement. Three accounts, one of them belonging to an employee of this firm. I am interviewing everyone who worked on the deal. Do you know anything about this?'
+    vi: 'Sở giao dịch gửi chúng ta một cảnh báo giám sát về việc giao dịch trước thông báo. Ba tài khoản, một trong số đó thuộc về một nhân viên công ty. Chị đang phỏng vấn mọi người từng làm thương vụ. Em có biết gì về chuyện này không?'
+choices:
+  - en: 'Tell her what you know: who said what, when, and what you did and did not do.'
+    vi: 'Nói với chị những gì anh/chị biết: ai nói gì, khi nào và anh/chị đã làm và không làm gì.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: 'Thao writes it all. The firm cooperates fully with the regulator. You are interviewed twice, and cleared, with a note that you should have reported earlier.'
+        vi: 'Chị Thảo ghi tất cả. Công ty hợp tác đầy đủ với cơ quan quản lý. Anh/chị bị phỏng vấn hai lần và được xác nhận trong sạch, kèm ghi chú lẽ ra nên báo sớm hơn.'
+        effects:
+          [
+            rel thao trust +4,
+            rel quang trust +2,
+            rep.boss -2,
+            stress +6,
+            fact reported_insider_trading witnessed,
+            arc the_tip end,
+          ]
+  - en: 'Say you heard rumours but have no details, and offer to ask around.'
+    vi: 'Nói anh/chị nghe tin đồn nhưng không có chi tiết và đề nghị đi hỏi thăm.'
+    outcomes:
+      - p: 0.4
+        en: 'Thao accepts, for now. Nobody finds a link to you. You wait, every morning, for an email.'
+        vi: 'Chị Thảo chấp nhận, tạm thời. Không ai tìm ra liên hệ với anh/chị. Anh/chị chờ một email mỗi buổi sáng.'
+        effects: [rel thao trust -4, stress +5, arc the_tip end]
+      - p: 0.6
+        ok: false
+        en: "The regulator's records show a message from Hieu to your phone the night before. 'Rumours' does not describe it."
+        vi: "Hồ sơ của cơ quan quản lý cho thấy một tin nhắn từ anh Hiếu đến điện thoại anh/chị tối hôm trước. 'Tin đồn' không mô tả được nó."
+        effects: [rel thao trust -12, rel quang trust -6, rep.boss -12, stress +9, arc the_tip end]
+  - en: 'Say you know nothing, and delete the messages.'
+    vi: 'Nói anh/chị không biết gì và xóa tin nhắn.'
+    outcomes:
+      - p: 0.3
+        en: 'Thao thanks you. Nothing is found. You know you have done something you cannot take back.'
+        vi: 'Chị Thảo cảm ơn. Không tìm thấy gì. Anh/chị biết mình đã làm điều không thể rút lại.'
+        effects: [rel thao trust -2, stress +6, fact destroyed_evidence private, arc the_tip end]
+      - p: 0.7
+        ok: false
+        en: 'The regulator recovers the messages from the other end. The deletion is time-stamped, too. Thao puts the two records side by side.'
+        vi: 'Cơ quan quản lý khôi phục tin nhắn từ phía bên kia. Việc xóa cũng có dấu thời gian. Chị Thảo đặt hai hồ sơ cạnh nhau.'
+        effects:
+          [
+            rel thao trust -15,
+            rel quang trust -8,
+            rep.boss -15,
+            stress +10,
+            fact destroyed_evidence public,
+            arc the_tip end,
+          ]
+---
+arc: the_hours
+title:
+  en: 'The hours'
+  vi: 'Những giờ làm'
+stages:
+  - { id: ask, event: inv.weekend_ask }
+  - { id: cancelled, event: inv.leave_cancelled, delay: 2-4 }
+  - { id: collapse, event: inv.model_error_at_dawn, delay: 3-6 }
+---
+scene: inv.weekend_ask
+arc: the_hours
+place: meeting_room
+tags: [people, pressure]
+weight: 3
+cooldown: 30
+when: [turn >= 8, turn <= 36]
+lines:
+  - who: char:quang
+    en: 'The client moved the signing forward to Monday. The book needs a full refresh and the model needs to be rebuilt for the new structure. It is Friday afternoon. I know you had plans. I had plans too. Can you do the weekend?'
+    vi: 'Khách dời ngày ký sang thứ Hai. Hồ sơ cần làm mới toàn bộ và mô hình cần dựng lại theo cấu trúc mới. Đang chiều thứ Sáu. Anh biết em có kế hoạch. Anh cũng có kế hoạch. Em làm cuối tuần được không?'
+choices:
+  - en: 'Say yes to Saturday and the early part of Sunday, and ask Quang to get another analyst for the rest, with a clear list of what must be done.'
+    vi: 'Nhận lời thứ Bảy và đầu ngày Chủ nhật và nhờ anh Quang tìm thêm chuyên viên khác cho phần còn lại, kèm danh sách rõ việc phải làm.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.8
+        en: 'Quang finds Hieu for Sunday afternoon. The book is ready by Monday at six. You sleep for twelve hours on Monday night, and Quang nods at you across the office for the first time.'
+        vi: 'Anh Quang tìm anh Hiếu cho chiều Chủ nhật. Hồ sơ sẵn sàng trước sáu giờ sáng thứ Hai. Anh/chị ngủ mười hai giờ tối thứ Hai, và anh Quang gật đầu với anh/chị qua văn phòng lần đầu tiên.'
+        effects: [rel quang trust +4, rel hieu trust +2, stress +4, arc the_hours end]
+      - p: 0.2
+        ok: false
+        en: "No other analyst is free. You do Saturday and Sunday anyway, and Quang says: 'I owe you one.' It counts for something."
+        vi: "Không chuyên viên nào rảnh. Anh/chị vẫn làm cả thứ Bảy và Chủ nhật, và anh Quang nói: 'Anh nợ em một lần.' Điều đó có giá trị."
+        effects: [rel quang trust +3, rel quang owed +1, stress +7, arc the_hours cancelled]
+  - en: 'Say you can do Saturday only, and explain what you cannot do in the time.'
+    vi: 'Nói anh/chị chỉ làm được thứ Bảy và giải thích điều không làm được trong thời gian đó.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'Quang takes the rest himself, and tells the client the book will be refreshed in two stages. It is honest, and the client lives with it.'
+        vi: 'Anh Quang tự làm phần còn lại và báo khách hồ sơ sẽ được làm mới hai giai đoạn. Trung thực, và khách chấp nhận.'
+        effects: [rel quang trust +1, stress +3, arc the_hours end]
+  - en: 'Say yes to everything, whatever it takes, and tell your family it is the last time.'
+    vi: 'Nhận lời tất cả, bằng mọi giá, và nói với gia đình đây là lần cuối.'
+    outcomes:
+      - p: 0.7
+        en: 'You work forty hours straight with four hours of sleep. The book is perfect. Quang looks at you as someone who can be relied on, and starts to rely on you.'
+        vi: 'Anh/chị làm bốn mươi giờ liền với bốn giờ ngủ. Hồ sơ hoàn hảo. Anh Quang nhìn anh/chị như người đáng tin, và bắt đầu dựa vào anh/chị.'
+        effects:
+          [
+            rel quang trust +6,
+            stress +9,
+            fact worked_to_exhaustion private,
+            arc the_hours cancelled,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'At 4 a.m. on Sunday you transpose two rows in a model. It will be found on Monday at eleven, in front of the client.'
+        vi: 'Lúc bốn giờ sáng Chủ nhật anh/chị đảo hai hàng trong mô hình. Nó sẽ bị phát hiện vào mười một giờ sáng thứ Hai, trước mặt khách.'
+        effects:
+          [
+            rel quang trust +3,
+            rel phong trust -4,
+            rep.boss -4,
+            stress +9,
+            fact worked_to_exhaustion witnessed,
+            arc the_hours cancelled,
+          ]
+---
+scene: inv.leave_cancelled
+weight: 0
+place: meeting_room
+tags: [people, pressure, dark, arc]
+lines:
+  - who: char:quang
+    en: "I know you booked leave for your sister's wedding next week. The deal has slipped and the closing is now that Thursday. I hate asking. Can you come back for the closing, or can the leave be moved?"
+    vi: 'Anh biết em xin nghỉ cho đám cưới em gái tuần sau. Thương vụ bị dời và ngày đóng giờ là thứ Năm đó. Anh ghét phải nhờ. Em quay lại cho buổi đóng được không, hay dời nghỉ được không?'
+choices:
+  - en: 'Keep your leave, and make a clear handover with the model, the checklist and the contacts, so the closing can be done without you.'
+    vi: 'Giữ kỳ nghỉ và bàn giao rõ ràng gồm mô hình, danh mục kiểm tra và đầu mối liên hệ để buổi đóng thực hiện được mà không có anh/chị.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.7
+        en: 'The handover is thorough. The closing goes fine. Quang does not say a word about the leave, and Hieu says he wishes he had done the same.'
+        vi: 'Bàn giao kỹ lưỡng. Buổi đóng diễn ra tốt. Anh Quang không nói gì về kỳ nghỉ, và anh Hiếu nói giá như anh cũng làm vậy.'
+        effects: [rel quang trust +2, rel hieu trust +2, stress +3, arc the_hours end]
+      - p: 0.3
+        ok: false
+        en: 'Something goes wrong at the closing that only you would have known how to fix. Quang does not call you. He sends an email, afterwards, that is carefully neutral.'
+        vi: 'Có điều gì đó trục trặc ở buổi đóng mà chỉ anh/chị biết cách sửa. Anh Quang không gọi. Anh gửi một email sau đó, trung lập một cách cẩn thận.'
+        effects: [rel quang trust -4, stress +5, arc the_hours end]
+  - en: 'Offer to work the closing remotely from the wedding for two hours, with your phone off after that.'
+    vi: 'Đề nghị làm buổi đóng từ xa tại đám cưới trong hai giờ, sau đó tắt điện thoại.'
+    outcomes:
+      - p: 1
+        en: 'Two hours at a table at the back of the hall, with a laptop. Your sister understands, and does not forget. Quang is grateful in a way that costs him something to say.'
+        vi: 'Hai giờ ở một bàn cuối sảnh, với một chiếc laptop. Em gái anh/chị thông cảm, và không quên. Anh Quang biết ơn theo cách khiến anh phải trả giá để nói.'
+        effects: [rel quang trust +4, stress +5, arc the_hours collapse]
+  - en: 'Cancel the wedding trip. The deal comes first.'
+    vi: 'Hủy chuyến đi đám cưới. Thương vụ là trên hết.'
+    outcomes:
+      - p: 0.8
+        en: 'You miss the wedding. The closing goes perfectly. At 3 a.m. you look at photographs your sister sends, and a number on a screen, and feel nothing.'
+        vi: 'Anh/chị lỡ đám cưới. Buổi đóng diễn ra hoàn hảo. Lúc ba giờ sáng anh/chị nhìn các bức ảnh em gái gửi và một con số trên màn hình, và không cảm thấy gì.'
+        effects:
+          [
+            rel quang trust +7,
+            stress +9,
+            fact sacrificed_family_for_deal private,
+            arc the_hours collapse,
+          ]
+      - p: 0.2
+        ok: false
+        en: 'The closing slips again, a week. You missed the wedding for nothing. Nobody tells you that, and nobody needs to.'
+        vi: 'Buổi đóng lại dời, một tuần. Anh/chị lỡ đám cưới vô ích. Không ai nói điều đó, và không ai cần nói.'
+        effects:
+          [
+            rel quang trust +3,
+            stress +11,
+            fact sacrificed_family_for_deal witnessed,
+            arc the_hours collapse,
+          ]
+---
+scene: inv.model_error_at_dawn
+weight: 0
+place: meeting_room
+tags: [people, pressure, consequence, arc]
+lines:
+  - who: char:quang
+    en: 'You fell asleep at your desk on Wednesday, and today an error in the closing model was found: a sign that was reversed on a debt line. Nothing has been sent yet. You were working on this for fourteen hours straight. I need you to tell me what happened.'
+    vi: 'Em ngủ gục ở bàn hôm thứ Tư, và hôm nay một lỗi trong mô hình đóng bị phát hiện: một dấu bị đảo ở dòng nợ. Chưa gửi gì. Em làm việc này mười bốn giờ liền. Anh cần em nói anh biết chuyện gì đã xảy ra.'
+choices:
+  - en: 'Tell him plainly: you made the error because you were exhausted, and say how many hours you had worked and what you need to change.'
+    vi: 'Nói thẳng với anh: anh/chị mắc lỗi vì kiệt sức và nói đã làm bao nhiêu giờ và cần thay đổi điều gì.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: "Quang is silent, then sits down. 'I should have caught this. We are all doing too much.' The team's hours rule is changed for the next quarter. You get a week of slower work."
+        vi: "Anh Quang im lặng rồi ngồi xuống. 'Anh lẽ ra phải phát hiện. Cả nhóm đang làm quá nhiều.' Quy định giờ làm của nhóm được đổi cho quý sau. Anh/chị được một tuần làm chậm hơn."
+        effects: [rel quang trust +5, rel hieu trust +2, stress -4, rep.boss +2, arc the_hours end]
+  - en: 'Say it was a formatting error that a reviewer should have caught.'
+    vi: 'Nói đó là lỗi định dạng mà người rà soát lẽ ra phải phát hiện.'
+    outcomes:
+      - p: 0.5
+        en: 'Quang nods and moves on. The reviewer, Hieu, is told to be more careful. He does not understand why.'
+        vi: 'Anh Quang gật đầu và tiếp tục. Người rà soát, anh Hiếu, được bảo cẩn thận hơn. Anh không hiểu vì sao.'
+        effects: [rel hieu trust -5, rel quang trust +1, stress +2]
+      - p: 0.5
+        ok: false
+        en: 'The file history shows the sign was reversed by you, at 3:40 a.m. Quang looks at it for a long time.'
+        vi: 'Lịch sử tệp cho thấy dấu bị đảo bởi anh/chị, lúc ba giờ bốn mươi sáng. Anh Quang nhìn nó rất lâu.'
+        effects: [rel quang trust -6, rel hieu trust -3, rep.boss -4, stress +5]
+  - en: 'Fix the sign quietly before anyone checks, and say nothing.'
+    vi: 'Lặng lẽ sửa dấu trước khi ai kiểm tra và không nói gì.'
+    outcomes:
+      - p: 0.7
+        en: 'The model is correct and nobody knows how close it was. You know that you will make another error, and that nobody will know that either.'
+        vi: 'Mô hình đúng và không ai biết đã sát thế nào. Anh/chị biết mình sẽ mắc lỗi khác, và không ai biết điều đó.'
+        effects: [stress +4, fact hid_model_error private]
+      - p: 0.3
+        ok: false
+        en: "Another analyst has a copy of the earlier version. The two files are compared by the client's lawyers, who ask about the difference."
+        vi: 'Một chuyên viên khác có bản sao phiên bản trước. Hai tệp được luật sư của khách so sánh và họ hỏi về sự khác biệt.'
+        effects: [rel quang trust -8, rep.boss -8, stress +7, fact hid_model_error public]
+---

@@ -1,0 +1,437 @@
+# Investment Banking Analyst ("finance bro", docs/story/investment.md), pack industry-securities: cast and beats.
+# Import with: pnpm author content-src/inv-beats.yml --pack industry-securities
+char: quang
+department: investment_banking
+group: boss
+traits: [driven, sleeps_four_hours, loyal_to_the_deal]
+start: { trust: 10 }
+en: { name: 'Quang', title: 'Vice President, your boss' }
+vi: { name: 'Anh Quang', title: 'Phó giám đốc bộ phận, sếp trực tiếp' }
+---
+char: trang
+department: investment_banking
+group: boss
+traits: [charismatic, relentless, rewards_closers]
+start: { trust: 5 }
+en: { name: 'Ms Trang', title: 'Managing Director' }
+vi: { name: 'Chị Trang', title: 'Giám đốc điều hành' }
+---
+char: phong
+department: client
+group: buyer
+traits: [confident, wants_a_big_number, impatient]
+en: { name: 'Mr Phong', title: 'CEO of the client company' }
+vi: { name: 'Ông Phong', title: 'Tổng giám đốc công ty khách hàng' }
+---
+char: hieu
+department: investment_banking
+group: boss
+traits: [funny, ambitious, thinks_rules_are_for_others]
+start: { trust: 15, loyalty: 10 }
+en: { name: 'Hieu', title: 'Fellow analyst' }
+vi: { name: 'Hiếu', title: 'Chuyên viên phân tích cùng đợt' }
+---
+char: thao
+department: compliance
+traits: [calm, thorough, never_raises_her_voice]
+en: { name: 'Ms Thao', title: 'Head of Compliance' }
+vi: { name: 'Chị Thảo', title: 'Trưởng bộ phận Tuân thủ' }
+---
+term: mnpi
+en:
+  term: Inside information
+  definition: 'Facts about a company that are not public and would move its share price. Trading on them, or passing them on, is illegal.'
+vi:
+  term: Thông tin nội bộ
+  definition: 'Những điều về một công ty chưa được công bố và có thể làm giá cổ phiếu thay đổi. Giao dịch dựa trên chúng hoặc chuyển chúng cho người khác là bất hợp pháp.'
+---
+term: valuation
+en:
+  term: Valuation
+  definition: 'An estimate of what a company is worth, built from assumptions about growth and risk. A small change in an assumption can move the answer by hundreds of billions of dong.'
+vi:
+  term: Định giá
+  definition: 'Ước tính một công ty đáng giá bao nhiêu, dựa trên các giả định về tăng trưởng và rủi ro. Một thay đổi nhỏ trong giả định có thể làm kết quả lệch hàng trăm tỷ đồng.'
+---
+term: chinese_wall
+en:
+  term: Information barrier
+  definition: 'The rule that separates deal teams, who know private plans, from traders and researchers, who must not. It is how a firm keeps inside information inside.'
+vi:
+  term: Rào chắn thông tin
+  definition: 'Quy tắc ngăn cách các nhóm giao dịch, biết kế hoạch riêng, với bộ phận mua bán và nghiên cứu, những người không được biết. Đó là cách một công ty giữ thông tin nội bộ ở bên trong.'
+---
+scene: inv.first_week
+place: meeting_room
+tags: [onboarding, people, beat]
+beat: 1-3
+lines:
+  - who: char:quang
+    en: 'Welcome to the team. Nobody tells you this on day one, so I will: the work is a hundred hours some weeks. The reward is that you learn faster than anywhere. The cost is that you will want to cut corners at three in the morning. Do not.'
+    vi: 'Chào mừng em vào nhóm. Ngày đầu không ai nói điều này nên anh nói: có tuần công việc lên tới một trăm giờ. Phần thưởng là em học nhanh hơn bất cứ đâu. Cái giá là em sẽ muốn cắt xén lúc ba giờ sáng. Đừng làm vậy.'
+  - who: char:hieu
+    en: 'I started last month. Rule one: eat when you can, sleep when you can, and read the compliance manual once so you can say you did.'
+    vi: 'Em vào tháng trước. Quy tắc một: ăn khi có thể, ngủ khi có thể và đọc sổ tay tuân thủ một lần để có thể nói là mình đã đọc.'
+choices:
+  - en: 'Read the compliance manual properly that week, and ask Quang which rules are the ones he actually enforces.'
+    vi: 'Đọc kỹ sổ tay tuân thủ trong tuần đó và hỏi anh Quang những quy tắc nào anh thực sự áp dụng.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Quang pauses. 'All of them. That is the answer.' He gives you a one-page summary he wrote himself. Hieu raises an eyebrow, and borrows it later."
+        vi: "Anh Quang ngừng lại. 'Tất cả. Đó là câu trả lời.' Anh đưa cho em bản tóm tắt một trang do chính anh viết. Anh Hiếu nhướng mày, và sau đó mượn nó."
+        effects: [rel quang trust +5, rel hieu trust +1, stress +1]
+  - en: 'Skim the manual, and focus on learning the models.'
+    vi: 'Đọc lướt sổ tay và tập trung học các mô hình.'
+    outcomes:
+      - p: 1
+        en: 'You build your first model in record time. The manual stays on the shelf, with a coffee ring on the cover.'
+        vi: 'Anh/chị dựng mô hình đầu tiên trong thời gian kỷ lục. Sổ tay nằm trên kệ, với một vòng cà phê trên bìa.'
+        effects: [rel quang trust +2, stress +2]
+  - en: "Take Hieu's advice: do not read it, and ask when something comes up."
+    vi: 'Theo lời khuyên của anh Hiếu: không đọc và hỏi khi có việc xảy ra.'
+    outcomes:
+      - p: 0.7
+        en: 'You save three hours and make a friend. When something does come up, you ask the wrong person.'
+        vi: 'Anh/chị tiết kiệm ba giờ và có thêm một người bạn. Khi có việc xảy ra, anh/chị hỏi nhầm người.'
+        effects: [rel hieu trust +4, stress +1]
+      - p: 0.3
+        ok: false
+        en: 'In week two you email a client file to a personal address to work at home. Thao in Compliance sends a polite, specific note to you and Quang.'
+        vi: 'Tuần hai anh/chị gửi email một hồ sơ khách hàng sang địa chỉ cá nhân để làm ở nhà. Chị Thảo bên Tuân thủ gửi một ghi chú lịch sự, cụ thể cho anh/chị và anh Quang.'
+        effects:
+          [
+            rel hieu trust +2,
+            rel quang trust -4,
+            rel thao trust -4,
+            stress +3,
+            fact sent_client_file_home witnessed,
+          ]
+---
+scene: inv.midyear_review
+place: meeting_room
+tags: [people, review, beat]
+beat: 24-28
+lines:
+  - who: char:quang
+    en: 'Half a year. Your models are good and your decks are clean. The MD likes you. But I have heard you push back more than analysts normally do. Some of it was right. Tell me how you see it.'
+    vi: 'Nửa năm. Mô hình của em tốt và hồ sơ sạch. Chị giám đốc thích em. Nhưng anh nghe nói em phản biện nhiều hơn mức chuyên viên thường làm. Có phần đúng. Em nói anh nghe em thấy thế nào.'
+choices:
+  - en: 'Say you push back when a number cannot be supported, and offer to bring the alternative with the objection.'
+    vi: 'Nói rằng anh/chị phản biện khi một con số không có cơ sở và đề nghị mang phương án thay thế kèm lời phản biện.'
+    outcomes:
+      - p: 0.75
+        en: "Quang nods. 'That is the right way. An objection with an alternative is a contribution, not a problem.' He puts you on the next live deal."
+        vi: "Anh Quang gật đầu. 'Cách đó đúng. Một lời phản biện kèm phương án là đóng góp, không phải rắc rối.' Anh xếp em vào thương vụ thật tiếp theo."
+        effects: [rel quang trust +4, rep.boss +3, stress +1]
+      - p: 0.25
+        ok: false
+        en: 'Quang says the MD thinks analysts should see the deal as a whole, not the cell they are in. He is not unkind, and he is not convinced.'
+        vi: 'Anh Quang nói chị giám đốc cho rằng chuyên viên nên nhìn cả thương vụ, không chỉ ô tính mình đang làm. Anh không khắt khe, và không bị thuyết phục.'
+        effects: [rel quang trust +1, rel trang trust -3, stress +2]
+  - en: 'Say you will pick your battles, and ask what the MD needs from you before the next deal.'
+    vi: 'Nói anh/chị sẽ chọn trận để đánh và hỏi chị giám đốc cần gì ở mình trước thương vụ tiếp theo.'
+    outcomes:
+      - p: 1
+        en: "Quang smiles. 'Good instinct.' He gives you a clear list. It is the safest answer, and probably not the most useful one."
+        vi: "Anh Quang cười. 'Bản năng tốt.' Anh đưa cho em một danh sách rõ ràng. Đó là câu trả lời an toàn nhất, và có lẽ không hữu ích nhất."
+        effects: [rel quang trust +2, rel trang trust +1, stress +1]
+  - en: 'Say you will stop pushing back and just deliver what is asked.'
+    vi: 'Nói anh/chị sẽ thôi phản biện và chỉ giao những gì được yêu cầu.'
+    outcomes:
+      - p: 0.6
+        en: "Quang looks relieved, and a little sad. 'I did not say stop. But fine.' The MD hears you have become easier, and rewards it."
+        vi: "Anh Quang có vẻ nhẹ nhõm và hơi buồn. 'Anh đâu bảo thôi. Nhưng được.' Chị giám đốc nghe nói em dễ chịu hơn và thưởng cho điều đó."
+        effects: [rel quang trust +1, rel trang trust +4, rep.boss +2, stress -1]
+      - p: 0.4
+        ok: false
+        en: 'A week later, a number you would have objected to goes into a deck unchallenged. Quang looks at the deck, then at you.'
+        vi: 'Một tuần sau, một con số lẽ ra anh/chị sẽ phản biện đi vào hồ sơ mà không bị chất vấn. Anh Quang nhìn hồ sơ rồi nhìn anh/chị.'
+        effects: [rel quang trust -3, rel trang trust +2, stress +2]
+---
+scene: inv.market_twist
+place: meeting_room
+tags: [pressure, market, beat]
+beat: 29-32
+lines:
+  - who: char:trang
+    en: "The market fell eleven percent this month. Our client's IPO is next week, and the price range we set is now fifteen percent too high. We can postpone, cut the price, or go ahead and hope. The client wants to go ahead. I want a recommendation from the analysts, not just from me."
+    vi: 'Thị trường giảm mười một phần trăm tháng này. Đợt IPO của khách vào tuần sau, và khung giá mình đặt giờ cao hơn mười lăm phần trăm. Mình có thể hoãn, giảm giá hoặc cứ làm và hy vọng. Khách muốn làm. Chị muốn một đề xuất từ các chuyên viên, không chỉ từ chị.'
+choices:
+  - en: 'Recommend cutting the price range, show the demand data, and say plainly that the original range cannot be defended.'
+    vi: 'Đề xuất giảm khung giá, cho xem dữ liệu cầu và nói thẳng rằng khung giá ban đầu không bảo vệ được.'
+    cost: { hours: 4 }
+    outcomes:
+      - p: 0.6
+        en: "Trang reads the data twice. 'The analyst is right.' The range is cut and the IPO is fully subscribed. The client grumbles at the price, and thanks you at the dinner afterwards."
+        vi: "Chị Trang đọc dữ liệu hai lần. 'Chuyên viên nói đúng.' Khung giá được giảm và đợt IPO được đăng ký đủ. Khách càu nhàu về giá và cảm ơn anh/chị trong bữa tối sau đó."
+        effects:
+          [rel trang trust +5, rel quang trust +3, rel phong trust +2, rep.boss +4, stress +4]
+      - p: 0.4
+        ok: false
+        en: "The client refuses to cut and the deal is postponed. Trang is angry for a day and says: 'At least the numbers were honest.' The postponement is cheaper than a failed IPO."
+        vi: "Khách từ chối giảm và thương vụ bị hoãn. Chị Trang giận một ngày và nói: 'Ít nhất các con số trung thực.' Việc hoãn rẻ hơn một đợt IPO thất bại."
+        effects: [rel trang trust +1, rel quang trust +2, rel phong trust -4, stress +5]
+  - en: 'Recommend a small cut and a short postponement, and ask the client for a week.'
+    vi: 'Đề xuất giảm nhẹ và hoãn ngắn và xin khách một tuần.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: 'A compromise everyone can live with. The IPO goes ahead a week later at a slightly lower range, and is subscribed at the bottom.'
+        vi: 'Một thỏa hiệp mọi người chấp nhận được. Đợt IPO diễn ra muộn một tuần với khung thấp hơn một chút và được đăng ký ở mức đáy.'
+        effects: [rel trang trust +1, stress +3]
+  - en: 'Recommend going ahead at the original range, and soften the risk language in the documents.'
+    vi: 'Đề xuất làm theo khung giá ban đầu và làm nhẹ ngôn từ rủi ro trong tài liệu.'
+    outcomes:
+      - p: 0.45
+        en: 'The client is delighted. The IPO prices at the bottom of the range and trades down fifteen percent on day one. The documents said the market was stable.'
+        vi: 'Khách rất vui. Đợt IPO chốt ở đáy khung giá và giảm mười lăm phần trăm ngay ngày đầu. Tài liệu viết rằng thị trường ổn định.'
+        effects:
+          [
+            rel trang trust +4,
+            rel phong trust +3,
+            rep.boss +2,
+            stress +2,
+            fact softened_risk_disclosure private,
+          ]
+      - p: 0.55
+        ok: false
+        en: 'Investors who bought at the original range lose money. The risk section is quoted in a complaint to the regulator. Thao asks who drafted it.'
+        vi: 'Các nhà đầu tư mua ở khung giá ban đầu bị lỗ. Mục rủi ro được trích dẫn trong một đơn khiếu nại gửi cơ quan quản lý. Chị Thảo hỏi ai soạn nó.'
+        effects:
+          [
+            rel trang trust +2,
+            rel thao trust -8,
+            rep.boss -8,
+            stress +7,
+            fact softened_risk_disclosure public,
+          ]
+---
+scene: inv.compliance_review
+place: meeting_room
+tags: [audit, people, beat]
+beat: 41-44
+lines:
+  - who: char:thao
+    en: 'Annual compliance review. I will ask about personal trading, gifts and entertainment, restricted lists, and any contact you have had with deal information outside the information barrier. I would rather you told me things now than I found them later.'
+    vi: 'Rà soát tuân thủ hằng năm. Chị sẽ hỏi về giao dịch cá nhân, quà tặng và tiếp khách, danh sách hạn chế và mọi tiếp xúc của em với thông tin thương vụ bên ngoài rào chắn thông tin. Chị thà em nói bây giờ còn hơn chị tìm ra sau.'
+choices:
+  - en: 'Disclose everything, including the grey areas and the times you were not sure, and give her your trading statements.'
+    vi: 'Khai báo mọi thứ, kể cả những vùng xám và những lần anh/chị không chắc, và đưa cho chị sao kê giao dịch của mình.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Thao takes notes for an hour. Her comment: 'Complete and unprompted.' She tells Quang she wishes everyone were like this. It does not make you popular with Hieu."
+        vi: "Chị Thảo ghi chép một giờ. Nhận xét của chị: 'Đầy đủ và chủ động.' Chị nói với anh Quang chị ước ai cũng như vậy. Điều đó không làm anh/chị được lòng anh Hiếu."
+        effects: [rel thao trust +6, rel quang trust +3, rep.boss +3, stress +2]
+  - en: 'Answer what she asks, accurately, and nothing more.'
+    vi: 'Trả lời đúng những gì chị hỏi, chính xác, và không thêm gì.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: 'A routine review. Thao ticks her boxes. You wonder, afterwards, whether she wanted you to say more.'
+        vi: 'Một cuộc rà soát thường lệ. Chị Thảo đánh dấu các ô. Sau đó anh/chị tự hỏi chị có muốn mình nói thêm không.'
+        effects: [rel thao trust +1]
+  - en: 'Answer the questions in the most favourable way, and leave out anything that could start a conversation.'
+    vi: 'Trả lời các câu hỏi theo cách có lợi nhất và bỏ qua mọi điều có thể mở ra một cuộc trò chuyện.'
+    outcomes:
+      - p: 0.5
+        en: 'Thao thanks you and signs. You have passed, and you are not sure what you have promised yourself.'
+        vi: 'Chị Thảo cảm ơn và ký. Anh/chị đã qua, và không chắc mình đã hứa gì với chính mình.'
+        effects: [rel thao trust -2, stress +2, fact incomplete_compliance_disclosure private]
+      - p: 0.5
+        ok: false
+        en: "Thao has your broker's statement from a routine request to the exchange. The answers and the statement disagree on two dates."
+        vi: 'Chị Thảo có sao kê của công ty môi giới của anh/chị từ một yêu cầu thường lệ gửi sở giao dịch. Câu trả lời và sao kê khác nhau ở hai ngày.'
+        effects:
+          [
+            rel thao trust -10,
+            rel quang trust -5,
+            rep.boss -8,
+            stress +7,
+            fact incomplete_compliance_disclosure public,
+          ]
+---
+scene: inv.bonus_review
+place: meeting_room
+tags: [people, review, beat]
+beat: 49-50
+lines:
+  - who: char:trang
+    en: 'Bonus season. Your year was strong. Before I tell you the number, tell me what you are proudest of and what you would not do again.'
+    vi: 'Mùa thưởng. Năm của em rất tốt. Trước khi chị nói con số, em nói chị nghe điều em tự hào nhất và điều em sẽ không làm lại.'
+choices:
+  - en: 'Name the objection you raised that was right, and the late nights that you would not repeat, plainly.'
+    vi: 'Nêu lời phản biện đúng mà anh/chị đã đưa ra và những đêm thức khuya mà anh/chị sẽ không lặp lại, thẳng thắn.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "Trang listens. 'Most analysts tell me they would do it all again.' The number is good, and she writes something in her notes that is not about the number."
+        vi: "Chị Trang lắng nghe. 'Phần lớn chuyên viên nói với chị họ sẽ làm lại tất cả.' Con số tốt, và chị viết vào ghi chú một điều không liên quan đến con số."
+        effects: [rel trang trust +5, rep.boss +4, stress -2]
+  - en: 'Name the deals you supported and the hours you gave, and say you would do it all again.'
+    vi: 'Nêu các thương vụ anh/chị hỗ trợ và số giờ đã bỏ ra và nói anh/chị sẽ làm lại tất cả.'
+    outcomes:
+      - p: 1
+        en: 'Trang smiles. The number is good. It is the answer she hears every year.'
+        vi: 'Chị Trang cười. Con số tốt. Đó là câu trả lời chị nghe mỗi năm.'
+        effects: [rel trang trust +2, rep.boss +2]
+  - en: 'Present the year as flawless, and take credit for the deals that went well.'
+    vi: 'Trình bày cả năm như hoàn hảo và nhận công về các thương vụ thành công.'
+    outcomes:
+      - p: 0.65
+        en: 'Trang enjoys it. The number is very good. In the lift, Hieu mentions that he did the model for the deal you took credit for.'
+        vi: 'Chị Trang thích. Con số rất tốt. Trong thang máy, anh Hiếu nhắc rằng anh làm mô hình cho thương vụ mà anh/chị nhận công.'
+        effects:
+          [
+            rel trang trust +3,
+            rel hieu trust -5,
+            rep.boss +4,
+            stress +1,
+            fact took_credit_for_peers_work private,
+          ]
+      - p: 0.35
+        ok: false
+        en: "Trang has Hieu's email on the model, with the date. She turns the screen towards you without a word."
+        vi: 'Chị Trang có email của anh Hiếu về mô hình, kèm ngày. Chị xoay màn hình về phía anh/chị mà không nói một lời.'
+        effects:
+          [
+            rel trang trust -8,
+            rel hieu trust -8,
+            rep.boss -5,
+            stress +4,
+            fact took_credit_for_peers_work witnessed,
+          ]
+---
+scene: inv.associate_offer
+place: meeting_room
+tags: [people, promotion, beat]
+beat: 51-52
+when: [rel.quang.trust >= 20, rep.boss >= 58]
+lines:
+  - who: char:trang
+    en: 'We are promoting you to associate. The pay doubles, the hours do not halve. One condition, which nobody writes down: associates are the ones who decide, at three in the morning, what the client does not need to hear. I need to know what you will decide.'
+    vi: 'Bọn chị thăng em lên chuyên viên cấp cao. Lương tăng gấp đôi, giờ làm không giảm một nửa. Một điều kiện, mà không ai viết ra: chuyên viên cấp cao là người quyết, lúc ba giờ sáng, điều khách không cần nghe. Chị cần biết em sẽ quyết gì.'
+choices:
+  - en: "Accept, and say plainly that you will not decide that on the client's behalf, and that you will say so to the client."
+    vi: 'Nhận lời và nói rõ rằng anh/chị sẽ không quyết điều đó thay khách và sẽ nói điều này với khách.'
+    outcomes:
+      - p: 1
+        en: "Trang looks at you for a long moment. 'Then you will be the associate I trust with a hard client.' You are promoted, and the hours stay the same."
+        vi: "Chị Trang nhìn anh/chị một lúc lâu. 'Vậy em sẽ là chuyên viên cấp cao chị tin giao một khách khó.' Anh/chị được thăng chức, và giờ làm vẫn như cũ."
+        effects: [rel trang trust +5, rep.boss +5, end promoted]
+  - en: 'Thank her, but decline: you would rather leave the industry than own that decision.'
+    vi: 'Cảm ơn chị nhưng từ chối: anh/chị thà rời ngành còn hơn gánh quyết định đó.'
+    outcomes:
+      - p: 1
+        en: "Trang is quiet. 'Do not be sure that is a weakness.' She does not stop you leaving, and writes you a reference."
+        vi: "Chị Trang im lặng. 'Đừng chắc đó là điểm yếu.' Chị không ngăn anh/chị rời đi và viết cho anh/chị một thư giới thiệu."
+        effects: [rel trang trust +3, end walked_away]
+  - en: 'Accept without asking what the condition means.'
+    vi: 'Nhận lời mà không hỏi điều kiện đó nghĩa là gì.'
+    outcomes:
+      - p: 1
+        en: 'Trang smiles, and the champagne arrives within the hour. You realise you agreed to something you did not ask about.'
+        vi: 'Chị Trang cười, và rượu sâm panh đến trong vòng một giờ. Anh/chị nhận ra mình đã đồng ý với điều mình không hỏi.'
+        effects: [rep.boss +4, fact accepted_smoothing_condition private, end promoted]
+---
+scene: inv.resignation_thought
+place: meeting_room
+tags: [people, pressure]
+weight: 2
+cooldown: 26
+when: [stress >= 75, turn >= 12]
+lines:
+  - who: char:hieu
+    en: 'You look like a ghost. You are the third person this month. Do you want me to cover your model for a night, or do you want to talk about leaving? I will not tell anyone either way.'
+    vi: 'Anh/chị trông như bóng ma. Anh/chị là người thứ ba trong tháng này. Muốn em làm giúp mô hình một đêm, hay muốn nói chuyện về việc nghỉ? Dù sao em cũng sẽ không nói với ai.'
+choices:
+  - en: 'Talk to Quang about the hours, and ask him to move a task or two.'
+    vi: 'Nói với anh Quang về giờ làm và xin anh chuyển một hai việc.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 0.7
+        en: 'Quang listens, takes two tasks onto his own plate and says he has been where you are. It does not fix the culture, but it fixes the week.'
+        vi: 'Anh Quang lắng nghe, nhận hai việc về phần mình và nói anh từng ở chỗ anh/chị. Không sửa được văn hóa, nhưng sửa được tuần này.'
+        effects: [rel quang trust +4, rel hieu trust +2, stress -7, rep.boss +1]
+      - p: 0.3
+        ok: false
+        en: 'Quang says the deal does not allow it. You leave with sympathy and the same hours.'
+        vi: 'Anh Quang nói thương vụ không cho phép. Anh/chị ra về với sự cảm thông và số giờ cũ.'
+        effects: [rel quang trust +1, stress -1]
+  - en: "Hand in your resignation, politely, with a month's notice."
+    vi: 'Nộp đơn xin nghỉ, lịch sự, báo trước một tháng.'
+    outcomes:
+      - p: 1
+        en: "Quang reads it and nods. 'Everyone in this room has written one of these. Some of us tore ours up.' You walk out into daylight."
+        vi: "Anh Quang đọc và gật đầu. 'Ai trong phòng này cũng từng viết một lá thế. Có người xé đi.' Anh/chị bước ra ngoài ánh sáng ban ngày."
+        effects: [rel quang trust +2, end walked_away]
+  - en: 'Tell Hieu you are fine, take the model, and keep going.'
+    vi: 'Nói với anh Hiếu là anh/chị ổn, giữ mô hình và tiếp tục.'
+    outcomes:
+      - p: 1
+        en: 'Hieu shrugs. You work until five in the morning. You do not remember the number you put in cell D14.'
+        vi: 'Anh Hiếu nhún vai. Anh/chị làm đến năm giờ sáng. Anh/chị không nhớ con số mình điền vào ô D14.'
+        effects: [rel hieu trust -1, stress +3]
+---
+fact: sent_client_file_home
+severity: 4
+category: integrity
+en: "you sent a client's confidential file to a personal email address"
+vi: 'bạn gửi hồ sơ mật của khách hàng sang địa chỉ email cá nhân'
+lesson:
+  en: "Client files belong inside the firm's systems. A personal copy is a leak waiting for a lost phone, a shared laptop or a curious flatmate."
+  vi: 'Hồ sơ khách hàng thuộc về hệ thống của công ty. Bản sao cá nhân là một vụ rò rỉ đang chờ một chiếc điện thoại mất, một máy tính dùng chung hoặc một người ở cùng tò mò.'
+traces:
+  - { type: message, visibility: 0.8, detectors: [internal_audit, boss] }
+witnessed:
+  boss: -4
+public:
+  boss: -8
+---
+fact: softened_risk_disclosure
+severity: 8
+category: integrity
+en: 'you softened the risk language in a public offering document'
+vi: 'bạn làm nhẹ ngôn từ rủi ro trong tài liệu chào bán công khai'
+lesson:
+  en: "Risk disclosure is what a retail investor relies on. Softening it to help a deal prices a risk into the investor's loss, and into your own liability."
+  vi: 'Công bố rủi ro là điều nhà đầu tư nhỏ dựa vào. Làm nhẹ nó để giúp thương vụ biến một rủi ro thành khoản lỗ của nhà đầu tư và trách nhiệm của chính bạn.'
+traces:
+  - { type: document, visibility: 0.85, detectors: [internal_audit, boss, buyer] }
+witnessed:
+  boss: -12
+  buyer: -12
+public:
+  boss: -18
+  buyer: -18
+---
+fact: incomplete_compliance_disclosure
+severity: 6
+category: integrity
+en: 'you gave Compliance a favourable, incomplete account of your personal dealings'
+vi: 'bạn đưa cho bộ phận Tuân thủ một lời khai có lợi, không đầy đủ về các giao dịch cá nhân'
+lesson:
+  en: 'A compliance review is the one place to say what you are unsure about. An incomplete answer turns uncertainty into concealment.'
+  vi: 'Rà soát tuân thủ là nơi duy nhất để nói điều bạn không chắc. Một câu trả lời không đầy đủ biến sự không chắc thành che giấu.'
+traces:
+  - { type: record, visibility: 0.75, detectors: [internal_audit, boss] }
+witnessed:
+  boss: -8
+public:
+  boss: -14
+---
+fact: took_credit_for_peers_work
+severity: 3
+category: integrity
+en: "you took credit for a colleague's model"
+vi: 'bạn nhận công về mô hình của một đồng nghiệp'
+lesson:
+  en: 'Taking credit costs you the person who built the model, and the next model he will build for you. Trust in a team is made of small attributions.'
+  vi: 'Nhận công khiến bạn mất người dựng mô hình và mô hình tiếp theo anh ấy sẽ dựng cho bạn. Lòng tin trong một nhóm được làm bằng những ghi nhận nhỏ.'
+traces:
+  - { type: message, visibility: 0.6, detectors: [boss] }
+witnessed:
+  boss: -4
+public:
+  boss: -7

@@ -1,0 +1,178 @@
+{
+  "id": "scene.inv.client_notices",
+  "location": "loc.meeting_room",
+  "cast": ["char:phong"],
+  "lines": [
+    {
+      "speaker": "char:phong",
+      "text_key": "scene.inv.client_notices.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.inv.client_notices.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.inv.client_notices.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.phong.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.quang.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.trang.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.corrected_the_model",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.pitch_error",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.inv.client_notices.c2",
+      "outcomes": [
+        {
+          "p": 0.4,
+          "narration_key": "scene.inv.client_notices.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.phong.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.misled_investor",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.pitch_error",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.6,
+          "result": "fail",
+          "narration_key": "scene.inv.client_notices.c2.fail",
+          "effects": [
+            {
+              "delta": "rel.phong.trust",
+              "value": -10
+            },
+            {
+              "delta": "rel.trang.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.quang.trust",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -9
+            },
+            {
+              "delta": "player.stress",
+              "value": 8
+            },
+            {
+              "fact": "fact.misled_investor",
+              "visibility": "public"
+            },
+            {
+              "arc": "arc.pitch_error",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.inv.client_notices.c3",
+      "outcomes": [
+        {
+          "p": 0.4,
+          "narration_key": "scene.inv.client_notices.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.phong.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.misled_investor",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.pitch_error",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.6,
+          "result": "fail",
+          "narration_key": "scene.inv.client_notices.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.phong.trust",
+              "value": -12
+            },
+            {
+              "delta": "rel.trang.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.quang.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -12
+            },
+            {
+              "delta": "player.stress",
+              "value": 9
+            },
+            {
+              "fact": "fact.misled_investor",
+              "visibility": "public"
+            },
+            {
+              "arc": "arc.pitch_error",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

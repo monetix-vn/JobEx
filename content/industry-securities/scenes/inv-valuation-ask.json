@@ -1,0 +1,174 @@
+{
+  "id": "scene.inv.valuation_ask",
+  "location": "loc.meeting_room",
+  "cast": ["char:phong", "char:quang"],
+  "lines": [
+    {
+      "speaker": "char:phong",
+      "text_key": "scene.inv.valuation_ask.l1"
+    },
+    {
+      "speaker": "char:quang",
+      "text_key": "scene.inv.valuation_ask.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.inv.valuation_ask.c1",
+      "cost": {
+        "hours": 4
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.inv.valuation_ask.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.phong.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.quang.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.trang.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.the_valuation",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.inv.valuation_ask.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.phong.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.trang.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.quang.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "arc": "arc.the_valuation",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.inv.valuation_ask.c2",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.inv.valuation_ask.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.phong.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.trang.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.the_valuation",
+              "stage": "push"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.inv.valuation_ask.c3",
+      "outcomes": [
+        {
+          "p": 0.75,
+          "narration_key": "scene.inv.valuation_ask.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.phong.trust",
+              "value": 6
+            },
+            {
+              "delta": "rel.trang.trust",
+              "value": 4
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.inflated_growth_assumption",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_valuation",
+              "stage": "push"
+            }
+          ]
+        },
+        {
+          "p": 0.25,
+          "result": "fail",
+          "narration_key": "scene.inv.valuation_ask.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.phong.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.trang.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.hieu.trust",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.inflated_growth_assumption",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_valuation",
+              "stage": "push"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": ["term.valuation"]
+}

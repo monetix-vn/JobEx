@@ -158,6 +158,15 @@ export function crossCheck(
       });
     }
     if (event.role) requireRef('event', event.id, 'role', event.role, 'role');
+    for (const r of event.roles ?? []) requireRef('event', event.id, 'role', r, 'roles');
+    if (event.role && event.roles) {
+      push({
+        severity: 'error',
+        code: 'event.role_and_roles',
+        message: `event "${event.id}" has both role and roles; use one`,
+        ...at('event', event.id),
+      });
+    }
     usedScenes.add(event.scene);
     if (event.when !== undefined) checkExpr('event', event.id, 'when', event.when);
     checkEffects('event', event.id, event.effects, 'effects');

@@ -1,0 +1,149 @@
+{
+  "id": "scene.inv.client_dinner",
+  "location": "loc.meeting_room",
+  "cast": ["char:quang"],
+  "lines": [
+    {
+      "speaker": "char:quang",
+      "text_key": "scene.inv.client_dinner.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.inv.client_dinner.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.85,
+          "narration_key": "scene.inv.client_dinner.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.thao.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.phong.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.quang.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "p": 0.15,
+          "result": "fail",
+          "narration_key": "scene.inv.client_dinner.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.thao.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.phong.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.quang.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.inv.client_dinner.c2",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.inv.client_dinner.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.phong.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.inv.client_dinner.c3",
+      "outcomes": [
+        {
+          "p": 0.65,
+          "narration_key": "scene.inv.client_dinner.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.phong.trust",
+              "value": 6
+            },
+            {
+              "delta": "rel.quang.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": -1
+            },
+            {
+              "fact": "fact.padded_client_entertainment",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.35,
+          "result": "fail",
+          "narration_key": "scene.inv.client_dinner.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.phong.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.thao.trust",
+              "value": -7
+            },
+            {
+              "delta": "rel.quang.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.padded_client_entertainment",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,343 @@
+[
+  {
+    "id": "event.inv.first_week",
+    "role": "role.inv.analyst",
+    "tags": ["onboarding", "people", "beat"],
+    "beat": {
+      "from_week": 1,
+      "to_week": 3
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.inv.first_week"
+  },
+  {
+    "id": "event.inv.midyear_review",
+    "role": "role.inv.analyst",
+    "tags": ["people", "review", "beat"],
+    "beat": {
+      "from_week": 24,
+      "to_week": 28
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.inv.midyear_review"
+  },
+  {
+    "id": "event.inv.market_twist",
+    "role": "role.inv.analyst",
+    "tags": ["pressure", "market", "beat"],
+    "beat": {
+      "from_week": 29,
+      "to_week": 32
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.inv.market_twist"
+  },
+  {
+    "id": "event.inv.compliance_review",
+    "role": "role.inv.analyst",
+    "tags": ["audit", "people", "beat"],
+    "beat": {
+      "from_week": 41,
+      "to_week": 44
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.inv.compliance_review"
+  },
+  {
+    "id": "event.inv.bonus_review",
+    "role": "role.inv.analyst",
+    "tags": ["people", "review", "beat"],
+    "beat": {
+      "from_week": 49,
+      "to_week": 50
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.inv.bonus_review"
+  },
+  {
+    "id": "event.inv.associate_offer",
+    "role": "role.inv.analyst",
+    "tags": ["people", "promotion", "beat"],
+    "when": {
+      "all": [
+        {
+          "gte": [
+            {
+              "var": ["rel.quang.trust", 0]
+            },
+            20
+          ]
+        },
+        {
+          "gte": ["player.rep.boss", 58]
+        }
+      ]
+    },
+    "beat": {
+      "from_week": 51,
+      "to_week": 52
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.inv.associate_offer"
+  },
+  {
+    "id": "event.inv.resignation_thought",
+    "role": "role.inv.analyst",
+    "tags": ["people", "pressure"],
+    "when": {
+      "all": [
+        {
+          "gte": ["player.stress", 75]
+        },
+        {
+          "gte": ["world.turn", 12]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 9,
+    "scene": "scene.inv.resignation_thought"
+  },
+  {
+    "id": "event.inv.valuation_ask",
+    "role": "role.inv.analyst",
+    "arc": "arc.the_valuation",
+    "tags": ["pressure", "client", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 8]
+        },
+        {
+          "lte": ["world.turn", 34]
+        }
+      ]
+    },
+    "weight": 3,
+    "cooldown_weeks": 9,
+    "scene": "scene.inv.valuation_ask"
+  },
+  {
+    "id": "event.inv.assumptions_push",
+    "role": "role.inv.analyst",
+    "tags": ["pressure", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.inv.assumptions_push"
+  },
+  {
+    "id": "event.inv.roadshow_question",
+    "role": "role.inv.analyst",
+    "tags": ["client", "dark", "consequence", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.inv.roadshow_question"
+  },
+  {
+    "id": "event.inv.tip_overheard",
+    "role": "role.inv.analyst",
+    "arc": "arc.the_tip",
+    "tags": ["integrity", "dark", "people"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 10]
+        },
+        {
+          "lte": ["world.turn", 34]
+        }
+      ]
+    },
+    "weight": 3,
+    "cooldown_weeks": 9,
+    "scene": "scene.inv.tip_overheard"
+  },
+  {
+    "id": "event.inv.friend_trades",
+    "role": "role.inv.analyst",
+    "tags": ["integrity", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.inv.friend_trades"
+  },
+  {
+    "id": "event.inv.compliance_query",
+    "role": "role.inv.analyst",
+    "tags": ["audit", "integrity", "dark", "consequence", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.inv.compliance_query"
+  },
+  {
+    "id": "event.inv.weekend_ask",
+    "role": "role.inv.analyst",
+    "arc": "arc.the_hours",
+    "tags": ["people", "pressure"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 8]
+        },
+        {
+          "lte": ["world.turn", 36]
+        }
+      ]
+    },
+    "weight": 3,
+    "cooldown_weeks": 9,
+    "scene": "scene.inv.weekend_ask"
+  },
+  {
+    "id": "event.inv.leave_cancelled",
+    "role": "role.inv.analyst",
+    "tags": ["people", "pressure", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.inv.leave_cancelled"
+  },
+  {
+    "id": "event.inv.model_error_at_dawn",
+    "role": "role.inv.analyst",
+    "tags": ["people", "pressure", "consequence", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.inv.model_error_at_dawn"
+  },
+  {
+    "id": "event.inv.error_found",
+    "role": "role.inv.analyst",
+    "arc": "arc.pitch_error",
+    "tags": ["integrity", "pressure"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 12]
+        },
+        {
+          "lte": ["world.turn", 40]
+        }
+      ]
+    },
+    "weight": 2.5,
+    "cooldown_weeks": 40,
+    "scene": "scene.inv.error_found"
+  },
+  {
+    "id": "event.inv.fix_or_hide",
+    "role": "role.inv.analyst",
+    "tags": ["integrity", "pressure", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.inv.fix_or_hide"
+  },
+  {
+    "id": "event.inv.client_notices",
+    "role": "role.inv.analyst",
+    "tags": ["integrity", "client", "dark", "consequence", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.inv.client_notices"
+  },
+  {
+    "id": "event.inv.client_dinner",
+    "role": "role.inv.analyst",
+    "tags": ["people", "integrity", "dark"],
+    "when": {
+      "gte": ["world.turn", 8]
+    },
+    "weight": 1.5,
+    "cooldown_weeks": 14,
+    "scene": "scene.inv.client_dinner"
+  },
+  {
+    "id": "event.inv.personal_trade",
+    "role": "role.inv.analyst",
+    "tags": ["integrity", "dark"],
+    "when": {
+      "gte": ["world.turn", 8]
+    },
+    "weight": 1.2,
+    "cooldown_weeks": 20,
+    "scene": "scene.inv.personal_trade"
+  },
+  {
+    "id": "event.inv.headhunter",
+    "role": "role.inv.analyst",
+    "tags": ["people", "integrity", "dark"],
+    "when": {
+      "gte": ["world.turn", 14]
+    },
+    "weight": 1.2,
+    "cooldown_weeks": 30,
+    "scene": "scene.inv.headhunter"
+  },
+  {
+    "id": "event.inv.late_edit",
+    "role": "role.inv.analyst",
+    "tags": ["integrity", "pressure", "dark"],
+    "when": {
+      "gte": ["world.turn", 10]
+    },
+    "weight": 1.2,
+    "cooldown_weeks": 20,
+    "scene": "scene.inv.late_edit"
+  },
+  {
+    "id": "event.inv.thao_asks_trades",
+    "role": "role.inv.analyst",
+    "tags": ["audit", "integrity", "dark", "consequence"],
+    "when": {
+      "all": [
+        {
+          "in": ["world.month_of_year", 10, 11, 12]
+        },
+        {
+          "gte": ["world.turn", 40]
+        },
+        {
+          "gte": [
+            {
+              "var": ["fact.traded_restricted_security", 0]
+            },
+            1
+          ]
+        }
+      ]
+    },
+    "weight": 6,
+    "cooldown_weeks": 52,
+    "scene": "scene.inv.thao_asks_trades"
+  },
+  {
+    "id": "event.inv.scapegoat_meeting",
+    "role": "role.inv.analyst",
+    "tags": ["audit", "pressure", "consequence"],
+    "when": {
+      "all": [
+        {
+          "in": ["world.month_of_year", 11, 12]
+        },
+        {
+          "gte": ["world.turn", 44]
+        },
+        {
+          "gte": [
+            {
+              "var": ["fact.misled_investor", 0]
+            },
+            2
+          ]
+        }
+      ]
+    },
+    "weight": 6,
+    "cooldown_weeks": 52,
+    "scene": "scene.inv.scapegoat_meeting"
+  }
+]
