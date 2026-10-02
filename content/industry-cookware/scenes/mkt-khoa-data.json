@@ -1,0 +1,147 @@
+{
+  "id": "scene.mkt.khoa_data",
+  "location": "loc.qc_lab",
+  "cast": ["char:khoa"],
+  "lines": [
+    {
+      "speaker": "char:khoa",
+      "text_key": "scene.mkt.khoa_data.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.mkt.khoa_data.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.mkt.khoa_data.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.bao.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.corrected_the_claim",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_claim",
+              "stage": "ship"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.mkt.khoa_data.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.mkt.khoa_data.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.the_claim",
+              "stage": "ship"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.mkt.khoa_data.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.mkt.khoa_data.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.hid_test_result",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_claim",
+              "stage": "ship"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.mkt.khoa_data.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.khoa.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": -7
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.hid_test_result",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_claim",
+              "stage": "ship"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

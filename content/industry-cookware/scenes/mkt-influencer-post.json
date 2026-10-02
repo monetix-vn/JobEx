@@ -1,0 +1,178 @@
+{
+  "id": "scene.mkt.influencer_post",
+  "location": "loc.meeting_room",
+  "cast": ["char:my"],
+  "lines": [
+    {
+      "speaker": "char:my",
+      "text_key": "scene.mkt.influencer_post.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.mkt.influencer_post.c1",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.mkt.influencer_post.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.my.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 3
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.disclosed_sponsorship",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_reviews",
+              "stage": "exposed"
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.mkt.influencer_post.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.my.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.dat.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "fact": "fact.disclosed_sponsorship",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_reviews",
+              "stage": "exposed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.mkt.influencer_post.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.mkt.influencer_post.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.my.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "arc": "arc.the_reviews",
+              "stage": "exposed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.mkt.influencer_post.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.mkt.influencer_post.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.my.trust",
+              "value": -2
+            },
+            {
+              "delta": "rel.dat.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.undisclosed_influencer",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_reviews",
+              "stage": "exposed"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.mkt.influencer_post.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.my.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.dat.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.undisclosed_influencer",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_reviews",
+              "stage": "exposed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

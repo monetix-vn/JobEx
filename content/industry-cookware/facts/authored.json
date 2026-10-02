@@ -3961,5 +3961,637 @@
         "finance": -16
       }
     }
+  },
+  {
+    "id": "fact.substantiated_claims",
+    "category": "integrity",
+    "severity": 1,
+    "text_key": "fact.substantiated_claims",
+    "lesson_key": "lesson.substantiated_claims",
+    "consequences": {
+      "witnessed": {
+        "boss": 2,
+        "qc": 3
+      },
+      "public": {
+        "boss": 3,
+        "buyer": 3
+      }
+    }
+  },
+  {
+    "id": "fact.overclaimed_on_packaging",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.overclaimed_on_packaging",
+    "lesson_key": "lesson.overclaimed_on_packaging",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.8,
+        "detectors": ["qc", "buyer", "internal_audit", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8,
+        "qc": -8,
+        "buyer": -6
+      },
+      "public": {
+        "boss": -14,
+        "buyer": -14,
+        "cs": -8
+      }
+    }
+  },
+  {
+    "id": "fact.hid_test_result",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.hid_test_result",
+    "lesson_key": "lesson.hid_test_result",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.8,
+        "detectors": ["qc", "internal_audit", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8,
+        "qc": -10
+      },
+      "public": {
+        "boss": -14,
+        "qc": -14
+      }
+    }
+  },
+  {
+    "id": "fact.corrected_the_claim",
+    "category": "integrity",
+    "severity": 2,
+    "text_key": "fact.corrected_the_claim",
+    "lesson_key": "lesson.corrected_the_claim",
+    "consequences": {
+      "witnessed": {
+        "boss": 3,
+        "qc": 4,
+        "cs": 4
+      },
+      "public": {
+        "boss": 5,
+        "buyer": 5,
+        "cs": 6
+      }
+    }
+  },
+  {
+    "id": "fact.shipped_with_known_false_claim",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.shipped_with_known_false_claim",
+    "lesson_key": "lesson.shipped_with_known_false_claim",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.8,
+        "detectors": ["qc", "buyer", "internal_audit", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -10,
+        "qc": -10,
+        "buyer": -8
+      },
+      "public": {
+        "boss": -16,
+        "buyer": -16,
+        "cs": -10
+      }
+    }
+  },
+  {
+    "id": "fact.blamed_customers_for_defect",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.blamed_customers_for_defect",
+    "lesson_key": "lesson.blamed_customers_for_defect",
+    "traces": [
+      {
+        "type": "message",
+        "visibility": 0.7,
+        "detectors": ["qc", "boss", "buyer"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "qc": -6,
+        "cs": -8
+      },
+      "public": {
+        "boss": -10,
+        "buyer": -8,
+        "cs": -12
+      }
+    }
+  },
+  {
+    "id": "fact.bought_fake_reviews",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.bought_fake_reviews",
+    "lesson_key": "lesson.bought_fake_reviews",
+    "traces": [
+      {
+        "type": "payment",
+        "visibility": 0.7,
+        "detectors": ["finance", "buyer", "internal_audit", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8,
+        "buyer": -8,
+        "cs": -6
+      },
+      "public": {
+        "boss": -14,
+        "buyer": -16,
+        "cs": -10
+      }
+    }
+  },
+  {
+    "id": "fact.sabotaged_rival_reviews",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.sabotaged_rival_reviews",
+    "lesson_key": "lesson.sabotaged_rival_reviews",
+    "traces": [
+      {
+        "type": "message",
+        "visibility": 0.6,
+        "detectors": ["buyer", "boss", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8,
+        "buyer": -8
+      },
+      "public": {
+        "boss": -14,
+        "buyer": -14
+      }
+    }
+  },
+  {
+    "id": "fact.disclosed_sponsorship",
+    "category": "integrity",
+    "severity": 1,
+    "text_key": "fact.disclosed_sponsorship",
+    "lesson_key": "lesson.disclosed_sponsorship",
+    "consequences": {
+      "witnessed": {
+        "boss": 2,
+        "buyer": 3
+      },
+      "public": {
+        "boss": 3,
+        "buyer": 5
+      }
+    }
+  },
+  {
+    "id": "fact.undisclosed_influencer",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.undisclosed_influencer",
+    "lesson_key": "lesson.undisclosed_influencer",
+    "traces": [
+      {
+        "type": "payment",
+        "visibility": 0.6,
+        "detectors": ["buyer", "finance", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -5,
+        "buyer": -8
+      },
+      "public": {
+        "boss": -10,
+        "buyer": -14
+      }
+    }
+  },
+  {
+    "id": "fact.blamed_the_agency",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.blamed_the_agency",
+    "lesson_key": "lesson.blamed_the_agency",
+    "traces": [
+      {
+        "type": "message",
+        "visibility": 0.8,
+        "detectors": ["boss", "buyer", "finance"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8,
+        "buyer": -6
+      },
+      "public": {
+        "boss": -14,
+        "buyer": -12
+      }
+    }
+  },
+  {
+    "id": "fact.ran_competitive_pitch",
+    "category": "integrity",
+    "severity": 1,
+    "text_key": "fact.ran_competitive_pitch",
+    "lesson_key": "lesson.ran_competitive_pitch",
+    "consequences": {
+      "witnessed": {
+        "boss": 3,
+        "finance": 4
+      },
+      "public": {
+        "boss": 4,
+        "finance": 5
+      }
+    }
+  },
+  {
+    "id": "fact.steered_contract_to_connection",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.steered_contract_to_connection",
+    "lesson_key": "lesson.steered_contract_to_connection",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.7,
+        "detectors": ["finance", "internal_audit", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "finance": -8
+      },
+      "public": {
+        "boss": -12,
+        "finance": -12
+      }
+    }
+  },
+  {
+    "id": "fact.approved_invoice_for_undelivered_work",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.approved_invoice_for_undelivered_work",
+    "lesson_key": "lesson.approved_invoice_for_undelivered_work",
+    "traces": [
+      {
+        "type": "payment",
+        "visibility": 0.8,
+        "detectors": ["finance", "internal_audit", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8,
+        "finance": -10
+      },
+      "public": {
+        "boss": -14,
+        "finance": -16
+      }
+    }
+  },
+  {
+    "id": "fact.reported_agency_gift",
+    "category": "integrity",
+    "severity": 1,
+    "text_key": "fact.reported_agency_gift",
+    "lesson_key": "lesson.reported_agency_gift",
+    "consequences": {
+      "witnessed": {
+        "boss": 3,
+        "finance": 3
+      },
+      "public": {
+        "boss": 4,
+        "finance": 4
+      }
+    }
+  },
+  {
+    "id": "fact.accepted_agency_trip",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.accepted_agency_trip",
+    "lesson_key": "lesson.accepted_agency_trip",
+    "traces": [
+      {
+        "type": "payment",
+        "visibility": 0.6,
+        "detectors": ["finance", "internal_audit", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "finance": -6
+      },
+      "public": {
+        "boss": -10,
+        "finance": -10
+      }
+    }
+  },
+  {
+    "id": "fact.backdated_claim_evidence",
+    "category": "integrity",
+    "severity": 7,
+    "text_key": "fact.backdated_claim_evidence",
+    "lesson_key": "lesson.backdated_claim_evidence",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.8,
+        "detectors": ["internal_audit", "qc", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -10,
+        "qc": -10
+      },
+      "public": {
+        "boss": -16,
+        "qc": -14
+      }
+    }
+  },
+  {
+    "id": "fact.polished_marketing_review",
+    "category": "integrity",
+    "severity": 3,
+    "text_key": "fact.polished_marketing_review",
+    "lesson_key": "lesson.polished_marketing_review",
+    "consequences": {
+      "witnessed": {
+        "boss": -4
+      },
+      "public": {
+        "boss": -6
+      }
+    }
+  },
+  {
+    "id": "fact.accepted_marketing_condition",
+    "category": "integrity",
+    "severity": 3,
+    "text_key": "fact.accepted_marketing_condition",
+    "lesson_key": "lesson.accepted_marketing_condition",
+    "consequences": {
+      "witnessed": {
+        "boss": -2
+      },
+      "public": {
+        "boss": -4
+      }
+    }
+  },
+  {
+    "id": "fact.used_unlicensed_image",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.used_unlicensed_image",
+    "lesson_key": "lesson.used_unlicensed_image",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.5,
+        "detectors": ["buyer", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -4,
+        "buyer": -3
+      },
+      "public": {
+        "boss": -8
+      }
+    }
+  },
+  {
+    "id": "fact.unfair_comparison_ad",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.unfair_comparison_ad",
+    "lesson_key": "lesson.unfair_comparison_ad",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.7,
+        "detectors": ["qc", "buyer", "boss", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "qc": -6
+      },
+      "public": {
+        "boss": -12,
+        "buyer": -10
+      }
+    }
+  },
+  {
+    "id": "fact.wasteful_year_end_spend",
+    "category": "integrity",
+    "severity": 3,
+    "text_key": "fact.wasteful_year_end_spend",
+    "lesson_key": "lesson.wasteful_year_end_spend",
+    "traces": [
+      {
+        "type": "payment",
+        "visibility": 0.6,
+        "detectors": ["finance", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -3,
+        "finance": -5
+      },
+      "public": {
+        "boss": -6,
+        "finance": -8
+      }
+    }
+  },
+  {
+    "id": "fact.emailed_without_consent",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.emailed_without_consent",
+    "lesson_key": "lesson.emailed_without_consent",
+    "traces": [
+      {
+        "type": "message",
+        "visibility": 0.7,
+        "detectors": ["buyer", "boss", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "cs": -6
+      },
+      "public": {
+        "boss": -12,
+        "buyer": -8,
+        "cs": -10
+      }
+    }
+  },
+  {
+    "id": "fact.paid_for_award",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.paid_for_award",
+    "lesson_key": "lesson.paid_for_award",
+    "traces": [
+      {
+        "type": "payment",
+        "visibility": 0.5,
+        "detectors": ["buyer", "finance", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -4,
+        "buyer": -5
+      },
+      "public": {
+        "boss": -8,
+        "buyer": -10
+      }
+    }
+  },
+  {
+    "id": "fact.fake_urgency_timer",
+    "category": "integrity",
+    "severity": 4,
+    "text_key": "fact.fake_urgency_timer",
+    "lesson_key": "lesson.fake_urgency_timer",
+    "traces": [
+      {
+        "type": "record",
+        "visibility": 0.7,
+        "detectors": ["buyer", "boss", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "buyer": -6,
+        "cs": -4
+      },
+      "public": {
+        "boss": -10,
+        "buyer": -12,
+        "cs": -8
+      }
+    }
+  },
+  {
+    "id": "fact.greenwashed_claim",
+    "category": "integrity",
+    "severity": 6,
+    "text_key": "fact.greenwashed_claim",
+    "lesson_key": "lesson.greenwashed_claim",
+    "traces": [
+      {
+        "type": "document",
+        "visibility": 0.8,
+        "detectors": ["buyer", "qc", "internal_audit", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -8,
+        "buyer": -8
+      },
+      "public": {
+        "boss": -14,
+        "buyer": -16
+      }
+    }
+  },
+  {
+    "id": "fact.staged_testimonial",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.staged_testimonial",
+    "lesson_key": "lesson.staged_testimonial",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.6,
+        "detectors": ["buyer", "boss"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "buyer": -6
+      },
+      "public": {
+        "boss": -12,
+        "buyer": -14,
+        "cs": -6
+      }
+    }
+  },
+  {
+    "id": "fact.stalled_the_regulator",
+    "category": "integrity",
+    "severity": 5,
+    "text_key": "fact.stalled_the_regulator",
+    "lesson_key": "lesson.stalled_the_regulator",
+    "traces": [
+      {
+        "type": "witness",
+        "visibility": 0.6,
+        "detectors": ["boss", "qc", "internal_audit"]
+      }
+    ],
+    "consequences": {
+      "witnessed": {
+        "boss": -6,
+        "qc": -4
+      },
+      "public": {
+        "boss": -10,
+        "qc": -8
+      }
+    }
   }
 ]

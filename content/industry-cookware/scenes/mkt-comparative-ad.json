@@ -1,0 +1,162 @@
+{
+  "id": "scene.mkt.comparative_ad",
+  "location": "loc.meeting_room",
+  "cast": ["char:bao"],
+  "lines": [
+    {
+      "speaker": "char:bao",
+      "text_key": "scene.mkt.comparative_ad.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.mkt.comparative_ad.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.mkt.comparative_ad.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": -2
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.mkt.comparative_ad.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.mkt.comparative_ad.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.mkt.comparative_ad.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.mkt.comparative_ad.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.mkt.comparative_ad.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.unfair_comparison_ad",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.mkt.comparative_ad.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.unfair_comparison_ad",
+              "visibility": "public"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

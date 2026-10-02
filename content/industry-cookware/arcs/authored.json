@@ -588,5 +588,80 @@
         "delay_weeks": [2, 4]
       }
     ]
+  },
+  {
+    "id": "arc.the_claim",
+    "title_key": "arc.the_claim.title",
+    "stages": [
+      {
+        "id": "launch",
+        "event": "event.mkt.launch_twist"
+      },
+      {
+        "id": "proof",
+        "event": "event.mkt.khoa_data",
+        "delay_weeks": [2, 3]
+      },
+      {
+        "id": "ship",
+        "event": "event.mkt.ship_or_reprint",
+        "delay_weeks": [1, 2]
+      },
+      {
+        "id": "complaint",
+        "event": "event.mkt.claim_complaint",
+        "delay_weeks": [8, 12]
+      }
+    ]
+  },
+  {
+    "id": "arc.the_reviews",
+    "title_key": "arc.the_reviews.title",
+    "stages": [
+      {
+        "id": "slow",
+        "event": "event.mkt.slow_launch"
+      },
+      {
+        "id": "batch",
+        "event": "event.mkt.review_batch",
+        "delay_weeks": [1, 2]
+      },
+      {
+        "id": "post",
+        "event": "event.mkt.influencer_post",
+        "delay_weeks": [2, 3]
+      },
+      {
+        "id": "exposed",
+        "event": "event.mkt.review_exposed",
+        "delay_weeks": [4, 6]
+      }
+    ]
+  },
+  {
+    "id": "arc.the_agency",
+    "title_key": "arc.the_agency.title",
+    "stages": [
+      {
+        "id": "pitch",
+        "event": "event.mkt.agency_pitch"
+      },
+      {
+        "id": "invoice",
+        "event": "event.mkt.invoice_mismatch",
+        "delay_weeks": [3, 5]
+      },
+      {
+        "id": "gift",
+        "event": "event.mkt.agency_gift",
+        "delay_weeks": [2, 3]
+      },
+      {
+        "id": "reckoning",
+        "event": "event.mkt.duc_asks_invoices",
+        "delay_weeks": [4, 6]
+      }
+    ]
   }
 ]

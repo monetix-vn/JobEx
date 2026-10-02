@@ -1,0 +1,151 @@
+{
+  "id": "scene.mkt.agency_gift",
+  "location": "loc.meeting_room",
+  "cast": ["char:dat"],
+  "lines": [
+    {
+      "speaker": "char:dat",
+      "text_key": "scene.mkt.agency_gift.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.mkt.agency_gift.c1",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.mkt.agency_gift.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.dat.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            },
+            {
+              "fact": "fact.reported_agency_gift",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_agency",
+              "stage": "reckoning"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.mkt.agency_gift.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.mkt.agency_gift.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.dat.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "arc": "arc.the_agency",
+              "stage": "reckoning"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.mkt.agency_gift.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.mkt.agency_gift.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.dat.trust",
+              "value": 6
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": -3
+            },
+            {
+              "fact": "fact.accepted_agency_trip",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_agency",
+              "stage": "reckoning"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.mkt.agency_gift.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.dat.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.accepted_agency_trip",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_agency",
+              "stage": "reckoning"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

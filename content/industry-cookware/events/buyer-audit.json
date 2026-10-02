@@ -30,7 +30,8 @@
       "role.purch.buyer",
       "role.hr.hrbp",
       "role.prod.supervisor",
-      "role.fpa.analyst"
+      "role.fpa.analyst",
+      "role.mkt.brand"
     ]
   },
   {
@@ -47,7 +48,8 @@
       "role.purch.buyer",
       "role.hr.hrbp",
       "role.prod.supervisor",
-      "role.fpa.analyst"
+      "role.fpa.analyst",
+      "role.mkt.brand"
     ]
   }
 ]

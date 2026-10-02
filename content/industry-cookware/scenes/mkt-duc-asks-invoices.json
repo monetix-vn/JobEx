@@ -1,0 +1,174 @@
+{
+  "id": "scene.mkt.duc_asks_invoices",
+  "location": "loc.finance_office",
+  "cast": ["char:duc"],
+  "lines": [
+    {
+      "speaker": "char:duc",
+      "text_key": "scene.mkt.duc_asks_invoices.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.mkt.duc_asks_invoices.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.mkt.duc_asks_invoices.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.dat.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.the_agency",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.mkt.duc_asks_invoices.c2",
+      "outcomes": [
+        {
+          "p": 0.5,
+          "narration_key": "scene.mkt.duc_asks_invoices.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.the_agency",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.5,
+          "result": "fail",
+          "narration_key": "scene.mkt.duc_asks_invoices.c2.fail",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.thu.trust",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 7
+            },
+            {
+              "arc": "arc.the_agency",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.mkt.duc_asks_invoices.c3",
+      "outcomes": [
+        {
+          "p": 0.5,
+          "narration_key": "scene.mkt.duc_asks_invoices.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.the_agency",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.5,
+          "result": "fail",
+          "narration_key": "scene.mkt.duc_asks_invoices.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.duc.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.finance",
+              "value": -6
+            },
+            {
+              "delta": "player.stress",
+              "value": 7
+            },
+            {
+              "arc": "arc.the_agency",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

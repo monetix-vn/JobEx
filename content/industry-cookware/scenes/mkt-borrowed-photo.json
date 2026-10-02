@@ -1,0 +1,126 @@
+{
+  "id": "scene.mkt.borrowed_photo",
+  "location": "loc.meeting_room",
+  "cast": ["char:dat"],
+  "lines": [
+    {
+      "speaker": "char:dat",
+      "text_key": "scene.mkt.borrowed_photo.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.mkt.borrowed_photo.c1",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 0.85,
+          "narration_key": "scene.mkt.borrowed_photo.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.quyen.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.dat.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "p": 0.15,
+          "result": "fail",
+          "narration_key": "scene.mkt.borrowed_photo.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.quyen.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.mkt.borrowed_photo.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.mkt.borrowed_photo.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.dat.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.mkt.borrowed_photo.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.mkt.borrowed_photo.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.dat.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.used_unlicensed_image",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.mkt.borrowed_photo.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.dat.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.used_unlicensed_image",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

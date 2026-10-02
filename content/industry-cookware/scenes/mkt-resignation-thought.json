@@ -1,0 +1,98 @@
+{
+  "id": "scene.mkt.resignation_thought",
+  "location": "loc.meeting_room",
+  "cast": ["char:nga"],
+  "lines": [
+    {
+      "speaker": "char:nga",
+      "text_key": "scene.mkt.resignation_thought.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.mkt.resignation_thought.c1",
+      "cost": {
+        "hours": 1
+      },
+      "outcomes": [
+        {
+          "p": 0.8,
+          "narration_key": "scene.mkt.resignation_thought.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.quyen.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.nga.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "p": 0.2,
+          "result": "fail",
+          "narration_key": "scene.mkt.resignation_thought.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.quyen.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": -1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.mkt.resignation_thought.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.mkt.resignation_thought.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.quyen.trust",
+              "value": 2
+            },
+            {
+              "ending": "walked_away"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.mkt.resignation_thought.c3",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.mkt.resignation_thought.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.nga.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,186 @@
+{
+  "id": "scene.mkt.review_exposed",
+  "location": "loc.meeting_room",
+  "cast": ["char:quyen"],
+  "lines": [
+    {
+      "speaker": "char:quyen",
+      "text_key": "scene.mkt.review_exposed.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.mkt.review_exposed.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.mkt.review_exposed.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.quyen.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.nga.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -2
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 2
+            },
+            {
+              "delta": "player.rep.cs",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.came_clean_to_auditor",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_reviews",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.mkt.review_exposed.c2",
+      "outcomes": [
+        {
+          "p": 0.6,
+          "narration_key": "scene.mkt.review_exposed.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.quyen.trust",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "arc": "arc.the_reviews",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.4,
+          "result": "fail",
+          "narration_key": "scene.mkt.review_exposed.c2.fail",
+          "effects": [
+            {
+              "delta": "rel.quyen.trust",
+              "value": -6
+            },
+            {
+              "delta": "rel.my.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "arc": "arc.the_reviews",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.mkt.review_exposed.c3",
+      "outcomes": [
+        {
+          "p": 0.4,
+          "narration_key": "scene.mkt.review_exposed.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.dat.trust",
+              "value": -15
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -3
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "fact": "fact.blamed_the_agency",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_reviews",
+              "stage": "end"
+            }
+          ]
+        },
+        {
+          "p": 0.6,
+          "result": "fail",
+          "narration_key": "scene.mkt.review_exposed.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.dat.trust",
+              "value": -15
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": -9
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -10
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -8
+            },
+            {
+              "delta": "player.stress",
+              "value": 9
+            },
+            {
+              "fact": "fact.blamed_the_agency",
+              "visibility": "public"
+            },
+            {
+              "arc": "arc.the_reviews",
+              "stage": "end"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,201 @@
+{
+  "id": "scene.mkt.launch_twist",
+  "location": "loc.meeting_room",
+  "cast": ["char:bao", "char:quyen"],
+  "lines": [
+    {
+      "speaker": "char:bao",
+      "text_key": "scene.mkt.launch_twist.l1"
+    },
+    {
+      "speaker": "char:quyen",
+      "text_key": "scene.mkt.launch_twist.l2"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.mkt.launch_twist.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.mkt.launch_twist.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": -2
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.substantiated_claims",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_claim",
+              "stage": "proof"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.mkt.launch_twist.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": -5
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": 4
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -1
+            },
+            {
+              "delta": "player.stress",
+              "value": 5
+            },
+            {
+              "arc": "arc.the_claim",
+              "stage": "proof"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.mkt.launch_twist.c2",
+      "cost": {
+        "hours": 2
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.mkt.launch_twist.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            },
+            {
+              "arc": "arc.the_claim",
+              "stage": "proof"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.mkt.launch_twist.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.mkt.launch_twist.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": -4
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.overclaimed_on_packaging",
+              "visibility": "private"
+            },
+            {
+              "arc": "arc.the_claim",
+              "stage": "proof"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.mkt.launch_twist.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.bao.trust",
+              "value": 3
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": -5
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.qc",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.overclaimed_on_packaging",
+              "visibility": "witnessed"
+            },
+            {
+              "arc": "arc.the_claim",
+              "stage": "proof"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

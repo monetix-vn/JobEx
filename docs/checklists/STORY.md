@@ -104,6 +104,14 @@ source of truth for what scene comes next; update their Status column as you go.
 - [x] First-cut balance check (`fpa-year.test.ts`)
 - [ ] More FP&A scenes and practitioner review (covenant and cut-off practice especially)
 
+## Job 10: Brand and Digital Marketing Executive (`docs/story/marketing.md`)
+
+- [x] Bible v1 (AI) written with the scenes (owner review pending); same company, head office; claims, reviews, agency
+- [x] Role `role.mkt.brand` playable (overhead 22 hours), `mkt-year` scenario, CI step `sim:mkt`
+- [x] 28 scenes: beats (first week, midyear review, launch twist, consumer inspection, year-end review, manager offer), arcs The Claim, The Reviews, The Agency, incidents (borrowed photo, comparison ad, year-end spend, bought list, paid award, fake urgency, green claim, staged testimonial), consequences (inspector asks, blame meeting), resignation; 5 new characters, 28 facts
+- [x] First-cut balance check (`mkt-year.test.ts`)
+- [ ] More Marketing scenes and practitioner review (advertising substantiation and review practice especially)
+
 ## Later jobs (not yet designed)
 
 - [x] Owner decision 2026-10-02: add HR (HRBP), Production (Line Supervisor), FP&A, Marketing and IT in that order, grouped by department in the picker (`docs/story/JOB-PROPOSALS.md`)

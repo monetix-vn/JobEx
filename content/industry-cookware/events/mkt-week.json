@@ -1,0 +1,444 @@
+[
+  {
+    "id": "event.mkt.first_week",
+    "role": "role.mkt.brand",
+    "tags": ["onboarding", "people", "beat"],
+    "beat": {
+      "from_week": 1,
+      "to_week": 3
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.mkt.first_week"
+  },
+  {
+    "id": "event.mkt.midyear_review",
+    "role": "role.mkt.brand",
+    "tags": ["people", "review", "beat"],
+    "beat": {
+      "from_week": 24,
+      "to_week": 28
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.mkt.midyear_review"
+  },
+  {
+    "id": "event.mkt.launch_twist",
+    "role": "role.mkt.brand",
+    "arc": "arc.the_claim",
+    "tags": ["pressure", "launch", "beat"],
+    "beat": {
+      "from_week": 29,
+      "to_week": 32
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.mkt.launch_twist"
+  },
+  {
+    "id": "event.mkt.consumer_inspection",
+    "role": "role.mkt.brand",
+    "tags": ["audit", "regulator", "beat"],
+    "beat": {
+      "from_week": 41,
+      "to_week": 44
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.mkt.consumer_inspection"
+  },
+  {
+    "id": "event.mkt.year_end_review",
+    "role": "role.mkt.brand",
+    "tags": ["people", "review", "beat"],
+    "beat": {
+      "from_week": 49,
+      "to_week": 50
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.mkt.year_end_review"
+  },
+  {
+    "id": "event.mkt.manager_offer",
+    "role": "role.mkt.brand",
+    "tags": ["people", "promotion", "beat"],
+    "when": {
+      "all": [
+        {
+          "gte": [
+            {
+              "var": ["rel.quyen.trust", 0]
+            },
+            12
+          ]
+        },
+        {
+          "gte": ["player.rep.boss", 58]
+        }
+      ]
+    },
+    "beat": {
+      "from_week": 51,
+      "to_week": 52
+    },
+    "weight": 1,
+    "cooldown_weeks": 12,
+    "scene": "scene.mkt.manager_offer"
+  },
+  {
+    "id": "event.mkt.resignation_thought",
+    "role": "role.mkt.brand",
+    "tags": ["people", "pressure"],
+    "when": {
+      "all": [
+        {
+          "gte": ["player.stress", 75]
+        },
+        {
+          "gte": ["world.turn", 12]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 26,
+    "scene": "scene.mkt.resignation_thought"
+  },
+  {
+    "id": "event.mkt.khoa_data",
+    "role": "role.mkt.brand",
+    "tags": ["claims", "evidence", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.mkt.khoa_data"
+  },
+  {
+    "id": "event.mkt.ship_or_reprint",
+    "role": "role.mkt.brand",
+    "tags": ["claims", "packaging", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.mkt.ship_or_reprint"
+  },
+  {
+    "id": "event.mkt.claim_complaint",
+    "role": "role.mkt.brand",
+    "tags": ["claims", "complaint", "consequence", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.mkt.claim_complaint"
+  },
+  {
+    "id": "event.mkt.slow_launch",
+    "role": "role.mkt.brand",
+    "arc": "arc.the_reviews",
+    "tags": ["reviews", "launch", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 12]
+        },
+        {
+          "lte": ["world.turn", 40]
+        }
+      ]
+    },
+    "weight": 3,
+    "cooldown_weeks": 40,
+    "scene": "scene.mkt.slow_launch"
+  },
+  {
+    "id": "event.mkt.review_batch",
+    "role": "role.mkt.brand",
+    "tags": ["reviews", "agency", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.mkt.review_batch"
+  },
+  {
+    "id": "event.mkt.influencer_post",
+    "role": "role.mkt.brand",
+    "tags": ["influencer", "disclosure", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.mkt.influencer_post"
+  },
+  {
+    "id": "event.mkt.review_exposed",
+    "role": "role.mkt.brand",
+    "tags": ["reviews", "exposure", "consequence", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.mkt.review_exposed"
+  },
+  {
+    "id": "event.mkt.agency_pitch",
+    "role": "role.mkt.brand",
+    "arc": "arc.the_agency",
+    "tags": ["agency", "procurement", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 10]
+        },
+        {
+          "lte": ["world.turn", 38]
+        }
+      ]
+    },
+    "weight": 3,
+    "cooldown_weeks": 52,
+    "scene": "scene.mkt.agency_pitch"
+  },
+  {
+    "id": "event.mkt.invoice_mismatch",
+    "role": "role.mkt.brand",
+    "tags": ["agency", "invoice", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.mkt.invoice_mismatch"
+  },
+  {
+    "id": "event.mkt.agency_gift",
+    "role": "role.mkt.brand",
+    "tags": ["agency", "gift", "dark", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.mkt.agency_gift"
+  },
+  {
+    "id": "event.mkt.duc_asks_invoices",
+    "role": "role.mkt.brand",
+    "tags": ["agency", "audit", "consequence", "arc"],
+    "weight": 0,
+    "cooldown_weeks": 12,
+    "scene": "scene.mkt.duc_asks_invoices"
+  },
+  {
+    "id": "event.mkt.borrowed_photo",
+    "role": "role.mkt.brand",
+    "tags": ["content", "copyright", "dark"],
+    "when": {
+      "gte": ["world.turn", 8]
+    },
+    "weight": 3,
+    "cooldown_weeks": 26,
+    "scene": "scene.mkt.borrowed_photo"
+  },
+  {
+    "id": "event.mkt.comparative_ad",
+    "role": "role.mkt.brand",
+    "tags": ["advertising", "rival", "dark"],
+    "when": {
+      "gte": ["world.turn", 10]
+    },
+    "weight": 3,
+    "cooldown_weeks": 30,
+    "scene": "scene.mkt.comparative_ad"
+  },
+  {
+    "id": "event.mkt.spend_the_budget",
+    "role": "role.mkt.brand",
+    "tags": ["budget", "spending", "dark"],
+    "when": {
+      "all": [
+        {
+          "in": ["world.month_of_year", 11, 12]
+        },
+        {
+          "gte": ["world.turn", 40]
+        }
+      ]
+    },
+    "weight": 2,
+    "cooldown_weeks": 52,
+    "scene": "scene.mkt.spend_the_budget"
+  },
+  {
+    "id": "event.mkt.bought_list",
+    "role": "role.mkt.brand",
+    "tags": ["data", "privacy", "dark"],
+    "when": {
+      "gte": ["world.turn", 10]
+    },
+    "weight": 3,
+    "cooldown_weeks": 40,
+    "scene": "scene.mkt.bought_list"
+  },
+  {
+    "id": "event.mkt.paid_award",
+    "role": "role.mkt.brand",
+    "tags": ["credibility", "awards", "dark"],
+    "when": {
+      "gte": ["world.turn", 12]
+    },
+    "weight": 2,
+    "cooldown_weeks": 40,
+    "scene": "scene.mkt.paid_award"
+  },
+  {
+    "id": "event.mkt.fake_urgency",
+    "role": "role.mkt.brand",
+    "tags": ["advertising", "pressure", "dark"],
+    "when": {
+      "all": [
+        {
+          "gte": ["world.turn", 10]
+        },
+        {
+          "in": ["world.month_of_year", 10, 11, 12]
+        }
+      ]
+    },
+    "weight": 3,
+    "cooldown_weeks": 30,
+    "scene": "scene.mkt.fake_urgency"
+  },
+  {
+    "id": "event.mkt.green_claim",
+    "role": "role.mkt.brand",
+    "tags": ["claims", "sustainability", "dark"],
+    "when": {
+      "gte": ["world.turn", 12]
+    },
+    "weight": 2,
+    "cooldown_weeks": 40,
+    "scene": "scene.mkt.green_claim"
+  },
+  {
+    "id": "event.mkt.staged_testimonial",
+    "role": "role.mkt.brand",
+    "tags": ["content", "testimonials", "dark"],
+    "when": {
+      "gte": ["world.turn", 12]
+    },
+    "weight": 2,
+    "cooldown_weeks": 40,
+    "scene": "scene.mkt.staged_testimonial"
+  },
+  {
+    "id": "event.mkt.lam_asks_substantiation",
+    "role": "role.mkt.brand",
+    "tags": ["audit", "regulator", "dark", "consequence"],
+    "when": {
+      "all": [
+        {
+          "in": ["world.month_of_year", 10, 11]
+        },
+        {
+          "gte": ["world.turn", 40]
+        },
+        {
+          "any": [
+            {
+              "gte": [
+                {
+                  "var": ["fact.overclaimed_on_packaging", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.shipped_with_known_false_claim", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.bought_fake_reviews", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.greenwashed_claim", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.undisclosed_influencer", 0]
+                },
+                1
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "weight": 6,
+    "cooldown_weeks": 52,
+    "scene": "scene.mkt.lam_asks_substantiation"
+  },
+  {
+    "id": "event.mkt.blame_meeting",
+    "role": "role.mkt.brand",
+    "tags": ["pressure", "consequence"],
+    "when": {
+      "all": [
+        {
+          "in": ["world.month_of_year", 11, 12]
+        },
+        {
+          "gte": ["world.turn", 44]
+        },
+        {
+          "any": [
+            {
+              "gte": [
+                {
+                  "var": ["fact.sabotaged_rival_reviews", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.approved_invoice_for_undelivered_work", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.blamed_customers_for_defect", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.emailed_without_consent", 0]
+                },
+                1
+              ]
+            },
+            {
+              "gte": [
+                {
+                  "var": ["fact.paid_for_award", 0]
+                },
+                1
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "weight": 6,
+    "cooldown_weeks": 52,
+    "scene": "scene.mkt.blame_meeting"
+  }
+]

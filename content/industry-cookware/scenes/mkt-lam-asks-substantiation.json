@@ -1,0 +1,162 @@
+{
+  "id": "scene.mkt.lam_asks_substantiation",
+  "location": "loc.meeting_room",
+  "cast": ["char:lam"],
+  "lines": [
+    {
+      "speaker": "char:lam",
+      "text_key": "scene.mkt.lam_asks_substantiation.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.mkt.lam_asks_substantiation.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.mkt.lam_asks_substantiation.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.lam.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": -2
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -5
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.came_clean_to_auditor",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.mkt.lam_asks_substantiation.c2",
+      "outcomes": [
+        {
+          "p": 0.4,
+          "narration_key": "scene.mkt.lam_asks_substantiation.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.lam.trust",
+              "value": -5
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        },
+        {
+          "p": 0.6,
+          "result": "fail",
+          "narration_key": "scene.mkt.lam_asks_substantiation.c2.fail",
+          "effects": [
+            {
+              "delta": "rel.lam.trust",
+              "value": -10
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.dat.trust",
+              "value": -8
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": -8
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -10
+            },
+            {
+              "delta": "player.stress",
+              "value": 8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.mkt.lam_asks_substantiation.c3",
+      "outcomes": [
+        {
+          "p": 0.4,
+          "narration_key": "scene.mkt.lam_asks_substantiation.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.lam.trust",
+              "value": -4
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            },
+            {
+              "fact": "fact.stalled_the_regulator",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.6,
+          "result": "fail",
+          "narration_key": "scene.mkt.lam_asks_substantiation.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.lam.trust",
+              "value": -10
+            },
+            {
+              "delta": "rel.khoa.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -8
+            },
+            {
+              "delta": "player.stress",
+              "value": 7
+            },
+            {
+              "fact": "fact.stalled_the_regulator",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

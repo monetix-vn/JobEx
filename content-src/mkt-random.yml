@@ -1,0 +1,756 @@
+# Brand and Digital Marketing Executive: everyday incidents and consequences (docs/story/marketing.md).
+scene: mkt.borrowed_photo
+place: meeting_room
+tags: [content, copyright, dark]
+weight: 3
+cooldown: 26
+when: [turn >= 8]
+lines:
+  - who: char:dat
+    en: "We are two days from the post and the photographer's shots of the kitchen are not ready. I found a beautiful picture of a family cooking with a pan very like ours. It is from a European brand's website. Nobody will notice. Shall we use it?"
+    vi: 'Còn hai ngày là đến bài đăng mà ảnh của nhiếp ảnh gia về nhà bếp chưa xong. Em tìm thấy một bức ảnh đẹp về một gia đình nấu ăn với chiếc chảo rất giống của mình. Nó từ trang web của một thương hiệu châu Âu. Không ai nhận ra đâu. Mình dùng không?'
+choices:
+  - en: "Use a licensed stock image or reshoot with the team's own kitchen, and move the post by a day."
+    vi: 'Dùng một ảnh stock có bản quyền hoặc quay lại với căn bếp của chính nhóm và dời bài đăng một ngày.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.85
+        en: 'The licensed photo costs three hundred thousand dong and looks nearly as good. The post goes out a day late, and no one is unhappy.'
+        vi: 'Ảnh có bản quyền tốn ba trăm nghìn đồng và trông gần như đẹp bằng. Bài đăng đi trễ một ngày, và không ai không vui.'
+        effects: [rel quyen trust +2, rel dat trust -1, stress +2]
+      - p: 0.15
+        ok: false
+        en: 'The licence terms do not allow use in paid ads. You find out on the second day, and renegotiate it for a small extra fee.'
+        vi: 'Điều khoản bản quyền không cho dùng trong quảng cáo trả phí. Anh/chị biết vào ngày thứ hai và thương lượng lại với một khoản phí nhỏ.'
+        effects: [rel quyen trust +1, stress +4]
+  - en: 'Ask the European brand for permission, and use the picture only if they agree.'
+    vi: 'Xin phép thương hiệu châu Âu và chỉ dùng ảnh nếu họ đồng ý.'
+    outcomes:
+      - p: 1
+        en: 'The brand says no, politely, in two days. The post uses a different picture. You lost a day and gained a line in the register.'
+        vi: 'Thương hiệu từ chối, lịch sự, trong hai ngày. Bài đăng dùng ảnh khác. Anh/chị mất một ngày và có thêm một dòng trong sổ.'
+        effects: [rel dat trust -1, stress +2]
+  - en: 'Use the picture, and crop the logo out of the corner.'
+    vi: 'Dùng ảnh và cắt logo ở góc.'
+    outcomes:
+      - p: 0.7
+        en: 'The post does very well. Nobody notices for three weeks.'
+        vi: 'Bài đăng rất thành công. Ba tuần không ai nhận ra.'
+        effects: [rel dat trust +2, stress +1, fact used_unlicensed_image private]
+      - p: 0.3
+        ok: false
+        en: "The brand's agency finds it with an image search, and sends a letter with a licence fee ten times what a stock photo would have cost, copied to Mr Cuong."
+        vi: 'Agency của thương hiệu tìm ra bằng tìm kiếm ảnh và gửi thư kèm phí bản quyền gấp mười lần ảnh stock, đồng gửi anh Cường.'
+        effects:
+          [
+            rel dat trust +2,
+            rel quyen trust -5,
+            rep.boss -4,
+            stress +5,
+            fact used_unlicensed_image witnessed,
+          ]
+---
+scene: mkt.comparative_ad
+place: meeting_room
+tags: [advertising, rival, dark]
+weight: 3
+cooldown: 30
+when: [turn >= 10]
+lines:
+  - who: char:bao
+    en: 'I want an ad that says our pan heats up twice as fast as the leading rival. We tested it in the lab with our pan on a gas ring and theirs on an induction hob. The numbers are real. The comparison is a little creative, but who is going to check?'
+    vi: 'Anh muốn một quảng cáo nói chảo mình nóng nhanh gấp đôi đối thủ dẫn đầu. Mình thử trong phòng lab với chảo mình trên bếp gas và của họ trên bếp từ. Con số là thật. So sánh hơi sáng tạo, nhưng ai kiểm tra chứ?'
+choices:
+  - en: 'Ask Khoa to rerun the test on the same hob under the same conditions, and run the ad only with the result that holds.'
+    vi: 'Nhờ anh Khoa chạy lại bài kiểm tra trên cùng loại bếp với cùng điều kiện và chỉ chạy quảng cáo với kết quả đứng vững.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.7
+        en: "On the same hob, the pan heats thirty percent faster. The ad says thirty percent and cites the test. Bao says 'It is less exciting', and the number is defensible in any room."
+        vi: "Trên cùng loại bếp, chảo nóng nhanh hơn ba mươi phần trăm. Quảng cáo ghi ba mươi phần trăm và dẫn bài kiểm nghiệm. Anh Bảo nói 'Kém hấp dẫn hơn', và con số bảo vệ được ở bất cứ phòng nào."
+        effects: [rel bao trust -2, rel khoa trust +3, rel quyen trust +2, rep.qc +2, stress +3]
+      - p: 0.3
+        ok: false
+        en: 'On the same hob the difference is nine percent. The ad is shelved. Bao says it was a waste of three days, and Khoa quietly says it was worth it.'
+        vi: 'Trên cùng loại bếp chênh lệch chỉ chín phần trăm. Quảng cáo bị gác lại. Anh Bảo nói phí ba ngày và anh Khoa khẽ nói đáng.'
+        effects: [rel bao trust -4, rel khoa trust +3, rep.qc +2, stress +4]
+  - en: 'Run the ad with the real test conditions stated in small print under the claim.'
+    vi: 'Chạy quảng cáo với điều kiện kiểm nghiệm thật ghi bằng chữ nhỏ dưới lời quảng cáo.'
+    outcomes:
+      - p: 1
+        en: "The claim is large, and the small print is accurate, and readable with a magnifying glass. A competitor's lawyer reads it, and takes no action."
+        vi: 'Lời quảng cáo lớn, chữ nhỏ chính xác và đọc được bằng kính lúp. Luật sư của đối thủ đọc và không hành động.'
+        effects: [rel bao trust +1, rel quyen trust -1, stress +2]
+  - en: "Run the ad as Bao asked, 'twice as fast', with no conditions."
+    vi: "Chạy quảng cáo như anh Bảo yêu cầu, 'nhanh gấp đôi', không điều kiện."
+    outcomes:
+      - p: 0.7
+        en: 'The ad runs. Bao is delighted, and sales go up four percent. A reviewer buys both pans and posts the cooking test with the two hobs in the same shot.'
+        vi: 'Quảng cáo chạy. Anh Bảo rất vui, và doanh số tăng bốn phần trăm. Một người đánh giá mua cả hai chảo và đăng bài thử với hai bếp trong cùng khung hình.'
+        effects:
+          [
+            rel bao trust +5,
+            rel khoa trust -4,
+            rep.buyer -2,
+            stress +1,
+            fact unfair_comparison_ad private,
+          ]
+      - p: 0.3
+        ok: false
+        en: "The rival's lawyer sends a letter with the test conditions, the hob types and a demand to withdraw. The ad is pulled, and the statement is in the trade press."
+        vi: 'Luật sư của đối thủ gửi thư kèm điều kiện kiểm nghiệm, loại bếp và yêu cầu gỡ. Quảng cáo bị gỡ, và tuyên bố có trên báo ngành.'
+        effects:
+          [
+            rel bao trust +2,
+            rel khoa trust -6,
+            rel quyen trust -6,
+            rep.boss -6,
+            rep.buyer -6,
+            stress +6,
+            fact unfair_comparison_ad public,
+          ]
+---
+scene: mkt.spend_the_budget
+place: finance_office
+tags: [budget, spending, dark]
+weight: 2
+cooldown: 52
+when: [month in 11 12, turn >= 40]
+lines:
+  - who: char:quyen
+    en: "We have twenty million left in this year's budget. If we do not spend it by the thirty-first, finance takes it back, and next year's budget will be set on what we spent. I would like you to find a good use for it. Fast, and invoiced this year."
+    vi: 'Mình còn hai mươi triệu trong ngân sách năm nay. Nếu không chi trước ngày ba mươi mốt, tài chính thu lại và ngân sách năm sau sẽ lập dựa trên số đã chi. Chị muốn em tìm một cách dùng tốt. Nhanh, và xuất hóa đơn trong năm nay.'
+choices:
+  - en: 'Spend it on something with value: a customer research survey, a product photography set, or the content library, with deliverables before year end.'
+    vi: 'Chi vào thứ có giá trị: một khảo sát nghiên cứu khách hàng, một bộ ảnh sản phẩm hoặc thư viện nội dung, với sản phẩm bàn giao trước cuối năm.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.8
+        en: 'The photography set is delivered on the twentieth. It is used for the next two years. Quyen approves it with a nod.'
+        vi: 'Bộ ảnh sản phẩm được giao ngày hai mươi. Nó được dùng hai năm tới. Chị Quyên duyệt bằng một cái gật đầu.'
+        effects: [rel quyen trust +3, rep.finance +1, stress +3]
+      - p: 0.2
+        ok: false
+        en: 'The studio cannot deliver before the thirty-first. You spend the money on a smaller, less ideal set, and write down why.'
+        vi: 'Studio không giao kịp trước ngày ba mươi mốt. Anh/chị chi vào một bộ nhỏ hơn, kém lý tưởng và ghi lại vì sao.'
+        effects: [rel quyen trust +1, stress +4]
+  - en: 'Spend what you can use well, return the rest, and tell Quyen the case for budgeting on need rather than on spend.'
+    vi: 'Chi phần dùng tốt được, trả lại phần còn lại và nói với chị Quyên lý do nên lập ngân sách theo nhu cầu chứ không theo số đã chi.'
+    outcomes:
+      - p: 1
+        en: 'You return eight million. Quyen sighs and agrees. Duc notices, and notes that marketing was the only department that returned anything.'
+        vi: 'Anh/chị trả lại tám triệu. Chị Quyên thở dài và đồng ý. Anh Đức để ý và ghi nhận marketing là phòng duy nhất trả lại bất cứ khoản nào.'
+        effects: [rel quyen trust -1, rel duc trust +4, rep.finance +3, stress +2]
+  - en: "Ask the agency to invoice twenty million for 'autumn campaign extension', to be delivered next year."
+    vi: "Nhờ agency xuất hóa đơn hai mươi triệu cho 'gia hạn chiến dịch mùa thu', giao trong năm sau."
+    outcomes:
+      - p: 0.7
+        en: 'The invoice arrives on the twenty-ninth. The budget is spent. Dat is happy. The extension is a set of ideas that nobody asked for.'
+        vi: 'Hóa đơn đến ngày hai mươi chín. Ngân sách được chi hết. Anh Đạt vui. Phần gia hạn là một tập ý tưởng không ai yêu cầu.'
+        effects:
+          [rel quyen trust +3, rel dat trust +3, stress +1, fact wasteful_year_end_spend private]
+      - p: 0.3
+        ok: false
+        en: "Duc's team sees an invoice for a service that starts after the invoice date. Thu asks you politely which deliverable is due this year."
+        vi: 'Nhóm anh Đức thấy một hóa đơn cho dịch vụ bắt đầu sau ngày xuất hóa đơn. Thư hỏi anh/chị lịch sự sản phẩm nào đến hạn trong năm nay.'
+        effects:
+          [
+            rel quyen trust +1,
+            rel dat trust +2,
+            rel duc trust -5,
+            rel thu trust -4,
+            rep.finance -5,
+            stress +5,
+            fact wasteful_year_end_spend witnessed,
+          ]
+---
+scene: mkt.bought_list
+place: meeting_room
+tags: [data, privacy, dark]
+weight: 3
+cooldown: 40
+when: [turn >= 10]
+lines:
+  - who: char:dat
+    en: 'A data vendor has a list of eighty thousand home cooks in the region, with emails and phone numbers. It is very cheap. If we send them the launch offer, we will triple our reach this month. They have not agreed to hear from us, but they are all potential customers.'
+    vi: 'Một nhà cung cấp dữ liệu có danh sách tám mươi nghìn người nấu ăn tại nhà trong khu vực kèm email và số điện thoại. Rất rẻ. Nếu gửi họ ưu đãi ra mắt, mình sẽ tăng gấp ba lượng tiếp cận tháng này. Họ chưa đồng ý nhận tin từ mình, nhưng đều là khách hàng tiềm năng.'
+choices:
+  - en: 'Decline the list, and build the audience from opt-in sign-ups: a recipe email, a warranty registration, and a clear unsubscribe.'
+    vi: 'Từ chối danh sách và xây tệp khán giả từ đăng ký tự nguyện: email công thức nấu ăn, đăng ký bảo hành và nút hủy đăng ký rõ ràng.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.8
+        en: "The sign-up list grows slowly. After three months it has six thousand names, and they open the emails. Quyen says: 'Smaller, and ours.'"
+        vi: "Danh sách đăng ký tăng chậm. Sau ba tháng có sáu nghìn tên, và họ mở email. Chị Quyên nói: 'Nhỏ hơn, và là của mình.'"
+        effects: [rel quyen trust +3, rel dat trust -2, rep.buyer +2, stress +3]
+      - p: 0.2
+        ok: false
+        en: "Bao says six thousand is not a business, and that the agency's list would have paid for itself. You show him the open rates, and he keeps his silence."
+        vi: 'Anh Bảo nói sáu nghìn không phải một doanh nghiệp và danh sách của agency sẽ tự hoàn vốn. Anh/chị cho xem tỷ lệ mở và anh im lặng.'
+        effects: [rel quyen trust +2, rel bao trust -3, stress +4]
+  - en: 'Send a single message to the list that asks for consent, with an easy unsubscribe, and delete anyone who does not reply.'
+    vi: 'Gửi một tin nhắn duy nhất cho danh sách xin sự đồng ý, kèm hủy đăng ký dễ dàng và xóa bất kỳ ai không trả lời.'
+    outcomes:
+      - p: 1
+        en: "Six hundred people say yes. The others are deleted. It is not a bad start, and not a clean one: the vendor's source of the list is unclear."
+        vi: 'Sáu trăm người đồng ý. Những người khác bị xóa. Không phải khởi đầu tệ, và không sạch: nguồn danh sách của nhà cung cấp không rõ.'
+        effects: [rel dat trust -1, stress +2]
+  - en: 'Buy the list and send the launch offer to all eighty thousand.'
+    vi: 'Mua danh sách và gửi ưu đãi ra mắt cho cả tám mươi nghìn người.'
+    outcomes:
+      - p: 0.7
+        en: 'Reach triples, and sales go up for two weeks. The unsubscribe link sends a complaint to an address that nobody checks.'
+        vi: 'Lượng tiếp cận tăng gấp ba và doanh số tăng hai tuần. Đường dẫn hủy đăng ký gửi khiếu nại đến một địa chỉ không ai kiểm tra.'
+        effects:
+          [
+            rel dat trust +4,
+            rel quyen trust -1,
+            rep.buyer -2,
+            stress +1,
+            fact emailed_without_consent private,
+          ]
+      - p: 0.3
+        ok: false
+        en: "Several hundred recipients report the email to the data authority. Nga's phone does not stop for three days, and a letter arrives asking where the list came from."
+        vi: 'Vài trăm người nhận báo email cho cơ quan bảo vệ dữ liệu. Điện thoại chị Nga không ngừng ba ngày, và một công văn đến hỏi danh sách từ đâu ra.'
+        effects:
+          [
+            rel dat trust +2,
+            rel nga trust -5,
+            rel quyen trust -6,
+            rep.boss -6,
+            rep.cs -6,
+            stress +7,
+            fact emailed_without_consent public,
+          ]
+---
+scene: mkt.paid_award
+place: meeting_room
+tags: [credibility, awards, dark]
+weight: 2
+cooldown: 40
+when: [turn >= 12]
+lines:
+  - who: char:dat
+    en: "A trade magazine has a 'Best Cookware Brand' award. It costs eight million to enter and fifteen to receive the trophy and a feature. Everyone knows how it works. The trophy will look wonderful on the website and the box."
+    vi: "Một tạp chí ngành có giải 'Thương hiệu đồ gia dụng tốt nhất'. Dự thi tốn tám triệu và nhận cúp kèm bài viết tốn mười lăm. Ai cũng biết cách nó vận hành. Chiếc cúp sẽ rất đẹp trên trang web và trên hộp."
+choices:
+  - en: 'Skip it, and spend the money on independent testing that you can cite, with the results published.'
+    vi: 'Bỏ qua và dùng tiền cho kiểm nghiệm độc lập mà anh/chị có thể trích dẫn, công bố kết quả.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.8
+        en: "An independent lab rates the pan in the top quartile, and the result is cited on the page with the lab's name. It is less glamorous, and more believable."
+        vi: 'Một phòng thí nghiệm độc lập xếp chảo vào nhóm một phần tư đầu, và kết quả được dẫn trên trang kèm tên phòng thí nghiệm. Kém hào nhoáng hơn, và đáng tin hơn.'
+        effects: [rel quyen trust +3, rep.qc +2, rep.buyer +2, stress +2]
+      - p: 0.2
+        ok: false
+        en: 'The independent test puts the pan in the middle of the group. You do not publish it, and use it internally. It stings, and it is useful.'
+        vi: 'Bài kiểm nghiệm độc lập xếp chảo ở giữa nhóm. Anh/chị không công bố mà dùng nội bộ. Hơi đau, và hữu ích.'
+        effects: [rel quyen trust +2, rep.qc +2, stress +3]
+  - en: 'Enter, and state on the website that the award is a paid entry from the magazine.'
+    vi: 'Dự thi và ghi trên trang web rằng giải là một suất dự thi trả phí của tạp chí.'
+    outcomes:
+      - p: 1
+        en: "The trophy appears with a line saying 'Magazine award (paid entry)'. It is honest, and a little embarrassing. A visitor asks about it, and the answer is already on the page."
+        vi: "Chiếc cúp xuất hiện kèm dòng 'Giải thưởng của tạp chí (suất dự thi trả phí)'. Trung thực, và hơi ngượng. Một khách hỏi, và câu trả lời đã có trên trang."
+        effects: [rel dat trust +1, stress +1]
+  - en: "Pay for the award, and show it on the box and the website as 'Best Cookware Brand' with no further detail."
+    vi: "Trả tiền cho giải thưởng và hiển thị nó trên hộp và trang web là 'Thương hiệu đồ gia dụng tốt nhất' không thêm chi tiết."
+    outcomes:
+      - p: 0.7
+        en: 'The trophy looks wonderful. Sales go up two percent. Bao tells every buyer.'
+        vi: 'Chiếc cúp trông tuyệt vời. Doanh số tăng hai phần trăm. Anh Bảo kể với mọi khách.'
+        effects: [rel dat trust +3, rel bao trust +3, stress +1, fact paid_for_award private]
+      - p: 0.3
+        ok: false
+        en: "A consumer blog compares the 'winners' of the last three years and finds that each had bought a feature. The company's name is in the second paragraph."
+        vi: "Một blog người tiêu dùng so sánh các 'người thắng' ba năm qua và thấy mỗi người đã mua một bài viết. Tên công ty nằm ở đoạn thứ hai."
+        effects:
+          [
+            rel dat trust +1,
+            rel bao trust +1,
+            rel quyen trust -5,
+            rep.boss -4,
+            rep.buyer -5,
+            stress +5,
+            fact paid_for_award witnessed,
+          ]
+---
+scene: mkt.fake_urgency
+place: meeting_room
+tags: [advertising, pressure, dark]
+weight: 3
+cooldown: 30
+when: [turn >= 10, month in 10 11 12]
+lines:
+  - who: char:bao
+    en: "Black Friday is next week. Put a countdown timer on the page that resets every time somebody visits, and a banner saying 'Only 7 left!' It is the stock number that makes people click. We have five thousand in the warehouse, of course. But nobody has to know that."
+    vi: "Black Friday tuần sau. Đặt bộ đếm ngược trên trang mà reset mỗi khi có người vào và biểu ngữ 'Chỉ còn 7 sản phẩm!' Con số tồn kho khiến người ta nhấp. Tất nhiên kho có năm nghìn. Nhưng không ai cần biết."
+choices:
+  - en: 'Run a real offer with a real end date and a stock number that reflects the actual allocation for this promotion.'
+    vi: 'Chạy ưu đãi thật có ngày kết thúc thật và con số tồn kho phản ánh phân bổ thật cho đợt khuyến mãi này.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.7
+        en: "The offer has a true end date and a promotional allocation of five hundred. It sells out in six days, and the timer is honest. Bao says 'It worked'."
+        vi: "Ưu đãi có ngày kết thúc thật và phân bổ khuyến mãi năm trăm. Bán hết trong sáu ngày, và bộ đếm trung thực. Anh Bảo nói 'Có hiệu quả'."
+        effects: [rel bao trust +1, rel quyen trust +2, rep.buyer +1, stress +2]
+      - p: 0.3
+        ok: false
+        en: 'The offer sells half its allocation. Bao grumbles that a bluff would have done better. You say, quietly, that a bluff would have been paid for later.'
+        vi: 'Ưu đãi bán được nửa phân bổ. Anh Bảo càu nhàu rằng nói dối sẽ hiệu quả hơn. Anh/chị nói, khẽ, rằng nói dối sẽ phải trả giá sau.'
+        effects: [rel bao trust -3, rel quyen trust +2, stress +3]
+  - en: 'Use a real countdown to the real end of the offer, and skip the stock banner.'
+    vi: 'Dùng bộ đếm ngược thật đến lúc kết thúc ưu đãi thật và bỏ biểu ngữ tồn kho.'
+    outcomes:
+      - p: 1
+        en: 'The timer is real, and the offer is real. Bao asks for the banner again next week, and gets the same answer.'
+        vi: 'Bộ đếm là thật, và ưu đãi là thật. Tuần sau anh Bảo lại xin biểu ngữ và nhận cùng câu trả lời.'
+        effects: [rel bao trust -1, stress +1]
+  - en: "Build the fake timer and the 'only 7 left' banner, as asked."
+    vi: "Làm bộ đếm giả và biểu ngữ 'chỉ còn 7' như được yêu cầu."
+    outcomes:
+      - p: 0.7
+        en: 'Conversion rises by nineteen percent. The timer resets itself for every visitor. The banner says seven, and there are five thousand.'
+        vi: 'Tỷ lệ chuyển đổi tăng mười chín phần trăm. Bộ đếm tự reset với mỗi khách. Biểu ngữ ghi bảy, và còn năm nghìn.'
+        effects:
+          [
+            rel bao trust +5,
+            rel quyen trust -2,
+            rep.buyer -1,
+            stress +1,
+            fact fake_urgency_timer private,
+          ]
+      - p: 0.3
+        ok: false
+        en: "A shopper takes screenshots of the timer on two devices and the page with 'only 7 left' on the day after. The post is shared four thousand times, with Nga's number underneath."
+        vi: "Một người mua chụp ảnh bộ đếm trên hai thiết bị và trang 'chỉ còn 7' vào ngày hôm sau. Bài đăng được chia sẻ bốn nghìn lần kèm số điện thoại chị Nga bên dưới."
+        effects:
+          [
+            rel bao trust +2,
+            rel nga trust -4,
+            rel quyen trust -6,
+            rep.boss -5,
+            rep.buyer -6,
+            rep.cs -5,
+            stress +6,
+            fact fake_urgency_timer witnessed,
+          ]
+---
+scene: mkt.green_claim
+place: meeting_room
+tags: [claims, sustainability, dark]
+weight: 2
+cooldown: 40
+when: [turn >= 12]
+lines:
+  - who: char:cuong
+    en: "Buyers in Europe are asking about sustainability. We use twenty percent recycled aluminium in one line. I want the whole brand to say 'eco-friendly' and to have a green leaf on every box. It is good for the story, and the competition has leaves too."
+    vi: "Khách châu Âu đang hỏi về tính bền vững. Mình dùng hai mươi phần trăm nhôm tái chế ở một dòng. Anh muốn cả thương hiệu ghi 'thân thiện môi trường' và có chiếc lá xanh trên mọi hộp. Tốt cho câu chuyện, và đối thủ cũng có lá."
+choices:
+  - en: "Say exactly what is true: 'twenty percent recycled aluminium in the Terra line', with the source, and offer a plan to raise it, labelled as a plan."
+    vi: "Nói đúng điều là thật: 'hai mươi phần trăm nhôm tái chế ở dòng Terra' kèm nguồn và đề xuất kế hoạch nâng lên, ghi nhãn là kế hoạch."
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.7
+        en: "Mr Cuong says it is modest. Anders's buyer says it is the only environmental claim they could verify, and asks for the supplier certificates. You have them."
+        vi: 'Anh Cường nói khiêm tốn. Khách của ông Anders nói đó là lời môi trường duy nhất họ kiểm chứng được và xin giấy chứng nhận của nhà cung cấp. Anh/chị có chúng.'
+        effects: [rel cuong trust -1, rel quyen trust +3, rep.buyer +3, rep.boss +1, stress +3]
+      - p: 0.3
+        ok: false
+        en: "Mr Cuong dismisses the plan as small. He asks you to 'think bigger'. You offer the plan again with the numbers, and he keeps it on the table."
+        vi: "Anh Cường gạt kế hoạch là nhỏ. Anh bảo anh/chị 'nghĩ lớn hơn'. Anh/chị đưa lại kế hoạch kèm số liệu, và anh để nó trên bàn."
+        effects: [rel cuong trust -3, rel quyen trust +2, stress +4]
+  - en: "Use 'responsibly made' with a small leaf and a link to the recycled-content page for the Terra line."
+    vi: "Dùng 'sản xuất có trách nhiệm' với một chiếc lá nhỏ và liên kết đến trang hàm lượng tái chế cho dòng Terra."
+    outcomes:
+      - p: 1
+        en: "The phrase is vague, and the link is exact. A buyer asks what 'responsibly' means, and the page answers."
+        vi: "Cụm từ mơ hồ, và liên kết chính xác. Một khách hỏi 'có trách nhiệm' nghĩa là gì, và trang trả lời."
+        effects: [rel cuong trust +1, rel quyen trust +1, stress +2]
+  - en: "Put 'eco-friendly' and a large leaf on every box in every range, as Mr Cuong asks."
+    vi: "In 'thân thiện môi trường' và một chiếc lá lớn lên mọi hộp ở mọi dòng như anh Cường yêu cầu."
+    outcomes:
+      - p: 0.7
+        en: 'The boxes look green and confident. The claim covers eight lines that contain no recycled material at all.'
+        vi: 'Các hộp trông xanh và tự tin. Lời quảng cáo bao trùm tám dòng không chứa vật liệu tái chế nào.'
+        effects:
+          [
+            rel cuong trust +5,
+            rel quyen trust -2,
+            rep.buyer +1,
+            stress +1,
+            fact greenwashed_claim private,
+          ]
+      - p: 0.3
+        ok: false
+        en: "A buyer's sustainability team asks for the evidence for 'eco-friendly' on the standard line. You have nothing to send, and the answer goes to Mr Cuong too."
+        vi: "Nhóm bền vững của khách xin bằng chứng cho 'thân thiện môi trường' ở dòng tiêu chuẩn. Anh/chị không có gì để gửi, và câu trả lời cũng đến anh Cường."
+        effects:
+          [
+            rel cuong trust +2,
+            rel quyen trust -6,
+            rep.boss -5,
+            rep.buyer -7,
+            stress +6,
+            fact greenwashed_claim witnessed,
+          ]
+---
+scene: mkt.staged_testimonial
+place: meeting_room
+tags: [content, testimonials, dark]
+weight: 2
+cooldown: 40
+when: [turn >= 12]
+lines:
+  - who: char:dat
+    en: "For the new landing page we need a family testimonial with a photo. Real customers are slow to reply. We have a lovely actor family on file, and they can say what a customer would say. Nobody has to know that they were paid. We can call them the 'Tran family from Binh Duong'."
+    vi: "Cho trang đích mới mình cần lời chứng thực của một gia đình kèm ảnh. Khách thật trả lời chậm. Bọn em có một gia đình diễn viên rất dễ thương trong hồ sơ, và họ có thể nói điều một khách hàng sẽ nói. Không ai cần biết họ được trả tiền. Mình có thể gọi họ là 'gia đình ông bà Trần ở Bình Dương'."
+choices:
+  - en: 'Contact real customers who have already praised the pan in reviews, ask for permission to quote them, and run the page a week later.'
+    vi: 'Liên hệ với khách thật đã khen chảo trong đánh giá, xin phép trích dẫn và chạy trang sau một tuần.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.8
+        en: 'Four customers agree, and one sends a photo of her kitchen. The page launches a week late, with quotes that are real, mildly critical and believable.'
+        vi: 'Bốn khách đồng ý và một người gửi ảnh bếp của chị. Trang ra mắt trễ một tuần với các lời trích có thật, hơi phê bình và đáng tin.'
+        effects: [rel quyen trust +3, rel nga trust +2, rep.buyer +2, rep.cs +2, stress +3]
+      - p: 0.2
+        ok: false
+        en: 'Only one customer replies, and her quote is a little negative about the lid. You use it, with her permission, and the page launches with one real voice.'
+        vi: 'Chỉ một khách trả lời, và lời của chị hơi tiêu cực về cái nắp. Anh/chị dùng, với sự cho phép của chị, và trang ra mắt với một tiếng nói thật.'
+        effects: [rel quyen trust +2, rep.buyer +1, stress +3]
+  - en: "Use the actors, but label the page 'illustrative customer stories' and keep the quotes generic."
+    vi: "Dùng các diễn viên nhưng gắn nhãn trang 'câu chuyện khách hàng minh họa' và giữ lời trích chung chung."
+    outcomes:
+      - p: 1
+        en: 'The page is warm, and clearly labelled. Conversion is slightly lower. Nobody is misled.'
+        vi: 'Trang ấm áp và được gắn nhãn rõ. Tỷ lệ chuyển đổi thấp hơn một chút. Không ai bị đánh lừa.'
+        effects: [rel dat trust +1, stress +2]
+  - en: "Run the actors as the 'Tran family from Binh Duong', with a specific quote about the pan changing their cooking."
+    vi: "Chạy diễn viên là 'gia đình ông bà Trần ở Bình Dương' kèm lời trích cụ thể về chiếc chảo thay đổi việc nấu ăn của họ."
+    outcomes:
+      - p: 0.7
+        en: 'The page converts nineteen percent better than the last. The Tran family is lovely, and exists only on the page.'
+        vi: 'Trang chuyển đổi tốt hơn trang trước mười chín phần trăm. Gia đình ông bà Trần rất dễ thương và chỉ tồn tại trên trang.'
+        effects: [rel dat trust +4, rel quyen trust -1, stress +1, fact staged_testimonial private]
+      - p: 0.3
+        ok: false
+        en: "A viewer recognises the 'Tran family' from a bank advertisement, and posts the two clips side by side. By evening, the comment section has three thousand replies."
+        vi: "Một người xem nhận ra 'gia đình ông bà Trần' từ một quảng cáo ngân hàng và đăng hai đoạn cạnh nhau. Đến tối phần bình luận có ba nghìn trả lời."
+        effects:
+          [
+            rel dat trust +2,
+            rel quyen trust -6,
+            rep.boss -5,
+            rep.buyer -7,
+            rep.cs -4,
+            stress +6,
+            fact staged_testimonial witnessed,
+          ]
+---
+scene: mkt.lam_asks_substantiation
+place: meeting_room
+tags: [audit, regulator, dark, consequence]
+weight: 6
+cooldown: 52
+when: [month in 10 11, turn >= 40]
+when_any:
+  [
+    fact.overclaimed_on_packaging >= 1,
+    fact.shipped_with_known_false_claim >= 1,
+    fact.bought_fake_reviews >= 1,
+    fact.greenwashed_claim >= 1,
+    fact.undisclosed_influencer >= 1,
+  ]
+lines:
+  - who: char:lam
+    en: 'I have received complaints from customers and from a competitor. They say that the coating claim on the packaging is not supported, that product reviews were posted by accounts connected to the agency, and that an environmental claim covers products that contain no recycled material. I would like to see the evidence, and hear from the person who prepared the content.'
+    vi: 'Tôi nhận được khiếu nại từ khách hàng và từ một đối thủ. Họ nói lời về lớp phủ trên bao bì không được ủng hộ, các đánh giá sản phẩm được đăng bởi tài khoản liên quan đến agency và một lời về môi trường bao trùm cả sản phẩm không chứa vật liệu tái chế. Tôi muốn xem bằng chứng và nghe từ người đã chuẩn bị nội dung.'
+choices:
+  - en: 'Tell him what happened: who asked, what you agreed, what the evidence showed and what you are already correcting. Give him the register and the reports.'
+    vi: 'Kể ông nghe chuyện đã xảy ra: ai nhờ, anh/chị đã đồng ý gì, bằng chứng cho thấy gì và anh/chị đang sửa gì. Đưa ông sổ đăng ký và các báo cáo.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Lam writes it all down. The finding is serious, but it is recorded as 'self-reported and corrected'. The claims are withdrawn, the reviews are deleted, and you receive a formal warning."
+        vi: "Anh Lâm ghi lại tất cả. Phát hiện nghiêm trọng, nhưng được ghi nhận là 'tự báo cáo và đã sửa'. Các lời quảng cáo bị rút, các đánh giá bị xóa, và anh/chị nhận cảnh cáo chính thức."
+        effects:
+          [
+            rel lam trust +2,
+            rel quyen trust -2,
+            rel khoa trust +3,
+            rep.boss -5,
+            stress +6,
+            fact came_clean_to_auditor witnessed,
+          ]
+  - en: "Give him the files and say that the claims were approved by Bao and Mr Cuong, and that the reviews were the agency's work."
+    vi: 'Đưa ông các hồ sơ và nói các lời quảng cáo do anh Bảo và anh Cường duyệt và các đánh giá là việc của agency.'
+    outcomes:
+      - p: 0.4
+        en: 'Lam notes that the register has your name on each claim. He writes it down, carefully.'
+        vi: 'Anh Lâm ghi rằng sổ đăng ký có tên anh/chị trên từng lời quảng cáo. Anh ghi lại, cẩn thận.'
+        effects: [rel lam trust -5, rel quyen trust -4, rep.boss -4, stress +4]
+      - p: 0.6
+        ok: false
+        en: 'Khoa and Dat are both asked. Khoa has the reports with the dates, and Dat has the emails with your approvals. Lam lays the two sets on the table.'
+        vi: 'Anh Khoa và anh Đạt đều được hỏi. Anh Khoa có các báo cáo kèm ngày và anh Đạt có các email kèm phê duyệt của anh/chị. Anh Lâm đặt hai bộ lên bàn.'
+        effects:
+          [
+            rel lam trust -10,
+            rel khoa trust -8,
+            rel dat trust -8,
+            rel quyen trust -8,
+            rep.boss -10,
+            stress +8,
+          ]
+  - en: 'Say you do not recall the details, and offer to look.'
+    vi: 'Nói anh/chị không nhớ chi tiết và đề nghị đi tìm.'
+    outcomes:
+      - p: 0.4
+        en: 'Lam gives you a week. You find the files and hand them over. It is not the whole truth, but it is something.'
+        vi: 'Anh Lâm cho anh/chị một tuần. Anh/chị tìm thấy hồ sơ và nộp. Không phải toàn bộ sự thật, nhưng là một phần.'
+        effects: [rel lam trust -4, stress +4, fact stalled_the_regulator private]
+      - p: 0.6
+        ok: false
+        en: "The marketplace's records, the web archive and Khoa's report log arrive on the same afternoon. Lam has them on the table next to your notes."
+        vi: 'Hồ sơ của sàn, kho lưu trữ web và nhật ký báo cáo của anh Khoa đến cùng một buổi chiều. Anh Lâm để chúng trên bàn cạnh ghi chú của anh/chị.'
+        effects:
+          [
+            rel lam trust -10,
+            rel khoa trust -6,
+            rep.boss -8,
+            stress +7,
+            fact stalled_the_regulator witnessed,
+          ]
+---
+scene: mkt.blame_meeting
+place: meeting_room
+tags: [pressure, consequence]
+weight: 6
+cooldown: 52
+when: [month in 11 12, turn >= 44]
+when_any:
+  [
+    fact.sabotaged_rival_reviews >= 1,
+    fact.approved_invoice_for_undelivered_work >= 1,
+    fact.blamed_customers_for_defect >= 1,
+    fact.emailed_without_consent >= 1,
+    fact.paid_for_award >= 1,
+  ]
+lines:
+  - who: char:cuong
+    en: "A lawyer's letter arrived this morning, a data authority letter yesterday, and Duc has a note about the agency's invoices. The directors will decide tomorrow what to tell the board. I want to know who in marketing is responsible, and I want it from you first."
+    vi: 'Sáng nay có thư của luật sư, hôm qua có thư của cơ quan bảo vệ dữ liệu và anh Đức có ghi chú về hóa đơn của agency. Ngày mai các giám đốc quyết định nói gì với hội đồng. Anh muốn biết ai ở marketing chịu trách nhiệm, và muốn nghe từ em trước.'
+choices:
+  - en: 'Tell him the real account: what each person asked, what you agreed, and your own part. Show him the emails.'
+    vi: 'Nói với anh bản tường trình thật: ai nhờ gì, anh/chị đồng ý gì và phần của chính mình. Cho anh xem các email.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: "Mr Cuong listens, and calls the lawyer. The company's answer is an offer to correct everything. You are moved off agency management, and keep your job and, eventually, your name."
+        vi: 'Anh Cường lắng nghe và gọi luật sư. Câu trả lời của công ty là đề nghị sửa tất cả. Anh/chị bị chuyển khỏi quản lý agency, và giữ được việc và về sau là cả danh tiếng.'
+        effects:
+          [
+            rel cuong trust -1,
+            rel quyen trust +2,
+            rel nga trust +3,
+            rep.boss -8,
+            stress +7,
+            fact came_clean_to_auditor witnessed,
+          ]
+  - en: 'Say that each of those decisions was taken on the instruction of Bao, Mr Cuong or the agency, and that marketing followed instructions.'
+    vi: 'Nói mỗi quyết định đó được đưa ra theo chỉ đạo của anh Bảo, anh Cường hoặc agency và marketing làm theo chỉ đạo.'
+    outcomes:
+      - p: 0.4
+        en: 'Mr Cuong treats it as shared fault. Nobody leaves the room liked.'
+        vi: 'Anh Cường coi đó là lỗi chung. Không ai rời phòng với thiện cảm.'
+        effects: [rel cuong trust -3, rel quyen trust -4, rel bao trust -5, rep.boss -4, stress +4]
+      - p: 0.6
+        ok: false
+        en: 'Quyen has the original emails with your replies. She reads two of them aloud, without raising her voice.'
+        vi: 'Chị Quyên có các email gốc kèm trả lời của anh/chị. Chị đọc to hai cái, không to tiếng.'
+        effects: [rel cuong trust -4, rel quyen trust -10, rep.boss -10, stress +8]
+  - en: 'Say that the agency took the decisions, and that you only forwarded their proposals.'
+    vi: 'Nói agency đưa ra các quyết định và anh/chị chỉ chuyển tiếp đề xuất của họ.'
+    outcomes:
+      - p: 0.3
+        en: 'Mr Cuong nods, and the agency is dropped. Dat keeps his silence in the room, and not outside it.'
+        vi: 'Anh Cường gật đầu và agency bị loại. Anh Đạt giữ im lặng trong phòng, và không ngoài phòng.'
+        effects:
+          [
+            rel dat trust -20,
+            rel quyen trust -4,
+            rep.boss -4,
+            stress +5,
+            fact blamed_the_agency private,
+          ]
+      - p: 0.7
+        ok: false
+        en: "Dat has your approvals in writing, and the dates. He puts them on the table with one line: 'These are ours, and these are yours.'"
+        vi: "Anh Đạt có các phê duyệt của anh/chị bằng văn bản và ngày tháng. Anh đặt chúng lên bàn kèm một câu: 'Những cái này là của bọn em, và những cái này là của anh/chị.'"
+        effects:
+          [
+            rel dat trust -20,
+            rel quyen trust -8,
+            rep.boss -14,
+            stress +9,
+            fact blamed_the_agency public,
+          ]
+---
+fact: used_unlicensed_image
+severity: 4
+category: integrity
+en: "you used an image from a rival's website without a licence"
+vi: 'bạn dùng một ảnh từ trang web của đối thủ không có bản quyền'
+lesson:
+  en: 'A cropped logo is not a licence. Image searches find everything, and the invoice for a borrowed picture is many times the price of a bought one.'
+  vi: 'Logo bị cắt không phải bản quyền. Tìm kiếm ảnh tìm ra mọi thứ, và hóa đơn cho một bức ảnh đi mượn gấp nhiều lần giá của ảnh mua.'
+traces:
+  - { type: document, visibility: 0.5, detectors: [buyer, boss] }
+witnessed:
+  boss: -4
+  buyer: -3
+public:
+  boss: -8
+---
+fact: unfair_comparison_ad
+severity: 5
+category: integrity
+en: 'you ran a comparison ad using test conditions that favoured your own product'
+vi: 'bạn chạy quảng cáo so sánh dùng điều kiện kiểm nghiệm có lợi cho sản phẩm của mình'
+lesson:
+  en: 'A comparison is only as honest as its conditions. An advert that compares a gas ring with an induction hob is true in the lab and false in the kitchen.'
+  vi: 'So sánh chỉ trung thực khi điều kiện trung thực. Quảng cáo so bếp gas với bếp từ đúng trong phòng thí nghiệm và sai trong nhà bếp.'
+traces:
+  - { type: document, visibility: 0.7, detectors: [qc, buyer, boss, internal_audit] }
+witnessed:
+  boss: -6
+  qc: -6
+public:
+  boss: -12
+  buyer: -10
+---
+fact: wasteful_year_end_spend
+severity: 3
+category: integrity
+en: 'you had an agency invoice work to be delivered next year, so that a budget would be spent'
+vi: 'bạn cho agency xuất hóa đơn cho công việc giao năm sau để ngân sách được chi hết'
+lesson:
+  en: 'Spending to keep a budget is paying for nothing in order to be given more of it. The invoice date, the delivery date and the person who approved both are in the file.'
+  vi: 'Chi để giữ ngân sách là trả tiền cho hư không để được cấp thêm. Ngày hóa đơn, ngày giao hàng và người duyệt cả hai đều nằm trong hồ sơ.'
+traces:
+  - { type: payment, visibility: 0.6, detectors: [finance, internal_audit] }
+witnessed:
+  boss: -3
+  finance: -5
+public:
+  boss: -6
+  finance: -8
+---
+fact: emailed_without_consent
+severity: 5
+category: integrity
+en: 'you emailed a purchased list of people who had not agreed to hear from the company'
+vi: 'bạn gửi email cho một danh sách mua về gồm những người chưa đồng ý nhận tin từ công ty'
+lesson:
+  en: 'A list that people did not choose to join is a list of people to annoy. It also turns every unsubscribe into a complaint, and a regulator reads the complaints.'
+  vi: 'Danh sách mà người ta không chọn tham gia là danh sách những người để làm phiền. Nó cũng biến mọi lần hủy đăng ký thành khiếu nại, và cơ quan quản lý đọc các khiếu nại.'
+traces:
+  - { type: message, visibility: 0.7, detectors: [buyer, boss, internal_audit] }
+witnessed:
+  boss: -6
+  cs: -6
+public:
+  boss: -12
+  buyer: -8
+  cs: -10
+---
+fact: paid_for_award
+severity: 4
+category: integrity
+en: 'you displayed a paid-entry magazine award as if it were an independent honour'
+vi: 'bạn trưng bày giải thưởng tạp chí trả phí như một vinh dự độc lập'
+lesson:
+  en: 'An award that you bought and present as earned spends the credibility of every genuine award you will ever win.'
+  vi: 'Một giải thưởng bạn mua và trình bày như đã giành được tiêu hao uy tín của mọi giải thưởng thật bạn sẽ giành được.'
+traces:
+  - { type: payment, visibility: 0.5, detectors: [buyer, finance, boss] }
+witnessed:
+  boss: -4
+  buyer: -5
+public:
+  boss: -8
+  buyer: -10
+---
+fact: fake_urgency_timer
+severity: 4
+category: integrity
+en: 'you built a countdown timer and stock banner that were false'
+vi: 'bạn làm bộ đếm ngược và biểu ngữ tồn kho giả'
+lesson:
+  en: "A false 'only 7 left' is a lie told to every visitor. It works until one visitor takes a screenshot, and then it is the story."
+  vi: "'Chỉ còn 7' giả là lời dối nói với mọi khách truy cập. Nó hiệu quả cho đến khi một khách chụp màn hình, và khi đó nó là câu chuyện."
+traces:
+  - { type: record, visibility: 0.7, detectors: [buyer, boss, internal_audit] }
+witnessed:
+  boss: -6
+  buyer: -6
+  cs: -4
+public:
+  boss: -10
+  buyer: -12
+  cs: -8
+---
+fact: greenwashed_claim
+severity: 6
+category: integrity
+en: "you put an 'eco-friendly' claim on products that contain no recycled material"
+vi: "bạn ghi lời 'thân thiện môi trường' lên sản phẩm không chứa vật liệu tái chế"
+lesson:
+  en: "A green claim must be as specific as the evidence. 'Eco-friendly' on eight lines that have nothing recycled is the sort of sentence a buyer's sustainability team is paid to check."
+  vi: "Lời quảng cáo xanh phải cụ thể như bằng chứng. 'Thân thiện môi trường' trên tám dòng không có gì tái chế là loại câu mà nhóm bền vững của khách được trả tiền để kiểm tra."
+traces:
+  - { type: document, visibility: 0.8, detectors: [buyer, qc, internal_audit, boss] }
+witnessed:
+  boss: -8
+  buyer: -8
+public:
+  boss: -14
+  buyer: -16
+---
+fact: staged_testimonial
+severity: 5
+category: integrity
+en: 'you ran paid actors as real customers in a testimonial'
+vi: 'bạn cho diễn viên trả phí đóng vai khách hàng thật trong một lời chứng thực'
+lesson:
+  en: "A testimonial from a customer who does not exist is a lie with a face. Actors are recognised, and a name like 'the Tran family' invites a search."
+  vi: "Lời chứng thực từ một khách hàng không tồn tại là lời dối có gương mặt. Diễn viên bị nhận ra, và một cái tên như 'gia đình ông bà Trần' mời gọi tìm kiếm."
+traces:
+  - { type: witness, visibility: 0.6, detectors: [buyer, boss] }
+witnessed:
+  boss: -6
+  buyer: -6
+public:
+  boss: -12
+  buyer: -14
+  cs: -6
+---
+fact: stalled_the_regulator
+severity: 5
+category: integrity
+en: 'you told a consumer-protection inspector that you did not recall details that you did'
+vi: 'bạn nói với thanh tra bảo vệ người tiêu dùng rằng bạn không nhớ những chi tiết mà bạn nhớ'
+lesson:
+  en: "'I do not recall' is a decision when it is not true. The web archive and the lab's report log do not need your memory."
+  vi: "'Tôi không nhớ' là một quyết định khi nó không đúng. Kho lưu trữ web và nhật ký báo cáo của phòng thí nghiệm không cần trí nhớ của bạn."
+traces:
+  - { type: witness, visibility: 0.6, detectors: [boss, qc, internal_audit] }
+witnessed:
+  boss: -6
+  qc: -4
+public:
+  boss: -10
+  qc: -8

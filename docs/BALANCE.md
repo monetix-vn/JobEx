@@ -55,6 +55,14 @@ will behave differently.
 | random | fired 26, prosecuted 12, completed 2 | 11 / 20 / 52 | 9 / 21.4 / 44 | 52.2 | pitch_error 95%, the_hours 100%, the_tip 100%, the_valuation 100% |
 | reckless | fired 31, prosecuted 9 | 10 / 14 / 20 | 5 / 14.4 / 26 | 57 | pitch_error 65%, the_hours 95%, the_tip 83%, the_valuation 100% |
 
+### mkt-year
+
+| Player | Endings | Weeks (min/median/max) | Decisions (min/mean/max) | Final stress | Storylines started |
+| ------ | ------- | ---------------------- | ------------------------ | ------------ | ------------------ |
+| careful | promoted 40 | 51 / 51 / 51 | 32 / 37.4 / 41 | 54.5 | the_agency 100%, the_claim 100%, the_reviews 100%, the_squeeze 100% |
+| random | fired 34, completed 6 | 16 / 37 / 52 | 13 / 30.5 / 47 | 41.5 | the_agency 100%, the_claim 60%, the_reviews 100%, the_squeeze 100% |
+| reckless | fired 40 | 14 / 20 / 31 | 14 / 21.2 / 32 | 36.6 | the_agency 100%, the_claim 10%, the_reviews 98%, the_squeeze 100% |
+
 ### fpa-year
 
 | Player | Endings | Weeks (min/median/max) | Decisions (min/mean/max) | Final stress | Storylines started |

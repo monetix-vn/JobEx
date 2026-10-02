@@ -1,0 +1,1140 @@
+# Brand and Digital Marketing Executive storylines (docs/story/marketing.md): The Claim, The Reviews, The Agency.
+arc: the_claim
+title:
+  en: 'The claim'
+  vi: 'Lời quảng cáo'
+stages:
+  - { id: launch, event: mkt.launch_twist }
+  - { id: proof, event: mkt.khoa_data, delay: 2-3 }
+  - { id: ship, event: mkt.ship_or_reprint, delay: 1-2 }
+  - { id: complaint, event: mkt.claim_complaint, delay: 8-12 }
+---
+scene: mkt.khoa_data
+weight: 0
+place: qc_lab
+tags: [claims, evidence, dark, arc]
+lines:
+  - who: char:khoa
+    en: 'The final coating tests are in. Three thousand cycles: eighty-eight percent of the non-stick effect remains. Five thousand cycles: sixty-two percent. And batch C failed the adhesion test, so the coating can flake in some pans. Whatever the box says, this is what the evidence says. What do you want to do with it?'
+    vi: 'Kết quả kiểm nghiệm lớp phủ cuối cùng đã có. Ba nghìn chu kỳ: còn tám mươi tám phần trăm hiệu quả chống dính. Năm nghìn chu kỳ: sáu mươi hai phần trăm. Và lô C trượt bài kiểm tra độ bám dính, nên lớp phủ có thể bong ở một số chảo. Hộp ghi gì thì ghi, đây là điều bằng chứng nói. Em muốn làm gì với nó?'
+choices:
+  - en: 'Update the claims register and the website straight away, check the box against the results, and tell Bao and Quyen which claims no longer hold, and what batch C means.'
+    vi: 'Cập nhật sổ đăng ký tuyên bố và trang web ngay, đối chiếu hộp với kết quả và nói với anh Bảo và chị Quyên lời nào không còn đứng vững và lô C nghĩa là gì.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Quyen reads the results twice. 'Thank you for not waiting.' Batch C is held, the register is corrected, and Bao is angry with the evidence, not with you."
+        vi: "Chị Quyên đọc kết quả hai lần. 'Cảm ơn em đã không chờ.' Lô C bị giữ, sổ đăng ký được sửa, và anh Bảo giận bằng chứng, không giận anh/chị."
+        effects:
+          [
+            rel khoa trust +4,
+            rel quyen trust +4,
+            rel bao trust -3,
+            rep.qc +3,
+            rep.boss +2,
+            stress +4,
+            fact corrected_the_claim witnessed,
+            arc the_claim ship,
+          ]
+  - en: 'Thank Khoa, note the results in the register, and wait for the launch review to decide what to change.'
+    vi: 'Cảm ơn anh Khoa, ghi kết quả vào sổ đăng ký và chờ buổi rà soát ra mắt quyết định cần đổi gì.'
+    outcomes:
+      - p: 1
+        en: 'The register has the results. The box, the website and the sales deck have not changed yet. The launch review is in three weeks.'
+        vi: 'Sổ đăng ký có kết quả. Hộp, trang web và bộ slide bán hàng chưa đổi. Buổi rà soát ra mắt sau ba tuần.'
+        effects: [rel khoa trust +1, stress +2, arc the_claim ship]
+  - en: 'Keep the results to yourself until after the launch, and tell Khoa you will deal with it.'
+    vi: 'Giữ kết quả cho riêng mình đến sau khi ra mắt và nói với anh Khoa em sẽ xử lý.'
+    outcomes:
+      - p: 0.7
+        en: 'Khoa nods, with a look. The launch goes ahead on the original copy. The report sits in your drawer, and in his system.'
+        vi: 'Anh Khoa gật đầu, kèm một cái nhìn. Đợt ra mắt đi tiếp với nội dung gốc. Báo cáo nằm trong ngăn kéo của anh/chị, và trong hệ thống của anh.'
+        effects: [rel khoa trust -6, stress +1, fact hid_test_result private, arc the_claim ship]
+      - p: 0.3
+        ok: false
+        en: 'Khoa sends the report to Quyen himself, with a polite note asking whether marketing has seen it. Quyen asks you in the corridor.'
+        vi: 'Anh Khoa tự gửi báo cáo cho chị Quyên kèm một ghi chú lịch sự hỏi marketing đã xem chưa. Chị Quyên hỏi anh/chị ngoài hành lang.'
+        effects:
+          [
+            rel khoa trust -8,
+            rel quyen trust -7,
+            rep.boss -4,
+            rep.qc -4,
+            stress +5,
+            fact hid_test_result witnessed,
+            arc the_claim ship,
+          ]
+---
+scene: mkt.ship_or_reprint
+weight: 0
+place: factory_floor
+tags: [claims, packaging, dark, arc]
+lines:
+  - who: char:bao
+    en: "A thousand sets are on pallets with the printed boxes. Anders's trucks come on Monday. If we reprint the boxes, it costs eighteen million and ten days. If we put a sticker over the claim, it looks cheap. If we ship, we ship. Tell me what we do."
+    vi: 'Một nghìn bộ đã nằm trên pallet với hộp in sẵn. Xe của ông Anders đến thứ Hai. Nếu in lại hộp thì tốn mười tám triệu và mười ngày. Nếu dán nhãn đè lên lời quảng cáo thì trông rẻ tiền. Nếu giao thì giao. Nói anh nghe mình làm gì.'
+choices:
+  - en: "Hold the pallets, reprint the boxes with a claim the evidence supports, and tell Anders's team the truth about the new date."
+    vi: 'Giữ các pallet, in lại hộp với lời quảng cáo bằng chứng ủng hộ và nói với nhóm ông Anders sự thật về ngày mới.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.7
+        en: "The reprint costs eighteen million and ten days. Anders says the delay is 'irritating, and better than a recall'. Bao says nothing for two days, and then sends a note that says 'fair'."
+        vi: "In lại tốn mười tám triệu và mười ngày. Ông Anders nói sự trì hoãn 'khó chịu, và tốt hơn thu hồi'. Anh Bảo im lặng hai ngày rồi gửi một ghi chú chỉ ghi 'công bằng'."
+        effects:
+          [
+            rel bao trust -4,
+            rel quyen trust +3,
+            rel khoa trust +4,
+            rep.buyer +2,
+            rep.qc +3,
+            stress +5,
+            arc the_claim complaint,
+          ]
+      - p: 0.3
+        ok: false
+        en: "Anders's promotion window closes before the reprint is ready, and he reduces the order by a third. Mr Cuong asks why the box had to change. Quyen answers, calmly, with Khoa's report."
+        vi: 'Cửa sổ khuyến mãi của ông Anders đóng trước khi in lại xong, và ông giảm đơn một phần ba. Anh Cường hỏi vì sao hộp phải đổi. Chị Quyên trả lời, bình tĩnh, bằng báo cáo của anh Khoa.'
+        effects:
+          [
+            rel bao trust -6,
+            rel quyen trust +3,
+            rel khoa trust +4,
+            rel cuong trust -3,
+            rep.buyer -2,
+            rep.qc +2,
+            stress +6,
+            arc the_claim complaint,
+          ]
+  - en: 'Ship with a neat sticker over the claim that is not supported, and put the corrected text on the website.'
+    vi: 'Giao với nhãn dán gọn đè lên lời quảng cáo không được ủng hộ và đưa nội dung đã sửa lên trang web.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: "Anders's team puts the stickers on the first display, and mutters about it. The claim on the box is covered, and the website tells the truth. It is a cheap fix with a visible edge."
+        vi: 'Nhóm ông Anders dán nhãn lên mẫu trưng bày đầu tiên và lẩm bẩm. Lời trên hộp được che, và trang web nói đúng. Một cách sửa rẻ với một mép nhìn thấy được.'
+        effects: [rel bao trust -1, rel khoa trust +2, stress +3, arc the_claim complaint]
+  - en: 'Ship the pallets as printed, and fix the next batch.'
+    vi: 'Giao các pallet như đã in và sửa lô sau.'
+    outcomes:
+      - p: 0.7
+        en: 'The trucks leave on Monday with a claim that you know the evidence does not support. Bao thanks you. A thousand customers read it in the next two weeks.'
+        vi: 'Các xe rời đi vào thứ Hai với một lời mà anh/chị biết bằng chứng không ủng hộ. Anh Bảo cảm ơn. Một nghìn khách hàng đọc nó trong hai tuần tới.'
+        effects:
+          [
+            rel bao trust +5,
+            rel khoa trust -6,
+            rel quyen trust -3,
+            rep.qc -3,
+            stress +1,
+            fact shipped_with_known_false_claim private,
+            arc the_claim complaint,
+          ]
+      - p: 0.3
+        ok: false
+        en: "A buyer's quality team opens a box and compares the claim with the technical sheet they were sent. Anders's email arrives that evening, with the two pages attached."
+        vi: 'Nhóm chất lượng của khách mở một hộp và so lời quảng cáo với tờ kỹ thuật họ được gửi. Email của ông Anders đến tối đó, kèm hai trang giấy.'
+        effects:
+          [
+            rel bao trust +2,
+            rel khoa trust -8,
+            rel quyen trust -6,
+            rep.boss -5,
+            rep.buyer -6,
+            rep.qc -5,
+            stress +7,
+            fact shipped_with_known_false_claim witnessed,
+            arc the_claim complaint,
+          ]
+---
+scene: mkt.claim_complaint
+weight: 0
+place: meeting_room
+tags: [claims, complaint, consequence, arc]
+lines:
+  - who: char:nga
+    en: 'Customer service has had forty-one calls this month about the new pan: the coating is flaking after a few weeks. Some are angry, some are posting photos. People quote the box. What should we tell them?'
+    vi: 'Chăm sóc khách hàng nhận bốn mươi mốt cuộc gọi tháng này về chiếc chảo mới: lớp phủ bong sau vài tuần. Một số giận dữ, một số đăng ảnh. Mọi người trích lời trên hộp. Mình nên nói với họ thế nào?'
+choices:
+  - en: 'Agree a clear, honest message with Nga and Khoa: acknowledge the problem, offer a replacement or refund, quarantine the affected batch, and correct the claim publicly.'
+    vi: 'Thống nhất cùng chị Nga và anh Khoa một thông điệp rõ ràng, trung thực: thừa nhận vấn đề, đề nghị đổi hoặc hoàn tiền, cách ly lô bị ảnh hưởng và sửa lời quảng cáo công khai.'
+    cost: { hours: 4 }
+    outcomes:
+      - p: 0.8
+        en: "The message costs money and goodwill in the first week, and earns some back in the second. Nga says: 'Finally, something I can say to them that is true.' The complaints fall by half."
+        vi: "Thông điệp tốn tiền và thiện cảm tuần đầu, và lấy lại một phần vào tuần hai. Chị Nga nói: 'Cuối cùng, có điều chị nói được với họ mà là thật.' Số khiếu nại giảm một nửa."
+        effects:
+          [
+            rel nga trust +5,
+            rel khoa trust +3,
+            rel quyen trust +2,
+            rep.cs +4,
+            rep.buyer +2,
+            rep.qc +2,
+            stress +5,
+            fact corrected_the_claim witnessed,
+            arc the_claim end,
+          ]
+      - p: 0.2
+        ok: false
+        en: 'Mr Cuong says a public correction will be remembered longer than the flaking. The replacements cost more than he expected, and he says it three times. You keep the message.'
+        vi: 'Anh Cường nói một lời cải chính công khai sẽ được nhớ lâu hơn việc bong tróc. Chi phí đổi hàng nhiều hơn anh dự kiến và anh nói ba lần. Anh/chị giữ thông điệp.'
+        effects:
+          [
+            rel nga trust +4,
+            rel khoa trust +3,
+            rel cuong trust -4,
+            rep.cs +3,
+            stress +6,
+            arc the_claim end,
+          ]
+  - en: 'Have Nga handle each complaint individually with a replacement, without a public statement.'
+    vi: 'Để chị Nga xử lý từng khiếu nại riêng bằng đổi hàng, không có tuyên bố công khai.'
+    outcomes:
+      - p: 1
+        en: 'The customers who call are helped. Those who post are answered one by one. The claim stays on the box and the website.'
+        vi: 'Khách gọi được giúp. Khách đăng bài được trả lời từng người. Lời quảng cáo vẫn ở trên hộp và trang web.'
+        effects: [rel nga trust +1, rep.cs +1, stress +4, arc the_claim end]
+  - en: 'Tell Nga that the flaking is caused by misuse, and that customers should be told to use wooden spoons.'
+    vi: 'Nói với chị Nga rằng bong tróc là do dùng sai cách và khách nên được bảo dùng muỗng gỗ.'
+    outcomes:
+      - p: 0.5
+        en: 'The reply goes out. Some customers accept it. The ones who do not forward it to a consumer forum, with your words and the box side by side.'
+        vi: 'Câu trả lời được gửi đi. Một số khách chấp nhận. Những người không chấp nhận chuyển nó lên diễn đàn người tiêu dùng, kèm lời của anh/chị và cái hộp cạnh nhau.'
+        effects:
+          [
+            rel nga trust -6,
+            rel khoa trust -5,
+            rep.cs -5,
+            rep.buyer -3,
+            stress +3,
+            fact blamed_customers_for_defect private,
+            arc the_claim end,
+          ]
+      - p: 0.5
+        ok: false
+        en: "Khoa's lab confirms the flaking is a coating adhesion failure on batch C, and the confirmation is dated before your reply. Nga forwards it to Quyen, with a polite question."
+        vi: 'Phòng thí nghiệm của anh Khoa xác nhận bong tróc là lỗi bám dính lớp phủ ở lô C, và xác nhận đề ngày trước câu trả lời của anh/chị. Chị Nga chuyển nó cho chị Quyên kèm một câu hỏi lịch sự.'
+        effects:
+          [
+            rel nga trust -8,
+            rel khoa trust -8,
+            rel quyen trust -7,
+            rep.boss -6,
+            rep.cs -8,
+            rep.qc -5,
+            stress +7,
+            fact blamed_customers_for_defect witnessed,
+            arc the_claim end,
+          ]
+---
+arc: the_reviews
+title:
+  en: 'The reviews'
+  vi: 'Đánh giá'
+stages:
+  - { id: slow, event: mkt.slow_launch }
+  - { id: batch, event: mkt.review_batch, delay: 1-2 }
+  - { id: post, event: mkt.influencer_post, delay: 2-3 }
+  - { id: exposed, event: mkt.review_exposed, delay: 4-6 }
+---
+scene: mkt.slow_launch
+arc: the_reviews
+place: meeting_room
+tags: [reviews, launch, dark]
+weight: 3
+cooldown: 40
+when: [turn >= 12, turn <= 40]
+lines:
+  - who: char:bao
+    en: "The Eterna pan has eleven reviews on the marketplace, and the average is three point eight. The rival's is four point six with four hundred. Nobody buys a three point eight. Do something."
+    vi: 'Chảo Eterna có mười một đánh giá trên sàn và điểm trung bình ba phẩy tám. Của đối thủ là bốn phẩy sáu với bốn trăm đánh giá. Không ai mua ba phẩy tám. Làm gì đi.'
+choices:
+  - en: 'Email real buyers a polite request for an honest review, fix the two issues that the low reviews mention, and answer every negative review publicly.'
+    vi: 'Gửi email cho khách thật một lời mời đánh giá trung thực, sửa hai vấn đề các đánh giá thấp nhắc tới và trả lời mọi đánh giá tiêu cực công khai.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.7
+        en: 'In three weeks there are sixty reviews and the average is four point one. It is slower than Bao wanted, and the reviews are real.'
+        vi: 'Sau ba tuần có sáu mươi đánh giá và điểm trung bình bốn phẩy một. Chậm hơn anh Bảo muốn, và các đánh giá là thật.'
+        effects:
+          [
+            rel bao trust -2,
+            rel quyen trust +3,
+            rel nga trust +3,
+            rep.buyer +2,
+            rep.cs +3,
+            stress +3,
+            arc the_reviews batch,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'Two of the new reviews are harsh and fair. Bao reads them aloud in the meeting. You answer them in public, and one of the reviewers raises the score.'
+        vi: 'Hai trong số các đánh giá mới gay gắt và công bằng. Anh Bảo đọc to trong cuộc họp. Anh/chị trả lời công khai, và một người đánh giá nâng điểm.'
+        effects:
+          [
+            rel bao trust -4,
+            rel quyen trust +3,
+            rel nga trust +3,
+            rep.cs +2,
+            stress +4,
+            arc the_reviews batch,
+          ]
+  - en: 'Offer a discount to buyers who write a review, with a note that the review must be honest and disclose the discount.'
+    vi: 'Tặng giảm giá cho người mua viết đánh giá, kèm lưu ý đánh giá phải trung thực và nêu rõ việc giảm giá.'
+    outcomes:
+      - p: 1
+        en: 'Reviews rise, and the average rises with them, to four point two. The disclosure line is in every one. A few commentators say incentivised reviews are never quite neutral, and they are right.'
+        vi: 'Đánh giá tăng, điểm trung bình tăng theo, lên bốn phẩy hai. Dòng công bố có trong từng cái. Một vài người bình luận nói đánh giá có khuyến khích không bao giờ hoàn toàn trung lập, và họ đúng.'
+        effects:
+          [rel bao trust +1, rel quyen trust +1, rep.buyer +1, stress +2, arc the_reviews batch]
+  - en: "Ask Dat's agency to seed the page with reviews, and do not ask how."
+    vi: 'Nhờ agency của anh Đạt gieo đánh giá lên trang và không hỏi cách làm.'
+    outcomes:
+      - p: 0.7
+        en: "Dat says 'Leave it to us.' Two hundred reviews appear in four days. Bao is delighted. The reviewers' accounts are each three days old."
+        vi: "Anh Đạt nói 'Cứ để bọn em.' Hai trăm đánh giá xuất hiện trong bốn ngày. Anh Bảo rất vui. Các tài khoản người đánh giá mỗi cái mới ba ngày tuổi."
+        effects:
+          [
+            rel bao trust +5,
+            rel dat trust +4,
+            rel nga trust -3,
+            stress +1,
+            fact bought_fake_reviews private,
+            arc the_reviews post,
+          ]
+      - p: 0.3
+        ok: false
+        en: "The marketplace flags the pattern and removes a hundred and eighty reviews, along with the page's badge. Nga sees customers asking about it, and tells Quyen."
+        vi: 'Sàn đánh dấu mẫu hình này và xóa một trăm tám mươi đánh giá, cùng huy hiệu của trang. Chị Nga thấy khách hỏi về chuyện đó và báo chị Quyên.'
+        effects:
+          [
+            rel bao trust +2,
+            rel dat trust +2,
+            rel nga trust -5,
+            rel quyen trust -6,
+            rep.boss -4,
+            rep.cs -4,
+            stress +6,
+            fact bought_fake_reviews witnessed,
+            arc the_reviews post,
+          ]
+---
+scene: mkt.review_batch
+weight: 0
+place: meeting_room
+tags: [reviews, agency, dark, arc]
+lines:
+  - who: char:dat
+    en: "Quick idea for the weekend. We have a network of accounts that can post positive comments and reviews at scale. A hundred a day, with real photos. It is how everybody in the category does it. We can also take down a few of the rival's reviews, if you want, with a report to the marketplace."
+    vi: 'Một ý nhanh cho cuối tuần. Bọn em có một mạng tài khoản có thể đăng bình luận và đánh giá tích cực quy mô lớn. Một trăm cái mỗi ngày, kèm ảnh thật. Trong ngành ai cũng làm vậy. Bọn em cũng có thể gỡ vài đánh giá của đối thủ, nếu anh/chị muốn, bằng cách báo cáo lên sàn.'
+choices:
+  - en: 'Decline both, and ask Dat for a proposal on real customer content: unboxing videos from actual buyers, a review request in the pack, and a helpful answers page.'
+    vi: 'Từ chối cả hai và nhờ anh Đạt đề xuất nội dung từ khách hàng thật: video mở hộp từ người mua thật, lời mời đánh giá trong hộp và một trang trả lời hữu ích.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 1
+        en: "Dat sighs, and says 'Slower, but cleaner.' His proposal arrives on Monday, and it is good. Quyen reads it and says 'This is the one.'"
+        vi: "Anh Đạt thở dài và nói 'Chậm hơn, nhưng sạch hơn.' Đề xuất của anh đến vào thứ Hai, và nó hay. Chị Quyên đọc và nói 'Cái này đó.'"
+        effects:
+          [rel dat trust -1, rel quyen trust +3, rep.buyer +2, stress +2, arc the_reviews post]
+  - en: 'Accept a small batch of testimonials from real employees and friends of the company, clearly marked as such.'
+    vi: 'Chấp nhận một số ít lời chứng thực từ nhân viên thật và bạn bè của công ty, có ghi rõ như vậy.'
+    outcomes:
+      - p: 1
+        en: "Forty reviews appear with a line saying 'posted by a member of the team'. They are warm, and some people discount them. It is not deceptive."
+        vi: "Bốn mươi đánh giá xuất hiện kèm dòng 'đăng bởi một thành viên của đội'. Chúng ấm áp, và một số người giảm giá trị. Không lừa dối."
+        effects: [rel dat trust +1, rel quyen trust +1, stress +2, arc the_reviews post]
+  - en: 'Accept both, and keep it between the two of you.'
+    vi: 'Chấp nhận cả hai và giữ giữa hai người.'
+    outcomes:
+      - p: 0.7
+        en: "The rating climbs to four point six in a week. The rival's drops. Bao sends you a bottle of whisky. You have a phone number that you will never put in the register."
+        vi: 'Điểm lên bốn phẩy sáu trong một tuần. Điểm của đối thủ giảm. Anh Bảo gửi anh/chị một chai whisky. Anh/chị có một số điện thoại sẽ không bao giờ ghi vào sổ đăng ký.'
+        effects:
+          [
+            rel dat trust +6,
+            rel bao trust +4,
+            stress +1,
+            fact bought_fake_reviews private,
+            fact sabotaged_rival_reviews private,
+            arc the_reviews post,
+          ]
+      - p: 0.3
+        ok: false
+        en: "The rival's marketing team recognises the pattern and posts it to a trade group with screenshots. Quyen's phone starts to ring at seven in the morning."
+        vi: 'Nhóm marketing của đối thủ nhận ra mẫu hình và đăng lên một nhóm ngành kèm ảnh chụp màn hình. Điện thoại chị Quyên bắt đầu reo lúc bảy giờ sáng.'
+        effects:
+          [
+            rel dat trust +2,
+            rel bao trust +1,
+            rel quyen trust -8,
+            rep.boss -6,
+            rep.buyer -6,
+            stress +8,
+            fact bought_fake_reviews public,
+            fact sabotaged_rival_reviews witnessed,
+            arc the_reviews post,
+          ]
+---
+scene: mkt.influencer_post
+weight: 0
+place: meeting_room
+tags: [influencer, disclosure, dark, arc]
+lines:
+  - who: char:my
+    en: "I love the pan and I will post about it. The agency said that the fee is for 'content creation', and that I do not need the paid-partnership label because my followers prefer it natural. I will do whatever you tell me. I just want to know what you want."
+    vi: "Em thích chiếc chảo và em sẽ đăng bài về nó. Agency nói phí là cho 'sáng tạo nội dung' và em không cần nhãn hợp tác trả phí vì người theo dõi thích tự nhiên. Em sẽ làm theo bất cứ điều gì anh/chị bảo. Em chỉ muốn biết anh/chị muốn gì."
+choices:
+  - en: 'Ask My to use the paid-partnership label and a plain line saying that she was paid, and let her say honestly what she likes and what she does not.'
+    vi: 'Nhờ My dùng nhãn hợp tác trả phí và một dòng rõ ràng nói chị được trả tiền và để chị nói thật điều chị thích và không thích.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 0.8
+        en: 'My posts that she loves the grip and finds the lid a little heavy. The label is on. Engagement is lower than the last paid post, and the comments are more curious than cynical.'
+        vi: 'My đăng rằng chị thích tay cầm và thấy nắp hơi nặng. Nhãn được gắn. Tương tác thấp hơn bài trả phí trước, và các bình luận tò mò hơn là hoài nghi.'
+        effects:
+          [
+            rel my trust +4,
+            rel quyen trust +2,
+            rep.buyer +3,
+            stress +1,
+            fact disclosed_sponsorship witnessed,
+            arc the_reviews exposed,
+          ]
+      - p: 0.2
+        ok: false
+        en: "Dat is annoyed that the agency's script was changed. He tells you 'It works better without the label.' You tell him it works for the rules better with it."
+        vi: "Anh Đạt khó chịu vì kịch bản của agency bị đổi. Anh nói 'Không có nhãn thì hiệu quả hơn.' Anh/chị nói có nhãn thì hợp quy định hơn."
+        effects:
+          [
+            rel my trust +4,
+            rel dat trust -4,
+            rep.buyer +2,
+            stress +3,
+            fact disclosed_sponsorship witnessed,
+            arc the_reviews exposed,
+          ]
+  - en: 'Let My post in her own way, and ask her to mention in the caption that the brand sent the pan.'
+    vi: 'Để My đăng theo cách của chị và nhờ chị nhắc trong chú thích rằng thương hiệu đã gửi chảo.'
+    outcomes:
+      - p: 1
+        en: "The post says 'thanks to the brand for sending this'. It is half-honest, and it does not say that My was paid. A commentator asks, and My answers truthfully."
+        vi: "Bài đăng ghi 'cảm ơn thương hiệu đã gửi'. Nửa trung thực, và không nói My được trả tiền. Một người bình luận hỏi, và My trả lời thành thật."
+        effects: [rel my trust +1, stress +2, arc the_reviews exposed]
+  - en: 'Tell My to post it naturally, with no label and no mention of payment, as the agency said.'
+    vi: 'Bảo My đăng tự nhiên, không nhãn và không nhắc thanh toán như agency nói.'
+    outcomes:
+      - p: 0.7
+        en: 'The post looks spontaneous, and reaches two hundred thousand people. A dozen of them buy the pan in the first hour. Nobody knows My was paid, except My.'
+        vi: 'Bài đăng trông tự nhiên và đến hai trăm nghìn người. Mười hai người mua chảo trong giờ đầu. Không ai biết My được trả tiền, ngoại trừ My.'
+        effects:
+          [
+            rel my trust -2,
+            rel dat trust +3,
+            rep.buyer +2,
+            stress +1,
+            fact undisclosed_influencer private,
+            arc the_reviews exposed,
+          ]
+      - p: 0.3
+        ok: false
+        en: "A follower finds the invoice reference in a screenshot of an email that My shared, innocently, in another post. The thread asks if the company pays for 'spontaneous' love."
+        vi: "Một người theo dõi thấy mã hóa đơn trong ảnh chụp một email mà My chia sẻ, vô tư, trong một bài khác. Chuỗi bình luận hỏi liệu công ty có trả tiền cho tình yêu 'tự nhiên' không."
+        effects:
+          [
+            rel my trust -4,
+            rel dat trust +2,
+            rep.boss -4,
+            rep.buyer -6,
+            stress +6,
+            fact undisclosed_influencer witnessed,
+            arc the_reviews exposed,
+          ]
+---
+scene: mkt.review_exposed
+weight: 0
+place: meeting_room
+tags: [reviews, exposure, consequence, arc]
+lines:
+  - who: char:quyen
+    en: 'A consumer blog has published a piece about the reviews of the category. It does not name us, but it describes a pattern of accounts, review dates and an influencer, that fit us exactly. A journalist has asked for comment. Tell me what we say, and tell me what is true.'
+    vi: 'Một blog người tiêu dùng đăng bài về các đánh giá trong ngành. Bài không nêu tên mình, nhưng mô tả một mẫu hình tài khoản, ngày đánh giá và một người có ảnh hưởng, khớp đúng với mình. Một nhà báo xin bình luận. Nói chị nghe mình nói gì, và nói chị nghe điều gì là thật.'
+choices:
+  - en: 'Tell Quyen exactly what was done and by whom, draft a short public statement that corrects the record, and ask the marketplace to review any content you cannot stand behind.'
+    vi: 'Nói với chị Quyên chính xác điều đã làm và ai làm, soạn một tuyên bố công khai ngắn chỉnh lại thông tin và nhờ sàn rà soát mọi nội dung anh/chị không bảo vệ được.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Quyen reads the draft and says 'This will hurt for a month.' The statement goes out. The journalist writes 'the company moved before being asked'. The reviews that remain are real, and there are fewer of them."
+        vi: "Chị Quyên đọc bản nháp và nói 'Cái này sẽ đau một tháng.' Tuyên bố được đưa ra. Nhà báo viết 'công ty hành động trước khi bị hỏi'. Các đánh giá còn lại là thật, và ít hơn."
+        effects:
+          [
+            rel quyen trust +3,
+            rel nga trust +3,
+            rep.boss -2,
+            rep.buyer +2,
+            rep.cs +2,
+            stress +6,
+            fact came_clean_to_auditor witnessed,
+            arc the_reviews end,
+          ]
+  - en: 'Say the company has a review policy and has not been contacted by the marketplace, and give the journalist no further comment.'
+    vi: 'Nói công ty có chính sách đánh giá và chưa được sàn liên hệ và không bình luận thêm với nhà báo.'
+    outcomes:
+      - p: 0.6
+        en: "The journalist writes 'the company declined to comment on the pattern'. It is not a headline, and the question remains."
+        vi: "Nhà báo viết 'công ty từ chối bình luận về mẫu hình đó'. Không phải một tiêu đề, và câu hỏi vẫn còn."
+        effects: [rel quyen trust -1, stress +4, arc the_reviews end]
+      - p: 0.4
+        ok: false
+        en: "The journalist contacts My and Dat's former colleague. A second article appears with names, and Quyen asks, quietly, what the policy actually was."
+        vi: 'Nhà báo liên hệ với My và một đồng nghiệp cũ của anh Đạt. Bài thứ hai xuất hiện kèm tên, và chị Quyên hỏi, khẽ, chính sách thực sự là gì.'
+        effects:
+          [
+            rel quyen trust -6,
+            rel my trust -4,
+            rep.boss -6,
+            rep.buyer -5,
+            stress +6,
+            arc the_reviews end,
+          ]
+  - en: 'Say that the agency acted on its own initiative and that the company knew nothing about it.'
+    vi: 'Nói agency tự ý hành động và công ty không biết gì.'
+    outcomes:
+      - p: 0.4
+        en: 'The statement holds for a day. Dat says nothing in public, and a great deal in private.'
+        vi: 'Tuyên bố giữ được một ngày. Anh Đạt không nói gì công khai và rất nhiều điều riêng tư.'
+        effects:
+          [
+            rel dat trust -15,
+            rel quyen trust -2,
+            rep.boss -3,
+            stress +5,
+            fact blamed_the_agency private,
+            arc the_reviews end,
+          ]
+      - p: 0.6
+        ok: false
+        en: "Dat has the emails. He puts three of them in the journalist's inbox before lunch, with your replies in them."
+        vi: 'Anh Đạt có các email. Anh để ba cái vào hộp thư của nhà báo trước bữa trưa, kèm trả lời của anh/chị trong đó.'
+        effects:
+          [
+            rel dat trust -15,
+            rel quyen trust -9,
+            rep.boss -10,
+            rep.buyer -8,
+            stress +9,
+            fact blamed_the_agency public,
+            arc the_reviews end,
+          ]
+---
+arc: the_agency
+title:
+  en: 'The agency'
+  vi: 'Agency'
+stages:
+  - { id: pitch, event: mkt.agency_pitch }
+  - { id: invoice, event: mkt.invoice_mismatch, delay: 3-5 }
+  - { id: gift, event: mkt.agency_gift, delay: 2-3 }
+  - { id: reckoning, event: mkt.duc_asks_invoices, delay: 4-6 }
+---
+scene: mkt.agency_pitch
+arc: the_agency
+place: meeting_room
+tags: [agency, procurement, dark]
+weight: 3
+cooldown: 52
+when: [turn >= 10, turn <= 38]
+lines:
+  - who: char:long
+    en: 'My cousin has just started an agency. Very creative. I think we should give her the autumn campaign, and she will do it at a good price. You know how it is in a family company. Just put her in the proposal list, at the top.'
+    vi: 'Em họ anh vừa mở một agency. Rất sáng tạo. Anh nghĩ mình nên giao cho cô ấy chiến dịch mùa thu, và cô ấy sẽ làm với giá tốt. Em biết đó, công ty gia đình mà. Cứ đưa cô ấy vào danh sách đề xuất, ở đầu.'
+choices:
+  - en: "Invite three agencies including Long's cousin to pitch against the same brief, score them on written criteria with Quyen, and tell Long she is welcome to compete."
+    vi: 'Mời ba agency, kể cả em họ anh Long, đề xuất theo cùng một bản yêu cầu, chấm theo tiêu chí viết cùng chị Quyên và nói với anh Long rằng cô ấy cứ tham gia cạnh tranh.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 0.7
+        en: "Long's cousin comes second, with a lively idea and a weak plan. Dat's agency wins on price and delivery. Long is polite and slightly cold. The scoring sheet is on the file."
+        vi: 'Em họ anh Long đứng thứ hai, với một ý tưởng sống động và một kế hoạch yếu. Agency của anh Đạt thắng nhờ giá và tiến độ. Anh Long lịch sự và hơi lạnh. Bảng chấm điểm nằm trong hồ sơ.'
+        effects:
+          [
+            rel long trust -3,
+            rel quyen trust +3,
+            rel dat trust +2,
+            rep.finance +2,
+            stress +3,
+            fact ran_competitive_pitch witnessed,
+            arc the_agency invoice,
+          ]
+      - p: 0.3
+        ok: false
+        en: "Long's cousin wins on score. It is a fair result, and the agency is a very small one. You spend a month making sure it can deliver."
+        vi: 'Em họ anh Long thắng theo điểm. Một kết quả công bằng, và agency rất nhỏ. Anh/chị mất một tháng để chắc nó làm được.'
+        effects:
+          [
+            rel long trust +3,
+            rel quyen trust +2,
+            rep.finance +1,
+            stress +5,
+            fact ran_competitive_pitch witnessed,
+            arc the_agency invoice,
+          ]
+  - en: "Add Long's cousin as a fourth option at the top of the list, and say the final decision will be made by Quyen."
+    vi: 'Đưa em họ anh Long vào làm lựa chọn thứ tư ở đầu danh sách và nói quyết định cuối cùng do chị Quyên đưa ra.'
+    outcomes:
+      - p: 1
+        en: "Quyen picks Dat's agency and gives no reason. Long assumes that you did not push hard enough."
+        vi: 'Chị Quyên chọn agency của anh Đạt và không nêu lý do. Anh Long cho rằng anh/chị không cố đủ mạnh.'
+        effects: [rel long trust -1, rel quyen trust +1, stress +2, arc the_agency invoice]
+  - en: "Give the campaign to Long's cousin without a pitch, and tell Quyen it was a directors' decision."
+    vi: 'Giao chiến dịch cho em họ anh Long mà không đề xuất và nói với chị Quyên đó là quyết định của ban giám đốc.'
+    outcomes:
+      - p: 0.7
+        en: 'Long beams. Quyen does not argue, and writes the date in her notebook. Dat hears about it, and asks nothing.'
+        vi: 'Anh Long rạng rỡ. Chị Quyên không tranh cãi và ghi ngày vào sổ tay. Anh Đạt nghe chuyện và không hỏi gì.'
+        effects:
+          [
+            rel long trust +6,
+            rel quyen trust -5,
+            rel dat trust -4,
+            stress +1,
+            fact steered_contract_to_connection private,
+            arc the_agency invoice,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'Duc asks for the procurement file for the campaign, and finds one page. He asks Quyen. Quyen asks you.'
+        vi: 'Anh Đức xin hồ sơ mua sắm của chiến dịch và thấy một trang. Anh hỏi chị Quyên. Chị Quyên hỏi anh/chị.'
+        effects:
+          [
+            rel long trust +3,
+            rel quyen trust -8,
+            rel duc trust -5,
+            rep.boss -4,
+            rep.finance -4,
+            stress +5,
+            fact steered_contract_to_connection witnessed,
+            arc the_agency invoice,
+          ]
+---
+scene: mkt.invoice_mismatch
+weight: 0
+place: finance_office
+tags: [agency, invoice, dark, arc]
+lines:
+  - who: char:dat
+    en: "Our invoice for the autumn campaign is in your inbox. I know the shoot was cut from three days to two, and the second video was never made. But we kept the crew booked, and cancellations cost us money. Could you approve it as it is? If it is easier, I can put the difference down as 'production contingency'."
+    vi: "Hóa đơn chiến dịch mùa thu của bọn em đã trong hộp thư của anh/chị. Em biết buổi quay bị cắt từ ba ngày xuống hai, và video thứ hai chưa từng làm. Nhưng bọn em giữ đoàn quay, và hủy tốn tiền. Anh/chị duyệt như vậy được không? Nếu dễ hơn, em ghi phần chênh là 'dự phòng sản xuất'."
+choices:
+  - en: 'Ask for a revised invoice for the work delivered, and agree a fair cancellation fee for the crew with written evidence.'
+    vi: 'Yêu cầu một hóa đơn sửa cho công việc đã giao và thống nhất phí hủy hợp lý cho đoàn quay kèm chứng từ.'
+    cost: { hours: 2 }
+    outcomes:
+      - p: 0.8
+        en: "Dat grumbles, and sends a revised invoice, with a modest cancellation fee. It is eighteen percent lower. He says 'Fair enough' in the tone of a man recalculating."
+        vi: "Anh Đạt càu nhàu và gửi hóa đơn sửa với một khoản phí hủy khiêm tốn. Thấp hơn mười tám phần trăm. Anh nói 'Cũng công bằng' bằng giọng của người đang tính lại."
+        effects:
+          [
+            rel dat trust -2,
+            rel quyen trust +2,
+            rel duc trust +3,
+            rep.finance +3,
+            stress +3,
+            arc the_agency gift,
+          ]
+      - p: 0.2
+        ok: false
+        en: 'Dat says the contract has no cancellation clause, and that he will talk to Long. Long phones you the next morning, and you hold the line, politely.'
+        vi: 'Anh Đạt nói hợp đồng không có điều khoản hủy và anh sẽ nói chuyện với anh Long. Sáng hôm sau anh Long gọi anh/chị, và anh/chị giữ vững lập trường, lịch sự.'
+        effects:
+          [
+            rel dat trust -4,
+            rel long trust -3,
+            rel duc trust +3,
+            rep.finance +2,
+            stress +5,
+            arc the_agency gift,
+          ]
+  - en: 'Approve the invoice for the delivered work plus a smaller cancellation fee that you can justify with the booking confirmation.'
+    vi: 'Duyệt hóa đơn cho công việc đã giao cộng một khoản phí hủy nhỏ hơn mà anh/chị chứng minh được bằng xác nhận đặt chỗ.'
+    outcomes:
+      - p: 1
+        en: 'The invoice is reduced by eight percent, with a note. Dat accepts. It is a compromise that Duc can read in one page.'
+        vi: 'Hóa đơn giảm tám phần trăm kèm ghi chú. Anh Đạt chấp nhận. Một thỏa hiệp mà anh Đức đọc được trong một trang.'
+        effects: [rel dat trust +1, rel duc trust +1, stress +2, arc the_agency gift]
+  - en: "Approve the invoice as it is, with 'production contingency' for the difference."
+    vi: "Duyệt hóa đơn nguyên như vậy, với 'dự phòng sản xuất' cho phần chênh."
+    outcomes:
+      - p: 0.7
+        en: 'Dat thanks you warmly. The invoice goes to payment. It includes a day of crew and a video that do not exist.'
+        vi: 'Anh Đạt cảm ơn nồng nhiệt. Hóa đơn được chuyển thanh toán. Nó gồm một ngày đoàn quay và một video không tồn tại.'
+        effects:
+          [
+            rel dat trust +5,
+            rel quyen trust -2,
+            stress +1,
+            fact approved_invoice_for_undelivered_work private,
+            arc the_agency gift,
+          ]
+      - p: 0.3
+        ok: false
+        en: 'Thu, in accounts payable, compares the invoice with the delivery list and finds a video missing. She asks you politely, and writes your answer down.'
+        vi: 'Thư, ở bộ phận phải trả, đối chiếu hóa đơn với danh sách bàn giao và thấy thiếu một video. Chị hỏi anh/chị lịch sự và ghi lại câu trả lời.'
+        effects:
+          [
+            rel dat trust +2,
+            rel thu trust -5,
+            rel duc trust -5,
+            rep.boss -4,
+            rep.finance -5,
+            stress +5,
+            fact approved_invoice_for_undelivered_work witnessed,
+            arc the_agency gift,
+          ]
+---
+scene: mkt.agency_gift
+weight: 0
+place: meeting_room
+tags: [agency, gift, dark, arc]
+lines:
+  - who: char:dat
+    en: "To thank you for a great autumn, the agency would like to send you and a guest to a resort for the long weekend, all paid. We do it for all our clients' key people. It is not connected to the contract. Though of course, we would love to talk about next year."
+    vi: 'Để cảm ơn một mùa thu tuyệt vời, agency muốn gửi anh/chị và một người bạn đi nghỉ dưỡng dịp cuối tuần dài, mọi chi phí đã trả. Bọn em làm với tất cả người chủ chốt của khách hàng. Nó không liên quan đến hợp đồng. Dù tất nhiên, bọn em rất muốn nói về năm sau.'
+choices:
+  - en: "Decline politely, explain the company's gift policy, and suggest that any thanks take the form of a campaign report, a lunch that you pay for yourself, or nothing."
+    vi: 'Từ chối lịch sự, giải thích chính sách quà tặng của công ty và gợi ý mọi lời cảm ơn nên là một báo cáo chiến dịch, một bữa trưa tự trả hoặc không gì cả.'
+    cost: { hours: 1 }
+    outcomes:
+      - p: 1
+        en: "Dat laughs, and says 'You are the first one who ever refused.' He does not seem offended. The renewal conversation takes place in an office, with Quyen present."
+        vi: "Anh Đạt cười và nói 'Anh/chị là người đầu tiên từ chối.' Anh có vẻ không phật ý. Cuộc nói chuyện gia hạn diễn ra trong văn phòng, có chị Quyên."
+        effects:
+          [
+            rel dat trust +1,
+            rel quyen trust +3,
+            rep.finance +2,
+            rep.boss +2,
+            stress +2,
+            fact reported_agency_gift witnessed,
+            arc the_agency reckoning,
+          ]
+  - en: 'Say you can only accept a small, ordinary gift under the policy limit, and declare it in the gift register.'
+    vi: 'Nói anh/chị chỉ nhận một món quà nhỏ, bình thường dưới hạn mức chính sách và khai báo vào sổ quà tặng.'
+    outcomes:
+      - p: 1
+        en: 'Dat sends a bottle of wine under the limit. You enter it in the register with the date. It is awkward and clean.'
+        vi: 'Anh Đạt gửi một chai rượu dưới hạn mức. Anh/chị ghi vào sổ kèm ngày. Gượng gạo và sạch sẽ.'
+        effects: [rel dat trust +2, rel quyen trust +1, stress +1, arc the_agency reckoning]
+  - en: 'Accept the resort weekend and tell nobody.'
+    vi: 'Nhận chuyến nghỉ dưỡng cuối tuần và không nói với ai.'
+    outcomes:
+      - p: 0.7
+        en: "The weekend is excellent. Dat is excellent company. On Monday he mentions next year's budget as if by accident, and you hear yourself say 'We will see what we can do'."
+        vi: "Cuối tuần tuyệt vời. Anh Đạt là bạn đồng hành rất tuyệt. Thứ Hai anh nhắc ngân sách năm sau như tình cờ, và anh/chị nghe mình nói 'Mình xem làm được gì'."
+        effects:
+          [
+            rel dat trust +6,
+            rel quyen trust -2,
+            stress -3,
+            fact accepted_agency_trip private,
+            arc the_agency reckoning,
+          ]
+      - p: 0.3
+        ok: false
+        en: "The resort posts a photo of the agency's group with a tag that includes you. Quyen sees it that afternoon, and asks, lightly, how the weekend was."
+        vi: 'Khu nghỉ dưỡng đăng ảnh nhóm của agency với một thẻ có cả anh/chị. Chiều đó chị Quyên thấy và hỏi, nhẹ nhàng, cuối tuần thế nào.'
+        effects:
+          [
+            rel dat trust +3,
+            rel quyen trust -8,
+            rep.boss -5,
+            rep.finance -3,
+            stress +4,
+            fact accepted_agency_trip witnessed,
+            arc the_agency reckoning,
+          ]
+---
+scene: mkt.duc_asks_invoices
+weight: 0
+place: finance_office
+tags: [agency, audit, consequence, arc]
+lines:
+  - who: char:duc
+    en: "I am looking at the agency's spend for the year. It is thirty percent over the budget, and the invoices are described in very general terms. I would like to understand what we bought, who approved it, and how the agency was chosen. I would like to hear it from you first."
+    vi: 'Anh đang xem chi tiêu cho agency trong năm. Nó vượt ngân sách ba mươi phần trăm, và các hóa đơn được mô tả rất chung chung. Anh muốn hiểu mình đã mua gì, ai duyệt và agency được chọn thế nào. Anh muốn nghe từ em trước.'
+choices:
+  - en: 'Walk Duc through the pitch scores, the invoices line by line, what was delivered, and the gift policy in each case, including anything that does not hold up.'
+    vi: 'Dẫn anh Đức qua điểm chấm đề xuất, từng dòng hóa đơn, điều đã giao và chính sách quà tặng trong từng trường hợp, kể cả bất cứ điều gì không đứng vững.'
+    cost: { hours: 3 }
+    outcomes:
+      - p: 1
+        en: "Duc reads for an hour. 'This is the first agency file I have seen that I can follow.' He asks for two adjustments and a new approval rule. Dat sends the credit note the same afternoon."
+        vi: "Anh Đức đọc một giờ. 'Đây là hồ sơ agency đầu tiên anh thấy theo dõi được.' Anh yêu cầu hai điều chỉnh và một quy tắc phê duyệt mới. Anh Đạt gửi giấy ghi có ngay chiều hôm đó."
+        effects:
+          [
+            rel duc trust +4,
+            rel quyen trust +2,
+            rel dat trust -3,
+            rep.finance +3,
+            rep.boss +2,
+            stress +3,
+            arc the_agency end,
+          ]
+  - en: "Give Duc the invoices and say the agency is Quyen's responsibility."
+    vi: 'Đưa anh Đức các hóa đơn và nói agency là trách nhiệm của chị Quyên.'
+    outcomes:
+      - p: 0.5
+        en: 'Duc nods, and asks Quyen. Quyen answers with her own list of the questions she asked you in the spring.'
+        vi: 'Anh Đức gật đầu và hỏi chị Quyên. Chị Quyên trả lời bằng danh sách các câu hỏi chị đã hỏi anh/chị hồi mùa xuân.'
+        effects: [rel duc trust -3, rel quyen trust -6, stress +3, arc the_agency end]
+      - p: 0.5
+        ok: false
+        en: 'Thu and Quyen each have their own notes, and the notes agree with each other and not with you. Duc puts them in a row.'
+        vi: 'Thư và chị Quyên mỗi người có ghi chú riêng, và các ghi chú khớp với nhau chứ không khớp với anh/chị. Anh Đức đặt chúng thành hàng.'
+        effects:
+          [
+            rel duc trust -8,
+            rel quyen trust -8,
+            rel thu trust -5,
+            rep.boss -8,
+            rep.finance -5,
+            stress +7,
+            arc the_agency end,
+          ]
+  - en: 'Say the overspend was needed to protect the launch, and that the details can wait until after the year end.'
+    vi: 'Nói khoản vượt chi là cần để bảo vệ đợt ra mắt và chi tiết chờ đến sau cuối năm.'
+    outcomes:
+      - p: 0.5
+        en: 'Duc gives you until the end of the month. You assemble a partial file. It is not everything, but it is something.'
+        vi: 'Anh Đức cho anh/chị đến cuối tháng. Anh/chị lắp ghép một hồ sơ một phần. Không phải tất cả, nhưng là một phần.'
+        effects: [rel duc trust -3, stress +4, arc the_agency end]
+      - p: 0.5
+        ok: false
+        en: "The bank statement shows a payment to a travel company, in the agency's name, on the date of your weekend. Duc turns the page over in silence."
+        vi: 'Sao kê ngân hàng cho thấy một khoản thanh toán cho công ty du lịch, đứng tên agency, vào ngày cuối tuần của anh/chị. Anh Đức lật trang giấy trong im lặng.'
+        effects:
+          [
+            rel duc trust -8,
+            rel quyen trust -6,
+            rep.boss -8,
+            rep.finance -6,
+            stress +7,
+            arc the_agency end,
+          ]
+---
+fact: substantiated_claims
+severity: 1
+category: integrity
+en: 'you checked every claim against its evidence before it went public'
+vi: 'bạn kiểm tra từng lời quảng cáo với bằng chứng trước khi công bố'
+lesson:
+  en: 'A claims register is a slow process that prevents a rare, expensive embarrassment. The claim that the test can support is the only one a buyer, a regulator and a journalist will leave alone.'
+  vi: 'Sổ đăng ký tuyên bố là một quy trình chậm ngăn một sự bối rối hiếm và đắt đỏ. Lời quảng cáo mà bài kiểm nghiệm ủng hộ được là lời duy nhất khách, cơ quan quản lý và nhà báo để yên.'
+witnessed:
+  boss: 2
+  qc: 3
+public:
+  boss: 3
+  buyer: 3
+---
+fact: overclaimed_on_packaging
+severity: 7
+category: integrity
+en: 'you printed a lifetime claim on the packaging that the tests did not support'
+vi: 'bạn in lên bao bì một lời hứa tuổi thọ mà các bài kiểm nghiệm không ủng hộ'
+lesson:
+  en: 'A claim on a box is a promise to every buyer. Printing one the tests do not support, because a competitor does, is borrowing a risk that the company, not the competitor, will repay.'
+  vi: 'Lời quảng cáo trên hộp là lời hứa với mọi người mua. In một lời bài kiểm nghiệm không ủng hộ, vì đối thủ cũng làm vậy, là vay một rủi ro mà công ty, không phải đối thủ, sẽ trả.'
+traces:
+  - { type: document, visibility: 0.8, detectors: [qc, buyer, internal_audit, boss] }
+witnessed:
+  boss: -8
+  qc: -8
+  buyer: -6
+public:
+  boss: -14
+  buyer: -14
+  cs: -8
+---
+fact: hid_test_result
+severity: 6
+category: integrity
+en: 'you kept a bad test result to yourself until after a launch'
+vi: 'bạn giữ một kết quả kiểm nghiệm xấu cho riêng mình đến sau đợt ra mắt'
+lesson:
+  en: 'A test result you hold back is a decision to let customers find the problem first. The lab keeps the report, and the lab is also the first person the customer service team asks.'
+  vi: 'Kết quả kiểm nghiệm bạn giữ lại là quyết định để khách hàng tìm ra vấn đề trước. Phòng thí nghiệm giữ báo cáo, và phòng thí nghiệm cũng là người đầu tiên bộ phận chăm sóc khách hàng hỏi.'
+traces:
+  - { type: record, visibility: 0.8, detectors: [qc, internal_audit, boss] }
+witnessed:
+  boss: -8
+  qc: -10
+public:
+  boss: -14
+  qc: -14
+---
+fact: corrected_the_claim
+severity: 2
+category: integrity
+en: 'you corrected a claim when the evidence turned against it, in public and at your own cost'
+vi: 'bạn sửa một lời quảng cáo khi bằng chứng quay lưng lại, công khai và bằng chi phí của mình'
+lesson:
+  en: 'Correcting a claim costs a reprint and a day of embarrassment. It buys the credibility that every future claim is spent from.'
+  vi: 'Sửa một lời quảng cáo tốn một lần in lại và một ngày bối rối. Nó mua uy tín mà mọi lời quảng cáo sau này sẽ tiêu từ đó.'
+witnessed:
+  boss: 3
+  qc: 4
+  cs: 4
+public:
+  boss: 5
+  buyer: 5
+  cs: 6
+---
+fact: shipped_with_known_false_claim
+severity: 7
+category: integrity
+en: 'you shipped a product with a claim on the box that you knew the evidence did not support'
+vi: 'bạn giao sản phẩm với lời quảng cáo trên hộp mà bạn biết bằng chứng không ủng hộ'
+lesson:
+  en: 'Knowing is the difference between a mistake and a decision. Once the pallets leave, every buyer who reads the box is relying on a statement you knew was false.'
+  vi: 'Biết là khác biệt giữa sai lầm và quyết định. Khi pallet đã rời đi, mọi người mua đọc hộp đều dựa vào một phát biểu bạn biết là sai.'
+traces:
+  - { type: record, visibility: 0.8, detectors: [qc, buyer, internal_audit, boss] }
+witnessed:
+  boss: -10
+  qc: -10
+  buyer: -8
+public:
+  boss: -16
+  buyer: -16
+  cs: -10
+---
+fact: blamed_customers_for_defect
+severity: 5
+category: integrity
+en: 'you told customers that a coating defect was caused by how they used the pan'
+vi: 'bạn nói với khách hàng rằng lỗi lớp phủ do cách họ sử dụng chảo'
+lesson:
+  en: 'Blaming the customer for a defect you can trace to a batch is a statement the lab can contradict. It also tells your service team to stop trusting what marketing sends them.'
+  vi: 'Đổ lỗi cho khách hàng về một lỗi bạn truy được đến một lô là phát biểu phòng thí nghiệm có thể phản bác. Nó cũng bảo đội dịch vụ ngừng tin điều marketing gửi cho họ.'
+traces:
+  - { type: message, visibility: 0.7, detectors: [qc, boss, buyer] }
+witnessed:
+  boss: -6
+  qc: -6
+  cs: -8
+public:
+  boss: -10
+  buyer: -8
+  cs: -12
+---
+fact: bought_fake_reviews
+severity: 7
+category: integrity
+en: "you had fake reviews posted to lift the product's rating"
+vi: 'bạn cho đăng đánh giá giả để nâng điểm của sản phẩm'
+lesson:
+  en: "A fake review is a lie told by a stranger on the buyer's behalf. Marketplaces look for the pattern of new accounts, and a bought rating is the first thing a competitor learns to check."
+  vi: 'Đánh giá giả là lời dối được một người lạ nói thay người mua. Các sàn tìm mẫu hình tài khoản mới, và điểm mua được là điều đầu tiên đối thủ học cách kiểm tra.'
+traces:
+  - { type: payment, visibility: 0.7, detectors: [finance, buyer, internal_audit, boss] }
+witnessed:
+  boss: -8
+  buyer: -8
+  cs: -6
+public:
+  boss: -14
+  buyer: -16
+  cs: -10
+---
+fact: sabotaged_rival_reviews
+severity: 7
+category: integrity
+en: "you had a rival's reviews reported and removed to damage them"
+vi: 'bạn cho báo cáo và gỡ đánh giá của đối thủ để làm tổn hại họ'
+lesson:
+  en: "Attacking a rival's reviews is not competition. It is the same lie, aimed at someone who can read the logs and answer back."
+  vi: 'Tấn công đánh giá của đối thủ không phải cạnh tranh. Đó là cùng một lời dối, nhắm vào người đọc được nhật ký và đáp trả.'
+traces:
+  - { type: message, visibility: 0.6, detectors: [buyer, boss, internal_audit] }
+witnessed:
+  boss: -8
+  buyer: -8
+public:
+  boss: -14
+  buyer: -14
+---
+fact: disclosed_sponsorship
+severity: 1
+category: integrity
+en: 'you made sure a paid influencer post carried a clear label and an honest opinion'
+vi: 'bạn bảo đảm bài đăng trả phí của người có ảnh hưởng có nhãn rõ ràng và ý kiến trung thực'
+lesson:
+  en: 'A labelled post is trusted a little less and for much longer. The label is the price of being believed on the day the sponsorship is discovered.'
+  vi: 'Bài đăng có nhãn được tin ít hơn một chút và lâu hơn nhiều. Nhãn là cái giá của việc được tin vào ngày việc tài trợ bị phát hiện.'
+witnessed:
+  boss: 2
+  buyer: 3
+public:
+  boss: 3
+  buyer: 5
+---
+fact: undisclosed_influencer
+severity: 5
+category: integrity
+en: 'you had an influencer post paid content without a label and without a mention of payment'
+vi: 'bạn cho người có ảnh hưởng đăng nội dung trả phí không nhãn và không nhắc thanh toán'
+lesson:
+  en: 'A paid post presented as spontaneous love misleads the people who trust the creator. It also hands the creator a secret that they will keep only as long as it is easy.'
+  vi: 'Bài đăng trả phí được trình bày như tình yêu tự nhiên đánh lừa những người tin người sáng tạo. Nó cũng trao cho họ một bí mật họ chỉ giữ chừng nào còn dễ.'
+traces:
+  - { type: payment, visibility: 0.6, detectors: [buyer, finance, internal_audit] }
+witnessed:
+  boss: -5
+  buyer: -8
+public:
+  boss: -10
+  buyer: -14
+---
+fact: blamed_the_agency
+severity: 6
+category: integrity
+en: 'you said the agency acted alone, when you had approved what it did'
+vi: 'bạn nói agency tự ý hành động trong khi chính bạn đã duyệt điều nó làm'
+lesson:
+  en: 'An agency keeps the emails, and every approval is in them. Blaming it for what you approved ends the relationship and publishes the evidence.'
+  vi: 'Agency giữ các email, và mọi phê duyệt đều nằm trong đó. Đổ lỗi cho nó về điều bạn đã duyệt kết thúc mối quan hệ và công bố bằng chứng.'
+traces:
+  - { type: message, visibility: 0.8, detectors: [boss, buyer, finance] }
+witnessed:
+  boss: -8
+  buyer: -6
+public:
+  boss: -14
+  buyer: -12
+---
+fact: ran_competitive_pitch
+severity: 1
+category: integrity
+en: "you ran a competitive pitch with written scoring, even for the owner's relative"
+vi: 'bạn tổ chức đề xuất cạnh tranh có chấm điểm bằng văn bản, kể cả cho người thân của chủ sở hữu'
+lesson:
+  en: "A scored pitch protects the winner as much as the loser. It is the cheapest way to show the owner's cousin, and everyone else, that the process was fair."
+  vi: 'Một cuộc đề xuất có chấm điểm bảo vệ người thắng cũng như người thua. Đó là cách rẻ nhất để cho em họ của chủ sở hữu, và mọi người khác, thấy quy trình công bằng.'
+witnessed:
+  boss: 3
+  finance: 4
+public:
+  boss: 4
+  finance: 5
+---
+fact: steered_contract_to_connection
+severity: 6
+category: integrity
+en: "you gave a contract to the owner's relative without a pitch, and said it was the directors' decision"
+vi: 'bạn giao hợp đồng cho người thân của chủ sở hữu mà không đề xuất và nói đó là quyết định của ban giám đốc'
+lesson:
+  en: "A contract given without a pitch leaves one page in the file. The next person to ask finds that the 'decision' has no author, and the author is the one who wrote the page."
+  vi: "Hợp đồng giao không qua đề xuất để lại một trang trong hồ sơ. Người hỏi tiếp theo thấy 'quyết định' không có tác giả, và tác giả là người đã viết trang đó."
+traces:
+  - { type: document, visibility: 0.7, detectors: [finance, internal_audit, boss] }
+witnessed:
+  boss: -6
+  finance: -8
+public:
+  boss: -12
+  finance: -12
+---
+fact: approved_invoice_for_undelivered_work
+severity: 6
+category: integrity
+en: 'you approved an invoice that included work that was never delivered'
+vi: 'bạn duyệt một hóa đơn gồm công việc chưa từng được giao'
+lesson:
+  en: "Approving an invoice is saying the work was done. 'Production contingency' for a video that does not exist is a payment for nothing, and your signature is on it."
+  vi: "Duyệt hóa đơn là nói công việc đã làm. 'Dự phòng sản xuất' cho một video không tồn tại là khoản thanh toán cho hư không, và chữ ký của bạn nằm trên đó."
+traces:
+  - { type: payment, visibility: 0.8, detectors: [finance, internal_audit, boss] }
+witnessed:
+  boss: -8
+  finance: -10
+public:
+  boss: -14
+  finance: -16
+---
+fact: reported_agency_gift
+severity: 1
+category: integrity
+en: 'you declined or declared a gift from a supplier that was hoping to renew'
+vi: 'bạn từ chối hoặc khai báo quà của nhà cung cấp đang hy vọng gia hạn'
+lesson:
+  en: 'A gift offered before a renewal is the first instalment of a conversation about it. Declining or declaring keeps the conversation in an office, with the person who is supposed to be there.'
+  vi: 'Quà tặng trước khi gia hạn là phần đầu của cuộc nói chuyện về việc đó. Từ chối hoặc khai báo giữ cuộc nói chuyện trong văn phòng, với người đáng có mặt.'
+witnessed:
+  boss: 3
+  finance: 3
+public:
+  boss: 4
+  finance: 4
+---
+fact: accepted_agency_trip
+severity: 5
+category: integrity
+en: 'you accepted a paid resort weekend from the agency and told nobody'
+vi: 'bạn nhận chuyến nghỉ dưỡng cuối tuần do agency trả và không nói với ai'
+lesson:
+  en: 'A trip from a supplier is a debt that the supplier will remember at the next renewal. Not declaring it removes the one thing that would have made it harmless.'
+  vi: 'Chuyến đi do nhà cung cấp trả là món nợ mà nhà cung cấp sẽ nhớ ở lần gia hạn tiếp theo. Không khai báo là bỏ đi điều duy nhất có thể làm nó vô hại.'
+traces:
+  - { type: payment, visibility: 0.6, detectors: [finance, internal_audit, boss] }
+witnessed:
+  boss: -6
+  finance: -6
+public:
+  boss: -10
+  finance: -10
+---
+fact: backdated_claim_evidence
+severity: 7
+category: integrity
+en: 'you wrote source references into the register after the claims had been published, and cleaned up reviews before an inspection'
+vi: 'bạn viết tham chiếu nguồn vào sổ đăng ký sau khi lời quảng cáo đã công bố và dọn đánh giá trước một cuộc thanh tra'
+lesson:
+  en: 'A register is evidence only if it was made when the claim was. Filling it in afterwards, and deleting what might raise questions, turns a gap into an attempt to mislead the inspector.'
+  vi: 'Sổ đăng ký chỉ là bằng chứng nếu được lập đúng lúc lời quảng cáo ra đời. Điền vào sau đó và xóa những gì có thể gây thắc mắc biến một khoảng trống thành nỗ lực đánh lừa thanh tra.'
+traces:
+  - { type: document, visibility: 0.8, detectors: [internal_audit, qc, boss] }
+witnessed:
+  boss: -10
+  qc: -10
+public:
+  boss: -16
+  qc: -14
+---
+fact: polished_marketing_review
+severity: 3
+category: integrity
+en: 'you left the claims and posts that were close to the line out of your own review'
+vi: 'bạn bỏ các lời quảng cáo và bài đăng sát ranh giới ra khỏi buổi đánh giá của chính mình'
+lesson:
+  en: 'A review without the close calls rewards the wrong skill. The register shows the revision dates, and your manager reads them.'
+  vi: 'Một buổi đánh giá không có các lần sát ranh giới thưởng cho sai kỹ năng. Sổ đăng ký cho thấy ngày sửa, và sếp bạn đọc chúng.'
+witnessed:
+  boss: -4
+public:
+  boss: -6
+---
+fact: accepted_marketing_condition
+severity: 3
+category: integrity
+en: 'you accepted the marketing lead role without asking what the condition meant'
+vi: 'bạn nhận vai trò dẫn dắt marketing mà không hỏi điều kiện nghĩa là gì'
+lesson:
+  en: 'A promotion with an unspoken condition is a decision to be made later, under pressure, by someone who has already said yes.'
+  vi: 'Một lần thăng chức với điều kiện không nói ra là một quyết định phải đưa ra sau, dưới áp lực, bởi người đã nói có.'
+witnessed:
+  boss: -2
+public:
+  boss: -4

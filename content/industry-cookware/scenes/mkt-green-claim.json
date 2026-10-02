@@ -1,0 +1,154 @@
+{
+  "id": "scene.mkt.green_claim",
+  "location": "loc.meeting_room",
+  "cast": ["char:cuong"],
+  "lines": [
+    {
+      "speaker": "char:cuong",
+      "text_key": "scene.mkt.green_claim.l1"
+    }
+  ],
+  "choices": [
+    {
+      "id": "c1",
+      "text_key": "scene.mkt.green_claim.c1",
+      "cost": {
+        "hours": 3
+      },
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.mkt.green_claim.c1.ok",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": -1
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 3
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.mkt.green_claim.c1.fail",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": -3
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": 2
+            },
+            {
+              "delta": "player.stress",
+              "value": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text_key": "scene.mkt.green_claim.c2",
+      "outcomes": [
+        {
+          "p": 1,
+          "narration_key": "scene.mkt.green_claim.c2.ok",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": 1
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text_key": "scene.mkt.green_claim.c3",
+      "outcomes": [
+        {
+          "p": 0.7,
+          "narration_key": "scene.mkt.green_claim.c3.ok",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": 5
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": -2
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": 1
+            },
+            {
+              "delta": "player.stress",
+              "value": 1
+            },
+            {
+              "fact": "fact.greenwashed_claim",
+              "visibility": "private"
+            }
+          ]
+        },
+        {
+          "p": 0.3,
+          "result": "fail",
+          "narration_key": "scene.mkt.green_claim.c3.fail",
+          "effects": [
+            {
+              "delta": "rel.cuong.trust",
+              "value": 2
+            },
+            {
+              "delta": "rel.quyen.trust",
+              "value": -6
+            },
+            {
+              "delta": "player.rep.boss",
+              "value": -5
+            },
+            {
+              "delta": "player.rep.buyer",
+              "value": -7
+            },
+            {
+              "delta": "player.stress",
+              "value": 6
+            },
+            {
+              "fact": "fact.greenwashed_claim",
+              "visibility": "witnessed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

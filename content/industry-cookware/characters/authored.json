@@ -357,5 +357,58 @@
     "start": {
       "trust": 0
     }
+  },
+  {
+    "id": "char.quyen",
+    "name_key": "char.quyen.name",
+    "title_key": "char.quyen.title",
+    "department": "marketing",
+    "home_group": "boss",
+    "traits": ["creative", "deadline_driven", "loyal_to_the_brand"],
+    "start": {
+      "trust": 10
+    }
+  },
+  {
+    "id": "char.dat",
+    "name_key": "char.dat.name",
+    "title_key": "char.dat.title",
+    "department": "agency",
+    "traits": ["charming", "generous", "always_on_a_call"],
+    "start": {
+      "trust": 5
+    }
+  },
+  {
+    "id": "char.my",
+    "name_key": "char.my.name",
+    "title_key": "char.my.title",
+    "department": "influencer",
+    "home_group": "buyer",
+    "traits": ["popular", "relaxed", "honest_when_asked"],
+    "start": {
+      "trust": 5
+    }
+  },
+  {
+    "id": "char.nga",
+    "name_key": "char.nga.name",
+    "title_key": "char.nga.title",
+    "department": "customer_service",
+    "home_group": "cs",
+    "traits": ["direct", "tired", "hears_everything"],
+    "start": {
+      "trust": 5
+    }
+  },
+  {
+    "id": "char.lam",
+    "name_key": "char.lam.name",
+    "title_key": "char.lam.title",
+    "department": "regulator",
+    "traits": ["courteous", "thorough", "unhurried"],
+    "start": {
+      "trust": 0
+    }
   }
 ]

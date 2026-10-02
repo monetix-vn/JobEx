@@ -1,0 +1,37 @@
+[
+  {
+    "id": "role.mkt.brand",
+    "department": "dept.marketing",
+    "level": 1,
+    "title_key": "role.mkt.brand.title",
+    "blurb_key": "role.mkt.brand.blurb",
+    "reports_to": "role.mkt.manager",
+    "kpis": [
+      { "id": "kpi.campaign_reach", "weight": 0.4 },
+      { "id": "kpi.leads_generated", "weight": 0.4 }
+    ],
+    "weekly_demand": [
+      { "task": "task.campaign_content", "per_week": [3, 5], "effort_h": 2.0 },
+      { "task": "task.social_and_reviews", "per_week": [4, 6], "effort_h": 1.0 },
+      { "task": "task.agency_coordination", "per_week": [2, 4], "effort_h": 1.5 }
+    ],
+    "approval_limits": { "campaign_spend_vnd": 20000000 },
+    "skills": ["storytelling", "analytics", "backbone"],
+    "start_state": {
+      "salary_vnd": 15000000,
+      "stress": 28,
+      "skill.storytelling": 45,
+      "skill.analytics": 35,
+      "skill.backbone": 30
+    },
+    "overhead_hours": 22
+  },
+  {
+    "id": "role.mkt.manager",
+    "department": "dept.marketing",
+    "level": 2,
+    "title_key": "role.mkt.manager.title",
+    "approval_limits": { "campaign_spend_vnd": 200000000 },
+    "start_state": { "salary_vnd": 36000000, "stress": 40 }
+  }
+]
