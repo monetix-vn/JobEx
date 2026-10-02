@@ -11,6 +11,8 @@ export const rawLibrary = (): RawLibrary => ({
   names: read('names.json'),
   departments: read('departments.json'),
   tables: read('tables.json'),
+  appearance: read('appearance.json'),
+  life_events: read('life_events.json'),
 });
 
 export function loadLibrary() {

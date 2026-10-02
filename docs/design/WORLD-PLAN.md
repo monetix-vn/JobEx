@@ -220,7 +220,7 @@ written decision record first (`docs/adr/0003-...`).
 - Long-horizon determinism checks, snapshot equals replay, performance at the 3000 cap.
 - Cultural and professional review passes; accessibility; save migration across versions.
 - Spatial layer prototype (places, schedules, movement) behind a flag, as the doorway to an open-world client.
-- Appearance layer on every Person from M1c (section 7a); sprite-layer manifest and validator when art starts.
+- Appearance layer on every Person (done in M1c, section 7a); sprite-layer manifest and validator when art starts.
 
 ## 7a. Appearance and sprites (added 2026-10-02, owner question)
 

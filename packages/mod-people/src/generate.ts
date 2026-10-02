@@ -19,6 +19,7 @@ import type {
 } from '@je/contracts';
 import { PERSON_VALUES } from '@je/contracts';
 import { deriveSeed, generationStream } from '@je/kernel';
+import { drawAppearance } from './appearance';
 import type { SeededStream } from '@je/kernel';
 
 export interface GeneratorOptions {
@@ -177,8 +178,9 @@ function draw(
     request.event_id,
     request.counter * 1000 + attempt,
   );
+  const id = `person.${request.event_id}#${request.counter}`;
   return {
-    id: `person.${request.event_id}#${request.counter}`,
+    id,
     seed,
     created_turn: context.created_turn,
     controller: 'auto',
@@ -197,6 +199,7 @@ function draw(
       voice,
     },
     life,
+    appearance: drawAppearance(library.appearance, { id, gender, age }, context.seeds),
   };
 }
 

@@ -807,5 +807,152 @@
       "caution": 3
     },
     "voice": ["careful"]
+  },
+  {
+    "id": "writes_long_emails",
+    "name": {
+      "en": "Writes very long emails",
+      "vi": "Viết email rất dài"
+    },
+    "weight": 0.8,
+    "tags": ["talkative"],
+    "incompatible_with": ["prefers_voice_messages"],
+    "voice": ["wordy"]
+  },
+  {
+    "id": "prefers_voice_messages",
+    "name": {
+      "en": "Prefers voice messages",
+      "vi": "Thích gửi tin nhắn thoại"
+    },
+    "weight": 0.8,
+    "tags": ["informal"],
+    "incompatible_with": ["writes_long_emails"],
+    "voice": ["casual"]
+  },
+  {
+    "id": "forgets_names",
+    "name": {
+      "en": "Forgets names",
+      "vi": "Hay quên tên người"
+    },
+    "weight": 0.7,
+    "tags": ["memory"],
+    "incompatible_with": ["remembers_what_you_said"],
+    "voice": ["vague"]
+  },
+  {
+    "id": "remembers_what_you_said",
+    "name": {
+      "en": "Remembers everything you said",
+      "vi": "Nhớ từng lời bạn đã nói"
+    },
+    "weight": 0.7,
+    "tags": ["memory"],
+    "incompatible_with": ["forgets_names"],
+    "temperament_shift": {
+      "caution": 2
+    },
+    "voice": ["exact"]
+  },
+  {
+    "id": "shares_memes",
+    "name": {
+      "en": "Shares memes in the team chat",
+      "vi": "Hay gửi meme vào nhóm chat"
+    },
+    "weight": 0.9,
+    "tags": ["humour"],
+    "temperament_shift": {
+      "warmth": 1
+    },
+    "voice": ["playful"]
+  },
+  {
+    "id": "takes_long_lunches",
+    "name": {
+      "en": "Takes long lunches",
+      "vi": "Nghỉ trưa rất lâu"
+    },
+    "weight": 0.7,
+    "tags": ["boundaries"],
+    "incompatible_with": ["skips_lunch"],
+    "voice": ["relaxed"]
+  },
+  {
+    "id": "skips_lunch",
+    "name": {
+      "en": "Skips lunch at the desk",
+      "vi": "Bỏ bữa trưa ngồi làm"
+    },
+    "weight": 0.8,
+    "tags": ["driven"],
+    "incompatible_with": ["takes_long_lunches"],
+    "temperament_shift": {
+      "resilience": -2
+    },
+    "voice": ["driven"]
+  },
+  {
+    "id": "reads_the_contract_twice",
+    "name": {
+      "en": "Reads every contract twice",
+      "vi": "Đọc mỗi hợp đồng hai lần"
+    },
+    "weight": 0.8,
+    "tags": ["careful"],
+    "incompatible_with": ["signs_without_reading"],
+    "temperament_shift": {
+      "caution": 4
+    },
+    "voice": ["precise"]
+  },
+  {
+    "id": "signs_without_reading",
+    "name": {
+      "en": "Signs without reading",
+      "vi": "Ký mà không đọc"
+    },
+    "weight": 0.6,
+    "tags": ["rash"],
+    "incompatible_with": ["reads_the_contract_twice"],
+    "temperament_shift": {
+      "caution": -4,
+      "impulsivity": 3
+    },
+    "voice": ["hurried"]
+  },
+  {
+    "id": "keeps_a_lucky_charm",
+    "name": {
+      "en": "Keeps a lucky charm on the desk",
+      "vi": "Giữ một vật may mắn trên bàn"
+    },
+    "weight": 0.8,
+    "tags": ["tradition"],
+    "voice": ["superstitious"]
+  },
+  {
+    "id": "texts_at_dawn",
+    "name": {
+      "en": "Texts at dawn",
+      "vi": "Nhắn tin lúc tờ mờ sáng"
+    },
+    "weight": 0.7,
+    "tags": ["boundaries"],
+    "voice": ["intrusive"]
+  },
+  {
+    "id": "hums_while_working",
+    "name": {
+      "en": "Hums while working",
+      "vi": "Ngân nga khi làm việc"
+    },
+    "weight": 0.8,
+    "tags": ["mood"],
+    "temperament_shift": {
+      "warmth": 1
+    },
+    "voice": ["cheerful"]
   }
 ]

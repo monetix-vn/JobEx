@@ -9,6 +9,7 @@ import type {
 } from '@je/contracts';
 import { generationStream } from '@je/kernel';
 import type { SeededStream } from '@je/kernel';
+import { drawAppearance } from './appearance';
 import { generatePerson, type GenerationContext } from './generate';
 
 /** How strongly a child's temperament follows the parents' average (the rest regresses to 50 plus chance). */
@@ -165,8 +166,9 @@ export function generateHousehold(
       ...(inheritedQuirk ? [inheritedQuirk] : []),
       pickWeighted(stream, quirkPool, (q) => q.weight).id,
     ].slice(0, 2);
+    const childId = idOf(person, 'child', i);
     return {
-      id: idOf(person, 'child', i),
+      id: childId,
       seed: person.seed + i + 1,
       created_turn: context.created_turn,
       controller: 'auto',
@@ -198,6 +200,16 @@ export function generateHousehold(
         housing: person.life.housing,
         health: Math.round(clamp(normal(stream, 94, 4), 60, 100)),
       },
+      ...(person.appearance && other.appearance
+        ? {
+            appearance: drawAppearance(
+              library.appearance,
+              { id: childId, gender, age: childAge },
+              context.seeds,
+              { a: person.appearance, b: other.appearance },
+            ),
+          }
+        : {}),
     };
   });
 

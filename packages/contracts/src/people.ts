@@ -114,6 +114,24 @@ export interface FamilyLinks {
   parents: string[];
 }
 
+/**
+ * How a person looks, as traits (never pixels). A sprite renderer composes layers from these later.
+ * Independent of temperament by design; it comes from its own seeded stream.
+ */
+export interface Appearance {
+  build: string;
+  height: string;
+  /** 1 (lightest) to 5 (deepest) within the range found in the library's population. */
+  skin_tone: number;
+  face: string;
+  hair_style: string;
+  hair_colour: string;
+  facial_hair: string;
+  glasses: boolean;
+  mark: string;
+  seed: number;
+}
+
 export interface Person {
   id: string;
   /** The seed this person was drawn from (the first attempt that passed validation). */
@@ -122,6 +140,8 @@ export interface Person {
   controller: Controller;
   origin: PersonOrigin;
   life: PersonLife;
+  /** Always present on generated people; optional so older saves still load. */
+  appearance?: Appearance;
   family?: FamilyLinks;
 }
 
@@ -210,8 +230,73 @@ export interface DepartmentProfile {
   income_base_vnd: number;
 }
 
+/** One option of an appearance trait, with the people it can apply to. */
+export interface AppearanceOption {
+  id: string;
+  weight: number;
+  genders?: Gender[];
+  age_from?: number;
+  age_to?: number;
+}
+
+export interface AppearanceLibrary {
+  /** Trait name (build, height, face, hair_style, hair_colour, facial_hair, mark) to its options. */
+  traits: Record<string, AppearanceOption[]>;
+  /** Share of people with grey hair, by age band. */
+  grey_by_age: { age_from: number; age_to: number; share: number }[];
+  /** Share of people who wear glasses, by age band. */
+  glasses_by_age: { age_from: number; age_to: number; share: number }[];
+  /** Skin tone weights for 1 to 5 (a game parameter, not a measurement). */
+  skin_tone_weights: number[];
+  /** Chance a child takes a trait from a parent instead of drawing a new one. */
+  resemblance: number;
+}
+
+/** What a life event changes. Amounts of money are in months of the person's income. */
+export interface LifeEventEffects {
+  marital?: MaritalStatus;
+  children_add?: number;
+  dependents_add?: number;
+  debt_months?: number;
+  savings_months?: number;
+  health_add?: number;
+  income_pct?: number;
+}
+
+export interface LifeEventHazard {
+  age_from: number;
+  age_to: number;
+  /** Chance per year for someone this old who meets the requirements. */
+  p: number;
+}
+
+/** A trait that raises or lowers the chance: above (or below) a level the chance is multiplied. */
+export interface LifeEventModifier {
+  axis: TemperamentAxis;
+  above?: number;
+  below?: number;
+  mult: number;
+}
+
+export interface LifeEvent {
+  id: string;
+  name: BilingualText;
+  tags: string[];
+  hazard: LifeEventHazard[];
+  requires?: {
+    marital_in?: MaritalStatus[];
+    min_children?: number;
+    max_children?: number;
+    gender_in?: Gender[];
+  };
+  modifiers?: LifeEventModifier[];
+  effects: LifeEventEffects;
+}
+
 export interface PeopleLibrary {
   version: number;
+  appearance: AppearanceLibrary;
+  life_events: LifeEvent[];
   archetypes: Archetype[];
   quirks: Quirk[];
   names: NameLibrary;

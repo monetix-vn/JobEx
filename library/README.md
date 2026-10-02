@@ -1,6 +1,6 @@
 # The people library
 
-The data the people generator draws from (ADR 0003, `docs/design/IDENTITY-ENGINE.md`). Five JSON files:
+The data the people generator draws from (ADR 0003, `docs/design/IDENTITY-ENGINE.md`). Seven JSON files:
 
 | File | What it holds |
 | ---- | ------------- |
@@ -8,6 +8,8 @@ The data the people generator draws from (ADR 0003, `docs/design/IDENTITY-ENGINE
 | `quirks.json` | Small habits and mannerisms with weights, tags, incompatible pairs, tiny temperament shifts and voice tags (English and Vietnamese names). |
 | `names.json` | Family, middle and given names with weights, and "older" and "younger" leanings so a 55-year-old is more likely a Thị or a Văn than a 24-year-old. |
 | `departments.json` | Per department: gender mix, age profile, minimum education, base income. `external` is for spouses and parents. |
+| `appearance.json` | Look traits (build, height, face, hair, marks...) with weights and gender and age limits, grey hair and glasses by age, skin tone weights, how much children resemble parents. |
+| `life_events.json` | Marriage, children, illness, loans, promotion...: yearly chance by age, requirements, trait modifiers and effects. |
 | `tables.json` | Real-world data tables, each with its **source**, **year** and a **verified** flag. Education, marriage, children, regions, sex ratio at birth, spouse age gap, hiring paths. |
 
 ## Working on it

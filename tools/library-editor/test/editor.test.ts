@@ -40,8 +40,10 @@ describe('the library editor server', () => {
       diagnostics: { severity: string }[];
     };
     expect(Object.keys(lib.raw).sort()).toEqual([
+      'appearance',
       'archetypes',
       'departments',
+      'life_events',
       'names',
       'quirks',
       'tables',
@@ -94,7 +96,7 @@ describe('the library editor server', () => {
     expect(preview.sample.length).toBe(12);
   });
 
-  it('previews an unsaved draft and refuses an invalid one, and only accepts the five library parts', async () => {
+  it('previews an unsaved draft and refuses an invalid one, and only accepts the full set of library parts', async () => {
     const raw = readRaw(dir) as unknown as {
       departments: { department: string; female_share: number }[];
     };

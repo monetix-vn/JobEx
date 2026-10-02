@@ -1,6 +1,6 @@
 # The people generator: a guide and whitepaper
 
-Version 1, 2 October 2026. Written for authors, designers, reviewers and anyone who wants to understand how
+Version 2, 2 October 2026. Written for authors, designers, reviewers and anyone who wants to understand how
 JobEx makes people. It is shown inside the library editor (the **Guide** tab) and kept in
 `docs/design/GENERATOR-GUIDE.md`. Everything here describes what is built today; planned parts are marked **(planned)**.
 
@@ -27,15 +27,15 @@ A Person has an **origin** (fixed at creation) and a **life state** (changes slo
 | Part | Fields | Notes |
 | ---- | ------ | ----- |
 | Origin | gender, age, region, urban or rural, education, how they got the job, **temperament** (6 axes), **values** (2 or 3), **quirks** (2 or 3), archetype, name, voice tags | Never changes. |
-| Life state | department, ladder step, tenure, performance, income, debt, savings, marital status, children, dependents, housing, health | Changes yearly or by life events (planned). |
+| Life state | department, ladder step, tenure, performance, income, debt, savings, marital status, children, dependents, housing, health | Changes yearly through life events (section 4b). |
 | Family links | spouse, children, parents | Filled in when a household is generated. |
-| Appearance **(planned)** | build, height, hair, face, marks and an appearance seed | See section 9. |
+| Appearance | build, height, skin tone, face, hair style and colour, facial hair, glasses, a mark, and an appearance seed | Traits, never pixels. See section 4a. |
 
 **Temperament** has six axes, each 0 to 100: caution, ambition, warmth, integrity, resilience, impulsivity.
 **Values** are what a person cares about: security, status, fairness, loyalty, freedom, family, money, craft.
 **Quirks** are small habits ("keeps a notebook of everything", "gossips") that colour behaviour and speech.
 
-## 3. The library: five files
+## 3. The library: seven files
 
 | File | What it holds | You edit it to... |
 | ---- | ------------- | ----------------- |
@@ -44,6 +44,8 @@ A Person has an **origin** (fixed at creation) and a **life state** (changes slo
 | `names.json` | Family, middle and given names with weights; "older" and "younger" leanings. | Add names or rebalance them. |
 | `departments.json` | Per department: share of women, age profile, minimum education, base income. | Change who works where. |
 | `tables.json` | Real-world data tables with **source**, **year** and a **verified** flag. | Update numbers once checked against the source. |
+| `appearance.json` | Options for each look trait with weights, optional gender and age limits; grey hair and glasses by age; skin tone weights; how much children resemble parents. | Add or rebalance looks. Keep to physical traits. |
+| `life_events.json` | Things that happen over the years (marriage, children, illness, loans, promotion): yearly chance by age, requirements, trait modifiers and effects. | Tune how eventful lives are. |
 
 ### How an archetype works
 
@@ -82,8 +84,41 @@ For one request (`department`, optional age range, gender, story function, hirin
    the marriage table for that age and gender; children from the children table; dependents from children and
    supported parents; housing from age and marital status; debt and savings from income, housing and quirks; health from age.
 10. **Name and voice.** Family, middle and given names drawn by weight and era; voice tags from the archetype and quirks.
-11. **Validation.** A draw that contradicts itself (married at 17, more children than the age allows, tenure longer than a working life,
+11. **Appearance.** Drawn last from its own stream (section 4a).
+12. **Validation.** A draw that contradicts itself (married at 17, more children than the age allows, tenure longer than a working life,
     repeated quirks...) is **thrown away** and the next sub-seed is tried, up to 24 times. Whatever comes out is valid.
+
+### 4a. Appearance
+
+Appearance is a small set of **traits** (build, height, skin tone, face, hair style and colour, facial hair, glasses, one mark) plus a seed.
+It is data, so a sprite renderer can stack layers from it later without changing any saved world.
+
+- **Own stream.** It is drawn from a separate seeded stream (`appearance`), so it can be added, changed or tuned without altering
+  anything else about a person (a test proves it).
+- **Fits the person.** Options can be limited by gender and age window: only men get facial hair, the bald option appears from 45, undercuts
+  fade with age. Hair turns grey by age band; glasses grow more common with age.
+- **Family resemblance.** A child copies each trait from a parent with the library `resemblance` chance (0.45), provided it still makes sense
+  for the child (a girl does not copy a beard). Skin tone is the parents average with a little variation. A test checks that children
+  match their parents on face, build and hair more than strangers do.
+- **Independent of character.** A face never tells you someone is honest. The only links to personality are **tells** a real person could show:
+  `visibleTells` turns stress, health, money trouble and nervous habits (from quirks) into signs such as tired eyes, a drawn face, worn or neat
+  clothes, fidgeting or a steady gaze. These are fair clues for the player to learn hidden traits from. Appearance traits never feed in (a test checks it).
+
+### 4b. Life events
+
+`life_events.json` lists what can happen to a person in a year. Each event has:
+
+- **hazard**: the chance per year for each age band (bands must not overlap);
+- **requires** (optional): marital status, number of children, gender;
+- **modifiers** (optional): a temperament axis above or below a level multiplies the chance (resilience below 35 doubles burnout; impulsivity above 65
+  makes loans likelier);
+- **effects**: changes to life state: marital status, children, dependents, debt and savings (in months of income), health, income percent.
+
+`lifeEventChances` gives the chance of each event for a person now; `applyLifeEvent` returns the changed person (the original is untouched);
+`liveOneYear` draws one year of events in library order and re-checks the requirements after each (nobody marries and divorces in one year), skipping any event
+that would make the person contradictory. A test ages a cohort for twenty years: people stay valid, marriage and children rise sensibly, and the same seed gives the
+same lives. Yearly chances are **estimates for gameplay**; check them against real statistics before relying on them. The world simulation that runs these years
+for everyone is a later milestone.
 
 ### Households and inheritance
 
@@ -114,7 +149,7 @@ whistleblower, witness. Add more by adding `function_bias` entries to archetypes
 Every table states its **source** and **year** and has a **verified** flag. **Verified means a person checked the numbers against the named
 source and wrote what they checked in `note`.** Today only the sex ratio at birth is verified (111.5 boys per 100 girls, 2019 census,
 UNFPA Viet Nam). Several others carry checked anchors in their notes (for example mean age at first marriage 27.2 for men and 23.1 for women, urban share
-34.4 percent) but their age-band rows are approximations, and the editor lists them as "not yet verified".
+34.4 percent) but their age-band rows are approximations, and the editor lists them as "not yet verified". The education table is anchored to the 2022 labour force survey (26.3 percent of employed people held a trained qualification; 11.7 percent university or above); the age bands are estimates scaled to those anchors.
 
 Rules for editing a table:
 
@@ -140,6 +175,8 @@ Rules for editing a table:
 | Open the editor | Double-click `library-editor.bat`, or `npx -y pnpm@9.15.9 library:edit`, then open http://127.0.0.1:5180 |
 | Check the library | `pnpm people:validate` (also runs in CI, strict) |
 | See what it produces | **Preview** tab in the editor, or `pnpm people:generate --n 300 --department hr` |
+| Make lives more or less eventful | Life events tab, change a `p` (chance per year) or a modifier, then check a 20-year cohort in the tests |
+| Add a look | Appearance tab, add an option to a trait with a weight (limit it by gender and age if it needs to be), then check the Preview |
 | Add a quirk | Quirks tab, `+ new quirk`, fill the English and Vietnamese names, set a weight (0.5 rare, 1 normal, 1.5 common), list incompatible quirks in both directions |
 | Make a department older | Departments tab, change `age_mean` (and `age_min` or `age_max` if needed), then check the Preview tab |
 | Make a kind of person rarer | Archetypes tab, lower its `weight` |
@@ -164,9 +201,8 @@ The editor **never** saves a library with errors. Each save keeps a `.bak` copy 
 
 ## 9. What comes next (planned)
 
-- **More data checks** against the statistics office, and a life-events library (marriage, children, illness, loans).
-- **Appearance:** traits for body, hair, face and marks drawn from a separate seed, with family resemblance and visible "tells" of stress,
-  so sprites can be added later without changing saved worlds.
+- **More data checks** against the statistics office (the age-band rows of the marriage and education tables, the life-event chances).
+- **Sprites:** a manifest of art per trait value, a validator that every combination has art, and a sprite preview in the editor.
 - **Behaviour:** people acting on each other and on the player from their traits and circumstances.
 - **The world:** about 50 people around the player, 500 in the company and 3000 in the world, saved in a world folder that can be continued.
 - **Text variety:** a realiser that recombines hand-written text so scenes do not repeat.
@@ -182,6 +218,8 @@ and a bug be reproduced.
 the same way (every reference exists, every probability row adds up).
 
 **Why six temperament axes?** Enough to make recognisably different people, few enough to understand and tune. More can be added later.
+
+**Why separate appearance from temperament?** So that a face can never be a clue to character, which would teach prejudice. Tells of state (tiredness, worn clothes) are allowed because they are real signs of circumstances.
 
 **Are the numbers real?** The structure is designed to use real statistics; most tables are approximations waiting for checking (section 6).
 The game never claims to be exact; its text is a first draft by an AI and needs practitioner review.

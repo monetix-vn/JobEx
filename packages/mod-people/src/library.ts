@@ -23,6 +23,8 @@ export interface RawLibrary {
   names: unknown;
   departments: unknown;
   tables: unknown;
+  appearance: unknown;
+  life_events: unknown;
 }
 
 export interface LibraryResult {
@@ -261,6 +263,9 @@ export function assembleLibrary(raw: RawLibrary): LibraryResult {
     if (!hireRows.some((x) => x.path === p))
       err('table.coverage', `hiring path ${p} missing`, 'hiring_paths');
 
+  checkAppearance(raw.appearance, err);
+  checkLifeEvents(raw.life_events, err, warn);
+
   if (diagnostics.some((d) => d.severity === 'error')) return { diagnostics };
   return {
     library: {
@@ -270,6 +275,8 @@ export function assembleLibrary(raw: RawLibrary): LibraryResult {
       names: raw.names as PeopleLibrary['names'],
       departments: departments as unknown as PeopleLibrary['departments'],
       tables: raw.tables as PeopleLibrary['tables'],
+      appearance: raw.appearance as PeopleLibrary['appearance'],
+      life_events: raw.life_events as PeopleLibrary['life_events'],
     },
     diagnostics,
   };
@@ -288,5 +295,171 @@ function checkText(
     text.vi.trim() === ''
   ) {
     err('text.missing', 'needs both an English and a Vietnamese text', where);
+  }
+}
+
+type Report = (code: string, message: string, where?: string) => void;
+
+const APPEARANCE_REQUIRED = [
+  'build',
+  'height',
+  'face',
+  'hair_style',
+  'hair_colour',
+  'facial_hair',
+  'mark',
+] as const;
+
+function checkAppearance(raw: unknown, err: Report): void {
+  if (!isRecord(raw) || !isRecord(raw.traits)) {
+    err('appearance.missing', 'appearance.json needs a traits object', 'appearance');
+    return;
+  }
+  for (const trait of APPEARANCE_REQUIRED) {
+    const options = raw.traits[trait];
+    if (!Array.isArray(options) || options.length === 0) {
+      err('appearance.trait', `trait "${trait}" needs at least one option`, 'appearance');
+      continue;
+    }
+    for (const o of options as Record<string, unknown>[]) {
+      if (typeof o.id !== 'string' || o.id === '')
+        err('appearance.option', `an option of "${trait}" has no id`, 'appearance');
+      if (!isNum(o.weight) || o.weight <= 0)
+        err(
+          'appearance.option',
+          `option "${String(o.id)}" of "${trait}" needs a weight above 0`,
+          'appearance',
+        );
+      for (const g of (o.genders as string[] | undefined) ?? []) {
+        if (!(GENDERS as readonly string[]).includes(g))
+          err('appearance.option', `unknown gender "${g}" in "${trait}"`, 'appearance');
+      }
+    }
+    // Every person (any gender, any age from 18 to 70) must have at least one option, or the generator has nothing to draw.
+    for (const gender of GENDERS) {
+      for (let age = 18; age <= 70; age++) {
+        const any = (options as Record<string, unknown>[]).some((o) => {
+          const genders = o.genders as string[] | undefined;
+          const from = isNum(o.age_from) ? o.age_from : 0;
+          const to = isNum(o.age_to) ? o.age_to : 200;
+          return (genders === undefined || genders.includes(gender)) && age >= from && age <= to;
+        });
+        if (!any) {
+          err(
+            'appearance.coverage',
+            `no "${trait}" option for ${gender}, age ${age}`,
+            'appearance',
+          );
+          break;
+        }
+      }
+    }
+  }
+  for (const key of ['grey_by_age', 'glasses_by_age'] as const) {
+    const rows = raw[key];
+    if (!Array.isArray(rows) || rows.length === 0) {
+      err('appearance.table', `${key} is missing`, 'appearance');
+      continue;
+    }
+    for (const r of rows as Record<string, unknown>[]) {
+      if (!isNum(r.share) || r.share < 0 || r.share > 1)
+        err('appearance.table', `${key}: share must be 0 to 1`, 'appearance');
+    }
+    for (let age = 18; age <= 70; age++) {
+      if (
+        !(rows as Record<string, unknown>[]).some(
+          (r) => isNum(r.age_from) && isNum(r.age_to) && r.age_from <= age && age <= r.age_to,
+        )
+      ) {
+        err('appearance.coverage', `${key} has no row for age ${age}`, 'appearance');
+        break;
+      }
+    }
+  }
+  const tones = raw.skin_tone_weights;
+  if (
+    !Array.isArray(tones) ||
+    tones.length !== 5 ||
+    tones.some((w) => !isNum(w) || w < 0) ||
+    tones.every((w) => w === 0)
+  ) {
+    err(
+      'appearance.skin',
+      'skin_tone_weights needs five weights, 0 or more, not all 0',
+      'appearance',
+    );
+  }
+  if (!isNum(raw.resemblance) || raw.resemblance < 0 || raw.resemblance > 1) {
+    err('appearance.resemblance', 'resemblance must be 0 to 1', 'appearance');
+  }
+}
+
+function checkLifeEvents(raw: unknown, err: Report, warn: Report): void {
+  if (!Array.isArray(raw) || raw.length === 0) {
+    err('life_events.empty', 'there must be at least one life event', 'life_events');
+    return;
+  }
+  const seen = new Set<string>();
+  const axes = TEMPERAMENT_AXES as readonly string[];
+  for (const e of raw as Record<string, unknown>[]) {
+    const id = String(e.id);
+    if (seen.has(id)) err('life_event.duplicate', `duplicate life event "${id}"`, id);
+    seen.add(id);
+    checkText(e.name, `life event ${id} name`, err);
+    const hazard = Array.isArray(e.hazard) ? (e.hazard as Record<string, unknown>[]) : [];
+    if (hazard.length === 0)
+      err('life_event.hazard', 'needs at least one age band with a chance', id);
+    for (const h of hazard) {
+      if (!isNum(h.age_from) || !isNum(h.age_to) || h.age_from > h.age_to)
+        err('life_event.hazard', 'a band needs age_from <= age_to', id);
+      if (!isNum(h.p) || h.p < 0 || h.p > 0.9)
+        err('life_event.hazard', 'the yearly chance p must be 0 to 0.9', id);
+    }
+    const sorted = [...hazard]
+      .filter((h) => isNum(h.age_from) && isNum(h.age_to))
+      .sort((a, b) => (a.age_from as number) - (b.age_from as number));
+    for (let i = 1; i < sorted.length; i++) {
+      if ((sorted[i]!.age_from as number) <= (sorted[i - 1]!.age_to as number))
+        err('life_event.hazard', 'age bands overlap', id);
+    }
+    const requires = isRecord(e.requires) ? e.requires : {};
+    for (const m of (requires.marital_in as string[] | undefined) ?? []) {
+      if (!(MARITAL_STATUSES as readonly string[]).includes(m))
+        err('life_event.requires', `unknown marital status "${m}"`, id);
+    }
+    for (const g of (requires.gender_in as string[] | undefined) ?? []) {
+      if (!(GENDERS as readonly string[]).includes(g))
+        err('life_event.requires', `unknown gender "${g}"`, id);
+    }
+    for (const m of (e.modifiers as Record<string, unknown>[] | undefined) ?? []) {
+      if (!axes.includes(String(m.axis)))
+        err('life_event.modifier', `unknown temperament axis "${String(m.axis)}"`, id);
+      if (!isNum(m.mult) || m.mult <= 0 || m.mult > 5)
+        err('life_event.modifier', 'mult must be above 0 and at most 5', id);
+      if (m.above === undefined && m.below === undefined)
+        err('life_event.modifier', 'needs above or below', id);
+    }
+    const effects = isRecord(e.effects) ? e.effects : {};
+    if (Object.keys(effects).length === 0)
+      warn('life_event.effects', 'a life event with no effects changes nothing', id);
+    for (const [k, v] of Object.entries(effects)) {
+      if (k === 'marital') {
+        if (!(MARITAL_STATUSES as readonly string[]).includes(String(v)))
+          err('life_event.effects', `unknown marital status "${String(v)}"`, id);
+      } else if (
+        ![
+          'children_add',
+          'dependents_add',
+          'debt_months',
+          'savings_months',
+          'health_add',
+          'income_pct',
+        ].includes(k)
+      ) {
+        err('life_event.effects', `unknown effect "${k}"`, id);
+      } else if (!isNum(v)) {
+        err('life_event.effects', `effect "${k}" must be a number`, id);
+      }
+    }
   }
 }

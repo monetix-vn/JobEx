@@ -1,0 +1,146 @@
+[
+  {
+    "id": "marriage",
+    "name": { "en": "Gets married", "vi": "Kết hôn" },
+    "tags": ["family"],
+    "hazard": [
+      { "age_from": 18, "age_to": 24, "p": 0.06 },
+      { "age_from": 25, "age_to": 29, "p": 0.14 },
+      { "age_from": 30, "age_to": 34, "p": 0.1 },
+      { "age_from": 35, "age_to": 44, "p": 0.04 },
+      { "age_from": 45, "age_to": 70, "p": 0.015 }
+    ],
+    "requires": { "marital_in": ["single", "partnered", "divorced"] },
+    "effects": { "marital": "married", "savings_months": -2 }
+  },
+  {
+    "id": "divorce",
+    "name": { "en": "Divorces", "vi": "Ly hôn" },
+    "tags": ["family", "loss"],
+    "hazard": [
+      { "age_from": 18, "age_to": 29, "p": 0.01 },
+      { "age_from": 30, "age_to": 44, "p": 0.012 },
+      { "age_from": 45, "age_to": 70, "p": 0.008 }
+    ],
+    "requires": { "marital_in": ["married"] },
+    "modifiers": [
+      { "axis": "impulsivity", "above": 70, "mult": 1.4 },
+      { "axis": "warmth", "below": 35, "mult": 1.3 }
+    ],
+    "effects": { "marital": "divorced", "debt_months": 6, "savings_months": -2, "health_add": -3 }
+  },
+  {
+    "id": "child_born",
+    "name": { "en": "A child is born", "vi": "Có thêm một đứa con" },
+    "tags": ["family"],
+    "hazard": [
+      { "age_from": 20, "age_to": 24, "p": 0.18 },
+      { "age_from": 25, "age_to": 29, "p": 0.2 },
+      { "age_from": 30, "age_to": 34, "p": 0.14 },
+      { "age_from": 35, "age_to": 39, "p": 0.05 },
+      { "age_from": 40, "age_to": 44, "p": 0.01 }
+    ],
+    "requires": { "marital_in": ["married", "partnered"], "max_children": 3 },
+    "effects": { "children_add": 1, "dependents_add": 1, "savings_months": -1 }
+  },
+  {
+    "id": "parent_needs_care",
+    "name": { "en": "A parent needs care", "vi": "Cha mẹ cần được chăm sóc" },
+    "tags": ["family", "money"],
+    "hazard": [
+      { "age_from": 35, "age_to": 44, "p": 0.05 },
+      { "age_from": 45, "age_to": 54, "p": 0.08 },
+      { "age_from": 55, "age_to": 70, "p": 0.06 }
+    ],
+    "effects": { "dependents_add": 1, "savings_months": -0.5 }
+  },
+  {
+    "id": "bereavement",
+    "name": { "en": "Loses a loved one", "vi": "Mất người thân" },
+    "tags": ["loss"],
+    "hazard": [
+      { "age_from": 25, "age_to": 34, "p": 0.01 },
+      { "age_from": 35, "age_to": 44, "p": 0.02 },
+      { "age_from": 45, "age_to": 54, "p": 0.04 },
+      { "age_from": 55, "age_to": 70, "p": 0.07 }
+    ],
+    "effects": { "health_add": -3, "savings_months": -0.5 }
+  },
+  {
+    "id": "serious_illness",
+    "name": { "en": "Falls seriously ill", "vi": "Bị bệnh nặng" },
+    "tags": ["health", "money"],
+    "hazard": [
+      { "age_from": 18, "age_to": 34, "p": 0.01 },
+      { "age_from": 35, "age_to": 44, "p": 0.02 },
+      { "age_from": 45, "age_to": 54, "p": 0.035 },
+      { "age_from": 55, "age_to": 70, "p": 0.06 }
+    ],
+    "modifiers": [{ "axis": "resilience", "below": 35, "mult": 1.3 }],
+    "effects": { "health_add": -15, "debt_months": 4, "savings_months": -2 }
+  },
+  {
+    "id": "minor_accident",
+    "name": { "en": "Has an accident", "vi": "Gặp tai nạn nhỏ" },
+    "tags": ["health"],
+    "hazard": [{ "age_from": 18, "age_to": 70, "p": 0.04 }],
+    "modifiers": [{ "axis": "impulsivity", "above": 65, "mult": 1.5 }],
+    "effects": { "health_add": -4 }
+  },
+  {
+    "id": "burnout",
+    "name": { "en": "Burns out", "vi": "Kiệt sức" },
+    "tags": ["health", "work"],
+    "hazard": [{ "age_from": 25, "age_to": 55, "p": 0.02 }],
+    "modifiers": [{ "axis": "resilience", "below": 35, "mult": 2 }],
+    "effects": { "health_add": -8, "savings_months": -1 }
+  },
+  {
+    "id": "loan_taken",
+    "name": { "en": "Takes out a loan", "vi": "Vay một khoản tiền" },
+    "tags": ["money"],
+    "hazard": [
+      { "age_from": 22, "age_to": 29, "p": 0.06 },
+      { "age_from": 30, "age_to": 44, "p": 0.08 },
+      { "age_from": 45, "age_to": 70, "p": 0.04 }
+    ],
+    "modifiers": [
+      { "axis": "impulsivity", "above": 65, "mult": 1.5 },
+      { "axis": "caution", "above": 70, "mult": 0.6 }
+    ],
+    "effects": { "debt_months": 12 }
+  },
+  {
+    "id": "windfall",
+    "name": { "en": "Receives a windfall", "vi": "Nhận một khoản tiền bất ngờ" },
+    "tags": ["money"],
+    "hazard": [{ "age_from": 18, "age_to": 70, "p": 0.02 }],
+    "effects": { "savings_months": 4 }
+  },
+  {
+    "id": "relocation",
+    "name": { "en": "Moves home", "vi": "Chuyển chỗ ở" },
+    "tags": ["move"],
+    "hazard": [{ "age_from": 18, "age_to": 70, "p": 0.03 }],
+    "effects": { "savings_months": -1 }
+  },
+  {
+    "id": "promotion",
+    "name": { "en": "Is promoted", "vi": "Được thăng chức" },
+    "tags": ["work"],
+    "hazard": [
+      { "age_from": 25, "age_to": 44, "p": 0.08 },
+      { "age_from": 45, "age_to": 54, "p": 0.04 }
+    ],
+    "modifiers": [{ "axis": "ambition", "above": 65, "mult": 1.4 }],
+    "effects": { "income_pct": 15 }
+  },
+  {
+    "id": "job_change",
+    "name": { "en": "Changes employer", "vi": "Đổi nơi làm việc" },
+    "tags": ["work"],
+    "hazard": [{ "age_from": 20, "age_to": 50, "p": 0.05 }],
+    "modifiers": [{ "axis": "ambition", "above": 65, "mult": 1.5 }],
+    "effects": { "income_pct": 10 }
+  }
+]

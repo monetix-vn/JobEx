@@ -15,3 +15,11 @@ export { summarisePeople, type PeopleSummary } from './stats';
 export { createModule, manifest, peopleModule, type PeopleConfig } from './module';
 export { HERITABILITY, generateHousehold, inheritTemperament, type Household } from './household';
 export { profileEffects } from './profile';
+export {
+  APPEARANCE_TRAITS,
+  drawAppearance,
+  visibleTells,
+  type AppearanceParents,
+  type Tell,
+} from './appearance';
+export { applyLifeEvent, lifeEventChances, liveOneYear, type YearResult } from './life';

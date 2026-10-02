@@ -82,8 +82,8 @@ table.t td,table.t th{border-bottom:2px solid #55557f;padding:3px 6px;text-align
 </main>
 <script>
 var BT = String.fromCharCode(96);
-var FILES = ['guide','archetypes','quirks','names','departments','tables','preview'];
-var LABELS = { guide: 'Guide', archetypes: 'Archetypes', quirks: 'Quirks', names: 'Names', departments: 'Departments', tables: 'Data tables', preview: 'Preview' };
+var FILES = ['guide','archetypes','quirks','names','departments','tables','appearance','life_events','preview'];
+var LABELS = { guide: 'Guide', archetypes: 'Archetypes', quirks: 'Quirks', names: 'Names', departments: 'Departments', tables: 'Data tables', appearance: 'Appearance', life_events: 'Life events', preview: 'Preview' };
 var state = { data: null, tab: 'guide', sel: 0, dirty: false, diag: [], timer: null, guide: null };
 var $ = function (id) { return document.getElementById(id); };
 
@@ -99,6 +99,10 @@ var INTRO = {
     tips: ['female_share is 0 to 1 (0.78 means 78 percent women).', 'age_mean and age_sd shape a bell curve; age_min and age_max are hard limits.', 'income_base_vnd is the monthly pay of the first ladder step.', '"external" is for spouses and parents, who work anywhere.'] },
   tables: { what: 'Real-world statistics the generator uses (regions, education, marriage, children, birth sex ratio, spouse age gap). Each table must say where its numbers come from.',
     tips: ['A table is "verified" only when a person has checked it against the named source and described the check in note.', 'Probability rows must add up to 1 and cover every age from 18 to 65.', 'If there is no reliable data, say so in note instead of inventing precision.', 'Unverified tables are listed in the panel on the right.'] },
+  appearance: { what: 'How people look, as traits (build, height, face, hair, marks, glasses, skin tone). A sprite renderer will stack layers from these later. Appearance never reveals character: it is drawn from its own seed and does not depend on temperament.',
+    tips: ['Each trait is a list of options with a weight. An option can be limited to genders and an age window.', 'Every gender and every age from 18 to 70 needs at least one option per trait, or the validator refuses to save.', 'grey_by_age and glasses_by_age are shares (0 to 1) by age band.', 'resemblance is the chance a child copies a trait from a parent (0.45 means almost half the time).', 'Do not add options that stand for a stereotype; keep it to physical traits.'] },
+  life_events: { what: 'Things that happen to people over the years: marriage, children, illness, loans, promotion. Each has a yearly chance by age, optional requirements, trait modifiers and effects on life state.',
+    tips: ['p is the chance per year for someone in that age band who meets the requirements.', 'Age bands of one event must not overlap.', 'A modifier multiplies the chance when a temperament axis is above or below a level (for example resilience below 35).', 'Effects use months of income for money: debt_months 12 means a loan of a year of pay; savings_months can be negative.', 'These chances are estimates for gameplay; check them against real statistics before relying on them.'] },
   preview: { what: 'Generate a group of people from the library as it is now (even unsaved) and see the distributions next to the department targets.',
     tips: ['Use 500 or more people; small groups are noisy.', 'Choose a story function to see how it shifts the cast (e.g. tempter).', 'Change the run seed to see that different seeds give different people with the same distribution.'] }
 };
@@ -132,6 +136,16 @@ var HELP = {
   married_mean: 'Average number of children for married people.', other_mean: 'Average number of children for everyone else.',
   path: 'How someone got the job.', male_share: 'Share of boys among births (0.527 means 111 boys per 100 girls).',
   husband_older_mean: 'Average years the husband is older than the wife.', spread: 'Spread of the age gap in years.',
+  genders: 'Which genders this option can apply to (leave out for all).',
+  skin_tone_weights: 'Five weights for skin tone 1 (lightest) to 5 (deepest). A game parameter.',
+  resemblance: 'Chance a child copies a trait from a parent, 0 to 1.',
+  grey_by_age: 'Share with grey hair per age band.', glasses_by_age: 'Share wearing glasses per age band.', traits: 'The appearance traits and their options.',
+  share: 'Share of people, 0 to 1.',
+  hazard: 'Yearly chance by age band.', p: 'Chance per year, 0 to 0.9.', requires: 'Who can have this happen (marital status, children, gender).',
+  marital_in: 'Marital statuses that allow this event.', min_children: 'At least this many children.', max_children: 'At most this many children.', gender_in: 'Genders this can happen to.',
+  modifiers: 'Traits that raise or lower the chance.', axis: 'The temperament axis.', above: 'Applies when the axis is above this level.', below: 'Applies when the axis is below this level.', mult: 'Multiplies the chance (2 = twice as likely).',
+  effects: 'What changes in the life state.', marital: 'New marital status.', children_add: 'Children to add.', dependents_add: 'People who start (or stop) depending on this person.',
+  debt_months: 'Debt added, in months of income.', savings_months: 'Savings added (negative removes), in months of income.', health_add: 'Health change (negative hurts).', income_pct: 'Income change in percent.',
   en: 'English text.', vi: 'Vietnamese text.'
 };
 

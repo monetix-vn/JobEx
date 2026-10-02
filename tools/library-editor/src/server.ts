@@ -6,7 +6,15 @@ import { assembleLibrary, generatePerson, summarisePeople, type RawLibrary } fro
 import { EDITOR_HTML } from './ui';
 
 /** The library lives in one JSON file per part; the editor edits exactly these. */
-export const LIBRARY_FILES = ['archetypes', 'quirks', 'names', 'departments', 'tables'] as const;
+export const LIBRARY_FILES = [
+  'archetypes',
+  'quirks',
+  'names',
+  'departments',
+  'tables',
+  'appearance',
+  'life_events',
+] as const;
 
 export function readRaw(dir: string): RawLibrary {
   const out: Record<string, unknown> = {};
@@ -36,7 +44,7 @@ function send(res: ServerResponse, status: number, body: unknown, type = 'applic
   res.end(type === 'application/json' ? JSON.stringify(body) : String(body));
 }
 
-/** Keeps only the five known parts of a posted library, so nothing else can ever be written. */
+/** Keeps only the known parts of a posted library, so nothing else can ever be written. */
 function pickRaw(body: unknown): RawLibrary | undefined {
   if (typeof body !== 'object' || body === null) return undefined;
   const raw = body as Record<string, unknown>;
@@ -83,12 +91,12 @@ async function handle(
 
   if (url === '/api/validate') {
     const raw = pickRaw(body);
-    if (!raw) return send(res, 400, { error: 'expected the five library parts' });
+    if (!raw) return send(res, 400, { error: 'expected all the library parts' });
     return send(res, 200, { diagnostics: assembleLibrary(raw).diagnostics });
   }
   if (url === '/api/save') {
     const raw = pickRaw(body);
-    if (!raw) return send(res, 400, { error: 'expected the five library parts' });
+    if (!raw) return send(res, 400, { error: 'expected all the library parts' });
     const { diagnostics } = assembleLibrary(raw);
     if (diagnostics.some((d) => d.severity === 'error')) {
       return send(res, 200, { ok: false, diagnostics });
@@ -114,7 +122,7 @@ async function handle(
       seed?: string;
     };
     const raw = pickRaw(request.raw);
-    if (!raw) return send(res, 400, { error: 'expected the five library parts' });
+    if (!raw) return send(res, 400, { error: 'expected all the library parts' });
     const { library, diagnostics } = assembleLibrary(raw);
     if (!library) {
       const first = diagnostics.find((d) => d.severity === 'error');

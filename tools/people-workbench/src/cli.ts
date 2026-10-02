@@ -20,6 +20,8 @@ function load(): { library?: PeopleLibrary; ok: boolean } {
     names: read('names.json'),
     departments: read('departments.json'),
     tables: read('tables.json'),
+    appearance: read('appearance.json'),
+    life_events: read('life_events.json'),
   };
   const { library, diagnostics } = assembleLibrary(raw);
   const shown = diagnostics.filter((d) => d.severity !== 'info' || args.includes('--verbose'));
