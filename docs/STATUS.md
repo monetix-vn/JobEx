@@ -1,44 +1,67 @@
 # Status (update this at the end of every block)
 
-The game now has a new-game flow (player profile and settings), a control bar and save and load (M2a in `docs/checklists/TECH.md`). Design proposals (profile and time, identity engine, world plan) are in `docs/design/`; the plan is Phase 6 of `docs/checklists/TECH.md`, awaiting sign-off. Last updated after the authoring toolchain. Repo: github.com/monetix-vn/JobEx.
+Last updated: 2026-10-02, after M2b (worlds and the People panel). Branch: `feature/story-engine`
+(all work is pushed there; `main` is Phase 0; no PRs opened). Repo: github.com/monetix-vn/JobEx.
+All text, odds, consequences and library data are AI first drafts and need practitioner review.
 
-## Done
+## What exists
 
-- Phase 0 (foundations): contracts, kernel, rules, content pack validator, headless runner, client
-  shell, boundary check, CI. Gates met (see README).
-- Phase 1 block A: sim-core, workload, choice, narrative; first Sales Specialist scenes.
-- Phase 1 block B: director, knowledge (facts), social (gossip, reputation), live VI/EN switch.
-- Phase 1 block C: risk (detectors, audits, scapegoating, endings), education (debrief, glossary).
-- Second job: QC Specialist (16 pressure events, 2 consequence events, 27 facts, 12 terms; six added via `pnpm author`, source in content-src/qc-batch2.yml), a job picker,
-  per-job events (`role`) and busyness (`overhead_hours`).
-- Authoring: write scenes/facts/terms in YAML (EN+VI together), `pnpm author` imports + validates,
-  `pnpm content:list` is the event library (docs/AUTHORING.md, example in `content-src/examples/`).
-- Third job: Finance and Accounting (37 scenes, visible month-end close, arcs The Cut-off, The Receipt Problem, The Cookie Jar, Thu), promoted/walked-away endings.
-- Playable in the browser: `play.bat` / `play-vi.bat` (pick a job; sales 18 events, QC 18).
+**The game** (one-click: `play.bat`, rebuild with `build-play.bat`; Vietnamese and English):
 
-## Branches
+- 11 playable jobs, grouped by department in the picker: Sales, QC, Finance and Accounting, Production
+  Planner, Purchasing Buyer, Investment Banking Analyst (own company, pack `industry-securities`), HR
+  Business Partner, Production Line Supervisor, FP&A Analyst, Marketing Executive, IT Support. Each has a
+  bible in `docs/story/<job>.md`, arcs, beats, endings and a debrief. Review packs: `docs/review/`.
+- New-game flow: player profile (age, gender, education, experience, money, dependents, how hired) that
+  changes the start (never by gender), settings (time pace, intensity), control bar, save and load
+  (4 browser slots, autosave, export/import file).
+- Worlds (M2b): with the save host running, a game can belong to a world (people, lore, runs kept in a
+  folder). Continue an old world with a new seed, or start a new one. When a run ends, the protagonist
+  stays as an autonomous person, a year passes (life events, ageing), and the world is saved. A People
+  panel shows what the player can see (hidden traits are not shown) and a news panel shows the year.
+- "People you know" panel in a run (all people met, with a Hide/Show button).
 
-`main` (Phase 0) <- `phase-1-block-a` <- `phase-1-block-c` <- `chore/dev-workflow` <-
-`phase-1-qc-role` <- `feature/authoring` (this). No PRs opened yet. Block B commits are inside `phase-1-block-a`/`c` history.
+**The engine** (details in `CLAUDE.md` and `docs/adr/`): contracts, kernel, rules; modules sim-core,
+workload, choice, narrative, director, knowledge, social, relationships, close, risk, education, people.
+Deterministic: seed + inputs gives the same log; replay and pinned fingerprints are checked in CI.
 
-## Next (in order) - revised 2026-09-30 by the owner: engine first, then a series bible, then scenes
+**The people generator** (M1): library files in `library/` (16 archetypes, 75 quirks, names,
+departments, data tables, appearance, 14 life events), seeded generation, households with inheritance,
+appearance with family resemblance, yearly life events. Editor: `library-editor.bat` (8-bit UI with a
+Guide tab). Guide: `docs/design/GENERATOR-GUIDE.md`.
 
-Start with `docs/AI-GUIDE.md`; checklists in `docs/checklists/`; bibles in `docs/story/`.
-Progress on `feature/story-engine`: E1 to E10 done (characters, `mod-relationships`, facts feed trust, arcs, beats, debrief people/arcs, authoring, demo arc The Hamper). Phase 2 (story engine) is complete, including the client cast panel. Finance is playable (third job): 37 scenes, month-end close, four storylines, promoted/walked-away endings (`docs/story/finance.md`). QC also has a promotion ending (`qc.manager_offer`). QC story blocks are complete (37 scenes, arcs Hamper, Cheaper Steel, Field Complaint, Minh). Sales now has its bible v2 and story layer (beats, four storylines, rewards). Production Planner (31 scenes; `docs/story/production.md`) and Purchasing Buyer (23 scenes; `docs/story/purchasing.md`) are the fourth and fifth playable jobs, and Investment Banking Analyst (25 scenes; `docs/story/investment.md`, its own company in pack `industry-securities`) the sixth, the "finance bro". HR Business Partner (29 scenes; `docs/story/hr.md`) is the seventh, the first of five departments added on request (proposal: `docs/story/JOB-PROPOSALS.md`; order: HR, Production (Line Supervisor), FP&A, Marketing, IT); Production Line Supervisor (29 scenes; `docs/story/supervisor.md`, Line 3, `?role=sup`) is the eighth, and FP&A Analyst (27 scenes; `docs/story/fpa.md`, `?role=fpa`) the ninth, and Brand and Digital Marketing Executive (28 scenes; `docs/story/marketing.md`, `?role=mkt`) the tenth, and IT Support and Systems Administrator (26 scenes; `docs/story/it.md`, `?role=it`) the eleventh and last of the five requested departments; the job picker groups jobs by department. Review packs for practitioners are in `docs/review/` (`pnpm review:export`). Next: practitioner review (needs people), more scenes, a fifth job.
-Plan and design: `docs/adr/0002-story-engine-and-series-bible.md` (proposed, awaiting approval).
+**Tools**: `pnpm author` (YAML scenes), `content:list`, `balance:report`, `review:export`,
+`people:validate`, `people:generate`, save host (`save-host.bat`, port 5190), library editor (port 5180).
 
-1. Engine: characters, per-person relationships, story arcs and a timeline of beats (ADR 0002 step 1).
-2. Series bible per job (`docs/story/TEMPLATE.md`): premise, cast, season timeline, arcs, dark-side
-   ladder, endings; owner approves each one. Then an episode list.
-3. Write scenes against the approved episode lists (`pnpm author`); Finance & Accounting is the third job.
-4. Planner and walkable map in the client, saves, time-scale, `mod-i18n`, balance reports,
-   practitioner review of all content.
+## Roadmap (Phase 6 in `docs/checklists/TECH.md`)
+
+| Milestone | State |
+| --- | --- |
+| M0 decisions and foundations (ADR 0003-0005, seeds, calendar) | done |
+| M1a-d people generator, households, appearance, life events, editor, guide | done |
+| M1e verify table age bands and life-event chances against sources; owner reviews the library | open |
+| M2a profile, settings, control bar, browser saves | done |
+| M2b worlds, folder saves, protagonist becomes a person, People panel | mostly done |
+| M2b left: 500 / 3000 person tiers, perception (traits learned over time), minimal ladder, migrate fixed characters, generated people in scenes | open |
+| M3 appraisal and behaviour engine for everyone, full ladder | not started |
+| M4 text realiser (variation, forms of address), Vietnamese culture pack | not started |
+| M5 dark-path engine (motive, opportunity, barrier, risk, justice, retaliation) | not started |
+| M6 romance, family, ageing, death, legacy, lore book | not started |
+| M7 calibration against real data, long-run determinism and performance | not started |
+
+Suggested next: generated people in scenes plus perception (M2b rest, then M3/M4 start). Design:
+`docs/design/WORLD-PLAN.md` (world plan v2), `IDENTITY-ENGINE.md`, `PROFILE-AND-TIME.md`.
 
 ## Known gaps and caveats
 
-- All scene text, odds, consequences and glossary definitions are AI first drafts.
-- Balance numbers were tuned with careful / random / reckless bot players (`--policy`); guards live in
-  `tools/sim-runner/test/sales-week.test.ts`.
-- Not built: YAML packs, pack sign-off records, `source`/`last_reviewed` checks, Playwright tests,
-  cloud saves, mobile build.
-- GitHub Actions has never been observed from this environment (no `gh`); check the Actions tab.
+- Library tables are flagged unverified except the birth sex ratio and the education table (anchored to
+  the 2022 labour force survey). Do not claim realism.
+- Blocked (greyed) choices do not say why (a requirement not met, or not enough energy). Candidate fix.
+- Year length 26/12 weeks is shown as "coming soon". Sprites and art style are undecided.
+- Worlds need the save host running; without it the game plays without a world.
+- Not built: Playwright tests, cloud saves, mobile build, practitioner sign-off records.
+- GitHub Actions has not been observed from this environment (no `gh`); check the Actions tab.
+
+## Branches
+
+`main` (Phase 0) <- older phase branches <- `feature/story-engine` (current, everything above).

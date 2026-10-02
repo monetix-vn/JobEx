@@ -30,12 +30,11 @@ Do not read whole packages or all content. Use `pnpm content:list` and the packa
 
 ## 3. The two checklists
 
-- `docs/checklists/TECH.md`: phases 0 to 5. Phase 2 (story engine: characters, relationships, arcs,
-  beats) is the current focus and requires the owner's approval of ADR 0002.
-- `docs/checklists/STORY.md`: global story items, then per job (QC, Sales, Finance). The
-  per-episode tables are in `docs/story/<job>.md`. Order of work for the series: **engine -> series
-  bible (owner approves) -> episode list (owner approves) -> scenes -> review and balance**. No scenes
-  before an approved bible and episode list.
+- `docs/checklists/TECH.md`: phases 0 to 6. Phase 6 (M0 to M7: people generator, profile and time, worlds,
+  behaviour, text, dark paths, family, calibration) is the current focus. M0 to M2b are mostly done.
+- `docs/checklists/STORY.md`: global story items, then per job. The per-episode tables are in
+  `docs/story/<job>.md`. Order of work for a new job: **series bible (owner approves) -> episode list
+  (owner approves) -> scenes -> review and balance**.
 
 ## 4. Rules you must follow
 
@@ -95,3 +94,36 @@ pnpm build:play                    # rebuild JobEx-play.html
 
 Tests added or updated; CI green; docs updated (checklist, bible Status, STATUS.md, README if a
 command changed); committed with a clear message; reported to the owner.
+
+## 6. Owner preferences and machine quirks (learned in chat; keep this current)
+
+- The owner works from a project chat and wants autonomy: do the work, commit and push regularly to
+  `feature/story-engine`, no PR unless asked, report once per request in plain language. Do not ask
+  them to check things you can check yourself.
+- Always update the GUI together with any feature ("do not forget the GUI"). A feature that is not
+  visible in the game is not finished.
+- On the owner's Windows machine plain `pnpm` can hang. Use `npx -y pnpm@9.15.9 <script>` or the
+  one-click files: `play.bat`, `build-play.bat`, `library-editor.bat`, `save-host.bat`.
+- The owner wants honesty about data: say what is verified and what is not, never claim realism.
+- Darkness is allowed to be deep (corruption, lobbying, rule bending), but keep sexual violence and
+  anything involving minors abstract or off-screen, and keep an intensity setting.
+- Vietnamese cultural depth matters; text in both languages, natural, not literal translations.
+- Bash heredocs break on apostrophes: write files with the editor tools or small scripts.
+- Prettier may reformat after a patch: patch, run `pnpm format`, then check; patch by line, not by old text.
+
+## 7. Spending effort wisely (tokens)
+
+- Start light: `CLAUDE.md`, `docs/STATUS.md`, then only the files the task needs. Search (grep) and read line
+  ranges instead of whole files.
+- One topic per session; start a fresh session between milestones. A long session costs more per step.
+- Run the smallest check while working (`pnpm test -- <path>`, `pnpm check:fast`), the full `ci:quiet` once
+  before committing. Doc-only changes need only `pnpm format`.
+- Use sub-agents only for broad searches or reviews.
+
+## 8. Ready-to-paste brief for a new session
+
+> Read `CLAUDE.md`, `docs/AI-GUIDE.md` and `docs/STATUS.md`. Branch `feature/story-engine`. Task: [one
+> thing, for example: "generated people appear in scenes and the player learns their traits over time
+> (M2b rest, see docs/design/WORLD-PLAN.md and WORLDS-AND-SAVES.md)"]. Read other files only when the task
+> needs them. Done means: GUI updated, tests added, `pnpm run ci:quiet` passes, committed, pushed, and
+> docs/STATUS.md and the checklist updated.
