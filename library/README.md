@@ -13,6 +13,8 @@ The data the people generator draws from (ADR 0003, `docs/design/IDENTITY-ENGINE
 ## Working on it
 
 ```bash
+# On Windows: double-click library-editor.bat. Plain `pnpm` can hang on some machines; this project
+# pins pnpm 9.15.9, so write `npx -y pnpm@9.15.9 <script>` instead of `pnpm <script>`.
 pnpm library:edit          # the offline editor at http://127.0.0.1:5180 (edits these files, keeps .bak copies)
 pnpm people:validate       # checks every reference, probability row and age coverage (also in CI, strict)
 pnpm people:generate --n 300 --department hr     # distributions of a generated group, against the tables

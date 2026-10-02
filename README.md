@@ -126,3 +126,8 @@ Run it headless with `pnpm exec tsx tools/sim-runner/src/cli.ts run --scenario s
 (or `--scenario qc-year`)
 (`--policy first` plays carefully, `--policy last` recklessly; `sales-week` scripts just the first
 three scenes), or play it in the browser.
+
+## One-click files (Windows)
+
+`play.bat` plays; `build-play.bat` rebuilds the play pages; `library-editor.bat` opens the people library editor. They use
+`npx -y pnpm@9.15.9` because plain `pnpm` can hang on some machines.

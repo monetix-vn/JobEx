@@ -8,6 +8,9 @@ next steps: `docs/STATUS.md`. Decisions: `docs/adr/`. Each package's README says
 
 ## Commands (run the smallest one that answers your question)
 
+On the owner's Windows machine plain `pnpm` can hang; use `npx -y pnpm@9.15.9 <script>` (what `play.bat` does) or the
+one-click files: `play.bat`, `build-play.bat`, `library-editor.bat`. `pnpm library:edit` opens the people library editor.
+
 ```bash
 pnpm check:fast            # only what you changed (and its dependents): format, lint, types, boundaries, tests
 pnpm test -- <path>        # one test file, e.g. packages/mod-risk
