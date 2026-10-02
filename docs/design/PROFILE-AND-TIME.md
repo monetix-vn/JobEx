@@ -125,3 +125,26 @@ profile-aware lines (a boss who says something different to a 23-year-old than t
 5. **Default length:** Full year as the default, with Short year and Sprint as options? Recommendation: yes.
 6. **Money pressure:** shown to the player as a visible meter, or felt only through scenes and the debrief?
    Recommendation: a small visible indicator, so the player understands why a cash offer is tempting.
+
+## 8. Personal-life moments ("when will you marry?", "are you planning children?")
+
+Question from the owner: are answers to these remembered, and do they affect the role and the gameplay?
+
+Design answer: yes, in the same way every other choice already works.
+
+- **Remembered:** each answer is stored as a fact in the run's record (for example `deflected_marriage_question`,
+  `shared_family_plans`), like `signed_untested_coa`. It is part of the replayable log and shows in the debrief.
+- **Affects people, not stats:** the answer changes how specific characters feel about you (trust, loyalty,
+  favours) and what they say later. A boss who hears "next year, probably" may quietly hold back a promotion
+  ("she will leave"); one who hears "that is private" may respect it, or push. Colleagues gossip through the
+  existing social module, so what you said in the canteen reaches the boss.
+- **Affects the story:** later scenes can depend on it (a baby, a wedding leave, a transfer offer that assumes
+  your plans), and some endings open or close. The same fact can help in one workplace and hurt in another.
+- **Affects the profile:** an answer can move home pressure (a wedding costs money; a child cuts free hours),
+  so personal choices feed back into the hours and money budget of section 5.
+- **Not a hidden penalty, and not a quiz:** the options are things a real person would say (answer honestly,
+  deflect with humour, say it is private, lie to protect yourself), each with a plausible consequence, and the
+  debrief explains what happened and that questions like this are often improper or illegal to rely on in
+  hiring and promotion. Written with the same tone rules as the job scenes, and reviewed by practitioners.
+- **Opt-in:** these belong to the "workplace experience" level (section 7, decision 1), so the player chooses
+  at the start whether to meet them.
