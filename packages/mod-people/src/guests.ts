@@ -42,6 +42,10 @@ export function createGuestPort(config: GuestPortConfig): GuestPort {
     },
     appear(request) {
       const department = bare(request.department ?? config.department);
+      if (request.preferred) {
+        const asked = met.get(request.preferred);
+        if (asked) return asked;
+      }
       const key = `${request.sceneId}:${request.slot}`;
       const s = generationStream(config.seeds, 'guest', key, counter);
       const n = counter++;

@@ -47,7 +47,7 @@ export type SimTier = (typeof SIM_TIERS)[number];
 /** A line of a world history: something that happened to someone in a world year. */
 export interface LoreEntry {
   year: number;
-  kind: 'life_event' | 'run_ended' | 'created';
+  kind: 'life_event' | 'run_ended' | 'created' | 'promotion' | 'passed_over' | 'left' | 'hired';
   person: string;
   en: string;
   vi: string;

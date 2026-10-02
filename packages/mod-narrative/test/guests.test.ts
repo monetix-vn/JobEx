@@ -25,7 +25,11 @@ const strings: Record<string, string> = {
 };
 const content: ContentView = {
   get: ((kind: string, id: string) =>
-    kind === 'scene' && id === scene.id ? scene : undefined) as never,
+    kind === 'scene' && id === scene.id
+      ? scene
+      : kind === 'event' && id === 'event.g'
+        ? { id: 'event.g', scene: scene.id }
+        : undefined) as never,
   all: (() => []) as never,
   text: (_locale, key) => strings[key],
 };
@@ -96,6 +100,29 @@ describe('narrative: guests from the world', () => {
     const p = out[0]!.payload as { lines: { speaker: string }[]; choices: { label: string }[] };
     expect(p.choices[0]!.label).toBe('Help Someone from the team');
     expect(p.lines[0]!.speaker).toBe('Someone from the team');
+  });
+});
+
+describe('narrative: a scene someone asked for', () => {
+  it('gives the person who wanted it the first guest slot', () => {
+    const asked: GuestRequest[] = [];
+    const out = play(
+      {
+        appear: (r) => {
+          asked.push(r);
+          return person;
+        },
+      },
+      [
+        {
+          type: 'director.eventFired',
+          payload: { eventId: 'event.g', tags: [], person_id: 'person.test#1' },
+        },
+      ],
+    );
+    expect(asked[0]!.preferred).toBe('person.test#1');
+    expect(out.map((e) => e.type)).toEqual(['guest.appeared', 'scene.started']);
+    expect((out[1]!.payload as { sceneId: string }).sceneId).toBe('scene.g');
   });
 });
 

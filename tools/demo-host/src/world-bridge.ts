@@ -11,7 +11,7 @@ import type {
 import type { Run } from '@je/kernel';
 import type { Impression } from '@je/client-web';
 import { formatDiagnostics, hasErrors, loadContent, memorySource } from '@je/mod-content';
-import { ageOf, assembleLibrary, type RawLibrary } from '@je/mod-people';
+import { ageOf, assembleLibrary, stepName, type RawLibrary } from '@je/mod-people';
 
 /* ------------------------------------------------------------------ the people library in the page */
 
@@ -157,6 +157,8 @@ export interface DossierEntry {
   name: string;
   /** The person's job title is not known to the player; the department is, from working with them. */
   department: string;
+  /** Where they stand on the career ladder; colleagues know each other's position. */
+  position: string;
   /** "about 30s": the player judges age roughly. */
   ageBand: string;
   look: string;
@@ -195,6 +197,7 @@ function entryOf(
     id: p.id,
     name: [n.family, n.middle, n.given].filter(Boolean).join(' '),
     department: departmentName(p.life.department),
+    position: stepName(p.life.ladder_step, locale),
     ageBand: locale === 'vi' ? `khoảng ${decade} tuổi` : `about ${decade}s`,
     look: describeLook(p.appearance, locale),
     ...(p.legacy

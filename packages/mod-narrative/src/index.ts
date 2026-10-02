@@ -145,8 +145,10 @@ export function createModule(host: ModuleHost): ModuleInstance {
 
   const startNext = (): EventDraft[] => {
     if (state.active) return [];
-    const sceneId = state.queue.shift();
-    if (sceneId === undefined) return [];
+    const entry = state.queue.shift();
+    if (entry === undefined) return [];
+    // A scene someone asked for is queued as "scene@person", so the right person takes the first guest slot.
+    const [sceneId, actor] = entry.split('@') as [string, string | undefined];
     const noticeText = notices.get(sceneId);
     if (noticeText !== undefined) {
       notices.delete(sceneId);
@@ -169,6 +171,7 @@ export function createModule(host: ModuleHost): ModuleInstance {
     const drafts: EventDraft[] = [];
     const guestNamesBySlot: Record<string, { short: string; full: string }> = {};
     const guestPeople: { character: string; name: string; title: string; guest: true }[] = [];
+    let preferred = actor;
     for (const guest of scene.guests ?? []) {
       if (!config.guests) {
         const someone = text('ui.guest.someone');
@@ -180,8 +183,10 @@ export function createModule(host: ModuleHost): ModuleInstance {
         slot: guest.slot,
         story_function: guest.story_function,
         ...(guest.department ? { department: guest.department } : {}),
+        ...(preferred ? { preferred } : {}),
         turn,
       });
+      preferred = undefined;
       guestNamesBySlot[guest.slot] = guestNames(person);
       const department = person.life.department;
       guestPeople.push({
@@ -289,10 +294,10 @@ export function createModule(host: ModuleHost): ModuleInstance {
       },
 
       'director.eventFired': (env) => {
-        const { eventId } = env.payload as CoreEventPayloads['director.eventFired'];
+        const { eventId, person_id } = env.payload as CoreEventPayloads['director.eventFired'];
         const event = content.get('event', eventId);
         if (!event) return;
-        state.queue.push(event.scene);
+        state.queue.push(person_id ? `${event.scene}@${person_id}` : event.scene);
         return startNext();
       },
 

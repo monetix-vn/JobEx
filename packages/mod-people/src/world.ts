@@ -18,6 +18,7 @@ import { generationStream } from '@je/kernel';
 import { drawAppearance } from './appearance';
 import { generatePerson } from './generate';
 import { liveOneYear } from './life';
+import { reviewLadder } from './ladder';
 
 /** Share of the staff in each department for the cookware factory (a game parameter; tune in the editor later). */
 export const COOKWARE_MIX: Record<string, number> = {
@@ -361,7 +362,16 @@ export function advanceWorldYear(
     }
     return result.person;
   });
-  return { world: { ...world, year, people, lore: [...world.lore, ...lore] }, lore };
+  // Careers: the same review for everyone; people who retired this year are replaced by new hires.
+  const retiredNow = people.filter(
+    (p, i) => p.status === 'retired' && world.people[i]?.status !== 'retired',
+  );
+  const careers = reviewLadder(library, people, year, seeds, retiredNow);
+  lore.push(...careers.lore);
+  return {
+    world: { ...world, year, people: careers.people, lore: [...world.lore, ...lore] },
+    lore,
+  };
 }
 
 export type ParsedWorld = { ok: true; world: World } | { ok: false; error: string };

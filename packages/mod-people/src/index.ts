@@ -38,6 +38,14 @@ export {
   type ParsedWorld,
   type RetireResult,
 } from './world';
+export {
+  LADDER,
+  capacityOf,
+  reviewLadder,
+  stepName,
+  type LadderResult,
+  type LadderStep,
+} from './ladder';
 export { personForCharacter } from './character';
 export { createGuestPort, type GuestPortConfig } from './guests';
 export { appraisalManifest, appraisalModule, appraise, createAppraisalModule } from './appraisal';
@@ -47,3 +55,12 @@ export {
   manifest as perceptionManifest,
   perceptionModule,
 } from './perception';
+export {
+  WANTS,
+  behaviourModule,
+  createBehaviourModule,
+  debtPressure,
+  manifest as behaviourManifest,
+  wantsOf,
+  type Want,
+} from './behaviour';

@@ -26,5 +26,10 @@ The people library and the people store (ADR 0003, `docs/design/IDENTITY-ENGINE.
   the character with `guest.appeared`, so perception and appraisal treat them like any guest (their trust change goes to
   `rel.<slug>.trust` at 40% weight, since the scripted effects already carry the story).
 
+- `reviewLadder` (called by `advanceWorldYear`) runs one year of careers for everyone with one function: tenure, performance drift,
+  promotion into vacancies by score, vacancy chains, passed-over leavers, replacement hires. `LADDER` holds the five steps.
+- The `behaviour` module decides once a week whether someone the player has met brings a scene because they want something
+  (`wantsOf`: favour, complaint, credit), and fires it with that person as the guest (`director.eventFired` with `person_id`).
+
 Personality axes are drawn independently of gender and age (a tested fairness rule). Depends only on `@je/contracts` and
 `@je/kernel`. The workbench is `tools/people-workbench` (`pnpm people:validate`, `pnpm people:generate`).

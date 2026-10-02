@@ -933,7 +933,7 @@ function rowsFor(world: World, departments: Map<string, string>): HTMLElement[] 
       head.textContent = e.name;
       const detail = document.createElement('div');
       detail.style.cssText = 'color:#bbb;font-size:12px';
-      detail.textContent = [e.department, e.ageBand, e.look, e.retired ? t.retired : '']
+      detail.textContent = [e.position, e.department, e.ageBand, e.look, e.retired ? t.retired : '']
         .filter(Boolean)
         .join(' - ');
       row.append(head, detail);

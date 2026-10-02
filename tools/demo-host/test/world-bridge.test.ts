@@ -34,12 +34,19 @@ describe('the world in the game page', () => {
   it('shows what the player can see of people, never their hidden traits', () => {
     const entries = dossierOf(world, 'en', (id) => id);
     expect(entries).toHaveLength(12);
+    // colleagues know each other's position on the ladder, in the chosen language
+    expect(
+      entries.every((e) =>
+        ['Staff', 'Senior', 'Team lead', 'Manager', 'Head of department'].includes(e.position),
+      ),
+    ).toBe(true);
+    expect(dossierOf(world, 'vi', (id) => id).every((e) => e.position.length > 0)).toBe(true);
     const text = JSON.stringify(entries);
     for (const p of world.people) {
       for (const quirk of p.origin.quirks) expect(text).not.toContain(`"${quirk}"`);
     }
     expect(Object.keys(entries[0]!).sort()).toEqual(
-      ['ageBand', 'department', 'id', 'look', 'name', 'retired'].sort(),
+      ['ageBand', 'department', 'id', 'look', 'name', 'position', 'retired'].sort(),
     );
     expect(dossierOf(world, 'vi', (id) => id)[0]!.ageBand).toMatch(/tuổi/);
   });

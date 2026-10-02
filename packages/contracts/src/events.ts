@@ -116,7 +116,8 @@ export interface CoreEventPayloads {
   'content.loaded': { packs: { id: string; version: string }[]; counts: Record<string, number> };
   'map.loaded': { width: number; height: number; tiles: string[] };
   'sim.weekSettled': { turn: number; cash: number; stress: number };
-  'director.eventFired': { eventId: string; tags: string[] };
+  /** `person_id`: a person who wants this to happen (the behaviour engine) and should be the scene's first guest. */
+  'director.eventFired': { eventId: string; tags: string[]; person_id?: string };
   'scene.started': {
     sceneId: string;
     location: string;

@@ -64,6 +64,8 @@ export interface GuestRequest {
   slot: string;
   story_function: string;
   department?: string;
+  /** A person who asked for this scene (already met this run); they take the slot if they can. */
+  preferred?: string;
   turn: number;
 }
 

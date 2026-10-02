@@ -127,6 +127,39 @@ describe('generated people in the game', () => {
     ).toBe(true);
   });
 
+  it('people bring their own scenes: someone they know turns up because they want something', async () => {
+    let wanted = 0;
+    let brought = 0;
+    for (const seed of ['wants-1', 'wants-2', 'wants-3']) {
+      const run = await playYear(seed, people);
+      const asks = of(run, 'director.eventFired').filter(
+        (e) => (e.payload as { person_id?: string }).person_id,
+      );
+      wanted += asks.length;
+      const entries = run.exportLog().entries;
+      for (const ask of asks) {
+        const at = entries.indexOf(ask);
+        // the scene may wait behind the one on screen, but the asker takes the guest slot when it plays
+        const id = (ask.payload as { person_id: string }).person_id;
+        if (
+          entries
+            .slice(at)
+            .some(
+              (e) =>
+                e.type === 'guest.appeared' &&
+                (e.payload as { sceneId: string; person: Person }).sceneId.startsWith(
+                  'scene.gen.',
+                ) &&
+                (e.payload as { person: Person }).person.id === id,
+            )
+        )
+          brought++;
+      }
+    }
+    expect(wanted).toBeGreaterThan(0);
+    expect(brought).toBeGreaterThanOrEqual(Math.floor(wanted * 0.8));
+  });
+
   it('is deterministic: the same seed meets the same people and learns the same things', async () => {
     const a = await playYear('guests-2', people, SALES_ROLE);
     const b = await playYear('guests-2', people, SALES_ROLE);
