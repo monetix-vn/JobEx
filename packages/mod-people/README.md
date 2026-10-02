@@ -21,5 +21,10 @@ The people library and the people store (ADR 0003, `docs/design/IDENTITY-ENGINE.
   for the person id) and may act (`person.acted`): report a deed (`knowledge.escalate`), cover for the player, run them down or
   vouch (`sim.applyDelta` on `player.rep.staff`). Seeded, so a replay behaves the same.
 
+- `personForCharacter` makes the person under a fixed character (id = the character id): generated from the character's department,
+  then nudged by the writers' `traits` notes. `GuestPort.character` returns the same person all run, and the narrative announces
+  the character with `guest.appeared`, so perception and appraisal treat them like any guest (their trust change goes to
+  `rel.<slug>.trust` at 40% weight, since the scripted effects already carry the story).
+
 Personality axes are drawn independently of gender and age (a tested fairness rule). Depends only on `@je/contracts` and
 `@je/kernel`. The workbench is `tools/people-workbench` (`pnpm people:validate`, `pnpm people:generate`).

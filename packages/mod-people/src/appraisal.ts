@@ -41,6 +41,9 @@ const DEFAULT_STAKES: Stakes = { 1: 0.3, 2: 0.2, 3: -0.3 };
 const RIGHTNESS: Record<Kind, number> = { 1: 1, 2: 0.3, 3: -1 };
 const SELF_VALUES: PersonValue[] = ['money', 'status', 'security'];
 const SCALE = 12;
+/** A fixed character's own writers already script how they feel; their person adds texture, not a second verdict. */
+const CHARACTER_SHARE = 0.4;
+const isCharacter = (id: string): boolean => id.startsWith('char.');
 
 const clamp = (v: number, lo: number, hi: number): number => Math.min(hi, Math.max(lo, v));
 const kindOf = (choiceId: string): Kind => {
@@ -75,6 +78,7 @@ export function appraise(
  */
 export function createAppraisalModule(host: ModuleHost): ModuleInstance {
   const truth = new Map<string, Person>();
+  const labels = new Map<string, string>();
   const trust = new Map<string, number>();
   const meetings = new Map<string, number>();
   const inScene = new Map<string, { id: string; fn: string }[]>();
@@ -129,6 +133,7 @@ export function createAppraisalModule(host: ModuleHost): ModuleInstance {
       [PERCEPTION_EVENTS.guestAppeared]: (env) => {
         const p = env.payload as GuestAppearedPayload;
         truth.set(p.person.id, p.person);
+        if (p.display_name) labels.set(p.person.id, p.display_name);
         const list = inScene.get(p.sceneId) ?? [];
         list.push({ id: p.person.id, fn: p.story_function });
         inScene.set(p.sceneId, list);
@@ -149,9 +154,24 @@ export function createAppraisalModule(host: ModuleHost): ModuleInstance {
           const seen = (meetings.get(g.id) ?? 0) + 1;
           meetings.set(g.id, seen);
           const before = trust.get(g.id) ?? 0;
-          const after = clamp(before + appraise(person, g.fn, kind, seen), -100, 100);
+          const share = isCharacter(g.id) ? CHARACTER_SHARE : 1;
+          const after = clamp(
+            before + Math.round(appraise(person, g.fn, kind, seen) * share),
+            -100,
+            100,
+          );
           trust.set(g.id, after);
-          if (after !== before) {
+          if (after !== before && isCharacter(g.id)) {
+            // A fixed character's feelings live in state (`rel.<slug>.trust`); the relationships module announces them.
+            drafts.push({
+              type: 'sim.applyDelta',
+              payload: {
+                path: `rel.${g.id.slice('char.'.length)}.trust`,
+                value: after - before,
+                reason: `appraisal:${p.sceneId}`,
+              },
+            });
+          } else if (after !== before) {
             drafts.push({
               type: 'relationship.changed',
               payload: {
@@ -170,7 +190,7 @@ export function createAppraisalModule(host: ModuleHost): ModuleInstance {
               type: PERSON_ACTED,
               payload: {
                 person_id: g.id,
-                name: [n.family, n.middle, n.given].filter(Boolean).join(' '),
+                name: labels.get(g.id) ?? [n.family, n.middle, n.given].filter(Boolean).join(' '),
                 action: act.action,
                 sceneId: p.sceneId,
                 visible: act.action === 'badmouths' || act.action === 'vouches',

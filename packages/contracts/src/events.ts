@@ -97,7 +97,7 @@ export interface ScenePerson {
   character: string;
   name: string;
   title: string;
-  /** Set on a person drawn from the world (a guest): `character` is then their person id. */
+  /** Set when a person with hidden traits stands behind this name (a guest, or a fixed character's person). */
   guest?: boolean;
 }
 

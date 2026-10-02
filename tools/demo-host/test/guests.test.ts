@@ -61,7 +61,9 @@ const of = (run: Run, type: string) => run.exportLog().entries.filter((e) => e.t
 describe('generated people in the game', () => {
   it('guests step into scenes, and the player learns about them over a year', async () => {
     const run = await playYear('guests-1', people);
-    const appeared = of(run, 'guest.appeared').map((e) => (e.payload as { person: Person }).person);
+    const appeared = of(run, 'guest.appeared')
+      .map((e) => (e.payload as { person: Person }).person)
+      .filter((p) => !p.id.startsWith('char.'));
     expect(appeared.length).toBeGreaterThan(0);
     // colleagues recur, and they come from the player's own department by default
     expect(appeared.every((p) => p.life.department === 'qc')).toBe(true);
@@ -72,11 +74,13 @@ describe('generated people in the game', () => {
     const scenes = of(run, 'scene.started').map(
       (e) => e.payload as CoreEventPayloads['scene.started'],
     );
-    const guestScenes = scenes.filter((s) => s.people?.some((p) => p.guest));
+    const guestScenes = scenes.filter((s) =>
+      s.people?.some((p) => p.guest && !p.character.startsWith('char.')),
+    );
     expect(guestScenes.length).toBe(appeared.length);
     for (const s of guestScenes) {
       expect(JSON.stringify(s)).not.toMatch(/\{(colleague|rival)/);
-      const guest = s.people!.find((p) => p.guest)!;
+      const guest = s.people!.find((p) => p.guest && !p.character.startsWith('char.'))!;
       expect(
         s.lines.some(
           (l) => l.speaker === guest.name || l.text.includes(guest.name.split(' ').pop()!),
@@ -93,6 +97,34 @@ describe('generated people in the game', () => {
     expect(trust.length).toBeGreaterThan(0);
     // the player is shown no true numbers anywhere in what the client receives
     expect(JSON.stringify(of(run, 'perception.updated'))).not.toContain('temperament');
+  });
+
+  it('the fixed characters have a person underneath: the player learns them and they judge the player', async () => {
+    const run = await playYear('guests-chars', people);
+    const chars = of(run, 'guest.appeared')
+      .map((e) => (e.payload as { person: Person }).person)
+      .filter((p) => p.id.startsWith('char.'));
+    expect(chars.length).toBeGreaterThan(0);
+    // a fixed character keeps the same person all run
+    expect(new Set(chars.map((p) => JSON.stringify(p))).size).toBe(
+      new Set(chars.map((p) => p.id)).size,
+    );
+    const learned = of(run, 'perception.updated').filter((e) =>
+      String((e.payload as { person_id: string }).person_id).startsWith('char.'),
+    );
+    expect(learned.length).toBeGreaterThan(0);
+    // their view of the player moves through the same state as the scripted feelings
+    const appraised = of(run, 'sim.deltaApplied').filter((e) =>
+      String((e.payload as { reason?: string }).reason ?? '').startsWith('appraisal:'),
+    );
+    expect(appraised.length).toBeGreaterThan(0);
+    // and the cast list shows them as people with impressions, still under their fixed names
+    const scenes = of(run, 'scene.started').map(
+      (e) => e.payload as CoreEventPayloads['scene.started'],
+    );
+    expect(
+      scenes.some((sc) => sc.people?.some((q) => q.character.startsWith('char.') && q.guest)),
+    ).toBe(true);
   });
 
   it('is deterministic: the same seed meets the same people and learns the same things', async () => {

@@ -38,6 +38,7 @@ export {
   type ParsedWorld,
   type RetireResult,
 } from './world';
+export { personForCharacter } from './character';
 export { createGuestPort, type GuestPortConfig } from './guests';
 export { appraisalManifest, appraisalModule, appraise, createAppraisalModule } from './appraisal';
 export {

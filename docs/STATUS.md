@@ -1,6 +1,6 @@
 # Status (update this at the end of every block)
 
-Last updated: 2026-10-03, after M3 slice 1 (guests judge the player and act on their traits). Branch: `feature/story-engine`
+Last updated: 2026-10-03, after M3 slice 2 (the fixed characters have a person underneath). Branch: `feature/story-engine`
 (all work is pushed there; `main` is Phase 0; no PRs opened). Repo: github.com/monetix-vn/JobEx.
 All text, odds, consequences and library data are AI first drafts and need practitioner review.
 
@@ -51,7 +51,7 @@ Guide tab). Guide: `docs/design/GENERATOR-GUIDE.md`.
 | M2b worlds, folder saves, protagonist becomes a person, People panel | mostly done |
 | M2b generated people in scenes, perception (scene sightings) | done |
 | M2b left: 500 / 3000 person tiers, minimal ladder, migrate fixed characters to people, impressions kept in the world, perception from gossip and records | open |
-| M3 appraisal and behaviour engine for everyone, full ladder | started: slice 1 done for guests (appraisal, trust, 4 actions); fixed characters not attached yet; ladder not started |
+| M3 appraisal and behaviour engine for everyone, full ladder | started: slices 1-2 done (appraisal, trust, 4 actions, for guests and for the fixed characters' hidden persons); goals and ladder not started |
 | M4 text realiser (variation, forms of address), Vietnamese culture pack | not started |
 | M5 dark-path engine (motive, opportunity, barrier, risk, justice, retaliation) | not started |
 | M6 romance, family, ageing, death, legacy, lore book | not started |
@@ -64,9 +64,11 @@ Suggested next: M3 (guests behave by their traits, so what the player learns mat
 
 - Library tables are flagged unverified except the birth sex ratio and the education table (anchored to
   the 2022 labour force survey). Do not claim realism.
-- M3 slice 1: guests act on their traits only through the outcome (trust, rumours, standing); their lines are the same
-  for everyone (text variation is M4). The old fixed characters (Khoa, Lan...) are untouched on purpose; the plan is to
-  attach a generated person under each of them later, so they get the same engine without rewriting scenes. Impressions live in a run and are not saved into the world. A save
+- M3: people act on their traits only through the outcome (trust, rumours, standing); their lines are the same for
+  everyone (text variation is M4). The fixed characters (Khoa, Lan...) keep their names and scripted feelings; the person
+  under them (slice 2) adds a smaller extra view (40% of a guest's trust change, through `rel.<slug>.trust`). Their traits
+  come from the writers' notes in `packages/mod-people/src/character.ts` (about 50 known words; others are ignored).
+  Not yet: goals, the ladder, replacing the fixed names with generated ones. Impressions live in a run and are not saved into the world. A save
   reloaded after the world changed may meet different roster people in the same scenes (the choices still replay).
 - Only 3 guest scenes exist; every other scene still uses fixed characters or roles. More are content work.
 - Blocked (greyed) choices do not say why (a requirement not met, or not enough energy). Candidate fix.

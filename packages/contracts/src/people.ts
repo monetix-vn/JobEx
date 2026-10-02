@@ -354,6 +354,8 @@ export interface GuestAppearedPayload {
   slot: string;
   story_function: string;
   person: Person;
+  /** For a fixed character: the name shown to the player (it is in the player's language, so only a label). */
+  display_name?: string;
 }
 
 /** What the player now believes about one trait of one person: an estimate and how sure they are. */

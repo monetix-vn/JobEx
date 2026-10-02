@@ -1,6 +1,7 @@
 import type { GuestPort, PeopleLibrary, Person, WorldSeeds } from '@je/contracts';
 import { generationStream } from '@je/kernel';
 import { generatePerson, type GeneratorOptions } from './generate';
+import { personForCharacter } from './character';
 
 export interface GuestPortConfig {
   library: PeopleLibrary;
@@ -27,9 +28,18 @@ export function createGuestPort(config: GuestPortConfig): GuestPort {
   const reuseChance = config.reuseChance ?? 0.35;
   const rosterChance = config.rosterChance ?? 0.7;
   const met = new Map<string, Person>();
+  const characters = new Map<string, Person>();
   let counter = 0;
 
   return {
+    character(request) {
+      let person = characters.get(request.characterId);
+      if (!person) {
+        person = personForCharacter(config.library, config.seeds, request, config.options);
+        characters.set(request.characterId, person);
+      }
+      return person;
+    },
     appear(request) {
       const department = bare(request.department ?? config.department);
       const key = `${request.sceneId}:${request.slot}`;

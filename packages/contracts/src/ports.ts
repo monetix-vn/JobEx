@@ -48,6 +48,16 @@ export interface Ports {
   content?: ContentSourcePort;
 }
 
+/** A request for the person underneath a fixed character. */
+export interface CharacterRequest {
+  characterId: string;
+  /** The department written in the character's file; it may not be one the people library knows. */
+  department: string;
+  /** Writers' notes on the character (methodical, tired...); they nudge the person's temperament. */
+  traits?: string[];
+  turn: number;
+}
+
 /** A request for a person to appear in a scene (see `Scene.guests`). */
 export interface GuestRequest {
   sceneId: string;
@@ -63,4 +73,9 @@ export interface GuestRequest {
  */
 export interface GuestPort {
   appear(request: GuestRequest): Person;
+  /**
+   * The person underneath a fixed, named character (their id is the character's id). The same person is returned
+   * every time within a run, so a character keeps their traits.
+   */
+  character(request: CharacterRequest): Person;
 }

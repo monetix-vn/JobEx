@@ -215,7 +215,31 @@ export function createModule(host: ModuleHost): ModuleInstance {
         ? [{ character: id, name: text(person.name_key), title: text(person.title_key) }]
         : [];
     });
-    const people = [...named, ...guestPeople];
+    if (config.guests) {
+      for (const who of named) {
+        const character = content.get('character', who.character)!;
+        const person = config.guests.character({
+          characterId: who.character,
+          department: character.department,
+          ...(character.traits ? { traits: character.traits } : {}),
+          turn,
+        });
+        drafts.push({
+          type: PERCEPTION_EVENTS.guestAppeared,
+          payload: {
+            sceneId,
+            slot: who.character,
+            story_function: 'colleague',
+            person,
+            display_name: who.name,
+          } satisfies GuestAppearedPayload,
+        });
+      }
+    }
+    const people = [
+      ...named.map((n) => (config.guests ? { ...n, guest: true as const } : n)),
+      ...guestPeople,
+    ];
     const choices =
       scene.choices && scene.choices.length > 0
         ? scene.choices.map((c, i) => ({
