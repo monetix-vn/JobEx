@@ -69,3 +69,14 @@ Order matters; each item ships with tests and a docs/AUTHORING.md update.
 - Never reorder Phase 2 items without telling the owner.
 - If an item turns out to be larger than one block, split it and add the parts here.
 - After each item: update this file, `docs/STATUS.md`, and report to the owner.
+
+## Phase 6: Identity and world engine (plan: `docs/design/WORLD-PLAN.md`; needs owner sign-off on its open questions)
+
+- [ ] M0 ADRs (identity and world engine, saves and snapshots, content boundaries), performance budget, day-based calendar, world and run seeds
+- [ ] M1 Player as a Person, profile screens, settings (game length, speed, intensity), folder saves (continue or restart world, new seed), minimal ladder
+- [ ] M2 Data pack and attribute library, generator, population tiers (50 / 500 / 3000), families, perception (hidden traits learned over time), dossier, migrate fixed characters
+- [ ] M3 Appraisal for everyone, behaviour engine, life events, full ladder, old protagonist as an autonomous Person
+- [ ] M4 Text realiser (variation, forms of address), scene text as slots and pools, Vietnamese culture pack v1
+- [ ] M5 Dark-path engine (motive, opportunity, barrier with habituation, risk, justice, retaliation), reviews
+- [ ] M6 Romance, family, inheritance, ageing, death, legacy, world history lore book
+- [ ] M7 Calibration against real-world data, long-run determinism and performance, reviews, spatial layer prototype
