@@ -58,6 +58,17 @@ export function sureWord(confidence: number, locale: UiLocale): string {
   return confidence < 35 ? words[0] : confidence < 60 ? words[1] : words[2];
 }
 
+const ACTED: Record<UiLocale, Record<string, string>> = {
+  en: { vouches: 'has spoken well of you', badmouths: 'has been running you down' },
+  vi: { vouches: 'đã nói tốt về bạn', badmouths: 'đang nói xấu bạn' },
+};
+
+/** What a guest has visibly done lately, in words; empty when nothing the player could see. */
+export function actedLine(actions: readonly string[] | undefined, locale: UiLocale): string {
+  const last = actions?.[actions.length - 1];
+  return last ? (ACTED[locale][last] ?? '') : '';
+}
+
 /** One line for the people panel, most sure trait first; the player never sees a number. */
 export function impressionLine(impression: Impression | undefined, locale: UiLocale): string {
   const text = IMPRESSION_TEXT[locale];

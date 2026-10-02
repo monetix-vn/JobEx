@@ -11,9 +11,10 @@ import type {
   ModuleInstance,
   ModuleManifest,
   Person,
+  PersonActedPayload,
   Scene,
 } from '@je/contracts';
-import { PERCEPTION_EVENTS } from '@je/contracts';
+import { PERCEPTION_EVENTS, PERSON_ACTED } from '@je/contracts';
 import { ExpressionError, VarStore, evaluate } from '@je/rules';
 
 export const manifest: ModuleManifest = {
@@ -31,6 +32,7 @@ export const manifest: ModuleManifest = {
     'risk.detected',
     'risk.scapegoated',
     'choice.resolved',
+    PERSON_ACTED,
   ],
   emits: ['scene.started', 'scene.ended', 'scene.expired', PERCEPTION_EVENTS.guestAppeared],
   contractsVersion: CONTRACTS_VERSION,
@@ -278,6 +280,12 @@ export function createModule(host: ModuleHost): ModuleInstance {
       'fact.escalated': (env) => {
         const p = env.payload as CoreEventPayloads['fact.escalated'];
         return p.to === 'rumor' || p.to === 'public' ? notice(p.factId, p.to) : undefined;
+      },
+
+      [PERSON_ACTED]: (env) => {
+        const p = env.payload as PersonActedPayload;
+        if (!p.visible) return;
+        return riskNotice(p.action, `ui.notice.acted.${p.action}`, { name: p.name });
       },
 
       'risk.auditStarted': () => riskNotice('audit', 'ui.notice.audit', {}),

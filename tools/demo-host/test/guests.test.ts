@@ -86,6 +86,11 @@ describe('generated people in the game', () => {
 
     const impressions = impressionsFromSnapshot(run.snapshot()['perception'], library);
     expect(Object.keys(impressions).length).toBeGreaterThan(0);
+    // each guest judges the player: trust moves for the guest's person id, and some of them act on it
+    const trust = of(run, 'relationship.changed').filter((e) =>
+      String((e.payload as { character: string }).character).startsWith('person.'),
+    );
+    expect(trust.length).toBeGreaterThan(0);
     // the player is shown no true numbers anywhere in what the client receives
     expect(JSON.stringify(of(run, 'perception.updated'))).not.toContain('temperament');
   });

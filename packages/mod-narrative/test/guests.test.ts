@@ -21,6 +21,7 @@ const strings: Record<string, string> = {
   'speaker.boss': 'Boss',
   'ui.guest.someone': 'Someone from the team',
   'ui.continue': 'Continue',
+  'ui.notice.acted.vouches': '{name} put in a good word for you.',
 };
 const content: ContentView = {
   get: ((kind: string, id: string) =>
@@ -95,5 +96,18 @@ describe('narrative: guests from the world', () => {
     const p = out[0]!.payload as { lines: { speaker: string }[]; choices: { label: string }[] };
     expect(p.choices[0]!.label).toBe('Help Someone from the team');
     expect(p.lines[0]!.speaker).toBe('Someone from the team');
+  });
+});
+
+describe('narrative: what guests visibly do', () => {
+  const acted = (visible: boolean) => ({
+    type: 'person.acted',
+    payload: { person_id: 'p', name: 'Hung', action: 'vouches', sceneId: 's', visible },
+  });
+  it('shows a notice for something the player could see, and nothing for what happens out of sight', () => {
+    const seen = play(undefined, [acted(true)]);
+    const p = seen[0]!.payload as { lines: { text: string }[] };
+    expect(p.lines[0]!.text).toBe('Hung put in a good word for you.');
+    expect(play(undefined, [acted(false)])).toEqual([]);
   });
 });

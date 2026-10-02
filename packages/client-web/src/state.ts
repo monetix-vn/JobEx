@@ -3,6 +3,8 @@ import type {
   CoreEventPayloads,
   Envelope,
   PerceptionUpdatedPayload,
+  PersonActedPayload,
+  PersonAction,
   QuirkNoticedPayload,
   SceneTerm,
   StateValue,
@@ -39,6 +41,8 @@ export interface ClientState {
   feelings: Record<string, { trust: number; loyalty: number; owed: number }>;
   /** What the player believes about each guest (by person id): traits learned over time, never the true numbers. */
   impressions: Record<string, Impression>;
+  /** What a guest has visibly done about the player (vouched, ran them down), latest last, by person id. */
+  acted: Record<string, PersonAction[]>;
 }
 
 export interface CastMember {
@@ -55,6 +59,7 @@ export const initialState: ClientState = {
   cast: [],
   feelings: {},
   impressions: {},
+  acted: {},
 };
 
 /** Pure reducer: the client's view is derived entirely from bus messages. */
@@ -116,6 +121,14 @@ export function reduce(state: ClientState, envelope: Envelope): ClientState {
             axes: { ...now.axes, [p.axis]: { estimate: p.estimate, confidence: p.confidence } },
           },
         },
+      };
+    }
+    case 'person.acted': {
+      const p = envelope.payload as PersonActedPayload;
+      if (!p.visible) return state;
+      return {
+        ...state,
+        acted: { ...state.acted, [p.person_id]: [...(state.acted[p.person_id] ?? []), p.action] },
       };
     }
     case 'perception.quirkNoticed': {

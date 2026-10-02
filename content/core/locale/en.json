@@ -2,6 +2,8 @@
   "ui.week": "Week",
   "ui.year": "Year",
   "ui.guest.someone": "Someone from the team",
+  "ui.notice.acted.badmouths": "{name} has been running you down behind your back.",
+  "ui.notice.acted.vouches": "{name} put in a good word for you.",
   "ui.continue": "Continue",
   "ui.notice.rumor": "People are talking about {fact}.",
   "ui.notice.public": "Everyone knows now: {fact}.",

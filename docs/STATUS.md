@@ -1,6 +1,6 @@
 # Status (update this at the end of every block)
 
-Last updated: 2026-10-03, after M2b (worlds, People panel, generated people in scenes, perception). Branch: `feature/story-engine`
+Last updated: 2026-10-03, after M3 slice 1 (guests judge the player and act on their traits). Branch: `feature/story-engine`
 (all work is pushed there; `main` is Phase 0; no PRs opened). Repo: github.com/monetix-vn/JobEx.
 All text, odds, consequences and library data are AI first drafts and need practitioner review.
 
@@ -23,7 +23,10 @@ All text, odds, consequences and library data are AI first drafts and need pract
 - Generated people in scenes: a scene can name guests (`guests:` in YAML, `{colleague}` in text). They are colleagues
   from the world's roster (or newly generated), often recurring, and the player learns their traits over time: each
   scene gives two noisy readings of one trait, confidence grows, quirks get noticed. The panels show words such as
-  "warm (an impression)", never numbers. Three generic scenes (a favour, a complaint, stolen credit) run for every job.
+  "warm (an impression)", never numbers. Each guest also judges what you did (their integrity, values and how well
+  they know you) and keeps a trust score; then they act: a principled witness may tell others about a shortcut (the deed
+  becomes a rumour, and you are not told who), a lenient friend keeps it quiet, a rough or impulsive one you crossed runs you
+  down, a warm one you helped vouches for you (these two show as notices and in the cast panel). Three generic scenes (a favour, a complaint, stolen credit) run for every job.
 
 **The engine** (details in `CLAUDE.md` and `docs/adr/`): contracts, kernel, rules; modules sim-core,
 workload, choice, narrative, director, knowledge, social, relationships, close, risk, education, people.
@@ -48,7 +51,7 @@ Guide tab). Guide: `docs/design/GENERATOR-GUIDE.md`.
 | M2b worlds, folder saves, protagonist becomes a person, People panel | mostly done |
 | M2b generated people in scenes, perception (scene sightings) | done |
 | M2b left: 500 / 3000 person tiers, minimal ladder, migrate fixed characters to people, impressions kept in the world, perception from gossip and records | open |
-| M3 appraisal and behaviour engine for everyone, full ladder | not started |
+| M3 appraisal and behaviour engine for everyone, full ladder | started: slice 1 done for guests (appraisal, trust, 4 actions); fixed characters not attached yet; ladder not started |
 | M4 text realiser (variation, forms of address), Vietnamese culture pack | not started |
 | M5 dark-path engine (motive, opportunity, barrier, risk, justice, retaliation) | not started |
 | M6 romance, family, ageing, death, legacy, lore book | not started |
@@ -61,8 +64,9 @@ Suggested next: M3 (guests behave by their traits, so what the player learns mat
 
 - Library tables are flagged unverified except the birth sex ratio and the education table (anchored to
   the 2022 labour force survey). Do not claim realism.
-- Guests do not yet act on their traits (the scene text is the same for everyone), so perception is informative but
-  has no mechanical effect yet; that is M3. Impressions live in a run and are not saved into the world. A save
+- M3 slice 1: guests act on their traits only through the outcome (trust, rumours, standing); their lines are the same
+  for everyone (text variation is M4). The old fixed characters (Khoa, Lan...) are untouched on purpose; the plan is to
+  attach a generated person under each of them later, so they get the same engine without rewriting scenes. Impressions live in a run and are not saved into the world. A save
   reloaded after the world changed may meet different roster people in the same scenes (the choices still replay).
 - Only 3 guest scenes exist; every other scene still uses fixed characters or roles. More are content work.
 - Blocked (greyed) choices do not say why (a requirement not met, or not enough energy). Candidate fix.

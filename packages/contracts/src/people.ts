@@ -380,3 +380,22 @@ export const PERCEPTION_EVENTS = {
   updated: 'perception.updated',
   quirkNoticed: 'perception.quirkNoticed',
 } as const;
+
+/**
+ * What a person does after a scene, from their own traits and how they now feel about the player (M3).
+ * `reported` and `covers` happen out of sight; the player only sees their effects (a rumour, or nothing).
+ */
+export const PERSON_ACTIONS = ['reported', 'covers', 'badmouths', 'vouches'] as const;
+export type PersonAction = (typeof PERSON_ACTIONS)[number];
+
+export interface PersonActedPayload {
+  person_id: string;
+  /** Family, middle and given name; not language-dependent. */
+  name: string;
+  action: PersonAction;
+  sceneId: string;
+  /** Whether the player gets to know it happened (it is shown as a notice and in the people panel). */
+  visible: boolean;
+}
+
+export const PERSON_ACTED = 'person.acted';

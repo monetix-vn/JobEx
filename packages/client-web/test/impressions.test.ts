@@ -79,7 +79,7 @@ describe('impressions in the client', () => {
     expect(impressionLine(undefined, 'en')).toBe('You do not know them well yet.');
   });
 
-  it('shows a guest in the cast panel with what the player has worked out, not scripted feelings', () => {
+  it('shows a guest in the cast panel with how they feel, what they did, and what the player has worked out', () => {
     const listeners = new Set<(e: Envelope) => void>();
     const transport: Transport = {
       subscribe: (fn) => (listeners.add(fn), () => listeners.delete(fn)),
@@ -88,11 +88,32 @@ describe('impressions in the client', () => {
     const root = document.createElement('div');
     document.body.append(root);
     mount(root, transport);
-    for (const e of [guestScene, seen('integrity', 15, 60)]) listeners.forEach((l) => l(e));
+    const feel = env('relationship.changed', {
+      character: 'person.x#1',
+      dimension: 'trust',
+      from: 0,
+      to: 30,
+    });
+    const quiet = env('person.acted', {
+      person_id: 'person.x#1',
+      name: 'N',
+      action: 'reported',
+      sceneId: 's',
+      visible: false,
+    });
+    const loud = env('person.acted', {
+      person_id: 'person.x#1',
+      name: 'N',
+      action: 'vouches',
+      sceneId: 's',
+      visible: true,
+    });
+    for (const e of [guestScene, seen('integrity', 15, 60), feel, quiet, loud])
+      listeners.forEach((l) => l(e));
     const item = root.querySelector<HTMLElement>('.je-person[data-guest="true"]')!;
     expect(item.textContent).toBe(
-      'Nguyen Van Hung (QC) - What you make of them: bends the rules (fairly sure).',
+      'Nguyen Van Hung (QC) - trusts you. has spoken well of you. What you make of them: bends the rules (fairly sure).',
     );
-    expect(item.textContent).not.toMatch(/undecided|trusts you|wary/);
+    expect(item.textContent).not.toContain('reported');
   });
 });

@@ -2,6 +2,8 @@
   "ui.week": "Tuần",
   "ui.year": "Năm",
   "ui.guest.someone": "Một đồng nghiệp",
+  "ui.notice.acted.badmouths": "{name} đang nói xấu bạn sau lưng.",
+  "ui.notice.acted.vouches": "{name} đã nói tốt về bạn.",
   "ui.continue": "Tiếp tục",
   "ui.notice.rumor": "Mọi người đang bàn tán về {fact}.",
   "ui.notice.public": "Ai cũng biết rồi: {fact}.",

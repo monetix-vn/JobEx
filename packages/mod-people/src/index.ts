@@ -39,6 +39,7 @@ export {
   type RetireResult,
 } from './world';
 export { createGuestPort, type GuestPortConfig } from './guests';
+export { appraisalManifest, appraisalModule, appraise, createAppraisalModule } from './appraisal';
 export {
   confidenceOf,
   createPerceptionModule,

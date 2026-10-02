@@ -17,7 +17,7 @@ import {
   memorySource,
 } from '@je/mod-content';
 import { directorModule } from '@je/mod-director';
-import { createGuestPort, perceptionModule, profileEffects } from '@je/mod-people';
+import { appraisalModule, createGuestPort, perceptionModule, profileEffects } from '@je/mod-people';
 import { educationModule } from '@je/mod-education';
 import { knowledgeModule } from '@je/mod-knowledge';
 import { narrativeModule } from '@je/mod-narrative';
@@ -118,7 +118,7 @@ export async function createGameHost(options: GameHostOptions): Promise<GameHost
     riskModule,
     narrativeModule,
     educationModule,
-    ...(options.people ? [perceptionModule] : []),
+    ...(options.people ? [perceptionModule, appraisalModule] : []),
   ];
   const configs = {
     'mod-content': { registry },

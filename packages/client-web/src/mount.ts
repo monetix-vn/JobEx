@@ -1,6 +1,6 @@
 import type { Envelope } from '@je/contracts';
 import { initialState, reduce, type ClientState } from './state';
-import { impressionLine } from './impressions';
+import { actedLine, impressionLine } from './impressions';
 import { UI_LOCALES, UI_STRINGS, type UiLocale, type UiStrings } from './strings';
 
 /** The client's only connection to the simulation: messages in, commands out. */
@@ -150,7 +150,13 @@ function castView(state: ClientState, t: UiStrings, ui: Ui, locale: UiLocale): H
     const trust = state.feelings[person.character]?.trust ?? 0;
     // A person drawn from the world has no scripted feelings; what the player has worked out about them shows instead.
     const detail = person.guest
-      ? impressionLine(state.impressions[person.character], locale)
+      ? [
+          feelingOf(trust, t),
+          actedLine(state.acted[person.character], locale),
+          impressionLine(state.impressions[person.character], locale),
+        ]
+          .filter(Boolean)
+          .join('. ')
       : feelingOf(trust, t);
     const item = el('li', 'je-person', `${person.name} (${person.title}) - ${detail}`);
     item.dataset.character = person.character;

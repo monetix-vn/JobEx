@@ -16,5 +16,10 @@ The people library and the people store (ADR 0003, `docs/design/IDENTITY-ENGINE.
   believes: `perception.updated` (one trait, a noisy estimate, a confidence that grows with every look) and
   `perception.quirkNoticed`. The true numbers never leave the module.
 
+- The `appraisal` module (`appraisalModule`, M3 slice 1) lets each guest judge the player's choice (`appraise`: integrity, fairness,
+  warmth, self-interest in the outcome, how well they know the player), keeps a trust score (announced as `relationship.changed`
+  for the person id) and may act (`person.acted`): report a deed (`knowledge.escalate`), cover for the player, run them down or
+  vouch (`sim.applyDelta` on `player.rep.staff`). Seeded, so a replay behaves the same.
+
 Personality axes are drawn independently of gender and age (a tested fairness rule). Depends only on `@je/contracts` and
 `@je/kernel`. The workbench is `tools/people-workbench` (`pnpm people:validate`, `pnpm people:generate`).
